@@ -1,0 +1,75 @@
+name: CI
+
+# Pull-request and main-branch gate: lint, unit/integration tests, strict
+# traceability audit, and strict OCPE package validation.
+# Heavier scientific layers (demonstrations, sensitivity grids, the
+# seven-layer runner) live in validation.yml.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # No dependency caching: installs must resolve the pinned OCPE git
+      # commit from source every run so a stale wheel can never mask a
+      # dependency regression. No tokens or credentials are used or persisted.
+      - name: Install package with dev extras (pinned OCPE git dependency)
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[dev]'
+
+      - name: Verify pinned OCPE dependency imports
+        run: |
+          python - <<'PY'
+          import ocpe  # noqa: F401  (engine installed from the pinned git commit)
+          from ocpe_disease_models import OCPE_COMMIT
+
+          expected = "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d"
+          assert OCPE_COMMIT == expected, f"OCPE pin drifted: {OCPE_COMMIT}"
+          print(f"ocpe import OK; pinned upstream commit {OCPE_COMMIT}")
+          PY
+
+
+      - name: Ruff lint
+        run: ruff check .
+
+      - name: Pytest
+        # No -m selection here: an empty marker selection exits 5 and must
+        # never be treated as a pass. The full suite runs unconditionally.
+        run: python -m pytest -q
+
+      - name: Strict traceability audit
+        # --strict: any error-severity finding is a non-zero exit (CI gate).
+        run: python scripts/audit_traceability.py --root . --strict
+
+      - name: Strict OCPE package validation
+        # Structural/semantic validation of the disease-models domain package
+        # only; passing this step establishes nothing about scientific or
+        # clinical validity (see docs/validation/validation-runbook.md).
+        run: python -m ocpe validate ocpe/packages/disease-models --strict
