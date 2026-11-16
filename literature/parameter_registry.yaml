@@ -264,6 +264,7 @@ parameters:
     pots-neuropathic:
       value: 0.35
       config: phenotypes/pots/pots-neuropathic.yaml
+      range_exception: Intentional scenario calibration below the declared local sensitivity/scenario range; retained for the demonstrated reduced vasoconstrictive response. This is not a patient measurement or evidence that the range should be widened.
   provenance: Introduced with ModelParameters.resistance_sympathetic_gain in the initial disease-modeling framework; defaults
     and all YAML overrides are audited against this record.
   references:
@@ -824,6 +825,7 @@ parameters:
     pots-hypovolemic:
       value: 6.0
       config: phenotypes/pots/pots-hypovolemic.yaml
+      range_exception: Intentional scenario calibration above the declared local sensitivity/scenario range; retained for the demonstrated hypovolemic operating point. This is not a patient measurement or evidence that the range should be widened, and independent calibration remains required.
     pots-mixed:
       value: 3.0
       config: phenotypes/pots/pots-mixed.yaml

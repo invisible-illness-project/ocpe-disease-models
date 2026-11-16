@@ -29,6 +29,10 @@ PAR-PEM-ONSET-TIME-CONSTANT = 172800 s and PAR-PEM-RECOVERY-TIME-CONSTANT =
 86400 s in `mecfs-pem`). These are operating-point choices inside declared sensitivity
 ranges (delayed stress 14400–43200 s; onset 43200–172800 s; recovery 86400–604800 s), constrained — not
 identified — by the reported 12–48 h onset and 2–7 day duration windows.
+The onset constant is deliberately slower than the post-peak recovery constant
+in this scenario to delay the peak while retaining the prespecified follow-up
+recovery behavior; this is not a general biological claim that recovery is
+faster than onset, and neither constant is identified by the literature.
 VAL-ME-PEM directly tests the defining temporal distinction: PEM below 0.01
 during exertion and the first hour, a subsequent delayed peak, and no PEM in
 the healthy reference.

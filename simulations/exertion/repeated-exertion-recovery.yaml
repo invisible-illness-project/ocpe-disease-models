@@ -1,5 +1,5 @@
 id: repeated-exertion-recovery
-title: Two standardized exertion bouts separated by 24 hours with 72-hour follow-up
+title: Two standardized exertion bouts separated by 24 hours with approximately 48-hour post-day-2 follow-up (72-hour total duration)
 scientific_note: Small model-validation trace, not a synthetic patient cohort or wearable dataset.
 solver: {sample_interval: 600.0, max_step: 300.0, rtol: 1.0e-7, atol: 1.0e-8}
 segments:

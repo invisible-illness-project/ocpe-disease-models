@@ -23,7 +23,7 @@ Python 3.11 or later is required. Installation fetches OCPE at exact commit `3f0
 python -m pip install -e '.[dev]'
 ```
 
-For an offline source setup, install the pinned upstream `implementations/python` package first, then install this repository without replacing that pin. Configuration discovery expects a source checkout; installed-library callers should set `OCPE_DM_ROOT` to the repository root. See `docs/reproducibility.md`.
+For an offline source setup, install the pinned upstream `implementations/python` package first, then install this repository without replacing that pin. Configuration discovery expects a source checkout or `OCPE_DM_ROOT` pointing to one. The OCPE adapter resolves its package relative to the source tree and does not use `OCPE_DM_ROOT`; wheel-only callers must pass `package_dir` explicitly. See `docs/reproducibility.md`.
 
 ## Run the demonstrations
 
@@ -74,7 +74,7 @@ Start with:
 - `validation/validation_registry.yaml`
 - `simulations/simulation_registry.yaml`
 
-`docs/architecture.md` explains the numerical and OCPE boundaries; `docs/methodology.md` documents equations and protocols; `docs/maturity-model.md` separates evidence grades from M0–M4 maturity; `docs/limitations.md` records unresolved scientific and engineering issues.
+`docs/architecture.md` explains the numerical and OCPE boundaries; `docs/methodology.md` documents equations and protocols; `docs/maturity-model.md` separates evidence grades from M0–M4 maturity; `docs/limitations.md` records unresolved scientific and engineering issues. `docs/technical-handoff.md` provides the A–L release handoff, and `validation/reproducibility.json` binds the executed results to source and artifact hashes.
 
 ## Scope
 

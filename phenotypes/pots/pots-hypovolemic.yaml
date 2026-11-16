@@ -14,4 +14,5 @@ maturity: M3
 classification: mechanistic_approximation
 limitations:
   - The 0.92 stressed-volume factor is an assumed demonstration value, not a direct blood-volume measurement.
+  - The 6.0 mmHg baroreflex pressure scale is an intentional scenario calibration above the declared 1.5-3.0 mmHg local sensitivity range, with an explicit registry range exception; independent calibration remains required.
   - Renin-angiotensin-aldosterone dynamics are not implemented.

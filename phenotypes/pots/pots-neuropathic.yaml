@@ -12,4 +12,5 @@ maturity: M3
 classification: mechanistic_approximation
 limitations:
   - Neuropathic impairment is represented by reduced sympathetic resistance modulation; gains are calibrated, not patient measurements.
+  - The 0.35 resistance gain is an intentional scenario calibration below the declared 0.4-1.2 local sensitivity range, with an explicit registry range exception; it does not widen or clinically validate that range.
   - Phenotype labels overlap and are not mutually exclusive clinical diagnoses.

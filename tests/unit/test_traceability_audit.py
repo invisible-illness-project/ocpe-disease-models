@@ -650,3 +650,45 @@ def test_mechanism_validation_records_expose_claim_equation_and_parameter_links(
         if record["id"] != "VAL-SCOPE-FUTURE":
             assert record.get("equation_ids"), f"{record['id']} lacks equation links"
             assert record.get("parameter_ids"), f"{record['id']} lacks parameter links"
+
+
+@pytest.mark.software
+def test_parameter_defaults_and_phenotype_overrides_match_registry():
+    """Registry values mirror executable defaults/YAML and disclose range exceptions."""
+    from ocpe_disease_models.models.shared.model import ModelParameters
+
+    records = yaml.safe_load(
+        (REPO_ROOT / "literature" / "parameter_registry.yaml").read_text(encoding="utf-8")
+    )["parameters"]
+    by_field = {record["model_field"]: record for record in records}
+    defaults = ModelParameters()
+    actual: dict[str, dict[str, dict[str, object]]] = {}
+    for path in sorted((REPO_ROOT / "phenotypes").rglob("*.yaml")):
+        phenotype = yaml.safe_load(path.read_text(encoding="utf-8"))
+        phenotype_id = phenotype["id"]
+        config = str(path.relative_to(REPO_ROOT))
+        for field, value in phenotype.get("parameter_overrides", {}).items():
+            assert field in by_field, f"{phenotype_id} override {field} lacks a registry record"
+            actual.setdefault(field, {})[phenotype_id] = {"value": value, "config": config}
+
+    for field, record in by_field.items():
+        assert hasattr(defaults, field), f"{record['id']} names unknown model field {field}"
+        assert getattr(defaults, field) == pytest.approx(record["value"]), record["id"]
+        assert record["healthy_reference_value"] == pytest.approx(record["value"]), record["id"]
+        assert record["nominal_value"] == pytest.approx(record["value"]), record["id"]
+        registered = record.get("phenotype_values", {})
+        assert set(registered) == set(actual.get(field, {})), (
+            f"{record['id']} phenotype registry does not mirror executable YAML overrides"
+        )
+        for phenotype_id, expected in actual.get(field, {}).items():
+            observed = registered[phenotype_id]
+            assert observed["value"] == pytest.approx(expected["value"]), (
+                f"{record['id']} value mismatch for {phenotype_id}"
+            )
+            assert observed["config"] == expected["config"]
+            bounds = record.get("supported_range")
+            if bounds is not None and not bounds["min"] <= expected["value"] <= bounds["max"]:
+                assert observed.get("range_exception"), (
+                    f"{record['id']} {phenotype_id}={expected['value']} is outside "
+                    f"[{bounds['min']}, {bounds['max']}] without a range_exception"
+                )
