@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "model": "ocpe:disease-models/shared-physiology",
+    "model_version": "0.1.0",
+    "phenotype_id": "mecfs-pem",
+    "provenance": {
+      "phenotypes": [
+        "phenotypes/mecfs/mecfs-pem.yaml"
+      ],
+      "mechanisms": [
+        "MEC-CBF-AUTOREG",
+        "MEC-MET-CAPACITY",
+        "MEC-RCV-PEM"
+      ],
+      "evidence_claims": [
+        "CLM-ME-CBF",
+        "CLM-ME-CPET",
+        "CLM-ME-PEM-KINETICS",
+        "CLM-ME-PRELOAD"
+      ],
+      "maturity": "M3",
+      "limitations": [
+        "Exertional-load threshold and gain are calibrated; severe or bedbound patients are underrepresented in source studies.",
+        "PEM state transitions reproduce reported temporal features but do not assert a molecular cause."
+      ]
+    },
+    "configuration_sha256": "5fb4436f647c2575da0c315aeb57a86fe927af8a3686763ffd3dc1ffda59531d",
+    "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
+    "python_version": "3.12.12",
+    "numpy_version": "2.2.5",
+    "scipy_version": "1.16.2",
+    "seed": 0,
+    "solver": {
+      "method": "DOP853",
+      "rtol": 1e-07,
+      "atol": 1e-08,
+      "max_step": 2.0
+    },
+    "scientific_status": "research demonstration; not clinically validated"
+  },
+  "parameters": {
+    "arterial_compliance": 1.5,
+    "central_venous_compliance": 140.0,
+    "peripheral_venous_compliance": 120.0,
+    "systemic_resistance": 1.1020408163265305,
+    "venous_return_resistance": 0.061224489795918366,
+    "resistance_sympathetic_gain": 0.8,
+    "gravity_pressure_offset": 9.0,
+    "arterial_volume_initial": 150.0,
+    "central_venous_volume_initial": 700.0,
+    "peripheral_venous_volume_initial": 1200.0,
+    "blood_volume_factor": 1.0,
+    "stroke_volume_max": 100.0,
+    "stroke_volume_half_volume": 300.0,
+    "contractility_sympathetic_gain": 0.25,
+    "heart_rate_base": 45.0,
+    "heart_rate_sympathetic_gain": 50.0,
+    "baroreflex_pressure_setpoint": 100.0,
+    "baroreflex_pressure_scale": 2.0,
+    "sympathetic_time_constant": 4.0,
+    "exercise_heart_rate_gain": 70.0,
+    "exercise_resistance_reduction": 0.3,
+    "cerebral_pressure_exponent": 0.8,
+    "cerebral_orthostatic_impairment": 0.23,
+    "cerebral_decline_time_constant": 5.0,
+    "cerebral_recovery_time_constant": 240.0,
+    "baseline_metabolic_capacity": 0.85,
+    "oxygen_extraction_fraction": 0.74,
+    "pem_capacity_penalty": 0.5,
+    "pem_extraction_penalty": 0.1,
+    "exertional_load_time_constant": 1800.0,
+    "delayed_stress_time_constant": 43200.0,
+    "pem_onset_time_constant": 172800.0,
+    "pem_recovery_time_constant": 86400.0,
+    "pem_trigger_threshold": 0.001,
+    "pem_response_gain": 20.0
+  },
+  "state_names": [
+    "arterial_volume",
+    "central_venous_volume",
+    "peripheral_venous_volume",
+    "sympathetic_state",
+    "exertional_load",
+    "delayed_stress",
+    "pem_severity",
+    "cerebral_flow_index"
+  ],
+  "protocol": [
+    {
+      "start": 0,
+      "end": 120,
+      "upright": 0.0,
+      "exertion": 0.0,
+      "label": "supine"
+    },
+    {
+      "start": 120,
+      "end": 600,
+      "upright": 1.0,
+      "exertion": 0.0,
+      "label": "upright"
+    }
+  ],
+  "summary": {
+    "phenotype_id": "mecfs-pem",
+    "duration_s": 600.0,
+    "samples": 301,
+    "heart_rate_final_bpm": 84.72020088148525,
+    "mean_arterial_pressure_final_mmHg": 97.29664164446439,
+    "pem_peak": 0.0,
+    "functional_capacity_final": 0.8064102564102564,
+    "heart_rate_baseline_bpm": 70.0,
+    "heart_rate_upright_peak_bpm": 84.72020088148534,
+    "orthostatic_heart_rate_rise_bpm": 14.72020088148534
+  }
+}

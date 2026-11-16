@@ -1,0 +1,181 @@
+{
+  "phenotype_id": "pots-neuropathic",
+  "time_s": 600.0,
+  "observations": {
+    "heart_rate": {
+      "quantity": "ocpe:disease-models/heart-rate",
+      "value": 100.85953571306064,
+      "unit": "/min",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "pots-neuropathic"
+    },
+    "mean_arterial_pressure": {
+      "quantity": "ocpe:disease-models/mean-arterial-pressure",
+      "value": 92.69230776768875,
+      "unit": "mm[Hg]",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "pots-neuropathic"
+    },
+    "stroke_volume": {
+      "quantity": "ocpe:disease-models/stroke-volume",
+      "value": 36.085852937727545,
+      "unit": "mL",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "pots-neuropathic"
+    },
+    "cardiac_output_l_min": {
+      "quantity": "ocpe:disease-models/cardiac-output",
+      "value": 3.6396023731089855,
+      "unit": "L/min",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "pots-neuropathic"
+    },
+    "cerebral_flow_index": {
+      "quantity": "ocpe:disease-models/cerebral-flow-index",
+      "value": 0.9410982286143934,
+      "unit": "1",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "pots-neuropathic"
+    },
+    "metabolic_capacity": {
+      "quantity": "ocpe:disease-models/metabolic-capacity",
+      "value": 1.0,
+      "unit": "1",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "pots-neuropathic"
+    },
+    "pem_severity": {
+      "quantity": "ocpe:disease-models/pem-severity",
+      "value": 0.0,
+      "unit": "1",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "pots-neuropathic"
+    }
+  }
+}

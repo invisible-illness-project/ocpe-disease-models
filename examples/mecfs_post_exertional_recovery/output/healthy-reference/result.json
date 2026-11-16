@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "model": "ocpe:disease-models/shared-physiology",
+    "model_version": "0.1.0",
+    "phenotype_id": "healthy-reference",
+    "provenance": {
+      "phenotypes": [
+        "phenotypes/healthy/healthy-reference.yaml"
+      ],
+      "mechanisms": [
+        "MEC-AUT-BAROREFLEX",
+        "MEC-CBF-AUTOREG",
+        "MEC-CV-VOLUME"
+      ],
+      "evidence_claims": [
+        "CLM-CV-HEMODYNAMICS",
+        "CLM-POTS-CRITERIA"
+      ],
+      "maturity": "M3",
+      "limitations": [
+        "Beat-averaged three-compartment approximation; no pulsatile waveform or patient-specific identification."
+      ]
+    },
+    "configuration_sha256": "a46600a2cdd4ac3c3f8dde7efaa5ed168e9a41f0828d17fa6b8b09f2774d4d0c",
+    "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
+    "python_version": "3.12.12",
+    "numpy_version": "2.2.5",
+    "scipy_version": "1.16.2",
+    "seed": 0,
+    "solver": {
+      "method": "DOP853",
+      "rtol": 1e-07,
+      "atol": 1e-08,
+      "max_step": 300.0
+    },
+    "scientific_status": "research demonstration; not clinically validated"
+  },
+  "parameters": {
+    "arterial_compliance": 1.5,
+    "central_venous_compliance": 140.0,
+    "peripheral_venous_compliance": 120.0,
+    "systemic_resistance": 1.1020408163265305,
+    "venous_return_resistance": 0.061224489795918366,
+    "resistance_sympathetic_gain": 0.8,
+    "gravity_pressure_offset": 8.0,
+    "arterial_volume_initial": 150.0,
+    "central_venous_volume_initial": 700.0,
+    "peripheral_venous_volume_initial": 1200.0,
+    "blood_volume_factor": 1.0,
+    "stroke_volume_max": 100.0,
+    "stroke_volume_half_volume": 300.0,
+    "contractility_sympathetic_gain": 0.25,
+    "heart_rate_base": 50.0,
+    "heart_rate_sympathetic_gain": 40.0,
+    "baroreflex_pressure_setpoint": 100.0,
+    "baroreflex_pressure_scale": 2.0,
+    "sympathetic_time_constant": 4.0,
+    "exercise_heart_rate_gain": 70.0,
+    "exercise_resistance_reduction": 0.3,
+    "cerebral_pressure_exponent": 0.8,
+    "cerebral_orthostatic_impairment": 0.0,
+    "cerebral_decline_time_constant": 5.0,
+    "cerebral_recovery_time_constant": 12.0,
+    "baseline_metabolic_capacity": 1.0,
+    "oxygen_extraction_fraction": 0.78,
+    "pem_capacity_penalty": 0.5,
+    "pem_extraction_penalty": 0.1,
+    "exertional_load_time_constant": 1800.0,
+    "delayed_stress_time_constant": 21600.0,
+    "pem_onset_time_constant": 86400.0,
+    "pem_recovery_time_constant": 172800.0,
+    "pem_trigger_threshold": 99.0,
+    "pem_response_gain": 0.0
+  },
+  "state_names": [
+    "arterial_volume",
+    "central_venous_volume",
+    "peripheral_venous_volume",
+    "sympathetic_state",
+    "exertional_load",
+    "delayed_stress",
+    "pem_severity",
+    "cerebral_flow_index"
+  ],
+  "protocol": [
+    {
+      "start": 0,
+      "end": 3600,
+      "upright": 0.0,
+      "exertion": 0.0,
+      "label": "baseline"
+    },
+    {
+      "start": 3600,
+      "end": 4800,
+      "upright": 0.0,
+      "exertion": 0.8,
+      "label": "exertion-day-1"
+    },
+    {
+      "start": 4800,
+      "end": 86400,
+      "upright": 0.0,
+      "exertion": 0.0,
+      "label": "recovery-day-1"
+    },
+    {
+      "start": 86400,
+      "end": 87600,
+      "upright": 0.0,
+      "exertion": 0.8,
+      "label": "exertion-day-2"
+    },
+    {
+      "start": 87600,
+      "end": 259200,
+      "upright": 0.0,
+      "exertion": 0.0,
+      "label": "recovery-days-2-3"
+    }
+  ],
+  "summary": {
+    "phenotype_id": "healthy-reference",
+    "duration_s": 259200.0,
+    "samples": 433,
+    "heart_rate_final_bpm": 70.00000077316248,
+    "mean_arterial_pressure_final_mmHg": 99.99999804611629,
+    "pem_peak": 0.0,
+    "functional_capacity_final": 1.0
+  }
+}

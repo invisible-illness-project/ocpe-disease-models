@@ -1,0 +1,181 @@
+{
+  "phenotype_id": "long-covid-autonomic",
+  "time_s": 600.0,
+  "observations": {
+    "heart_rate": {
+      "quantity": "ocpe:disease-models/heart-rate",
+      "value": 102.48299603733683,
+      "unit": "/min",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "long-covid-autonomic"
+    },
+    "mean_arterial_pressure": {
+      "quantity": "ocpe:disease-models/mean-arterial-pressure",
+      "value": 93.42238726985168,
+      "unit": "mm[Hg]",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "long-covid-autonomic"
+    },
+    "stroke_volume": {
+      "quantity": "ocpe:disease-models/stroke-volume",
+      "value": 30.39071522207406,
+      "unit": "mL",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "long-covid-autonomic"
+    },
+    "cardiac_output_l_min": {
+      "quantity": "ocpe:disease-models/cardiac-output",
+      "value": 3.1145315476756483,
+      "unit": "L/min",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "long-covid-autonomic"
+    },
+    "cerebral_flow_index": {
+      "quantity": "ocpe:disease-models/cerebral-flow-index",
+      "value": 0.8712616454717297,
+      "unit": "1",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "long-covid-autonomic"
+    },
+    "metabolic_capacity": {
+      "quantity": "ocpe:disease-models/metabolic-capacity",
+      "value": 0.85,
+      "unit": "1",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "long-covid-autonomic"
+    },
+    "pem_severity": {
+      "quantity": "ocpe:disease-models/pem-severity",
+      "value": 0.0,
+      "unit": "1",
+      "value_kind": "simulated",
+      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "provenance": {
+        "derived_from": [
+          {
+            "source": "ocpe/packages/disease-models/models.yaml",
+            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
+          }
+        ],
+        "contributors": [
+          {
+            "name": "ocpe-disease-models simulator",
+            "kind": "tool",
+            "role": "value generation"
+          }
+        ],
+        "notes": "Simulated value; not a physiological measurement."
+      },
+      "subject": "long-covid-autonomic"
+    }
+  }
+}
