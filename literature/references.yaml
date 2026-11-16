@@ -1,0 +1,567 @@
+schema_version: "1.0"
+references:
+  - id: REF-GEDDES-2022
+    title: Postural orthostatic tachycardia syndrome explained using a baroreflex response model
+    authors: [Justen R. Geddes, Johnny T. Ottesen, Jesper Mehlsen, Mette S. Olufsen]
+    year: 2022
+    journal: Journal of the Royal Society Interface
+    volume: "19"
+    issue: "193"
+    pages: "20220220"
+    doi: 10.1098/rsif.2022.0220
+    pmid: "36000360"
+    pmcid: PMC9399868
+    url: https://pubmed.ncbi.nlm.nih.gov/36000360/
+    study_type: Computational cardiovascular modeling
+    population: Model parameterized against POTS and control orthostatic observations
+    relevant_findings: Closed-loop compartments and sigmoidal baroreflex control can reproduce orthostatic tachycardia and phenotype-specific dynamics.
+    limitations: Model structure and parameter sensitivity are not independent clinical validation; archived OCPE metadata had an inconsistent PMID, corrected against PubMed.
+    diseases: [POTS]
+  - id: REF-RAJ-2005
+    title: Renin-aldosterone paradox and perturbed blood volume regulation underlying postural tachycardia syndrome
+    authors: [Satish R. Raj, Italo Biaggioni, Perry C. Yamhure, Bonnie K. Black, Sachin Y. Paranjape, David W. Byrne, David Robertson]
+    year: 2005
+    journal: Circulation
+    volume: "111"
+    issue: "13"
+    pages: "1574-1582"
+    doi: 10.1161/01.CIR.0000160356.97313.5D
+    url: https://www.ahajournals.org/doi/10.1161/01.CIR.0000160356.97313.5d
+    study_type: Controlled clinical physiology study
+    population: 15 POTS patients and 14 healthy controls
+    sample_size: 29
+    pmid: "15781744"
+    measured_variables: [plasma volume, red-cell volume, renin activity, aldosterone]
+    relevant_findings: POTS plasma volume 2348±438 versus 2823±480 mL in controls; mean plasma-volume deficit 334±187 mL (12.8±7.6% of ideal).
+    limitations: Small selected cohort; plasma-volume deficit is not equivalent to the model's stressed-volume scaling factor.
+    diseases: [POTS]
+  - id: REF-LOW-2009
+    title: Postural tachycardia syndrome (POTS)
+    authors: [Phillip A. Low, Paola Sandroni, Michael Joyner, Win-Kuang Shen]
+    year: 2009
+    journal: Journal of Cardiovascular Electrophysiology
+    volume: "20"
+    issue: "3"
+    pages: "352-358"
+    doi: 10.1111/j.1540-8167.2008.01407.x
+    url: https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-8167.2008.01407.x
+    study_type: Mechanistic clinical review
+    relevant_findings: Reviews heterogeneous neuropathic, hypovolemic and hyperadrenergic contributions and compensatory orthostatic tachycardia.
+    limitations: Narrative synthesis; subtype boundaries overlap.
+    diseases: [POTS]
+  - id: REF-SHELDON-2015
+    title: 2015 Heart Rhythm Society expert consensus statement on the diagnosis and treatment of postural tachycardia syndrome, inappropriate sinus tachycardia, and vasovagal syncope
+    authors: [Robert S. Sheldon, Blair P. Grubb, Brian Olshansky, et al.]
+    year: 2015
+    journal: Heart Rhythm
+    volume: "12"
+    issue: "6"
+    pages: "e41-e63"
+    doi: 10.1016/j.hrthm.2015.03.029
+    pmid: "25980576"
+    url: https://pubmed.ncbi.nlm.nih.gov/25980576/
+    study_type: Expert consensus statement
+    relevant_findings: Defines sustained orthostatic heart-rate criteria and the absence of orthostatic hypotension used for scenario checks, not as evidence of model validity.
+    limitations: Consensus diagnostic criterion rather than a physiological effect-size estimate.
+    diseases: [POTS]
+  - id: REF-MUENTER-2005
+    title: Baroreflex control of muscle sympathetic nerve activity in postural orthostatic tachycardia syndrome
+    authors: [N. Muenter Swift, N. Charkoudian, et al.]
+    year: 2005
+    journal: American Journal of Physiology-Heart and Circulatory Physiology
+    doi: 10.1152/ajpheart.01243.2004
+    url: https://journals.physiology.org/doi/abs/10.1152/ajpheart.01243.2004
+    study_type: Clinical autonomic physiology study
+    measured_variables: [muscle sympathetic nerve activity, blood pressure, heart rate]
+    relevant_findings: Supports baroreflex and sympathetic compensation as measurable POTS mechanisms while showing physiological heterogeneity.
+    limitations: Does not justify a universal baroreflex gain or a single POTS mechanism.
+    diseases: [POTS]
+  - id: REF-STEWART-2003
+    title: Local vascular responses affecting blood flow in postural tachycardia syndrome
+    authors: [Julian M. Stewart, Marvin S. Medow, et al.]
+    year: 2003
+    journal: American Journal of Physiology-Heart and Circulatory Physiology
+    doi: 10.1152/ajpheart.00429.2003
+    url: https://journals.physiology.org/doi/abs/10.1152/ajpheart.00429.2003
+    study_type: Clinical vascular physiology study
+    measured_variables: [peripheral blood flow, vascular resistance, venous pooling]
+    relevant_findings: Regional vascular abnormalities and impaired vasoconstriction support a neuropathic pooling phenotype.
+    limitations: Regional measurements cannot directly identify lumped whole-body compliance.
+    diseases: [POTS]
+  - id: REF-FU-2018
+    title: Exercise and non-pharmacological treatment of POTS
+    authors: [Qi Fu, Benjamin D. Levine]
+    year: 2018
+    journal: Autonomic Neuroscience
+    volume: "215"
+    pages: "20-27"
+    pmcid: PMC6289756
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6289756/
+    study_type: Clinical review
+    relevant_findings: Reviews blood volume, venous pooling, stroke volume and exercise responses relevant to model interpretation.
+    limitations: Treatment effects are outside this assignment; no treatment recommendations are encoded.
+    diseases: [POTS]
+  - id: REF-ROWE-1999
+    title: Orthostatic intolerance and chronic fatigue syndrome associated with Ehlers-Danlos syndrome
+    authors: [Peter C. Rowe, David F. Barron, Hugh Calkins, Irene H. Maumenee, et al.]
+    year: 1999
+    journal: Journal of Pediatrics
+    volume: "135"
+    issue: "4"
+    pages: "494-499"
+    doi: 10.1016/S0022-3476(99)70173-3
+    url: https://www.sciencedirect.com/science/article/pii/S0022347699701733
+    study_type: Clinical case series
+    population: 12 patients with EDS, chronic fatigue and orthostatic intolerance
+    sample_size: 12
+    pmid: "10518084"
+    relevant_findings: Establishes a clinical association between EDS, orthostatic intolerance and fatigue; does not establish a vascular-compliance parameter.
+    limitations: Early terminology and selected clinical sample; association is not causal proof of connective-tissue-mediated pooling.
+    diseases: [EDS, hEDS, ME/CFS]
+  - id: REF-CELLETTI-2017
+    title: Orthostatic intolerance and postural orthostatic tachycardia syndrome in joint hypermobility syndrome/Ehlers-Danlos syndrome, hypermobility type
+    authors: [C. Celletti, F. Camerota, M. Castori, et al.]
+    year: 2017
+    journal: BioMed Research International
+    pages: "9161865"
+    doi: 10.1155/2017/9161865
+    url: https://onlinelibrary.wiley.com/doi/abs/10.1155/2017/9161865
+    study_type: Clinical observational study
+    relevant_findings: Supports co-occurrence of hypermobility-spectrum disease and autonomic/orthostatic abnormalities.
+    limitations: Observational design and historical diagnostic categories; not generalizable to every EDS subtype.
+    diseases: [hEDS, POTS]
+  - id: REF-MILLER-2020
+    title: Arterial elasticity in Ehlers-Danlos syndromes
+    authors: [A. J. Miller, J. R. Schubart, T. Sheehan, R. Bascom, et al.]
+    year: 2020
+    journal: Genes
+    volume: "11"
+    issue: "1"
+    pages: "55"
+    doi: 10.3390/genes11010055
+    url: https://www.mdpi.com/2073-4425/11/1/55
+    study_type: Cross-sectional vascular mechanics study with external reference values
+    population: 60 people with EDS, including 13 with hypermobile EDS; no contemporaneous healthy control group
+    sample_size: 60
+    pmid: "31947929"
+    pmcid: PMC7016526
+    measured_variables: [central and peripheral pulse-wave velocity, orthostatic vital signs]
+    relevant_findings: Central PWV was lower than published healthy reference values; PWV did not correlate with standing HR/BP changes and did not differ across EDS types. No venous-compliance value for hEDS is supplied.
+    limitations: Arterial elasticity cannot be substituted for peripheral venous compliance; heterogeneous subtypes and non-contemporaneous reference values.
+    diseases: [EDS, hEDS]
+  - id: REF-IOM-2015
+    title: "Beyond Myalgic Encephalomyelitis/Chronic Fatigue Syndrome: Redefining an Illness"
+    authors: [Institute of Medicine Committee on Diagnostic Criteria for ME/CFS]
+    year: 2015
+    journal: National Academies Press
+    doi: 10.17226/19012
+    pmid: "25695122"
+    isbn: "978-0-309-31689-7"
+    url: https://doi.org/10.17226/19012
+    study_type: Consensus evidence review
+    relevant_findings: PEM is a core disease feature with delayed exacerbation and prolonged recovery; repeated CPET abnormalities are reviewed.
+    limitations: Consensus synthesis rather than primary dynamic data.
+    diseases: [ME/CFS]
+  - id: REF-STUSSMAN-2020
+    title: Characterization of post-exertional malaise in patients with myalgic encephalomyelitis/chronic fatigue syndrome
+    authors: [Barbara Stussman, Ashley Williams, Joseph Snow, et al.]
+    year: 2020
+    journal: Frontiers in Neurology
+    volume: "11"
+    pages: "1025"
+    doi: 10.3389/fneur.2020.01025
+    url: https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2020.01025/full
+    study_type: Qualitative focus-group study
+    population: ME/CFS patients in nine NIH focus groups
+    sample_size: 43
+    relevant_findings: After daily activity, PEM onset was commonly 12–48 h, peak around 48 h and duration 2–7 days; after CPET most respondents reported onset within 24 h and peak within 72 h.
+    limitations: Recall-based qualitative data; temporal windows constrain phenomenology rather than identifying molecular dynamics.
+    diseases: [ME/CFS]
+  - id: REF-KELLER-2014
+    title: Inability of myalgic encephalomyelitis/chronic fatigue syndrome patients to reproduce VO2peak indicates functional impairment
+    authors: [Betsy A. Keller, J. Luke Pryor, Ludovic Giloteaux]
+    year: 2014
+    journal: Journal of Translational Medicine
+    volume: "12"
+    pages: "104"
+    doi: 10.1186/1479-5876-12-104
+    pmid: "24755065"
+    pmcid: PMC4004422
+    study_type: Prospective repeated-CPET case series
+    sample_size: 22
+    relevant_findings: Day-2 VO2peak declined 13.8%, peak work 12.5%, and work at ventilatory threshold 21.3% on tests 24 h apart.
+    limitations: No control group and only patients able to complete maximal testing.
+    diseases: [ME/CFS]
+  - id: REF-SNELL-2013
+    title: Discriminative validity of metabolic and workload measurements for identifying people with chronic fatigue syndrome
+    authors: [Christopher R. Snell, Staci R. Stevens, Todd E. Davenport, J. Mark Van Ness]
+    year: 2013
+    journal: Physical Therapy
+    volume: "93"
+    issue: "11"
+    pages: "1484-1492"
+    doi: 10.2522/ptj.20110368
+    pmid: "23813081"
+    study_type: Repeated-CPET case-control study
+    sample_size: 61
+    relevant_findings: Fifty-one CFS participants had lower day-2 VO2 and workload than ten controls despite similar day-1 findings.
+    limitations: Small all-female control group and spectrum bias toward participants able to complete CPET.
+    diseases: [ME/CFS]
+  - id: REF-KELLER-2024
+    title: Cardiopulmonary and metabolic responses during a 2-day CPET in myalgic encephalomyelitis/chronic fatigue syndrome
+    authors: [B. Keller, C. N. Receno, C. J. Franconi, et al.]
+    year: 2024
+    journal: Journal of Translational Medicine
+    volume: "22"
+    pages: "627"
+    doi: 10.1186/s12967-024-05410-5
+    pmid: "38965566"
+    pmcid: PMC11229500
+    study_type: Multisite repeated-CPET case-control study
+    sample_size: 155
+    relevant_findings: Eighty-four ME/CFS and seventy-one sedentary controls showed group differences in day-2 reproducibility; ME/CFS VO2 declined 5.3% at peak and 6.7% at ventilatory threshold.
+    limitations: Effect sizes vary across cohorts and negative replications exist; use ranges and uncertainty rather than a universal decrement.
+    diseases: [ME/CFS]
+  - id: REF-JOSEPH-2021
+    title: Insights from invasive cardiopulmonary exercise testing of patients with myalgic encephalomyelitis/chronic fatigue syndrome
+    authors: [Phillip Joseph, C. Arevalo, R. K. F. Oliveira, et al.]
+    year: 2021
+    journal: CHEST
+    volume: "160"
+    issue: "2"
+    pages: "642-651"
+    doi: 10.1016/j.chest.2021.01.082
+    pmid: "33577778"
+    pmcid: PMC8727854
+    study_type: Retrospective invasive-CPET case-control study
+    sample_size: 196
+    relevant_findings: Exercise right-atrial pressure was 1.9±2 versus 8.3±1.5 mmHg; selected high-flow participants had impaired systemic oxygen extraction.
+    limitations: Cohort preselected for low right-atrial pressure; prevalence in unselected ME/CFS cannot be inferred.
+    diseases: [ME/CFS]
+  - id: REF-VANCAMPEN-2020
+    title: Cerebral blood flow is reduced in ME/CFS during head-up tilt testing even in the absence of hypotension or tachycardia
+    authors: [C. L. M. C. van Campen, F. W. A. Verheugt, P. C. Rowe, F. C. Visser]
+    year: 2020
+    journal: Clinical Neurophysiology Practice
+    volume: "5"
+    pages: "50-58"
+    doi: 10.1016/j.cnp.2020.01.003
+    pmid: "32140630"
+    pmcid: PMC7044650
+    study_type: Controlled tilt-table Doppler study
+    sample_size: 473
+    relevant_findings: End-tilt cerebral blood flow reduction averaged 26% in 429 ME/CFS patients versus 7% in 44 controls, including reduction with normal HR/BP responses.
+    limitations: Single-center extracranial Doppler surrogate; the model's cerebral-flow index is not a direct Doppler reconstruction.
+    diseases: [ME/CFS]
+  - id: REF-VANCAMPEN-2021
+    title: Cerebral blood flow remains reduced after tilt testing in myalgic encephalomyelitis/chronic fatigue syndrome patients
+    authors: [C. L. M. C. van Campen, P. C. Rowe, F. C. Visser]
+    year: 2021
+    journal: Clinical Neurophysiology Practice
+    volume: "6"
+    pages: "245-255"
+    doi: 10.1016/j.cnp.2021.09.001
+    pmid: "34667909"
+    pmcid: PMC8505270
+    study_type: Tilt-recovery clinical case series
+    relevant_findings: Cerebral-flow recovery after return to supine was incomplete despite cardiac-index normalization.
+    limitations: No healthy recovery-phase control group; exact recovery time constants require calibration.
+    diseases: [ME/CFS]
+  - id: REF-WALITT-2024
+    title: Deep phenotyping of post-infectious myalgic encephalomyelitis/chronic fatigue syndrome
+    authors: [Brian Walitt, K. Singh, S. R. LaMunion, et al.]
+    year: 2024
+    journal: Nature Communications
+    volume: "15"
+    pages: "1293"
+    doi: 10.1038/s41467-024-45107-3
+    pmid: "38383456"
+    pmcid: PMC10881493
+    study_type: Deep-phenotyping case-control study
+    sample_size: 38
+    relevant_findings: Seventeen PI-ME/CFS and twenty-one controls showed autonomic and exertional differences; no resting mitochondrial defect was detected.
+    limitations: Small ambulatory cohort; findings constrain dynamic rather than universal resting metabolic models.
+    diseases: [ME/CFS]
+  - id: REF-NAVIAUX-2016
+    title: Metabolic features of chronic fatigue syndrome
+    authors: [Robert K. Naviaux, Jane C. Naviaux, Kefeng Li, et al.]
+    year: 2016
+    journal: Proceedings of the National Academy of Sciences
+    volume: "113"
+    issue: "37"
+    pages: "E5472-E5480"
+    doi: 10.1073/pnas.1607571113
+    pmid: "27573827"
+    pmcid: PMC5027464
+    study_type: Targeted plasma metabolomics case-control study
+    sample_size: 84
+    relevant_findings: Reports a hypometabolic plasma signature in forty-five CFS participants versus thirty-nine controls.
+    limitations: Resting metabolite associations do not identify cellular causal dynamics and require independent replication.
+    diseases: [ME/CFS]
+  - id: REF-THAWEETHAI-2023
+    title: Development of a definition of postacute sequelae of SARS-CoV-2 infection
+    authors: [Tanayott Thaweethai, Sarah E. Jolley, Elizabeth W. Karlson, et al.]
+    year: 2023
+    journal: JAMA
+    volume: "329"
+    issue: "22"
+    pages: "1934-1946"
+    doi: 10.1001/jama.2023.8823
+    pmid: "37278994"
+    pmcid: PMC10214179
+    study_type: Prospective multicenter observational cohort
+    sample_size: 9764
+    relevant_findings: RECOVER identified symptom-defined heterogeneity and PEM as a highly weighted PASC feature.
+    limitations: Symptom definitions do not identify physiological mechanism or a single Long COVID phenotype.
+    diseases: [Long COVID]
+  - id: REF-DAVIS-2023
+    title: "Long COVID: major findings, mechanisms and recommendations"
+    authors: [Hannah E. Davis, Lisa McCorkell, Julia M. Vogel, Eric J. Topol]
+    year: 2023
+    journal: Nature Reviews Microbiology
+    volume: "21"
+    issue: "3"
+    pages: "133-146"
+    doi: 10.1038/s41579-022-00846-2
+    pmid: "36639608"
+    study_type: Narrative mechanistic review
+    relevant_findings: Synthesizes autonomic, endothelial, immune, metabolic and PEM evidence and their overlap with ME/CFS.
+    limitations: Narrative synthesis; emerging hypotheses must not be promoted to established causal mechanisms.
+    diseases: [Long COVID]
+  - id: REF-SINGH-2022
+    title: "Persistent exertional intolerance after COVID-19: insights from invasive cardiopulmonary exercise testing"
+    authors: [Inderjit Singh, Phillip Joseph, Paul M. Heerdt, et al.]
+    year: 2022
+    journal: CHEST
+    volume: "161"
+    issue: "1"
+    pages: "54-63"
+    doi: 10.1016/j.chest.2021.08.010
+    pmid: "34389297"
+    pmcid: PMC8354807
+    study_type: Invasive-CPET case-control study
+    sample_size: 20
+    relevant_findings: Ten post-COVID participants had extraction 0.49±0.1 versus 0.78±0.1 in ten controls with preserved peak cardiac index.
+    limitations: Very small referral-selected sample; 0.49 is not a population-wide Long COVID parameter.
+    diseases: [Long COVID]
+  - id: REF-DURSTENFELD-2022
+    title: Use of cardiopulmonary exercise testing to evaluate Long COVID-19 symptoms in adults
+    authors: [Matthew S. Durstenfeld, K. Sun, P. Tahir, et al.]
+    year: 2022
+    journal: JAMA Network Open
+    volume: "5"
+    issue: "10"
+    pages: "e2236057"
+    doi: 10.1001/jamanetworkopen.2022.36057
+    pmid: "36223120"
+    pmcid: PMC9557896
+    study_type: Systematic review and meta-analysis
+    sample_size: 2160
+    relevant_findings: Thirty-eight studies showed 4.9 mL/kg/min lower exercise capacity in symptomatic Long COVID; peripheral extraction, chronotropic and ventilatory patterns varied.
+    limitations: Heterogeneous studies and few controlled longitudinal designs.
+    diseases: [Long COVID]
+  - id: REF-APPELMAN-2024
+    title: Muscle abnormalities worsen after post-exertional malaise in long COVID
+    authors: [B. Appelman, B. T. Charlton, R. P. Goulding, et al.]
+    year: 2024
+    journal: Nature Communications
+    volume: "15"
+    pages: "17"
+    doi: 10.1038/s41467-023-44432-3
+    pmid: "38177128"
+    pmcid: PMC10766651
+    study_type: Longitudinal exercise-provocation case-control study
+    sample_size: 46
+    relevant_findings: Twenty-five Long COVID participants with PEM and twenty-one controls showed exertion-related metabolic and muscle-tissue abnormalities and next-day PEM.
+    limitations: Observational tissue findings do not prove microclot or mitochondrial causality; post-exercise pathology interpretation is debated.
+    diseases: [Long COVID]
+  - id: REF-HAFFKE-2022
+    title: Endothelial dysfunction and altered endothelial biomarkers in patients with post-COVID-19 syndrome and chronic fatigue syndrome
+    authors: [M. Haffke, H. Freitag, G. Rudolf, M. Seifert, et al.]
+    year: 2022
+    journal: Journal of Translational Medicine
+    doi: 10.1186/s12967-022-03346-2
+    url: https://link.springer.com/article/10.1186/s12967-022-03346-2
+    study_type: Clinical endothelial biomarker study
+    relevant_findings: Supports endothelial involvement in selected post-COVID and ME/CFS groups.
+    limitations: Biomarker associations do not determine whole-body vascular resistance or microvascular flow.
+    diseases: [Long COVID, ME/CFS]
+  - id: REF-PRETORIUS-2021
+    title: Persistent clotting protein pathology in Long COVID/post-acute sequelae of COVID-19 is accompanied by increased levels of antiplasmin
+    authors: [E. Pretorius, M. Vlok, C. Venter, et al.]
+    year: 2021
+    journal: Cardiovascular Diabetology
+    volume: "20"
+    pages: "172"
+    doi: 10.1186/s12933-021-01359-7
+    pmid: "34425843"
+    study_type: Laboratory case-control study
+    relevant_findings: Reports anomalous fibrin(ogen) amyloid deposits and increased antiplasmin.
+    limitations: Measurement standardization and causal relevance to symptoms remain unresolved; kept exploratory.
+    diseases: [Long COVID]
+  - id: REF-WIRTH-2020
+    title: A unifying hypothesis of the pathophysiology of ME/CFS recognising findings of autoantibodies against beta2-adrenergic receptors
+    authors: [Klaus Wirth, Carmen Scheibenbogen]
+    year: 2020
+    journal: Autoimmunity Reviews
+    volume: "19"
+    issue: "6"
+    pages: "102527"
+    doi: 10.1016/j.autrev.2020.102527
+    pmid: "32247028"
+    study_type: Hypothesis review
+    relevant_findings: Proposes links among autonomic dysregulation, perfusion and metabolic downregulation.
+    limitations: Explicit hypothesis; autoantibody findings and causal chain are not uniformly replicated.
+    diseases: [ME/CFS]
+  - id: REF-FU-2010
+    title: Cardiac origins of the postural orthostatic tachycardia syndrome
+    authors: [Qi Fu, Tiffany B. VanGundy, M. M. Galbreath, et al.]
+    year: 2010
+    journal: Journal of the American College of Cardiology
+    volume: "55"
+    issue: "25"
+    pages: "2858-2868"
+    doi: 10.1016/j.jacc.2010.02.043
+    pmid: "20579544"
+    pmcid: PMC2914315
+    url: https://pubmed.ncbi.nlm.nih.gov/20579544/
+    study_type: Case-control physiology study with exercise intervention
+    population: 27 POTS patients and 16 controls at baseline; 19 patients completed training
+    sample_size: 43
+    measured_variables: [blood volume, left-ventricular mass, stroke volume, cardiac output, orthostatic heart rate]
+    relevant_findings: Baseline blood volume was 60 mL/kg [54,64] versus 71 mL/kg [65,78] and LV mass 1.26 g/kg [1.12,1.37] versus 1.45 g/kg [1.34,1.57]; training increased both and reduced upright HR.
+    limitations: Selected cohort and intervention completers; association and reversibility do not prove universal deconditioning causality.
+    diseases: [POTS]
+  - id: REF-JACOB-2000
+    title: The neuropathic postural tachycardia syndrome
+    authors: [Girris Jacob, Fernando Costa, John R. Shannon, et al.]
+    year: 2000
+    journal: New England Journal of Medicine
+    volume: "343"
+    issue: "14"
+    pages: "1008-1014"
+    doi: 10.1056/NEJM200010053431404
+    pmid: "11018167"
+    url: https://pubmed.ncbi.nlm.nih.gov/11018167/
+    study_type: Mechanistic case-control study
+    population: 12 patients selected for neuropathic POTS and 10 controls
+    sample_size: 22
+    relevant_findings: Supports partial sympathetic/sudomotor denervation and impaired peripheral vasoconstriction in a selected neuropathic subgroup.
+    limitations: Small selected sample; does not estimate prevalence or justify neuropathy in every POTS configuration.
+    diseases: [POTS]
+  - id: REF-GIBBONS-2013
+    title: Structural and functional small fiber abnormalities in the neuropathic postural tachycardia syndrome
+    authors: [Christopher H. Gibbons, et al.]
+    year: 2013
+    journal: PLOS ONE
+    volume: "8"
+    issue: "12"
+    pages: e84716
+    doi: 10.1371/journal.pone.0084716
+    pmid: "24386408"
+    pmcid: PMC3868615
+    study_type: Mechanistic case-control study
+    population: 24 neuropathic POTS patients and 10 controls
+    sample_size: 34
+    relevant_findings: Skin-biopsy and sudomotor findings provide structural and functional evidence of small-fiber abnormalities in neuropathic POTS.
+    limitations: Selected neuropathic sample and small control group; does not establish the entire causal pathway to tachycardia.
+    diseases: [POTS]
+  - id: REF-THIEBEN-2007
+    title: "Postural orthostatic tachycardia syndrome: the Mayo Clinic experience"
+    authors: [M. J. Thieben, P. Sandroni, D. M. Sletten, et al.]
+    year: 2007
+    journal: Mayo Clinic Proceedings
+    volume: "82"
+    issue: "3"
+    pages: "308-313"
+    doi: 10.4065/82.3.308
+    pmid: "17352367"
+    study_type: Retrospective tertiary-clinic cohort
+    sample_size: 152
+    relevant_findings: Reported overlapping neuropathic, hypovolemic and hyperadrenergic features; cohort fractions are not universal population probabilities.
+    limitations: Retrospective referral sample with potentially non-uniform testing and treatment/diet confounding.
+    diseases: [POTS]
+  - id: REF-DELPOZZI-2014
+    title: Reduced cerebral blood flow with orthostasis precedes hypocapnic hyperpnea and sympathetic activation in postural tachycardia syndrome
+    authors: [Andrew T. Del Pozzi, et al.]
+    year: 2014
+    journal: Hypertension
+    doi: 10.1161/HYPERTENSIONAHA.113.02266
+    pmid: "24711524"
+    pmcid: PMC3973409
+    study_type: Controlled orthostatic physiology study
+    measured_variables: [cerebral blood-flow velocity, end-tidal carbon dioxide, sympathetic activity]
+    relevant_findings: Supports early reduction of cerebral flow/velocity during orthostasis in POTS and motivates a distinct cerebral-flow output.
+    limitations: Small cohort; Doppler velocity is not necessarily volumetric CBF and ventilation/sympathetic confounding remains.
+    diseases: [POTS]
+  - id: REF-GAZIT-2003
+    title: Dysautonomia in the joint hypermobility syndrome
+    authors: [Y. Gazit, A. M. Nahir, R. Grahame, G. Jacob]
+    year: 2003
+    journal: American Journal of Medicine
+    volume: "115"
+    issue: "1"
+    pages: "33-40"
+    doi: 10.1016/S0002-9343(03)00235-3
+    pmid: "12867232"
+    study_type: Controlled clinical autonomic study
+    population: 48 JHS patients and 30 controls by questionnaire; 27 and 21 underwent autonomic testing
+    sample_size: 78
+    relevant_findings: Orthostatic intolerance was common in the selected JHS cohort and adrenergic hyperresponsiveness was observed.
+    limitations: Historical JHS criteria and referral confounding; cannot isolate connective-tissue mechanisms from pain, activity or adrenergic sensitivity.
+    diseases: [hEDS, POTS]
+  - id: REF-DEWANDELE-2014
+    title: Dysautonomia and its underlying mechanisms in the hypermobility type of Ehlers-Danlos syndrome
+    authors: [I. De Wandele, et al.]
+    year: 2014
+    journal: Seminars in Arthritis and Rheumatism
+    doi: 10.1016/j.semarthrit.2013.12.006
+    pmid: "24507822"
+    study_type: Controlled cross-sectional autonomic study
+    population: 39 women with EDS-HT and 35 age-matched controls
+    sample_size: 74
+    relevant_findings: Reports autonomic abnormalities including Valsalva and tilt responses in EDS-HT.
+    limitations: Female-only historical EDS-HT cohort; cross-sectional design and residual medication, pain and activity confounding.
+    diseases: [hEDS, POTS]
+  - id: REF-ROMA-2018
+    title: Postural tachycardia syndrome and other forms of orthostatic intolerance in Ehlers-Danlos syndrome
+    authors: [M. Roma, C. L. Marden, I. De Wandele, C. A. Francomano, P. C. Rowe]
+    year: 2018
+    journal: Autonomic Neuroscience
+    volume: "215"
+    pages: "89-96"
+    doi: 10.1016/j.autneu.2018.02.006
+    pmid: "29519641"
+    study_type: Narrative clinical review
+    relevant_findings: Synthesizes venous pooling, neuropathy, deconditioning, pain and medication hypotheses without reducing hEDS-associated OI to one mechanism.
+    limitations: Not a systematic review; underlying cohorts use inconsistent JHS/EDS-HT/hEDS definitions.
+    diseases: [EDS, hEDS, POTS]
+  - id: REF-MILLER-POTS-2020
+    title: Prevalence of hypermobile Ehlers-Danlos syndrome in postural orthostatic tachycardia syndrome
+    authors: [A. J. Miller, et al.]
+    year: 2020
+    journal: Autonomic Neuroscience
+    volume: "224"
+    pages: "102637"
+    doi: 10.1016/j.autneu.2019.102637
+    pmid: "31954224"
+    pmcid: PMC7282488
+    study_type: Retrospective single-center prevalence study
+    sample_size: 91
+    relevant_findings: Approximately 31% of a selected POTS clinic cohort met hEDS criteria; this is a clinic comorbidity estimate, not a population prevalence.
+    limitations: Single-center referral and ascertainment bias; association does not identify a causal vascular parameter.
+    diseases: [hEDS, POTS]
+  - id: REF-CHENG-2017
+    title: Cardiovascular profile in postural orthostatic tachycardia syndrome and Ehlers-Danlos syndrome type III
+    authors: [J. L. Cheng, J. S. Au, J. C. Guzman, C. A. Morillo, M. J. MacDonald]
+    year: 2017
+    journal: Clinical Autonomic Research
+    volume: "27"
+    pages: "113-116"
+    doi: 10.1007/s10286-016-0392-4
+    pmid: "28005189"
+    study_type: Small case-control cardiovascular study
+    population: Nine POTS plus EDS-III patients were verified in the reviewed record
+    relevant_findings: Provides cautionary evidence against assuming a large arterial-stiffness abnormality in POTS plus EDS-III.
+    limitations: Very small historical-diagnosis sample; arterial stiffness is not venous capacitance and small venous effects cannot be excluded.
+    diseases: [hEDS, POTS]

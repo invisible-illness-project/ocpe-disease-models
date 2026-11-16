@@ -1,0 +1,387 @@
+schema_version: '1.0'
+equations:
+- id: EQ-CV-001
+  expression: P_a=V_a/C_a; P_c=V_c/C_c; P_p=V_p/C_p
+  description: Linear stressed-volume pressure relations.
+  state_variables:
+  - arterial_volume
+  - central_venous_volume
+  - peripheral_venous_volume
+  parameters:
+  - PAR-ARTERIAL-COMPLIANCE
+  - PAR-CENTRAL-VENOUS-COMPLIANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  units: mmHg
+  physiological_interpretation: Linear stressed-volume pressure relations.
+  claims:
+  - CLM-CV-HEMODYNAMICS
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-MATH-CONSERVATION
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-CV-002
+  expression: Q_sys=max(0,(P_a-P_p)/R_sys_eff)
+  description: Resistance-driven systemic peripheral flow.
+  state_variables:
+  - arterial_volume
+  - peripheral_venous_volume
+  parameters:
+  - PAR-SYSTEMIC-RESISTANCE
+  units: mL/s
+  physiological_interpretation: Resistance-driven systemic peripheral flow.
+  claims:
+  - CLM-CV-HEMODYNAMICS
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-PHYS-BASELINE
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-ORT-001
+  expression: Q_vr=max(0,(P_p-P_c-G*u)/R_vr)
+  description: Venous return with a normalized upright pressure opposition.
+  state_variables:
+  - central_venous_volume
+  - peripheral_venous_volume
+  parameters:
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  units: mL/s
+  physiological_interpretation: Venous return with a normalized upright pressure opposition.
+  claims:
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  assumptions:
+  - Upright input u in [0,1] lumps tilt/standing into a constant pressure offset; reverse venous flow is excluded.
+  applicability_limits:
+  - Not an angle-specific hydrostatic model and not a measured splanchnic pooling flux.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-PHYS-TILT
+  - VAL-POTS-NEUROPATHIC
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-CV-003
+  expression: dV_a/dt=Q_co-Q_sys; dV_p/dt=Q_sys-Q_vr; dV_c/dt=Q_vr-Q_co
+  description: Conservative compartment balances with d(V_a+V_c+V_p)/dt=0.
+  state_variables:
+  - arterial_volume
+  - central_venous_volume
+  - peripheral_venous_volume
+  parameters: []
+  units: mL/s
+  physiological_interpretation: Conservative compartment balances with d(V_a+V_c+V_p)/dt=0.
+  claims:
+  - CLM-CV-HEMODYNAMICS
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-MATH-CONSERVATION
+  - VAL-MATH-CONVERGENCE
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-CV-004
+  expression: SV=SV_max*(1+k_E(S-0.5))*V_c/(V_c+K_SV)
+  description: Preload- and sympathetic-dependent stroke-volume approximation.
+  state_variables:
+  - central_venous_volume
+  - sympathetic_state
+  parameters:
+  - PAR-STROKE-VOLUME-MAX
+  - PAR-STROKE-VOLUME-HALF-VOLUME
+  - PAR-CONTRACTILITY-SYMPATHETIC-GAIN
+  units: mL
+  physiological_interpretation: Preload- and sympathetic-dependent stroke-volume approximation.
+  claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-POOLING
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-PHYS-TILT
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-CV-005
+  expression: Q_co=(HR/60)*SV
+  description: Cardiac output from heart rate and stroke volume.
+  state_variables:
+  - central_venous_volume
+  - sympathetic_state
+  parameters: []
+  units: mL/s
+  physiological_interpretation: Cardiac output from heart rate and stroke volume.
+  claims:
+  - CLM-CV-HEMODYNAMICS
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-PHYS-BASELINE
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-AUT-001
+  expression: S_target=1/(1+exp(-(P_set-P_a)/sigma_P))
+  description: Bounded baroreflex target increasing as arterial pressure falls.
+  state_variables:
+  - arterial_volume
+  parameters:
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  units: '1'
+  physiological_interpretation: Bounded baroreflex target increasing as arterial pressure falls.
+  claims:
+  - CLM-POTS-BAROREFLEX
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-PHYS-TILT
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-AUT-002
+  expression: dS/dt=(S_target-S)/tau_S
+  description: First-order sympathetic feedback lag.
+  state_variables:
+  - sympathetic_state
+  parameters:
+  - PAR-SYMPATHETIC-TIME-CONSTANT
+  units: 1/s
+  physiological_interpretation: First-order sympathetic feedback lag.
+  claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-CV-HEMODYNAMICS
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-MATH-CONVERGENCE
+  - VAL-PHYS-TILT
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-AUT-003
+  expression: HR=clip(HR_0+g_HR*S+g_ex*e*C,30,220)
+  description: Heart rate from baseline, sympathetic drive and exertion.
+  state_variables:
+  - sympathetic_state
+  - pem_severity
+  parameters:
+  - PAR-HEART-RATE-BASE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  - PAR-EXERCISE-HEART-RATE-GAIN
+  units: bpm
+  physiological_interpretation: Heart rate from baseline, sympathetic drive and exertion.
+  claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-HYPERADRENERGIC
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-POTS-HYPER
+  - VAL-POTS-NEUROPATHIC
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-VASC-001
+  expression: R_sys_eff=R_sys*(1+g_R(S-0.5))*(1-k_ex*e)
+  description: Effective systemic resistance modulated by sympathetic state and exertion.
+  state_variables:
+  - sympathetic_state
+  parameters:
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-EXERCISE-RESISTANCE-REDUCTION
+  units: mmHg s/mL
+  physiological_interpretation: Effective systemic resistance modulated by sympathetic state and exertion.
+  claims:
+  - CLM-POTS-POOLING
+  - CLM-POTS-PHENOTYPES
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-POTS-NEUROPATHIC
+  - VAL-SENSITIVITY
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-CBF-001
+  expression: CFI_target=(P_a/P_set)^alpha*(1-beta*u)
+  description: Normalized cerebral-flow target with pressure dependence and orthostatic impairment.
+  state_variables:
+  - arterial_volume
+  parameters:
+  - PAR-CEREBRAL-PRESSURE-EXPONENT
+  - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  units: '1'
+  physiological_interpretation: Normalized cerebral-flow target with pressure dependence and orthostatic impairment.
+  claims:
+  - CLM-ME-CBF
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-ME-CBF
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-CBF-002
+  expression: dCFI/dt=(CFI_target-CFI)/tau_CBF; tau_CBF=tau_decline if target<CFI else tau_recovery
+  description: Asymmetric cerebral-flow decline and recovery.
+  state_variables:
+  - cerebral_flow_index
+  parameters:
+  - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
+  - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
+  units: 1/s
+  physiological_interpretation: Asymmetric cerebral-flow decline and recovery.
+  claims:
+  - CLM-ME-CBF
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-ME-CBF
+  - VAL-PHYS-RECOVERY
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-MET-001
+  expression: C=max(0.05,C_0*(1-k_C*PEM))
+  description: PEM-dependent reduction of normalized exertional capacity.
+  state_variables:
+  - pem_severity
+  parameters:
+  - PAR-BASELINE-METABOLIC-CAPACITY
+  - PAR-PEM-CAPACITY-PENALTY
+  units: '1'
+  physiological_interpretation: PEM-dependent reduction of normalized exertional capacity.
+  claims:
+  - CLM-ME-CPET
+  - CLM-LC-CPET
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-ME-CPET
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-MET-002
+  expression: E_a-v=clip(E_0*(1-k_EO*PEM),0,0.99); F=C*E_a-v/0.78
+  description: Extraction and normalized functional-capacity approximation.
+  state_variables:
+  - pem_severity
+  parameters:
+  - PAR-OXYGEN-EXTRACTION-FRACTION
+  - PAR-PEM-EXTRACTION-PENALTY
+  units: '1'
+  physiological_interpretation: Extraction and normalized functional-capacity approximation.
+  claims:
+  - CLM-LC-EXTRACTION
+  - CLM-ME-PRELOAD
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-LC-EXTRACTION
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-RCV-001
+  expression: dL/dt=(e/C-L)/tau_L
+  description: Exertional load accumulates relative to current capacity and clears with a first-order lag.
+  state_variables:
+  - exertional_load
+  - pem_severity
+  parameters:
+  - PAR-EXERTIONAL-LOAD-TIME-CONSTANT
+  units: 1/s
+  physiological_interpretation: Exertional load accumulates relative to current capacity and clears with a first-order lag.
+  claims:
+  - CLM-ME-PEM-KINETICS
+  assumptions:
+  - Normalized exertion e and capacity C; this is a phenomenological stress dose, not ATP flux.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-ME-PEM
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-RCV-002
+  expression: dD/dt=(L-D)/tau_D
+  description: Delayed stress state driven by exertional load.
+  state_variables:
+  - exertional_load
+  - delayed_stress
+  parameters:
+  - PAR-DELAYED-STRESS-TIME-CONSTANT
+  units: 1/s
+  physiological_interpretation: Delayed stress state driven by exertional load.
+  claims:
+  - CLM-ME-PEM-KINETICS
+  assumptions:
+  - A first-order delay approximates unresolved distributed PEM processes.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-ME-PEM
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-RCV-003
+  expression: PEM_target=min(1,g_PEM*max(0,(D-D_threshold)/(1-D_threshold)))
+  description: Thresholded delayed-stress drive for PEM.
+  state_variables:
+  - delayed_stress
+  parameters:
+  - PAR-PEM-TRIGGER-THRESHOLD
+  - PAR-PEM-RESPONSE-GAIN
+  units: '1'
+  physiological_interpretation: Thresholded delayed-stress drive for PEM.
+  claims:
+  - CLM-ME-PEM-KINETICS
+  - CLM-LC-PEM
+  assumptions:
+  - Threshold and gain are calibrated; healthy threshold 99 disables PEM by construction.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-ME-PEM
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-RCV-004
+  expression: dPEM/dt=(PEM_target-PEM)/tau_PEM; tau_PEM=tau_onset if target>PEM else tau_recovery
+  description: Asymmetric delayed PEM onset and prolonged recovery.
+  state_variables:
+  - pem_severity
+  parameters:
+  - PAR-PEM-ONSET-TIME-CONSTANT
+  - PAR-PEM-RECOVERY-TIME-CONSTANT
+  units: 1/s
+  physiological_interpretation: Asymmetric delayed PEM onset and prolonged recovery.
+  claims:
+  - CLM-ME-PEM-KINETICS
+  - CLM-ME-CPET
+  - CLM-LC-PEM
+  assumptions:
+  - Phenomenological state transition, not a claim of inflammatory or mitochondrial causality.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-ME-PEM
+  - VAL-ME-CPET
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry

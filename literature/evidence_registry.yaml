@@ -1,0 +1,654 @@
+schema_version: '1.0'
+evidence_grades:
+  E0: Unsupported or contradicted assertion; not eligible for implementation.
+  E1: Hypothesis, narrative mechanistic proposal, preprint, or indirect evidence.
+  E2: Small, selected, or unreplicated human observational/physiological evidence.
+  E3: Replicated human physiology or convergent controlled observational evidence with limitations.
+  E4: Systematic review, meta-analysis, large controlled cohort, or formal consensus evidence.
+  E5: Convergent high-quality evidence with independent prospective replication of the specific claim.
+evidence_claims:
+- id: CLM-CV-HEMODYNAMICS
+  statement: Pressure-volume relations, resistance-driven flows, conservative compartment balances and first-order feedback
+    are defensible reduced-order cardiovascular representations.
+  description: Pressure-volume relations, resistance-driven flows, conservative compartment balances and first-order feedback
+    are defensible reduced-order cardiovascular representations.
+  diseases:
+  - shared
+  - POTS
+  mechanism: Conservative lumped hemodynamics and pressure-feedback control
+  references:
+  - REF-GEDDES-2022
+  evidence_type: computational physiology supported by clinical observations
+  measured_variables:
+  - pressure
+  - volume
+  - flow
+  - heart rate
+  reported_effect: Closed-loop compartment models reproduce orthostatic HR/BP dynamics and mechanistic POTS configurations.
+  parameter_implications: Supports equation structure, not the numerical values in this reduced three-compartment adaptation.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Structural support does not validate this simpler model or its calibrated operating point.
+  modeling_implications: Implement volume conservation and feedback explicitly; benchmark outputs independently.
+  implementation_links:
+  - MEC-CV-VOLUME
+  - MEC-AUT-BAROREFLEX
+  validation_links:
+  - VAL-MATH-CONSERVATION
+  - VAL-PHYS-TILT
+  confidence_detail: moderate
+- id: CLM-POTS-CRITERIA
+  statement: POTS is characterized by a sustained excessive orthostatic HR rise without orthostatic hypotension; adult criterion
+    ≥30 bpm and adolescent criterion ≥40 bpm.
+  description: POTS is characterized by a sustained excessive orthostatic HR rise without orthostatic hypotension; adult criterion
+    ≥30 bpm and adolescent criterion ≥40 bpm.
+  diseases:
+  - POTS
+  mechanism: Sustained orthostatic tachycardia
+  references:
+  - REF-SHELDON-2015
+  - REF-GEDDES-2022
+  evidence_type: consensus and clinical physiology
+  measured_variables:
+  - supine HR
+  - upright HR
+  - blood pressure
+  reported_effect: Thresholds define scenario-level comparisons, not proof of clinical validity.
+  parameter_implications: No direct parameter value; supplies an empirical acceptance metric.
+  evidence_grade: E4
+  confidence: high
+  limitations: Age, measurement protocol and confounders matter; simulation is not diagnosis.
+  modeling_implications: Report HR rise and MAP separately and never infer disease from a trace.
+  implementation_links:
+  - MEC-AUT-BAROREFLEX
+  validation_links:
+  - VAL-POTS-NEUROPATHIC
+  - VAL-POTS-HYPER
+  - VAL-POTS-HYPO
+  confidence_detail: high for diagnostic definition
+- id: CLM-POTS-PHENOTYPES
+  statement: POTS is heterogeneous and subtype mechanisms can coexist rather than forming disjoint diagnoses.
+  description: POTS is heterogeneous and subtype mechanisms can coexist rather than forming disjoint diagnoses.
+  diseases:
+  - POTS
+  mechanism: Overlapping neuropathic, hypovolemic and hyperadrenergic mechanisms
+  references:
+  - REF-LOW-2009
+  - REF-GEDDES-2022
+  - REF-FU-2018
+  - REF-THIEBEN-2007
+  - REF-FU-2010
+  evidence_type: clinical reviews and computational physiology
+  reported_effect: Different mechanism perturbations can produce similar orthostatic tachycardia.
+  parameter_implications: Use coherent mechanism configurations and mixed phenotypes rather than output multipliers.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Subtype prevalence and boundaries vary across cohorts.
+  modeling_implications: Compose mechanisms and disclose joint calibration assumptions.
+  implementation_links:
+  - MEC-VASC-CONSTRICTION
+  - MEC-VOL-HYPOVOLEMIA
+  - MEC-AUT-HYPERADRENERGIC
+  validation_links:
+  - VAL-POTS-NEUROPATHIC
+  - VAL-POTS-HYPER
+  - VAL-POTS-HYPO
+  confidence_detail: moderate-high
+- id: CLM-POTS-POOLING
+  statement: Regional vascular dysfunction and inadequate vasoconstriction can reduce venous return and stroke volume during
+    orthostasis.
+  description: Regional vascular dysfunction and inadequate vasoconstriction can reduce venous return and stroke volume during
+    orthostasis.
+  diseases:
+  - POTS
+  mechanism: Peripheral venous pooling and impaired venous return
+  references:
+  - REF-STEWART-2003
+  - REF-LOW-2009
+  - REF-FU-2018
+  - REF-JACOB-2000
+  - REF-GIBBONS-2013
+  evidence_type: clinical vascular physiology
+  measured_variables:
+  - regional blood flow
+  - vascular resistance
+  - venous return
+  - stroke volume
+  reported_effect: Excess pooling and impaired vasoconstriction are observed in POTS subgroups.
+  parameter_implications: Supports direction of gravity-offset and resistance-modulation changes, not a universal magnitude.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Regional observations cannot identify whole-body lumped parameters.
+  modeling_implications: Orthostatic input reduces effective venous-return driving pressure; compensation affects HR and resistance.
+  implementation_links:
+  - MEC-VASC-POOLING
+  - MEC-VASC-CONSTRICTION
+  validation_links:
+  - VAL-PHYS-TILT
+  - VAL-POTS-NEUROPATHIC
+  confidence_detail: moderate-high
+- id: CLM-POTS-HYPOVOLEMIA
+  statement: A POTS cohort showed approximately 13% plasma-volume deficit with inappropriately low renin/aldosterone responses.
+  description: A POTS cohort showed approximately 13% plasma-volume deficit with inappropriately low renin/aldosterone responses.
+  diseases:
+  - POTS
+  mechanism: Reduced effective circulating volume and RAAS dysregulation
+  references:
+  - REF-RAJ-2005
+  - REF-FU-2010
+  evidence_type: controlled clinical physiology
+  study_population: POTS and healthy controls
+  sample_size: 29
+  measured_variables:
+  - plasma volume
+  - red-cell volume
+  - renin
+  - aldosterone
+  reported_effect: Raj et al. studied 15 POTS and 14 controls; plasma volume 2348±438 versus 2823±480 mL and deficit 334±187
+    mL. Fu et al. found baseline blood volume 60 mL/kg [54,64] versus 71 mL/kg [65,78] in 27 POTS and 16 controls.
+  parameter_implications: Anchors an uncertainty range for volume sensitivity; 0.92 stressed-volume factor is an assumption,
+    not the measured plasma deficit.
+  evidence_grade: E2
+  confidence: medium
+  limitations: Small cohort and compartment mismatch; RAAS dynamics are not implemented.
+  modeling_implications: Scale initial stressed volumes conservatively and label the value as calibrated/assumed.
+  implementation_links:
+  - MEC-VOL-HYPOVOLEMIA
+  - MEC-RAAS
+  validation_links:
+  - VAL-POTS-HYPO
+  - VAL-SENSITIVITY
+  confidence_detail: moderate
+- id: CLM-POTS-HYPERADRENERGIC
+  statement: Increased sympathetic/chronotropic response characterizes a subset of POTS and can be represented by altered
+    feedback gain.
+  description: Increased sympathetic/chronotropic response characterizes a subset of POTS and can be represented by altered
+    feedback gain.
+  diseases:
+  - POTS
+  mechanism: Hyperadrenergic chronotropic response
+  references:
+  - REF-LOW-2009
+  - REF-GEDDES-2022
+  - REF-MUENTER-2005
+  - REF-THIEBEN-2007
+  evidence_type: clinical and computational physiology
+  measured_variables:
+  - catecholamines
+  - sympathetic activity
+  - HR
+  - BP
+  reported_effect: Increased baroreflex sensitivity can reproduce persistent tachycardia in models.
+  parameter_implications: Supports direction of increased HR gain; numerical gain is calibrated.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Not all elevated catecholamines are primary hyperadrenergic POTS; no catecholamine state is modeled.
+  modeling_implications: Vary chronotropic gain while retaining conservative hemodynamics.
+  implementation_links:
+  - MEC-AUT-HYPERADRENERGIC
+  validation_links:
+  - VAL-POTS-HYPER
+  confidence_detail: moderate
+- id: CLM-POTS-BAROREFLEX
+  statement: Baroreflex-mediated sympathetic and chronotropic control is relevant to POTS, but abnormalities are not uniform
+    across all patients.
+  description: Baroreflex-mediated sympathetic and chronotropic control is relevant to POTS, but abnormalities are not uniform
+    across all patients.
+  diseases:
+  - POTS
+  mechanism: Altered baroreflex control
+  references:
+  - REF-MUENTER-2005
+  - REF-GEDDES-2022
+  - REF-CELLETTI-2017
+  - REF-FU-2010
+  evidence_type: clinical autonomic testing and computational modeling
+  measured_variables:
+  - MSNA
+  - HR
+  - BP
+  - low-frequency oscillations
+  reported_effect: Feedback modulation changes orthostatic dynamics and oscillatory behavior.
+  parameter_implications: Supports sigmoidal target and lag structure; no single sensitivity is assumed.
+  evidence_grade: E3
+  confidence: medium
+  limitations: This implementation does not reproduce 0.1 Hz oscillations or distinguish afferent from efferent lesions. Fu
+    et al. found similar baroreflex function between their POTS and control groups, while Celletti et al. found higher—not
+    lower—resting spectral BRS in JHS/EDS-HT, so a universal gain reduction is unsupported.
+  modeling_implications: Use a bounded sigmoidal pressure target and separate effector gains.
+  implementation_links:
+  - MEC-AUT-BAROREFLEX
+  validation_links:
+  - VAL-PHYS-TILT
+  - VAL-MATH-CONVERGENCE
+  confidence_detail: moderate
+- id: CLM-EDS-OI
+  statement: Clinical studies support an association between hEDS/hypermobility-spectrum disorders and orthostatic intolerance
+    or POTS.
+  description: Clinical studies support an association between hEDS/hypermobility-spectrum disorders and orthostatic intolerance
+    or POTS.
+  diseases:
+  - EDS
+  - hEDS
+  mechanism: hEDS-associated orthostatic intolerance
+  references:
+  - REF-ROWE-1999
+  - REF-CELLETTI-2017
+  - REF-GAZIT-2003
+  - REF-DEWANDELE-2014
+  - REF-ROMA-2018
+  - REF-MILLER-POTS-2020
+  evidence_type: clinical observational studies
+  measured_variables:
+  - orthostatic symptoms
+  - HR/BP responses
+  - hypermobility features
+  reported_effect: Co-occurrence is observed in selected cohorts; approximately 31% of one 91-patient POTS clinic cohort met
+    hEDS criteria, which is not a general-population estimate.
+  parameter_implications: Supports a distinct hEDS-associated orthostatic scenario, not a causal parameter value.
+  evidence_grade: E2
+  confidence: low
+  limitations: Selection, changing diagnostic criteria and comorbidity confounding; not all EDS subtypes are equivalent.
+  modeling_implications: Label hEDS configurations exploratory and subtype-specific.
+  implementation_links:
+  - MEC-VASC-COMPLIANCE
+  - MEC-CONNECTIVE
+  validation_links:
+  - VAL-EDS-DIRECTION
+  confidence_detail: low-moderate
+- id: CLM-EDS-VASCULAR
+  statement: Human vascular-mechanics observations motivate investigation of altered vascular properties, but arterial elasticity
+    is not a direct measure of venous compliance.
+  description: Human vascular-mechanics observations motivate investigation of altered vascular properties, but arterial elasticity
+    is not a direct measure of venous compliance.
+  diseases:
+  - EDS
+  - hEDS
+  mechanism: Vascular mechanical abnormalities
+  references:
+  - REF-MILLER-2020
+  - REF-ROWE-1999
+  - REF-CHENG-2017
+  - REF-ROMA-2018
+  evidence_type: clinical vascular mechanics and observational association
+  measured_variables:
+  - arterial stiffness
+  - orthostatic vital signs
+  reported_effect: Vascular properties differ in some EDS groups; direct hEDS venous-compliance estimates are unavailable
+    here.
+  parameter_implications: Peripheral compliance 140 mL/mmHg is an assumed sensitivity value, not measured.
+  evidence_grade: E1
+  confidence: low
+  limitations: Arterial-to-venous extrapolation and heterogeneous subtypes.
+  modeling_implications: Retain an explicit exploratory designation and perform sensitivity analysis.
+  implementation_links:
+  - MEC-VASC-COMPLIANCE
+  validation_links:
+  - VAL-EDS-DIRECTION
+  - VAL-SENSITIVITY
+  confidence_detail: low for causal venous mechanism
+- id: CLM-ME-PEM-KINETICS
+  statement: PEM can begin hours after exertion, peak later and persist for days; it is not equivalent to immediate fatigue.
+  description: PEM can begin hours after exertion, peak later and persist for days; it is not equivalent to immediate fatigue.
+  diseases:
+  - ME/CFS
+  mechanism: Delayed post-exertional malaise and prolonged recovery
+  references:
+  - REF-IOM-2015
+  - REF-STUSSMAN-2020
+  evidence_type: consensus and qualitative patient characterization
+  study_population: ME/CFS patients
+  sample_size: 43
+  measured_variables:
+  - PEM onset
+  - peak
+  - duration
+  - symptoms
+  reported_effect: Daily-activity PEM commonly onset 12–48 h, peak near 48 h and duration 2–7 days; post-CPET onset within
+    24 h and peak within 72 h for most respondents.
+  parameter_implications: Constrains delay/onset/recovery time constants and scenario acceptance windows.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Recall and selection bias; does not specify a biological causal equation.
+  modeling_implications: Use explicitly phenomenological delayed-stress and asymmetric recovery states.
+  implementation_links:
+  - MEC-RCV-PEM
+  validation_links:
+  - VAL-ME-PEM
+  confidence_detail: moderate-high for temporal phenomenology
+- id: CLM-ME-CPET
+  statement: Repeated CPET studies report day-2 reductions in VO2/work in ME/CFS, with heterogeneous effect sizes and some
+    conflicting replications.
+  description: Repeated CPET studies report day-2 reductions in VO2/work in ME/CFS, with heterogeneous effect sizes and some
+    conflicting replications.
+  diseases:
+  - ME/CFS
+  mechanism: Reduced subsequent exertional capacity
+  references:
+  - REF-KELLER-2014
+  - REF-SNELL-2013
+  - REF-KELLER-2024
+  evidence_type: repeated-CPET case series and case-control studies
+  measured_variables:
+  - VO2peak
+  - VO2 at threshold
+  - workload
+  - heart rate
+  reported_effect: Reported VO2peak decrements include 13.8% and 5.3%; workload decrements can be larger.
+  parameter_implications: Supports capacity-state direction and a broad 0–15% VO2-like comparison band, not a fixed patient
+    effect.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Spectrum bias, effort/protocol differences and heterogeneous replications.
+  modeling_implications: PEM reduces subsequent functional capacity; report uncertainty rather than overfitting one study.
+  implementation_links:
+  - MEC-MET-CAPACITY
+  - MEC-RCV-PEM
+  validation_links:
+  - VAL-ME-CPET
+  confidence_detail: moderate
+- id: CLM-ME-PRELOAD
+  statement: Selected invasive-CPET cohorts show inadequate preload and, in some participants, impaired systemic oxygen extraction.
+  description: Selected invasive-CPET cohorts show inadequate preload and, in some participants, impaired systemic oxygen
+    extraction.
+  diseases:
+  - ME/CFS
+  mechanism: Preload failure and impaired oxygen extraction
+  references:
+  - REF-JOSEPH-2021
+  evidence_type: retrospective invasive clinical physiology
+  sample_size: 196
+  measured_variables:
+  - right-atrial pressure
+  - VO2
+  - cardiac output
+  - oxygen extraction
+  reported_effect: Exercise RAP 1.9±2 versus 8.3±1.5 mmHg; selected high-flow subgroup extraction 0.74 versus 0.86–0.88.
+  parameter_implications: Anchors an exploratory extraction value and preload-related sensitivity, not general prevalence.
+  evidence_grade: E2
+  confidence: low
+  limitations: Preselected cohort and limited replication.
+  modeling_implications: Keep preload and extraction mechanisms separable.
+  implementation_links:
+  - MEC-MET-EXTRACTION
+  - MEC-VASC-POOLING
+  validation_links:
+  - VAL-ME-CPET
+  - VAL-SENSITIVITY
+  confidence_detail: low-moderate
+- id: CLM-ME-CBF
+  statement: ME/CFS cohorts show reduced tilt cerebral blood flow even without hypotension/tachycardia and delayed post-tilt
+    recovery.
+  description: ME/CFS cohorts show reduced tilt cerebral blood flow even without hypotension/tachycardia and delayed post-tilt
+    recovery.
+  diseases:
+  - ME/CFS
+  mechanism: Orthostatic cerebral hypoperfusion and delayed recovery
+  references:
+  - REF-VANCAMPEN-2020
+  - REF-VANCAMPEN-2021
+  evidence_type: controlled and observational Doppler tilt studies
+  sample_size: 473
+  measured_variables:
+  - extracranial cerebral blood flow
+  - HR
+  - BP
+  - cardiac index
+  reported_effect: Mean end-tilt CBF reduction 26% versus 7% in controls; recovery can remain incomplete.
+  parameter_implications: Supports an additional cerebral-flow state and slow recovery; 0.23 impairment is calibrated to a
+    group mean.
+  evidence_grade: E2
+  confidence: medium
+  limitations: Single-center Doppler methodology and lack of recovery-phase controls.
+  modeling_implications: Do not infer CBF solely from MAP; include a phenomenological impairment and recovery lag.
+  implementation_links:
+  - MEC-CBF-AUTOREG
+  validation_links:
+  - VAL-ME-CBF
+  - VAL-PHYS-RECOVERY
+  confidence_detail: moderate for selected cohorts
+- id: CLM-ME-METABOLISM
+  statement: Metabolomic and deep-phenotyping findings motivate stress-dependent metabolic models but do not support a universal
+    resting mitochondrial defect.
+  description: Metabolomic and deep-phenotyping findings motivate stress-dependent metabolic models but do not support a universal
+    resting mitochondrial defect.
+  diseases:
+  - ME/CFS
+  mechanism: Dynamic metabolic dysregulation
+  references:
+  - REF-NAVIAUX-2016
+  - REF-WALITT-2024
+  - REF-WIRTH-2020
+  evidence_type: metabolomics, deep phenotyping and hypothesis review
+  measured_variables:
+  - plasma metabolites
+  - VO2
+  - autonomic and immune measures
+  reported_effect: Resting metabolic signatures differ across studies; small deep-phenotyping found no resting mitochondrial
+    defect.
+  parameter_implications: No direct mitochondrial parameter; retain dynamic capacity as phenomenology.
+  evidence_grade: E1
+  confidence: low
+  limitations: Heterogeneous assays, small cohorts and conflicting resting findings.
+  modeling_implications: Avoid claiming cellular causality from the capacity state.
+  implementation_links:
+  - MEC-MET-CAPACITY
+  validation_links:
+  - VAL-ME-CPET
+  confidence_detail: low for specific causal mechanism
+- id: CLM-LC-HETEROGENEITY
+  statement: Long COVID comprises multiple symptom/physiological subgroups, including PEM and autonomic/exertional presentations.
+  description: Long COVID comprises multiple symptom/physiological subgroups, including PEM and autonomic/exertional presentations.
+  diseases:
+  - Long COVID
+  mechanism: Symptom and physiological heterogeneity
+  references:
+  - REF-THAWEETHAI-2023
+  - REF-DAVIS-2023
+  - REF-DURSTENFELD-2022
+  evidence_type: large cohort, meta-analysis and narrative review
+  sample_size: 9764
+  measured_variables:
+  - symptoms
+  - exercise capacity
+  - CPET patterns
+  reported_effect: Symptom clusters and heterogeneous CPET patterns are observed.
+  parameter_implications: Requires separate autonomic and exertional configurations.
+  evidence_grade: E4
+  confidence: high
+  limitations: Symptom clusters are not direct physiological endotypes.
+  modeling_implications: Never use a single uniform Long COVID parameter set.
+  implementation_links:
+  - MEC-RCV-PEM
+  - MEC-MET-EXTRACTION
+  - MEC-AUT-BAROREFLEX
+  validation_links:
+  - VAL-LC-AUTONOMIC
+  - VAL-LC-EXTRACTION
+  confidence_detail: high for heterogeneity, lower for mechanisms
+- id: CLM-LC-AUTONOMIC
+  statement: Autonomic and chronotropic abnormalities are reported in Long COVID subgroups, overlapping with POTS and ME/CFS.
+  description: Autonomic and chronotropic abnormalities are reported in Long COVID subgroups, overlapping with POTS and ME/CFS.
+  diseases:
+  - Long COVID
+  mechanism: Autonomic and orthostatic dysfunction
+  references:
+  - REF-DAVIS-2023
+  - REF-DURSTENFELD-2022
+  evidence_type: narrative review and systematic review/meta-analysis
+  measured_variables:
+  - HR
+  - HRV
+  - CPET chronotropic response
+  - orthostatic symptoms
+  reported_effect: Chronotropic and autonomic patterns occur in some patients.
+  parameter_implications: Supports a POTS-overlap scenario but not a universal gain.
+  evidence_grade: E2
+  confidence: low
+  limitations: Heterogeneous methods and patient selection.
+  modeling_implications: Reuse shared autonomic/venous mechanisms and label subgroup assumptions.
+  implementation_links:
+  - MEC-AUT-BAROREFLEX
+  - MEC-VASC-POOLING
+  validation_links:
+  - VAL-LC-AUTONOMIC
+  confidence_detail: low-moderate for phenotype-specific magnitude
+- id: CLM-LC-PEM
+  statement: PEM is an important Long COVID feature in a subset and motivates delayed-recovery modeling.
+  description: PEM is an important Long COVID feature in a subset and motivates delayed-recovery modeling.
+  diseases:
+  - Long COVID
+  mechanism: Post-exertional symptom exacerbation
+  references:
+  - REF-THAWEETHAI-2023
+  - REF-DAVIS-2023
+  - REF-APPELMAN-2024
+  evidence_type: cohort, review and exercise-provocation study
+  measured_variables:
+  - PEM symptoms
+  - muscle and exercise responses
+  reported_effect: PEM is highly weighted in PASC definition and occurred after provocation in a selected study.
+  parameter_implications: Supports PEM dynamics but not identical parameters to ME/CFS.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Long COVID PEM trajectories vary and can differ from ME/CFS.
+  modeling_implications: Use subgroup-specific response gain and disclose borrowed kinetic assumptions.
+  implementation_links:
+  - MEC-RCV-PEM
+  validation_links:
+  - VAL-ME-PEM
+  confidence_detail: moderate
+- id: CLM-LC-EXTRACTION
+  statement: A small invasive-CPET study found markedly reduced systemic oxygen extraction with preserved peak cardiac index.
+  description: A small invasive-CPET study found markedly reduced systemic oxygen extraction with preserved peak cardiac index.
+  diseases:
+  - Long COVID
+  mechanism: Impaired peripheral oxygen extraction
+  references:
+  - REF-SINGH-2022
+  evidence_type: invasive-CPET case-control study
+  sample_size: 20
+  measured_variables:
+  - oxygen extraction
+  - cardiac index
+  - VO2
+  - ventilation
+  reported_effect: Extraction 0.49±0.1 versus 0.78±0.1 in controls.
+  parameter_implications: Directly anchors the exertional phenotype's 0.49 fraction with a wide uncertainty interval.
+  evidence_grade: E2
+  confidence: low
+  limitations: Ten selected patients; not a population estimate and not necessarily mitochondrial in origin.
+  modeling_implications: Use as one exertional phenotype, preserve central cardiac output separately.
+  implementation_links:
+  - MEC-MET-EXTRACTION
+  validation_links:
+  - VAL-LC-EXTRACTION
+  confidence_detail: low-moderate
+- id: CLM-LC-CPET
+  statement: Meta-analysis shows lower exercise capacity in symptomatic Long COVID with several physiological patterns.
+  description: Meta-analysis shows lower exercise capacity in symptomatic Long COVID with several physiological patterns.
+  diseases:
+  - Long COVID
+  mechanism: Reduced and heterogeneous exercise capacity
+  references:
+  - REF-DURSTENFELD-2022
+  evidence_type: systematic review and meta-analysis
+  sample_size: 2160
+  measured_variables:
+  - VO2
+  - chronotropic response
+  - ventilation
+  - extraction
+  reported_effect: Exercise capacity 4.9 mL/kg/min lower than recovered asymptomatic comparators.
+  parameter_implications: Supports group-level empirical comparison but not direct mapping to normalized capacity.
+  evidence_grade: E4
+  confidence: medium
+  limitations: Study heterogeneity and lack of uniform controls.
+  modeling_implications: Report reduced functional capacity without claiming a single mechanism.
+  implementation_links:
+  - MEC-MET-CAPACITY
+  validation_links:
+  - VAL-LC-EXTRACTION
+  confidence_detail: moderate-high
+- id: CLM-LC-MUSCLE
+  statement: Selected Long COVID patients with PEM showed exertion-related muscle metabolic and histological abnormalities.
+  description: Selected Long COVID patients with PEM showed exertion-related muscle metabolic and histological abnormalities.
+  diseases:
+  - Long COVID
+  mechanism: Exertion-related skeletal-muscle abnormalities
+  references:
+  - REF-APPELMAN-2024
+  evidence_type: longitudinal case-control exercise provocation
+  sample_size: 46
+  measured_variables:
+  - VO2
+  - NIRS
+  - muscle fibers
+  - SDH activity
+  - tissue deposits
+  reported_effect: Lower extraction and post-exertion abnormalities were observed; all patients developed PEM one day post-test.
+  parameter_implications: Supports dynamic stress/capacity modeling, not a specific microclot equation.
+  evidence_grade: E2
+  confidence: medium
+  limitations: Observational design and debated interpretation.
+  modeling_implications: Keep molecular mechanisms out of the executable PEM claim.
+  implementation_links:
+  - MEC-RCV-PEM
+  - MEC-MET-CAPACITY
+  validation_links:
+  - VAL-ME-PEM
+  confidence_detail: moderate for selected cohort
+- id: CLM-LC-ENDOTHELIAL
+  statement: Biomarker and vascular studies support endothelial involvement but do not identify a unique causal flow parameter.
+  description: Biomarker and vascular studies support endothelial involvement but do not identify a unique causal flow parameter.
+  diseases:
+  - Long COVID
+  - ME/CFS
+  mechanism: Endothelial and microvascular dysfunction
+  references:
+  - REF-HAFFKE-2022
+  - REF-PRETORIUS-2021
+  evidence_type: clinical biomarker and laboratory studies
+  measured_variables:
+  - endothelial biomarkers
+  - clotting proteins
+  - antiplasmin
+  reported_effect: Endothelial and clotting abnormalities are reported in selected groups.
+  parameter_implications: No direct resistance or microclot parameter is defensible.
+  evidence_grade: E1
+  confidence: low
+  limitations: Standardization, replication and causal interpretation remain unresolved.
+  modeling_implications: Retain M0/M1 exploratory registry entries without numerical implementation.
+  implementation_links:
+  - MEC-MICROVASC
+  - MEC-INFL-SIGNAL
+  validation_links: []
+  confidence_detail: low for causal symptom mechanism
+- id: CLM-CROSS-SLEEP
+  statement: Sleep/circadian disturbance is clinically relevant but current evidence in this registry is insufficient to parameterize
+    a shared dynamic oscillator.
+  description: Sleep/circadian disturbance is clinically relevant but current evidence in this registry is insufficient to
+    parameterize a shared dynamic oscillator.
+  diseases:
+  - ME/CFS
+  - Long COVID
+  - POTS
+  - hEDS
+  mechanism: Sleep and circadian modulation
+  references:
+  - REF-DAVIS-2023
+  - REF-WALITT-2024
+  evidence_type: review and deep phenotyping
+  measured_variables:
+  - heart-rate dipping
+  - sleep and circadian measures
+  reported_effect: Autonomic day-night differences are reported in selected groups.
+  parameter_implications: No oscillator or sleep-pressure parameter implemented.
+  evidence_grade: E1
+  confidence: low
+  limitations: Cross-disease causal dynamics and wearable mappings remain under-specified.
+  modeling_implications: Document as M0 future work rather than inventing circadian parameters.
+  implementation_links:
+  - MEC-SLEEP-CIRCADIAN
+  validation_links: []
+  confidence_detail: low for computational specification

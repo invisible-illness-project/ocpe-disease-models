@@ -1,0 +1,1614 @@
+schema_version: '1.0'
+registry_policy:
+  value_interpretation: Nominal values are executable research assumptions unless explicitly described otherwise. Literature
+    supports structure, direction, or group-level constraints—not automatic patient validity.
+  range_interpretation: Supported ranges define deterministic sensitivity scenarios, not probability distributions or synthetic
+    patient cohorts.
+parameters:
+- id: PAR-ARTERIAL-COMPLIANCE
+  name: arterial compliance
+  symbol: arterial_compliance
+  model_field: arterial_compliance
+  healthy_reference_value: 1.5
+  value: 1.5
+  units: mL/mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 1.0
+    max: 2.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-001
+    validation:
+    - VAL-MATH-CONSERVATION
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.arterial_compliance in the initial disease-modeling framework; defaults and
+    all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable arterial compliance used by the shared reduced-order model; see linked equations and phenotype overrides.
+  nominal_value: 1.5
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CENTRAL-VENOUS-COMPLIANCE
+  name: central venous compliance
+  symbol: central_venous_compliance
+  model_field: central_venous_compliance
+  healthy_reference_value: 140.0
+  value: 140.0
+  units: mL/mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 100.0
+    max: 180.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-001
+    validation:
+    - VAL-MATH-CONSERVATION
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.central_venous_compliance in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable central venous compliance used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 140.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  name: peripheral venous compliance
+  symbol: peripheral_venous_compliance
+  model_field: peripheral_venous_compliance
+  healthy_reference_value: 120.0
+  value: 120.0
+  units: mL/mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 100.0
+    max: 160.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-001
+    validation:
+    - VAL-MATH-CONSERVATION
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 140.0
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    eds-heds-vascular:
+      value: 140.0
+      config: phenotypes/eds/eds-heds-vascular.yaml
+  provenance: Introduced with ModelParameters.peripheral_venous_compliance in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable peripheral venous compliance used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 120.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-SYSTEMIC-RESISTANCE
+  name: systemic resistance
+  symbol: systemic_resistance
+  model_field: systemic_resistance
+  healthy_reference_value: 1.1020408163265305
+  value: 1.1020408163265305
+  units: mmHg s/mL
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-PHENOTYPES
+  - CLM-POTS-POOLING
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 0.9
+    max: 1.3
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-002
+    - EQ-VASC-001
+    validation:
+    - VAL-PHYS-BASELINE
+    - VAL-POTS-NEUROPATHIC
+    - VAL-SENSITIVITY
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.systemic_resistance in the initial disease-modeling framework; defaults and
+    all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable systemic resistance used by the shared reduced-order model; see linked equations and phenotype overrides.
+  nominal_value: 1.1020408163265305
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-VENOUS-RETURN-RESISTANCE
+  name: venous return resistance
+  symbol: venous_return_resistance
+  model_field: venous_return_resistance
+  healthy_reference_value: 0.061224489795918366
+  value: 0.061224489795918366
+  units: mmHg s/mL
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-POOLING
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 0.04
+    max: 0.09
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-ORT-001
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-POTS-NEUROPATHIC
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.venous_return_resistance in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable venous return resistance used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 0.061224489795918366
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-RESISTANCE-SYMPATHETIC-GAIN
+  name: resistance sympathetic gain
+  symbol: resistance_sympathetic_gain
+  model_field: resistance_sympathetic_gain
+  healthy_reference_value: 0.8
+  value: 0.8
+  units: dimensionless
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-PHENOTYPES
+  - CLM-POTS-POOLING
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 0.4
+    max: 1.2
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-VASC-001
+    validation:
+    - VAL-POTS-NEUROPATHIC
+    - VAL-SENSITIVITY
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 0.7
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    eds-heds-vascular:
+      value: 0.7
+      config: phenotypes/eds/eds-heds-vascular.yaml
+    pots-hyperadrenergic:
+      value: 1.0
+      config: phenotypes/pots/pots-hyperadrenergic.yaml
+    pots-hypovolemic:
+      value: 0.9
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 0.55
+      config: phenotypes/pots/pots-mixed.yaml
+    pots-neuropathic:
+      value: 0.35
+      config: phenotypes/pots/pots-neuropathic.yaml
+  provenance: Introduced with ModelParameters.resistance_sympathetic_gain in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable resistance sympathetic gain used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 0.8
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-GRAVITY-PRESSURE-OFFSET
+  name: gravity pressure offset
+  symbol: gravity_pressure_offset
+  model_field: gravity_pressure_offset
+  healthy_reference_value: 8.0
+  value: 8.0
+  units: mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-POOLING
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 6.0
+    max: 12.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-ORT-001
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-POTS-NEUROPATHIC
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 9.0
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    eds-heds-vascular:
+      value: 9.0
+      config: phenotypes/eds/eds-heds-vascular.yaml
+    long-covid-autonomic:
+      value: 11.0
+      config: phenotypes/long_covid/long-covid-autonomic.yaml
+    mecfs-pem:
+      value: 9.0
+      config: phenotypes/mecfs/mecfs-pem.yaml
+    pots-hyperadrenergic:
+      value: 10.0
+      config: phenotypes/pots/pots-hyperadrenergic.yaml
+    pots-hypovolemic:
+      value: 10.0
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 10.0
+      config: phenotypes/pots/pots-mixed.yaml
+    pots-neuropathic:
+      value: 10.0
+      config: phenotypes/pots/pots-neuropathic.yaml
+  provenance: Introduced with ModelParameters.gravity_pressure_offset in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable gravity pressure offset used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 8.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-ARTERIAL-VOLUME-INITIAL
+  name: arterial volume initial
+  symbol: arterial_volume_initial
+  model_field: arterial_volume_initial
+  healthy_reference_value: 150.0
+  value: 150.0
+  units: mL
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims: []
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 120.0
+    max: 180.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations: []
+    validation: []
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.arterial_volume_initial in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2010
+  - REF-RAJ-2005
+  description: Executable arterial volume initial used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 150.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CENTRAL-VENOUS-VOLUME-INITIAL
+  name: central venous volume initial
+  symbol: central_venous_volume_initial
+  model_field: central_venous_volume_initial
+  healthy_reference_value: 700.0
+  value: 700.0
+  units: mL
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims: []
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 560.0
+    max: 840.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations: []
+    validation: []
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.central_venous_volume_initial in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2010
+  - REF-RAJ-2005
+  description: Executable central venous volume initial used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 700.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-PERIPHERAL-VENOUS-VOLUME-INITIAL
+  name: peripheral venous volume initial
+  symbol: peripheral_venous_volume_initial
+  model_field: peripheral_venous_volume_initial
+  healthy_reference_value: 1200.0
+  value: 1200.0
+  units: mL
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims: []
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 960.0
+    max: 1440.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations: []
+    validation: []
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.peripheral_venous_volume_initial in the initial disease-modeling framework;
+    defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2010
+  - REF-RAJ-2005
+  description: Executable peripheral venous volume initial used by the shared reduced-order model; see linked equations and
+    phenotype overrides.
+  nominal_value: 1200.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-BLOOD-VOLUME-FACTOR
+  name: blood volume factor
+  symbol: blood_volume_factor
+  model_field: blood_volume_factor
+  healthy_reference_value: 1.0
+  value: 1.0
+  units: dimensionless multiplier
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims: []
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations; not a fitted
+    patient measurement.
+  supported_range:
+    min: 0.85
+    max: 1.05
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations: []
+    validation: []
+  phenotype_values:
+    pots-hypovolemic:
+      value: 0.92
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 0.96
+      config: phenotypes/pots/pots-mixed.yaml
+  provenance: Introduced with ModelParameters.blood_volume_factor in the initial disease-modeling framework; defaults and
+    all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2010
+  - REF-RAJ-2005
+  description: Executable blood volume factor used by the shared reduced-order model; see linked equations and phenotype overrides.
+  nominal_value: 1.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-STROKE-VOLUME-MAX
+  name: stroke volume max
+  symbol: stroke_volume_max
+  model_field: stroke_volume_max
+  healthy_reference_value: 100.0
+  value: 100.0
+  units: mL/beat
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-POOLING
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 80.0
+    max: 120.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-004
+    validation:
+    - VAL-PHYS-TILT
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.stroke_volume_max in the initial disease-modeling framework; defaults and all
+    YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable stroke volume max used by the shared reduced-order model; see linked equations and phenotype overrides.
+  nominal_value: 100.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-STROKE-VOLUME-HALF-VOLUME
+  name: stroke volume half volume
+  symbol: stroke_volume_half_volume
+  model_field: stroke_volume_half_volume
+  healthy_reference_value: 300.0
+  value: 300.0
+  units: mL
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-POOLING
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 200.0
+    max: 400.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-004
+    validation:
+    - VAL-PHYS-TILT
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.stroke_volume_half_volume in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable stroke volume half volume used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 300.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CONTRACTILITY-SYMPATHETIC-GAIN
+  name: contractility sympathetic gain
+  symbol: contractility_sympathetic_gain
+  model_field: contractility_sympathetic_gain
+  healthy_reference_value: 0.25
+  value: 0.25
+  units: dimensionless
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-POOLING
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 0.1
+    max: 0.4
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-004
+    validation:
+    - VAL-PHYS-TILT
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.contractility_sympathetic_gain in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable contractility sympathetic gain used by the shared reduced-order model; see linked equations and
+    phenotype overrides.
+  nominal_value: 0.25
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-HEART-RATE-BASE
+  name: heart rate base
+  symbol: heart_rate_base
+  model_field: heart_rate_base
+  healthy_reference_value: 50.0
+  value: 50.0
+  units: beats/min
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-HYPERADRENERGIC
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 20.0
+    max: 60.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-003
+    validation:
+    - VAL-POTS-HYPER
+    - VAL-POTS-NEUROPATHIC
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 40.0
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    eds-heds-vascular:
+      value: 40.0
+      config: phenotypes/eds/eds-heds-vascular.yaml
+    long-covid-autonomic:
+      value: 35.0
+      config: phenotypes/long_covid/long-covid-autonomic.yaml
+    mecfs-pem:
+      value: 45.0
+      config: phenotypes/mecfs/mecfs-pem.yaml
+    pots-hyperadrenergic:
+      value: 20.0
+      config: phenotypes/pots/pots-hyperadrenergic.yaml
+    pots-hypovolemic:
+      value: 30.0
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 32.5
+      config: phenotypes/pots/pots-mixed.yaml
+    pots-neuropathic:
+      value: 37.5
+      config: phenotypes/pots/pots-neuropathic.yaml
+  provenance: Introduced with ModelParameters.heart_rate_base in the initial disease-modeling framework; defaults and all
+    YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable heart rate base used by the shared reduced-order model; see linked equations and phenotype overrides.
+  nominal_value: 50.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-HEART-RATE-SYMPATHETIC-GAIN
+  name: heart rate sympathetic gain
+  symbol: heart_rate_sympathetic_gain
+  model_field: heart_rate_sympathetic_gain
+  healthy_reference_value: 40.0
+  value: 40.0
+  units: beats/min
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-HYPERADRENERGIC
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations; not a fitted
+    patient measurement.
+  supported_range:
+    min: 30.0
+    max: 110.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-003
+    validation:
+    - VAL-POTS-HYPER
+    - VAL-POTS-NEUROPATHIC
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 60.0
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    eds-heds-vascular:
+      value: 60.0
+      config: phenotypes/eds/eds-heds-vascular.yaml
+    long-covid-autonomic:
+      value: 70.0
+      config: phenotypes/long_covid/long-covid-autonomic.yaml
+    mecfs-pem:
+      value: 50.0
+      config: phenotypes/mecfs/mecfs-pem.yaml
+    pots-hyperadrenergic:
+      value: 103.0
+      config: phenotypes/pots/pots-hyperadrenergic.yaml
+    pots-hypovolemic:
+      value: 80.0
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 75.0
+      config: phenotypes/pots/pots-mixed.yaml
+    pots-neuropathic:
+      value: 65.0
+      config: phenotypes/pots/pots-neuropathic.yaml
+  provenance: Introduced with ModelParameters.heart_rate_sympathetic_gain in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable heart rate sympathetic gain used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 40.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-BAROREFLEX-PRESSURE-SETPOINT
+  name: baroreflex pressure setpoint
+  symbol: baroreflex_pressure_setpoint
+  model_field: baroreflex_pressure_setpoint
+  healthy_reference_value: 100.0
+  value: 100.0
+  units: mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-ME-CBF
+  - CLM-POTS-BAROREFLEX
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 90.0
+    max: 105.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-001
+    - EQ-CBF-001
+    validation:
+    - VAL-ME-CBF
+    - VAL-PHYS-TILT
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.baroreflex_pressure_setpoint in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable baroreflex pressure setpoint used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 100.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-BAROREFLEX-PRESSURE-SCALE
+  name: baroreflex pressure scale
+  symbol: baroreflex_pressure_scale
+  model_field: baroreflex_pressure_scale
+  healthy_reference_value: 2.0
+  value: 2.0
+  units: mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-BAROREFLEX
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations; not a fitted
+    patient measurement.
+  supported_range:
+    min: 1.5
+    max: 3.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-001
+    validation:
+    - VAL-PHYS-TILT
+  phenotype_values:
+    pots-hyperadrenergic:
+      value: 1.5
+      config: phenotypes/pots/pots-hyperadrenergic.yaml
+    pots-hypovolemic:
+      value: 6.0
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 3.0
+      config: phenotypes/pots/pots-mixed.yaml
+  provenance: Introduced with ModelParameters.baroreflex_pressure_scale in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable baroreflex pressure scale used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 2.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-SYMPATHETIC-TIME-CONSTANT
+  name: sympathetic time constant
+  symbol: sympathetic_time_constant
+  model_field: sympathetic_time_constant
+  healthy_reference_value: 4.0
+  value: 4.0
+  units: s
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-BAROREFLEX
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 2.0
+    max: 8.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-002
+    validation:
+    - VAL-MATH-CONVERGENCE
+    - VAL-PHYS-TILT
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.sympathetic_time_constant in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable sympathetic time constant used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 4.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-EXERCISE-HEART-RATE-GAIN
+  name: exercise heart rate gain
+  symbol: exercise_heart_rate_gain
+  model_field: exercise_heart_rate_gain
+  healthy_reference_value: 70.0
+  value: 70.0
+  units: beats/min
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-HYPERADRENERGIC
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 50.0
+    max: 90.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-003
+    validation:
+    - VAL-POTS-HYPER
+    - VAL-POTS-NEUROPATHIC
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.exercise_heart_rate_gain in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable exercise heart rate gain used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 70.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-EXERCISE-RESISTANCE-REDUCTION
+  name: exercise resistance reduction
+  symbol: exercise_resistance_reduction
+  model_field: exercise_resistance_reduction
+  healthy_reference_value: 0.3
+  value: 0.3
+  units: dimensionless fraction
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-PHENOTYPES
+  - CLM-POTS-POOLING
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 0.15
+    max: 0.45
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-VASC-001
+    validation:
+    - VAL-POTS-NEUROPATHIC
+    - VAL-SENSITIVITY
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.exercise_resistance_reduction in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-FU-2018
+  - REF-GEDDES-2022
+  - REF-LOW-2009
+  description: Executable exercise resistance reduction used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 0.3
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CEREBRAL-PRESSURE-EXPONENT
+  name: cerebral pressure exponent
+  symbol: cerebral_pressure_exponent
+  model_field: cerebral_pressure_exponent
+  healthy_reference_value: 0.8
+  value: 0.8
+  units: dimensionless
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-ME-CBF
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 0.5
+    max: 1.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CBF-001
+    validation:
+    - VAL-ME-CBF
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.cerebral_pressure_exponent in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-DELPOZZI-2014
+  - REF-VANCAMPEN-2020
+  - REF-VANCAMPEN-2021
+  description: Executable cerebral pressure exponent used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 0.8
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
+  name: cerebral orthostatic impairment
+  symbol: cerebral_orthostatic_impairment
+  model_field: cerebral_orthostatic_impairment
+  healthy_reference_value: 0.0
+  value: 0.0
+  units: dimensionless fraction
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-ME-CBF
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations; not a fitted
+    patient measurement.
+  supported_range:
+    min: 0.0
+    max: 0.3
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CBF-001
+    validation:
+    - VAL-ME-CBF
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 0.23
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    long-covid-autonomic:
+      value: 0.08
+      config: phenotypes/long_covid/long-covid-autonomic.yaml
+    mecfs-pem:
+      value: 0.23
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.cerebral_orthostatic_impairment in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-DELPOZZI-2014
+  - REF-VANCAMPEN-2020
+  - REF-VANCAMPEN-2021
+  description: Executable cerebral orthostatic impairment used by the shared reduced-order model; see linked equations and
+    phenotype overrides.
+  nominal_value: 0.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-CEREBRAL-DECLINE-TIME-CONSTANT
+  name: cerebral decline time constant
+  symbol: cerebral_decline_time_constant
+  model_field: cerebral_decline_time_constant
+  healthy_reference_value: 5.0
+  value: 5.0
+  units: s
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-ME-CBF
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 3.0
+    max: 10.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CBF-002
+    validation:
+    - VAL-ME-CBF
+    - VAL-PHYS-RECOVERY
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.cerebral_decline_time_constant in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-DELPOZZI-2014
+  - REF-VANCAMPEN-2020
+  - REF-VANCAMPEN-2021
+  description: Executable cerebral decline time constant used by the shared reduced-order model; see linked equations and
+    phenotype overrides.
+  nominal_value: 5.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
+  name: cerebral recovery time constant
+  symbol: cerebral_recovery_time_constant
+  model_field: cerebral_recovery_time_constant
+  healthy_reference_value: 12.0
+  value: 12.0
+  units: s
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-ME-CBF
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 6.0
+    max: 240.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CBF-002
+    validation:
+    - VAL-ME-CBF
+    - VAL-PHYS-RECOVERY
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 240.0
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    mecfs-pem:
+      value: 240.0
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.cerebral_recovery_time_constant in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-DELPOZZI-2014
+  - REF-VANCAMPEN-2020
+  - REF-VANCAMPEN-2021
+  description: Executable cerebral recovery time constant used by the shared reduced-order model; see linked equations and
+    phenotype overrides.
+  nominal_value: 12.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-BASELINE-METABOLIC-CAPACITY
+  name: baseline metabolic capacity
+  symbol: baseline_metabolic_capacity
+  model_field: baseline_metabolic_capacity
+  healthy_reference_value: 1.0
+  value: 1.0
+  units: normalized fraction
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-LC-CPET
+  - CLM-ME-CPET
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 0.8
+    max: 1.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-MET-001
+    validation:
+    - VAL-ME-CPET
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 0.85
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    long-covid-autonomic:
+      value: 0.85
+      config: phenotypes/long_covid/long-covid-autonomic.yaml
+    long-covid-exertional:
+      value: 0.8
+      config: phenotypes/long_covid/long-covid-exertional.yaml
+    mecfs-pem:
+      value: 0.85
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.baseline_metabolic_capacity in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-JOSEPH-2021
+  - REF-SINGH-2022
+  description: Executable baseline metabolic capacity used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 1.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-OXYGEN-EXTRACTION-FRACTION
+  name: oxygen extraction fraction
+  symbol: oxygen_extraction_fraction
+  model_field: oxygen_extraction_fraction
+  healthy_reference_value: 0.78
+  value: 0.78
+  units: dimensionless fraction
+  source: Healthy 0.78 and Long COVID exertional 0.49 values are anchored to selected invasive-CPET control/patient groups;
+    other phenotype values remain computational assumptions.
+  evidence_claims:
+  - CLM-LC-EXTRACTION
+  - CLM-ME-PRELOAD
+  estimation_method: Group-level anchor from REF-SINGH-2022 for healthy and Long COVID exertional configurations; not patient-specific
+    estimation.
+  supported_range:
+    min: 0.39
+    max: 0.88
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-MET-002
+    validation:
+    - VAL-LC-EXTRACTION
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 0.74
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    long-covid-exertional:
+      value: 0.49
+      config: phenotypes/long_covid/long-covid-exertional.yaml
+    mecfs-pem:
+      value: 0.74
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.oxygen_extraction_fraction in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-JOSEPH-2021
+  - REF-SINGH-2022
+  description: Executable oxygen extraction fraction used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 0.78
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: derived_from_published_group_measurements
+- id: PAR-PEM-CAPACITY-PENALTY
+  name: pem capacity penalty
+  symbol: pem_capacity_penalty
+  model_field: pem_capacity_penalty
+  healthy_reference_value: 0.5
+  value: 0.5
+  units: dimensionless fraction
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-LC-CPET
+  - CLM-ME-CPET
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations; not a fitted
+    patient measurement.
+  supported_range:
+    min: 0.3
+    max: 0.7
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-MET-001
+    validation:
+    - VAL-ME-CPET
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.pem_capacity_penalty in the initial disease-modeling framework; defaults and
+    all YAML overrides are audited against this record.
+  references:
+  - REF-KELLER-2014
+  - REF-KELLER-2024
+  - REF-STUSSMAN-2020
+  description: Executable pem capacity penalty used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 0.5
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-PEM-EXTRACTION-PENALTY
+  name: pem extraction penalty
+  symbol: pem_extraction_penalty
+  model_field: pem_extraction_penalty
+  healthy_reference_value: 0.1
+  value: 0.1
+  units: dimensionless fraction
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-LC-EXTRACTION
+  - CLM-ME-PRELOAD
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations; not a fitted
+    patient measurement.
+  supported_range:
+    min: 0.0
+    max: 0.2
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-MET-002
+    validation:
+    - VAL-LC-EXTRACTION
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.pem_extraction_penalty in the initial disease-modeling framework; defaults and
+    all YAML overrides are audited against this record.
+  references:
+  - REF-KELLER-2014
+  - REF-KELLER-2024
+  - REF-STUSSMAN-2020
+  description: Executable pem extraction penalty used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 0.1
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-EXERTIONAL-LOAD-TIME-CONSTANT
+  name: exertional load time constant
+  symbol: exertional_load_time_constant
+  model_field: exertional_load_time_constant
+  healthy_reference_value: 1800.0
+  value: 1800.0
+  units: s
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-ME-PEM-KINETICS
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 900.0
+    max: 3600.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-RCV-001
+    validation:
+    - VAL-ME-PEM
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.exertional_load_time_constant in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-KELLER-2014
+  - REF-KELLER-2024
+  - REF-STUSSMAN-2020
+  description: Executable exertional load time constant used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 1800.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-DELAYED-STRESS-TIME-CONSTANT
+  name: delayed stress time constant
+  symbol: delayed_stress_time_constant
+  model_field: delayed_stress_time_constant
+  healthy_reference_value: 21600.0
+  value: 21600.0
+  units: s
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-ME-PEM-KINETICS
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 14400.0
+    max: 43200.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-RCV-002
+    validation:
+    - VAL-ME-PEM
+  phenotype_values:
+    mecfs-pem:
+      value: 43200.0
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.delayed_stress_time_constant in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-KELLER-2014
+  - REF-KELLER-2024
+  - REF-STUSSMAN-2020
+  description: Executable delayed stress time constant used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 21600.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-PEM-ONSET-TIME-CONSTANT
+  name: pem onset time constant
+  symbol: pem_onset_time_constant
+  model_field: pem_onset_time_constant
+  healthy_reference_value: 86400.0
+  value: 86400.0
+  units: s
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-LC-PEM
+  - CLM-ME-CPET
+  - CLM-ME-PEM-KINETICS
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 43200.0
+    max: 172800.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-RCV-004
+    validation:
+    - VAL-ME-CPET
+    - VAL-ME-PEM
+  phenotype_values:
+    mecfs-pem:
+      value: 172800.0
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.pem_onset_time_constant in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-KELLER-2014
+  - REF-KELLER-2024
+  - REF-STUSSMAN-2020
+  description: Executable pem onset time constant used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 86400.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-PEM-RECOVERY-TIME-CONSTANT
+  name: pem recovery time constant
+  symbol: pem_recovery_time_constant
+  model_field: pem_recovery_time_constant
+  healthy_reference_value: 172800.0
+  value: 172800.0
+  units: s
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-LC-PEM
+  - CLM-ME-CPET
+  - CLM-ME-PEM-KINETICS
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 86400.0
+    max: 604800.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-RCV-004
+    validation:
+    - VAL-ME-CPET
+    - VAL-ME-PEM
+  phenotype_values:
+    mecfs-pem:
+      value: 86400.0
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.pem_recovery_time_constant in the initial disease-modeling framework; defaults
+    and all YAML overrides are audited against this record.
+  references:
+  - REF-KELLER-2014
+  - REF-KELLER-2024
+  - REF-STUSSMAN-2020
+  description: Executable pem recovery time constant used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 172800.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-PEM-TRIGGER-THRESHOLD
+  name: pem trigger threshold
+  symbol: pem_trigger_threshold
+  model_field: pem_trigger_threshold
+  healthy_reference_value: 99.0
+  value: 99.0
+  units: normalized delayed-stress units
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-LC-PEM
+  - CLM-ME-PEM-KINETICS
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations; not a fitted
+    patient measurement.
+  supported_range:
+    min: 0.0005
+    max: 0.01
+    status: active-PEM computational scenario range; healthy sentinel 99 disables triggering and is intentionally outside
+      this range
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-RCV-003
+    validation:
+    - VAL-ME-PEM
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 0.001
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    long-covid-autonomic:
+      value: 0.001
+      config: phenotypes/long_covid/long-covid-autonomic.yaml
+    long-covid-exertional:
+      value: 0.001
+      config: phenotypes/long_covid/long-covid-exertional.yaml
+    mecfs-pem:
+      value: 0.001
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.pem_trigger_threshold in the initial disease-modeling framework; defaults and
+    all YAML overrides are audited against this record.
+  references:
+  - REF-KELLER-2014
+  - REF-KELLER-2024
+  - REF-STUSSMAN-2020
+  description: Executable pem trigger threshold used by the shared reduced-order model; see linked equations and phenotype
+    overrides.
+  nominal_value: 99.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-PEM-RESPONSE-GAIN
+  name: pem response gain
+  symbol: pem_response_gain
+  model_field: pem_response_gain
+  healthy_reference_value: 0.0
+  value: 0.0
+  units: dimensionless
+  source: Healthy reference computational configuration; cited references provide structural, directional, or group-level
+    context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-LC-PEM
+  - CLM-ME-PEM-KINETICS
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations; not a fitted
+    patient measurement.
+  supported_range:
+    min: 0.0
+    max: 20.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-RCV-003
+    validation:
+    - VAL-ME-PEM
+  phenotype_values:
+    eds-heds-mecfs-comorbid:
+      value: 20.0
+      config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
+    long-covid-autonomic:
+      value: 12.0
+      config: phenotypes/long_covid/long-covid-autonomic.yaml
+    long-covid-exertional:
+      value: 16.0
+      config: phenotypes/long_covid/long-covid-exertional.yaml
+    mecfs-pem:
+      value: 20.0
+      config: phenotypes/mecfs/mecfs-pem.yaml
+  provenance: Introduced with ModelParameters.pem_response_gain in the initial disease-modeling framework; defaults and all
+    YAML overrides are audited against this record.
+  references:
+  - REF-KELLER-2014
+  - REF-KELLER-2024
+  - REF-STUSSMAN-2020
+  description: Executable pem response gain used by the shared reduced-order model; see linked equations and phenotype overrides.
+  nominal_value: 0.0
+  population: No individual patient population; computational healthy reference with phenotype-specific scenario overrides.
+    Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation

@@ -1,0 +1,432 @@
+schema_version: '1.0'
+mechanisms:
+- id: MEC-CV-VOLUME
+  name: Conservative three-compartment hemodynamics
+  description: Arterial, central-venous and peripheral-venous stressed volumes exchange through cardiac output, systemic flow
+    and venous return.
+  diseases:
+  - shared
+  claims:
+  - CLM-CV-HEMODYNAMICS
+  classification: mechanistic_approximation
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient.rhs
+  parameters:
+  - PAR-ARTERIAL-COMPLIANCE
+  - PAR-CENTRAL-VENOUS-COMPLIANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-ARTERIAL-VOLUME-INITIAL
+  - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
+  - PAR-PERIPHERAL-VENOUS-VOLUME-INITIAL
+  tests:
+  - VAL-MATH-CONSERVATION
+  - VAL-MATH-CONVERGENCE
+  - VAL-PHYS-BASELINE
+  confidence: moderate
+  limitations: Beat-averaged, no pulsatile heart, no unstressed-volume state and no independent patient identification.
+  equations:
+  - EQ-CV-001
+  - EQ-CV-002
+  - EQ-CV-003
+  - EQ-CV-004
+  - EQ-CV-005
+- id: MEC-AUT-BAROREFLEX
+  name: Sigmoidal baroreflex feedback
+  description: A bounded pressure-error target drives a first-order sympathetic state and chronotropic compensation.
+  diseases:
+  - shared
+  - POTS
+  - hEDS
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-CRITERIA
+  - CLM-LC-HETEROGENEITY
+  classification: mechanistic_approximation
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient.rhs
+  parameters:
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-HEART-RATE-BASE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  tests:
+  - VAL-PHYS-TILT
+  - VAL-POTS-NEUROPATHIC
+  - VAL-LC-AUTONOMIC
+  confidence: moderate
+  limitations: Does not separately model vagal activity, MSNA, afferent lesions or 0.1 Hz oscillations.
+  equations:
+  - EQ-AUT-001
+  - EQ-AUT-002
+  - EQ-AUT-003
+- id: MEC-VASC-POOLING
+  name: Orthostatic venous-return opposition and pooling
+  description: Upright posture reduces effective peripheral-to-central venous driving pressure and redistributes conserved
+    stressed volume.
+  diseases:
+  - POTS
+  - hEDS
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  classification: phenomenological_mechanistic_hybrid
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient._derived
+  parameters:
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  tests:
+  - VAL-PHYS-TILT
+  - VAL-POTS-NEUROPATHIC
+  - VAL-EDS-DIRECTION
+  confidence: moderate for direction, low for magnitude
+  limitations: Normalized gravity offset is not an angle-specific hydrostatic solution or a measured splanchnic compartment.
+  equations:
+  - EQ-ORT-001
+  - EQ-CV-003
+- id: MEC-VASC-CONSTRICTION
+  name: Sympathetic systemic-resistance modulation
+  description: Sympathetic activation changes effective systemic resistance; neuropathic POTS reduces this modulation.
+  diseases:
+  - POTS
+  claims:
+  - CLM-POTS-POOLING
+  - CLM-POTS-PHENOTYPES
+  classification: mechanistic_approximation
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient._derived
+  parameters:
+  - PAR-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-SYSTEMIC-RESISTANCE
+  tests:
+  - VAL-POTS-NEUROPATHIC
+  - VAL-SENSITIVITY
+  confidence: moderate for direction, low for calibrated gain
+  limitations: Lumps regional denervation and vascular beds into one resistance.
+  equations:
+  - EQ-VASC-001
+  - EQ-CV-002
+- id: MEC-AUT-HYPERADRENERGIC
+  name: Hyperadrenergic chronotropic gain
+  description: Increased chronotropic response to the sympathetic state represents a hyperadrenergic POTS subgroup.
+  diseases:
+  - POTS
+  - Long COVID
+  claims:
+  - CLM-POTS-HYPERADRENERGIC
+  - CLM-POTS-PHENOTYPES
+  - CLM-LC-AUTONOMIC
+  classification: mechanistic_approximation
+  maturity: M3
+  status: implemented
+  implementation: phenotypes/pots/pots-hyperadrenergic.yaml
+  parameters:
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  tests:
+  - VAL-POTS-HYPER
+  confidence: moderate for direction, low for gain
+  limitations: No catecholamine concentration, reuptake, or primary-versus-secondary hyperadrenergic distinction.
+  equations:
+  - EQ-AUT-001
+  - EQ-AUT-003
+- id: MEC-VOL-HYPOVOLEMIA
+  name: Reduced initial stressed blood volume
+  description: A blood-volume factor scales all initial stressed compartments while preserving subsequent conservation.
+  diseases:
+  - POTS
+  claims:
+  - CLM-POTS-HYPOVOLEMIA
+  classification: mechanistic_approximation
+  maturity: M3
+  status: implemented
+  implementation: phenotypes/pots/pots-hypovolemic.yaml
+  parameters:
+  - PAR-BLOOD-VOLUME-FACTOR
+  tests:
+  - VAL-POTS-HYPO
+  - VAL-SENSITIVITY
+  confidence: moderate for mechanism, low for 0.92 value
+  limitations: Plasma volume is not equivalent to stressed whole-blood volume; RAAS and renal volume recovery are absent.
+  equations:
+  - EQ-CV-001
+  - EQ-CV-003
+- id: MEC-VASC-COMPLIANCE
+  name: hEDS peripheral venous-compliance hypothesis
+  description: Increased peripheral compliance tests whether vascular mechanics can amplify orthostatic pooling and compensation.
+  diseases:
+  - hEDS
+  claims:
+  - CLM-EDS-VASCULAR
+  - CLM-EDS-OI
+  classification: hypothesis_constrained_phenomenology
+  maturity: M2
+  status: implemented
+  exploratory: true
+  implementation: phenotypes/eds/eds-heds-vascular.yaml
+  parameters:
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  tests:
+  - VAL-EDS-DIRECTION
+  - VAL-SENSITIVITY
+  confidence: low
+  limitations: Assumed hEDS-specific value; arterial measurements cannot be treated as venous measurements or generalized
+    to other EDS subtypes.
+  equations:
+  - EQ-CV-001
+  - EQ-ORT-001
+- id: MEC-CBF-AUTOREG
+  name: Reduced-order cerebral-flow impairment and recovery
+  description: Cerebral flow follows a pressure-dependent target with optional orthostatic impairment and asymmetric recovery
+    lag.
+  diseases:
+  - shared
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-ME-CBF
+  classification: phenomenological
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient.rhs
+  parameters:
+  - PAR-CEREBRAL-PRESSURE-EXPONENT
+  - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
+  - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
+  - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
+  tests:
+  - VAL-ME-CBF
+  - VAL-PHYS-RECOVERY
+  confidence: low-moderate
+  limitations: Normalized index, no CO2, autoregulatory gain, vascular territories or direct Doppler observation model.
+  equations:
+  - EQ-CBF-001
+  - EQ-CBF-002
+- id: MEC-MET-CAPACITY
+  name: Dynamic exertional capacity
+  description: Baseline metabolic capacity is reduced by PEM and normalizes functional capacity and exertional load.
+  diseases:
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-ME-CPET
+  - CLM-LC-CPET
+  - CLM-ME-METABOLISM
+  - CLM-LC-MUSCLE
+  - CLM-LC-HETEROGENEITY
+  classification: phenomenological
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient._derived
+  parameters:
+  - PAR-BASELINE-METABOLIC-CAPACITY
+  - PAR-PEM-CAPACITY-PENALTY
+  tests:
+  - VAL-ME-CPET
+  - VAL-LC-EXTRACTION
+  confidence: moderate for repeated-exertion phenomenon, low for cellular interpretation
+  limitations: Normalized construct is not a direct VO2 measurement and cannot distinguish central from peripheral causes.
+  equations:
+  - EQ-MET-001
+- id: MEC-MET-EXTRACTION
+  name: Peripheral oxygen-extraction fraction
+  description: An explicit extraction fraction contributes to functional capacity independently of cardiac output.
+  diseases:
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-LC-EXTRACTION
+  - CLM-ME-PRELOAD
+  classification: empirically_anchored_phenomenology
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient._derived
+  parameters:
+  - PAR-OXYGEN-EXTRACTION-FRACTION
+  - PAR-PEM-EXTRACTION-PENALTY
+  tests:
+  - VAL-LC-EXTRACTION
+  confidence: low-moderate
+  limitations: Does not resolve shunt, mitochondrial flux, ventilation or microvascular mechanisms.
+  equations:
+  - EQ-MET-002
+- id: MEC-RCV-PEM
+  name: Delayed exertional stress and PEM recovery
+  description: Exertional load drives delayed stress and an asymmetric PEM state that reduces subsequent capacity.
+  diseases:
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-ME-PEM-KINETICS
+  - CLM-LC-PEM
+  - CLM-ME-CPET
+  classification: phenomenological_dynamic_model
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient.rhs
+  parameters:
+  - PAR-EXERTIONAL-LOAD-TIME-CONSTANT
+  - PAR-DELAYED-STRESS-TIME-CONSTANT
+  - PAR-PEM-ONSET-TIME-CONSTANT
+  - PAR-PEM-RECOVERY-TIME-CONSTANT
+  - PAR-PEM-TRIGGER-THRESHOLD
+  - PAR-PEM-RESPONSE-GAIN
+  tests:
+  - VAL-ME-PEM
+  - VAL-ME-CPET
+  confidence: moderate for temporal constraints, exploratory for equation form
+  limitations: Not a cellular or inflammatory causal model; symptom heterogeneity and severe disease are underrepresented.
+  equations:
+  - EQ-RCV-001
+  - EQ-RCV-002
+  - EQ-RCV-003
+  - EQ-RCV-004
+- id: MEC-CONNECTIVE
+  name: Connective-tissue to vascular-mechanics link
+  description: Connective-tissue abnormalities may indirectly influence vascular properties and wearable-observable hemodynamics.
+  diseases:
+  - hEDS
+  claims:
+  - CLM-EDS-OI
+  - CLM-EDS-VASCULAR
+  classification: hypothesis
+  maturity: M1
+  status: proposed
+  exploratory: true
+  implementation: literature/eds/mechanism-map.md
+  parameters: []
+  tests: []
+  confidence: low
+  limitations: No direct wearable signal or causal tissue-to-compliance equation is asserted.
+- id: MEC-RAAS
+  name: Renin-angiotensin-aldosterone volume regulation
+  description: RAAS dysregulation is documented in a POTS cohort but dynamic renal volume regulation is not yet implemented.
+  diseases:
+  - POTS
+  claims:
+  - CLM-POTS-HYPOVOLEMIA
+  classification: mechanistic_hypothesis
+  maturity: M1
+  status: proposed
+  implementation: literature/pots/mechanism-map.md
+  parameters: []
+  tests: []
+  confidence: moderate for observation, low for model specification
+  limitations: Static blood-volume factor must not be interpreted as RAAS simulation.
+- id: MEC-MICROVASC
+  name: Endothelial and microvascular dysfunction
+  description: Endothelial, coagulation and microcirculatory hypotheses may affect oxygen delivery.
+  diseases:
+  - Long COVID
+  - ME/CFS
+  claims:
+  - CLM-LC-ENDOTHELIAL
+  classification: exploratory
+  maturity: M0
+  status: hypothesis
+  exploratory: true
+  implementation: literature/long_covid/mechanism-map.md
+  parameters: []
+  tests: []
+  confidence: low for specific causal dynamics
+  limitations: No microclot resistance, shunt flow or endothelial biomarker equation is defensible from current registry evidence.
+- id: MEC-INFL-SIGNAL
+  name: Inflammatory and neuroimmune signaling
+  description: Immune signaling may interact with autonomic and recovery states but is not implemented as a causal dynamic
+    module.
+  diseases:
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-LC-ENDOTHELIAL
+  - CLM-ME-METABOLISM
+  classification: exploratory
+  maturity: M0
+  status: hypothesis
+  exploratory: true
+  implementation: literature/cross_disease/mechanism-map.md
+  parameters: []
+  tests: []
+  confidence: low for specific dynamics
+  limitations: Avoids converting biomarker associations into inflammatory causes of symptoms.
+- id: MEC-SLEEP-CIRCADIAN
+  name: Sleep and circadian regulation
+  description: Sleep and circadian modulation are reserved for a future evidence-constrained oscillator/recovery extension.
+  diseases:
+  - POTS
+  - hEDS
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-CROSS-SLEEP
+  classification: exploratory
+  maturity: M0
+  status: hypothesis
+  exploratory: true
+  implementation: literature/cross_disease/mechanism-map.md
+  parameters: []
+  tests: []
+  confidence: low for current computational specification
+  limitations: No invented circadian parameters or sleep-derived disease multipliers.
+- id: MEC-GI-DYSMOTILITY
+  name: Gastrointestinal dysmotility and physiological load
+  description: GI dysmotility and postprandial pooling remain a review topic, not an implemented hEDS mechanism.
+  diseases:
+  - hEDS
+  claims:
+  - CLM-EDS-OI
+  classification: exploratory
+  maturity: M0
+  status: hypothesis
+  exploratory: true
+  implementation: literature/eds/mechanism-map.md
+  parameters: []
+  tests: []
+  confidence: low
+  limitations: Current references do not identify a defensible dynamic GI equation or parameter.
+- id: MEC-PAIN-AUT
+  name: Pain-autonomic coupling
+  description: Musculoskeletal loading and pain may modulate autonomic state but require dedicated evidence before implementation.
+  diseases:
+  - hEDS
+  claims:
+  - CLM-EDS-OI
+  classification: exploratory
+  maturity: M0
+  status: hypothesis
+  exploratory: true
+  implementation: literature/eds/mechanism-map.md
+  parameters: []
+  tests: []
+  confidence: low
+  limitations: No direct joint-instability-to-wearable mapping is asserted.
+- id: MEC-RESP-LC
+  name: Long COVID respiratory and ventilatory limitation
+  description: Ventilatory inefficiency and respiratory phenotypes are documented as a distinct future module.
+  diseases:
+  - Long COVID
+  claims:
+  - CLM-LC-CPET
+  - CLM-LC-EXTRACTION
+  classification: exploratory
+  maturity: M1
+  status: proposed
+  exploratory: true
+  implementation: literature/long_covid/mechanism-map.md
+  parameters: []
+  tests: []
+  confidence: moderate for observation, low for current equation specification
+  limitations: Oxygen-extraction phenotypes must not be treated as respiratory simulations.
