@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "label": "Executable research baselines generated from current model outputs; NOT clinical targets, diagnostic thresholds, or fitted patient data.",
+  "scientific_status": "research demonstration baseline; not clinically validated",
+  "change_policy": "Fixture changes require a reviewed change record explaining the mechanism, evidence, and expected direction (validation_registry.yaml VAL-REGRESSION).",
+  "change_records": [
+    {
+      "date": "2026-11-16",
+      "change": "Initial executable research baseline generated from model version 0.1.0 outputs.",
+      "mechanism": "all (baseline capture)",
+      "evidence": "validation_registry.yaml VAL-REGRESSION",
+      "expected_direction": "n/a (initial capture)"
+    },
+    {
+      "date": "2026-11-16",
+      "change": "Hyperadrenergic chronotropic gain 100.0 to 103.0; ME/CFS delayed-stress, PEM-onset, and PEM-recovery constants set to 43200, 172800, and 86400 s. Regenerated only the two affected runs after the original values failed declared phenotype criteria.",
+      "mechanism": "MEC-AUT-HYPERADRENERGIC and MEC-RCV-PEM; assumption-only calibration, no new empirical claim",
+      "evidence": "VAL-POTS-HYPER and VAL-ME-PEM; CLM-POTS-CRITERIA and CLM-ME-PEM-KINETICS",
+      "expected_direction": "Hyperadrenergic orthostatic HR rise increases from 29.33 to 30.16 bpm; early PEM decreases below 0.01 while delayed peak, recovery, and next-day capacity reduction remain observable. These are scenario corrections, not clinical targets."
+    }
+  ],
+  "tolerances": {
+    "bpm": 0.0001,
+    "mmHg": 0.0001,
+    "normalized": 1e-06,
+    "volume_ml": 1e-06,
+    "exact": 0.0
+  },
+  "metric_tolerance_class": {
+    "heart_rate_final_bpm": "bpm",
+    "heart_rate_baseline_bpm": "bpm",
+    "heart_rate_upright_peak_bpm": "bpm",
+    "orthostatic_heart_rate_rise_bpm": "bpm",
+    "mean_arterial_pressure_final_mmHg": "mmHg",
+    "pem_peak": "normalized",
+    "functional_capacity_final": "normalized",
+    "total_stressed_volume_drift_ml": "volume_ml",
+    "duration_s": "exact",
+    "samples": "exact"
+  },
+  "runs": {
+    "healthy-reference__resting-baseline": {
+      "duration_s": 600.0,
+      "samples": 301,
+      "heart_rate_final_bpm": 70.0,
+      "mean_arterial_pressure_final_mmHg": 100.0,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "total_stressed_volume_drift_ml": 0.0
+    },
+    "healthy-reference__head-up-tilt": {
+      "duration_s": 600.0,
+      "samples": 301,
+      "heart_rate_final_bpm": 79.45580016140536,
+      "mean_arterial_pressure_final_mmHg": 97.94537018049436,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "heart_rate_baseline_bpm": 70.0,
+      "heart_rate_upright_peak_bpm": 79.45580016140565,
+      "orthostatic_heart_rate_rise_bpm": 9.455800161405648,
+      "total_stressed_volume_drift_ml": 4.547473508864641e-13
+    },
+    "pots-neuropathic__head-up-tilt": {
+      "duration_s": 600.0,
+      "samples": 301,
+      "heart_rate_final_bpm": 100.85953571306064,
+      "mean_arterial_pressure_final_mmHg": 92.69230776768875,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "heart_rate_baseline_bpm": 70.0,
+      "heart_rate_upright_peak_bpm": 100.85953571306064,
+      "orthostatic_heart_rate_rise_bpm": 30.859535713060637,
+      "total_stressed_volume_drift_ml": 9.094947017729282e-13
+    },
+    "pots-hyperadrenergic__head-up-tilt": {
+      "duration_s": 600.0,
+      "samples": 301,
+      "heart_rate_final_bpm": 100.91095627892985,
+      "mean_arterial_pressure_final_mmHg": 98.05259872235798,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "heart_rate_baseline_bpm": 70.75307972706266,
+      "heart_rate_upright_peak_bpm": 100.91095627893192,
+      "orthostatic_heart_rate_rise_bpm": 30.157876551869265,
+      "total_stressed_volume_drift_ml": 9.094947017729282e-13
+    },
+    "pots-hypovolemic__head-up-tilt": {
+      "duration_s": 600.0,
+      "samples": 301,
+      "heart_rate_final_bpm": 101.93420655318229,
+      "mean_arterial_pressure_final_mmHg": 86.87128110918849,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "heart_rate_baseline_bpm": 71.47765985104635,
+      "heart_rate_upright_peak_bpm": 101.93420655318229,
+      "orthostatic_heart_rate_rise_bpm": 30.456546702135938,
+      "total_stressed_volume_drift_ml": 1.5916157281026244e-12
+    },
+    "pots-mixed__head-up-tilt": {
+      "duration_s": 600.0,
+      "samples": 301,
+      "heart_rate_final_bpm": 104.20219337990176,
+      "mean_arterial_pressure_final_mmHg": 90.76220874610345,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "heart_rate_baseline_bpm": 70.85097439632314,
+      "heart_rate_upright_peak_bpm": 104.20219337990176,
+      "orthostatic_heart_rate_rise_bpm": 33.35121898357862,
+      "total_stressed_volume_drift_ml": 9.094947017729282e-13
+    },
+    "eds-heds-vascular__head-up-tilt": {
+      "duration_s": 600.0,
+      "samples": 301,
+      "heart_rate_final_bpm": 99.83404664987299,
+      "mean_arterial_pressure_final_mmHg": 88.22475321126929,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "heart_rate_baseline_bpm": 71.6711037785331,
+      "heart_rate_upright_peak_bpm": 99.83404664987299,
+      "orthostatic_heart_rate_rise_bpm": 28.162942871339894,
+      "total_stressed_volume_drift_ml": 9.094947017729282e-13
+    },
+    "long-covid-autonomic__head-up-tilt": {
+      "duration_s": 600.0,
+      "samples": 301,
+      "heart_rate_final_bpm": 102.48299603733683,
+      "mean_arterial_pressure_final_mmHg": 93.42238726985168,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 0.85,
+      "heart_rate_baseline_bpm": 70.0,
+      "heart_rate_upright_peak_bpm": 102.48299603733683,
+      "orthostatic_heart_rate_rise_bpm": 32.48299603733683,
+      "total_stressed_volume_drift_ml": 1.3642420526593924e-12
+    },
+    "healthy-reference__tilt-recovery": {
+      "duration_s": 1200.0,
+      "samples": 601,
+      "heart_rate_final_bpm": 70.00000000000003,
+      "mean_arterial_pressure_final_mmHg": 100.00000000000033,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "heart_rate_baseline_bpm": 70.0,
+      "heart_rate_upright_peak_bpm": 79.45580016140565,
+      "orthostatic_heart_rate_rise_bpm": 9.455800161405648,
+      "total_stressed_volume_drift_ml": 1.3642420526593924e-12
+    },
+    "mecfs-pem__tilt-recovery": {
+      "duration_s": 1200.0,
+      "samples": 601,
+      "heart_rate_final_bpm": 69.99999999999974,
+      "mean_arterial_pressure_final_mmHg": 100.0,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 0.8064102564102564,
+      "heart_rate_baseline_bpm": 70.0,
+      "heart_rate_upright_peak_bpm": 84.72020088148534,
+      "orthostatic_heart_rate_rise_bpm": 14.72020088148534,
+      "total_stressed_volume_drift_ml": 1.8189894035458565e-12
+    },
+    "healthy-reference__repeated-exertion-recovery": {
+      "duration_s": 259200.0,
+      "samples": 433,
+      "heart_rate_final_bpm": 70.00000077316248,
+      "mean_arterial_pressure_final_mmHg": 99.99999804611629,
+      "pem_peak": 0.0,
+      "functional_capacity_final": 1.0,
+      "total_stressed_volume_drift_ml": 9.549694368615746e-12
+    },
+    "mecfs-pem__repeated-exertion-recovery": {
+      "duration_s": 259200.0,
+      "samples": 433,
+      "heart_rate_final_bpm": 69.99999999473386,
+      "mean_arterial_pressure_final_mmHg": 100.00000020136042,
+      "pem_peak": 0.1412638276096461,
+      "functional_capacity_final": 0.7789358809185183,
+      "total_stressed_volume_drift_ml": 1.5916157281026244e-11
+    }
+  }
+}

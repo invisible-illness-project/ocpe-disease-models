@@ -4,11 +4,14 @@ diseases: [hEDS]
 mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX]
 evidence_claims: [CLM-EDS-OI, CLM-EDS-VASCULAR]
 parameter_overrides:
-  gravity_pressure_offset: 9.0
-  peripheral_venous_compliance: 140.0
-  resistance_sympathetic_gain: 0.7
-  heart_rate_base: 40.0
-  heart_rate_sympathetic_gain: 60.0
+  splanchnic_gravity_pressure_offset: 4.5
+  lower_limb_gravity_pressure_offset: 9.0
+  lower_limb_venous_compliance: 58.333333333333336
+  splanchnic_resistance_sympathetic_gain: 0.7
+  lower_limb_resistance_sympathetic_gain: 0.7
+  heart_rate_rest: 70.0
+  heart_rate_cardiac_sympathetic_gain: 30.0
+  heart_rate_vagal_gain: 30.0
 maturity: M2
 classification: hypothesis_constrained_phenomenology
 limitations:

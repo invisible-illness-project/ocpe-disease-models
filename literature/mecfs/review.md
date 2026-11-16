@@ -21,21 +21,24 @@ phenomenology; they do not identify molecular dynamics or a causal equation.
 **Modeling assumption.** MEC-RCV-PEM implements an explicitly phenomenological
 chain — exertional load (EQ-RCV-001, PAR-EXERTIONAL-LOAD-TIME-CONSTANT =
 1800 s), a first-order delayed-stress state (EQ-RCV-002,
-PAR-DELAYED-STRESS-TIME-CONSTANT = 43200 s in `mecfs-pem`), a thresholded PEM drive
-(EQ-RCV-003, PAR-PEM-TRIGGER-THRESHOLD = 0.001 and PAR-PEM-RESPONSE-GAIN =
-20.0 in the `mecfs-pem` configuration; healthy threshold 99.0 disables PEM by
-construction), and asymmetric onset/recovery (EQ-RCV-004,
-PAR-PEM-ONSET-TIME-CONSTANT = 172800 s and PAR-PEM-RECOVERY-TIME-CONSTANT =
-86400 s in `mecfs-pem`). These are operating-point choices inside declared sensitivity
-ranges (delayed stress 14400–43200 s; onset 43200–172800 s; recovery 86400–604800 s), constrained — not
-identified — by the reported 12–48 h onset and 2–7 day duration windows.
-The onset constant is deliberately slower than the post-peak recovery constant
-in this scenario to delay the peak while retaining the prespecified follow-up
-recovery behavior; this is not a general biological claim that recovery is
-faster than onset, and neither constant is identified by the literature.
+PAR-DELAYED-STRESS-TIME-CONSTANT = 72000 s in `mecfs-pem`), a thresholded PEM
+drive (EQ-RCV-003, PAR-PEM-TRIGGER-THRESHOLD = 0.001 and
+PAR-PEM-RESPONSE-GAIN = 20.0 in `mecfs-pem`; healthy threshold 0.999 and gain
+0.0 disable the response), and asymmetric onset/recovery (EQ-RCV-004,
+PAR-PEM-ONSET-TIME-CONSTANT = 86400 s and PAR-PEM-RECOVERY-TIME-CONSTANT =
+172800 s in `mecfs-pem`). The delayed-stress value is an explicit reviewed
+exception above the declared 14400–43200 s local sensitivity range, not a
+patient measurement. Onset and recovery constants lie within their declared
+43200–172800 s and 86400–604800 s scenario ranges. All are constrained—not
+identified—by the reported timing windows. The current scenario peaks at
+approximately 39.2 h after the day-1 bout and requires approximately 2.06 days
+for half-recovery after the peak, but PEM first exceeds 0.05 at approximately
+5.7 h after that bout ends. That crossing
+is earlier than the 12–48 h daily-activity onset window, although it lies within
+reported post-CPET onset within 24 h; it remains a scenario-timing limitation.
 VAL-ME-PEM directly tests the defining temporal distinction: PEM below 0.01
-during exertion and the first hour, a subsequent delayed peak, and no PEM in
-the healthy reference.
+during exertion and the first hour, a subsequent delayed peak, prolonged
+recovery within the seven-day protocol, and no PEM in the healthy reference.
 
 ## 2. Repeated-CPET heterogeneity
 
@@ -94,12 +97,19 @@ remained incomplete despite cardiac-index normalization, without a healthy
 recovery-phase control group.
 
 **Modeling assumption.** MEC-CBF-AUTOREG supplies a normalized cerebral-flow
-index: pressure-dependent target with an orthostatic impairment term
-(EQ-CBF-001; PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT = 0.23 in `mecfs-pem`,
-calibrated to the group mean within the 0.0–0.3 sensitivity range) and
-asymmetric decline/recovery (EQ-CBF-002; PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
-raised to 240.0 s from the healthy 12.0 s). VAL-ME-CBF uses a broad 15–35%
-scenario band around the 26% group mean.
+index driven by cerebral perfusion pressure—head-level arterial pressure minus
+central venous back pressure—through a bounded autoregulation curve
+(PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE = 95.0 mmHg and
+PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE = 0.2), with an orthostatic
+impairment term (EQ-CBF-001; PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT = 0.23 in
+`mecfs-pem`, calibrated to the group mean within the 0.0–0.3 sensitivity range)
+and asymmetric decline/recovery (EQ-CBF-002;
+PAR-CEREBRAL-RECOVERY-TIME-CONSTANT raised to 240.0 s from the healthy 12.0 s).
+VAL-ME-CBF uses a broad 15–35% scenario band around the 26% group mean and
+requires a smaller healthy reduction. The healthy reduction is approximately
+0.003%, outside the broad 3–11% disclosure band around the reported 7% control
+finding; this emits an explicit warning and is not counted as successful
+control reproduction.
 
 **Limitations (as recorded).** The evidence is single-center extracranial
 Doppler — a surrogate; the model's index is not a Doppler reconstruction and

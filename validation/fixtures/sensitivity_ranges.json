@@ -1,58 +1,80 @@
 {
-  "schema_version": "1.0",
-  "label": "Deterministic one-at-a-time local sensitivity ranges (executable research baselines, not clinical targets).",
-  "scientific_status": "research demonstration baseline; not clinically validated",
+  "schema_version": "1.1",
+  "label": "Deterministic central differences for the revised shared physiology; research scenarios, not clinical targets.",
+  "scientific_status": "research demonstration; not clinically validated",
   "method": {
     "kind": "deterministic one-at-a-time central finite differences",
     "no_stochastic_cohort": true,
     "background": "healthy-reference parameters (ModelParameters defaults)",
     "protocol": "head-up-tilt",
-    "outputs": ["orthostatic_heart_rate_rise_bpm", "mean_arterial_pressure_final_mmHg"]
+    "outputs": [
+      "orthostatic_heart_rate_sustained_rise_bpm",
+      "mean_arterial_pressure_final_mmHg"
+    ]
   },
   "assumptions": [
-    "One parameter is perturbed at a time on the healthy reference background; interactions are not explored.",
-    "The hEDS peripheral-compliance increase (140 mL/mmHg) is a modeling hypothesis, not a measured value; the healthy value (120 mL/mmHg) is included as the reversal of that assumption.",
-    "Derivative magnitudes are local and operating-point dependent; robust directions matter more than calibrated magnitudes."
+    "One parameter is perturbed at a time; interactions are explored separately in deterministic grids.",
+    "The hEDS lower-limb compliance increase is a modeling hypothesis, not a measured value.",
+    "Derivative magnitudes are local and operating-point dependent; blood-volume perturbations intentionally leave the calibrated supine operating point."
   ],
   "parameters": {
-    "gravity_pressure_offset": {
+    "lower_limb_gravity_pressure_offset": {
       "mechanism": "MEC-VASC-POOLING",
       "nominal": 8.0,
       "step": 1.0,
-      "sampled_values": [7.0, 8.0, 9.0],
-      "d_orthostatic_heart_rate_rise_bpm": 2.6585433640696507,
-      "d_mean_arterial_pressure_final_mmHg": -0.7124991791522177
+      "sampled_values": [
+        7.0,
+        8.0,
+        9.0
+      ],
+      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.7507759088930186,
+      "d_mean_arterial_pressure_final_mmHg": -0.22444906738694925
     },
-    "resistance_sympathetic_gain": {
+    "splanchnic_resistance_sympathetic_gain": {
       "mechanism": "MEC-VASC-CONSTRICTION",
       "nominal": 0.8,
       "step": 0.1,
-      "sampled_values": [0.7, 0.8, 0.9],
-      "d_orthostatic_heart_rate_rise_bpm": -6.150191388239961,
-      "d_mean_arterial_pressure_final_mmHg": 1.5895580371572748
+      "sampled_values": [
+        0.7000000000000001,
+        0.8,
+        0.9
+      ],
+      "d_orthostatic_heart_rate_sustained_rise_bpm": -3.8568960529261176,
+      "d_mean_arterial_pressure_final_mmHg": 1.149525537546765
     },
     "blood_volume_factor": {
       "mechanism": "MEC-VOL-HYPOVOLEMIA",
       "nominal": 1.0,
       "step": 0.02,
-      "sampled_values": [0.98, 1.0, 1.02],
-      "d_orthostatic_heart_rate_rise_bpm": -38.81211857720466,
-      "d_mean_arterial_pressure_final_mmHg": 13.253890072962093
+      "sampled_values": [
+        0.98,
+        1.0,
+        1.02
+      ],
+      "d_orthostatic_heart_rate_sustained_rise_bpm": -24.193815109538974,
+      "d_mean_arterial_pressure_final_mmHg": 10.905007248379661
     },
-    "peripheral_venous_compliance": {
+    "lower_limb_venous_compliance": {
       "mechanism": "MEC-VASC-COMPLIANCE",
-      "nominal": 120.0,
-      "step": 10.0,
-      "sampled_values": [110.0, 120.0, 130.0],
-      "d_orthostatic_heart_rate_rise_bpm": 0.2836768180613163,
-      "d_mean_arterial_pressure_final_mmHg": -0.09295856953739232,
+      "nominal": 50.0,
+      "step": 5.0,
+      "sampled_values": [
+        45.0,
+        50.0,
+        55.0
+      ],
+      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.0896248131708532,
+      "d_mean_arterial_pressure_final_mmHg": -0.026675258795521017,
       "heds_assumption": {
-        "healthy_value": 120.0,
-        "assumed_heds_value": 140.0,
-        "sampled_values": [120.0, 140.0],
-        "orthostatic_heart_rate_rise_bpm_at_120": 9.455800161405648,
-        "orthostatic_heart_rate_rise_bpm_at_140": 16.13774801487189,
-        "note": "Includes both the increased (assumed) and healthy compliance values."
+        "healthy_value": 50.0,
+        "assumed_heds_value": 58.333333333333336,
+        "sampled_values": [
+          50.0,
+          58.333333333333336
+        ],
+        "orthostatic_heart_rate_sustained_rise_bpm_at_50": 11.446936834429977,
+        "orthostatic_heart_rate_sustained_rise_bpm_at_58_333": 12.191408353496328,
+        "note": "The hEDS value is the migrated 140*(50/120) hypothesis, not a measured coefficient."
       }
     }
   }

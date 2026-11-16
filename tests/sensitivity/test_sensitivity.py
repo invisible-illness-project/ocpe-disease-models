@@ -1,47 +1,27 @@
-"""VAL-SENSITIVITY: deterministic local sensitivity analysis.
-
-Registry layer ``sensitivity_uncertainty`` (pytest marker
-``sensitivity_uncertainty`` per pyproject.toml). One-at-a-time central finite differences on the healthy
-reference background, head-up-tilt protocol. Key outputs must change traceably
-under declared perturbations, including reversal of the hEDS exploratory
-compliance assumption. No stochastic cohort is generated.
-"""
+"""VAL-SENSITIVITY: deterministic regional and autonomic sensitivity analysis."""
 
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
+from conftest import orthostatic_metrics
 
-TESTS_DIR = Path(__file__).resolve().parents[1]
-SRC = TESTS_DIR.parent / "src"
-for _p in (str(TESTS_DIR), str(SRC)):
-    if _p not in sys.path:
-        sys.path.insert(0, _p)
-
-from conftest import orthostatic_metrics  # noqa: E402
-
-from ocpe_disease_models.config import load_protocol  # noqa: E402
-from ocpe_disease_models.models.shared.model import (  # noqa: E402
-    ComputationalPatient,
-    ModelParameters,
-)
+from ocpe_disease_models.config import load_protocol
+from ocpe_disease_models.models.shared.model import ComputationalPatient, ModelParameters
+from ocpe_disease_models.validation.sensitivity import chronotropic_split_grid, local_sensitivity
 
 pytestmark = pytest.mark.sensitivity_uncertainty
 
-FIXTURE_PATH = TESTS_DIR.parent / "validation" / "fixtures" / "sensitivity_ranges.json"
+FIXTURE_PATH = Path(__file__).resolve().parents[2] / "validation" / "fixtures" / "sensitivity_ranges.json"
 DERIVATIVE_RTOL = 1e-6
-
 PARAMETERS = (
-    "gravity_pressure_offset",
-    "resistance_sympathetic_gain",
+    "lower_limb_gravity_pressure_offset",
+    "splanchnic_resistance_sympathetic_gain",
     "blood_volume_factor",
-    "peripheral_venous_compliance",
+    "lower_limb_venous_compliance",
 )
-
-
 _RUN_CACHE: dict[tuple, tuple[float, float]] = {}
 
 
@@ -52,10 +32,10 @@ def _metrics_for(overrides, use_cache=True):
     patient = ComputationalPatient(
         ModelParameters().replaced(overrides), phenotype_id="sensitivity-scenario"
     )
-    segments, _settings = load_protocol("head-up-tilt")
+    segments, _ = load_protocol("head-up-tilt")
     result = patient.simulate(segments, sample_interval=2.0, max_step=2.0)
     metrics = orthostatic_metrics(result)
-    _RUN_CACHE[key] = (metrics["hr_rise"], metrics["map_final"])
+    _RUN_CACHE[key] = (metrics["hr_rise_sustained"], metrics["map_final"])
     return _RUN_CACHE[key]
 
 
@@ -74,32 +54,29 @@ def fixture():
 @pytest.mark.parametrize("name", PARAMETERS)
 def test_derivatives_finite_reproducible_and_traceable(name, fixture):
     spec = fixture["parameters"][name]
-    step = fixture["parameters"][name]["step"]
-    d_rise_1, d_map_1 = _central_derivative(name, step, use_cache=False)
-    d_rise_2, d_map_2 = _central_derivative(name, step, use_cache=False)
-    # Deterministic: identical recomputation.
-    assert d_rise_1 == d_rise_2 and d_map_1 == d_map_2
-    # Finite.
-    assert abs(d_rise_1) < float("inf") and abs(d_map_1) < float("inf")
-    # Traceable: outputs actually change under the declared perturbation.
-    assert d_rise_1 != 0.0
-    # Match the exported baseline ranges.
-    assert d_rise_1 == pytest.approx(
-        spec["d_orthostatic_heart_rate_rise_bpm"], rel=DERIVATIVE_RTOL
+    step = spec["step"]
+    first = _central_derivative(name, step, use_cache=False)
+    second = _central_derivative(name, step, use_cache=False)
+    assert first == second
+    assert all(abs(value) < float("inf") for value in first)
+    assert first[0] != 0.0
+    assert first[0] == pytest.approx(
+        spec["d_orthostatic_heart_rate_sustained_rise_bpm"], rel=DERIVATIVE_RTOL
     )
-    assert d_map_1 == pytest.approx(
+    assert first[1] == pytest.approx(
         spec["d_mean_arterial_pressure_final_mmHg"], rel=DERIVATIVE_RTOL
     )
 
 
 def test_derivative_directions_match_mechanism_interpretation(fixture):
-    """Pooling (gravity offset) and compliance increase the HR rise; vascular
-    compensation (resistance gain) and volume reduce it."""
-    d = {n: _central_derivative(n, fixture["parameters"][n]["step"]) for n in PARAMETERS}
-    assert d["gravity_pressure_offset"][0] > 0.0
-    assert d["peripheral_venous_compliance"][0] > 0.0
-    assert d["resistance_sympathetic_gain"][0] < 0.0
-    assert d["blood_volume_factor"][0] < 0.0
+    derivatives = {
+        name: _central_derivative(name, fixture["parameters"][name]["step"])
+        for name in PARAMETERS
+    }
+    assert derivatives["lower_limb_gravity_pressure_offset"][0] > 0.0
+    assert derivatives["lower_limb_venous_compliance"][0] > 0.0
+    assert derivatives["splanchnic_resistance_sympathetic_gain"][0] < 0.0
+    assert derivatives["blood_volume_factor"][0] < 0.0
 
 
 def test_fixture_exports_ranges_and_assumptions(fixture):
@@ -113,17 +90,53 @@ def test_fixture_exports_ranges_and_assumptions(fixture):
 
 
 def test_heds_sensitivity_includes_increased_and_healthy_compliance(fixture):
-    """Reversal of the hEDS exploratory compliance assumption must be in scope."""
-    heds = fixture["parameters"]["peripheral_venous_compliance"]["heds_assumption"]
-    assert heds["healthy_value"] == 120.0
-    assert heds["assumed_heds_value"] == 140.0
-    rise_120, _ = _metrics_for({"peripheral_venous_compliance": 120.0})
-    rise_140, _ = _metrics_for({"peripheral_venous_compliance": 140.0})
-    assert rise_120 == pytest.approx(
-        heds["orthostatic_heart_rate_rise_bpm_at_120"], rel=DERIVATIVE_RTOL
+    heds = fixture["parameters"]["lower_limb_venous_compliance"]["heds_assumption"]
+    assert heds["healthy_value"] == 50.0
+    assert heds["assumed_heds_value"] == pytest.approx(58.333333333333336)
+    rise_healthy, _ = _metrics_for({"lower_limb_venous_compliance": 50.0})
+    rise_heds, _ = _metrics_for({"lower_limb_venous_compliance": 58.333333333333336})
+    assert rise_healthy == pytest.approx(
+        heds["orthostatic_heart_rate_sustained_rise_bpm_at_50"], rel=DERIVATIVE_RTOL
     )
-    assert rise_140 == pytest.approx(
-        heds["orthostatic_heart_rate_rise_bpm_at_140"], rel=DERIVATIVE_RTOL
+    assert rise_heds == pytest.approx(
+        heds["orthostatic_heart_rate_sustained_rise_bpm_at_58_333"], rel=DERIVATIVE_RTOL
     )
-    # Assumed direction: increased compliance increases the orthostatic HR rise.
-    assert rise_140 > rise_120
+    assert rise_heds > rise_healthy
+
+
+def test_local_analysis_covers_declared_shared_assumptions():
+    rows = local_sensitivity()
+    covered = {(row["protocol_id"], row["parameter"]) for row in rows}
+    required = {
+        ("head-up-tilt", "splanchnic_venous_compliance"),
+        ("head-up-tilt", "lower_limb_venous_compliance"),
+        ("head-up-tilt", "splanchnic_resistance_sympathetic_gain"),
+        ("head-up-tilt", "lower_limb_resistance_sympathetic_gain"),
+        ("head-up-tilt", "splanchnic_gravity_pressure_offset"),
+        ("head-up-tilt", "lower_limb_gravity_pressure_offset"),
+        ("head-up-tilt", "cardiac_sympathetic_time_constant"),
+        ("head-up-tilt", "vascular_sympathetic_time_constant"),
+        ("head-up-tilt", "vagal_time_constant"),
+        ("head-up-tilt", "cerebral_autoregulation_residual_slope"),
+        ("light-rhythmic-activity", "muscle_pump_stroke_volume"),
+        ("light-rhythmic-activity", "muscle_pump_frequency"),
+        ("light-rhythmic-activity", "muscle_pump_effectiveness"),
+        ("light-rhythmic-activity", "muscle_pump_half_volume"),
+        ("sustained-contraction", "sustained_contraction_resistance_gain"),
+    }
+    assert required <= covered
+    assert all(row["scenario_interpretation"].startswith("deterministic") for row in rows)
+
+
+def test_chronotropic_split_is_explicit_and_total_gain_is_fixed():
+    rows = chronotropic_split_grid()
+    assert [row["cardiac_sympathetic_fraction"] for row in rows] == [0.0, 0.5, 1.0]
+    assert len({row["total_chronotropic_gain"] for row in rows}) == 1
+    assert len({row["configuration_sha256"] for row in rows}) == 3
+    rises = [row["orthostatic_heart_rate_sustained_rise_bpm"] for row in rows]
+    assert max(rises) > min(rises)
+    for row in rows:
+        total = row["total_chronotropic_gain"]
+        assert row["overrides"]["heart_rate_cardiac_sympathetic_gain"] + row["overrides"][
+            "heart_rate_vagal_gain"
+        ] == pytest.approx(total)

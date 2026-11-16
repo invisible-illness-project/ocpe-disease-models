@@ -40,11 +40,11 @@ def pots_results(run_cached, healthy_tilt_result):
 def test_orthostatic_hr_rise_at_least_30_bpm(phenotype_id, pots_results):
     """VAL-POTS-*: orthostatic HR rise >= 30 bpm (adult scenario threshold)."""
     results, _ = pots_results
-    rise = results[phenotype_id]["hr_rise"]
+    peak = results[phenotype_id]["hr_rise"]
     sustained = results[phenotype_id]["hr_rise_sustained"]
-    assert rise >= POTS_RISE_CRITERION_BPM, (
-        f"{phenotype_id}: orthostatic HR rise {rise:.2f} bpm (sustained "
-        f"{sustained:.2f} bpm) is below the {POTS_RISE_CRITERION_BPM} bpm "
+    assert sustained >= POTS_RISE_CRITERION_BPM, (
+        f"{phenotype_id}: sustained orthostatic HR rise {sustained:.2f} bpm "
+        f"(peak {peak:.2f} bpm) is below the {POTS_RISE_CRITERION_BPM} bpm "
         "scenario threshold"
     )
 
@@ -72,8 +72,8 @@ def test_volume_conserved_not_disabled(phenotype_id, run_cached):
 # ------------------------------------------------------------- hypovolemic
 def test_hypovolemic_initial_stressed_volume_is_092_of_healthy(run_cached):
     result = run_cached("pots-hypovolemic", "head-up-tilt")
-    initial_total = float(result.states[0, 0] + result.states[1, 0] + result.states[2, 0])
-    healthy_total = 150.0 + 700.0 + 1200.0
+    initial_total = float(result.states[:4, 0].sum())
+    healthy_total = 150.0 + 700.0 + 700.0 + 500.0
     # The 0.92 factor is an assumed demonstration value, not a measured deficit.
     assert initial_total == pytest.approx(0.92 * healthy_total, rel=1e-9)
 
@@ -101,9 +101,9 @@ def test_mixed_configuration_has_explicit_mechanism_provenance():
 def test_mixed_hr_rise_at_least_30_bpm(run_cached, healthy_tilt_result):
     mixed = orthostatic_metrics(run_cached("pots-mixed", "head-up-tilt"))
     healthy = orthostatic_metrics(healthy_tilt_result)
-    assert mixed["hr_rise"] >= POTS_RISE_CRITERION_BPM, (
-        f"pots-mixed: orthostatic HR rise {mixed['hr_rise']:.2f} bpm below "
-        f"{POTS_RISE_CRITERION_BPM} bpm"
+    assert mixed["hr_rise_sustained"] >= POTS_RISE_CRITERION_BPM, (
+        f"pots-mixed: sustained orthostatic HR rise "
+        f"{mixed['hr_rise_sustained']:.2f} bpm below {POTS_RISE_CRITERION_BPM} bpm"
     )
     assert mixed["hr_rise"] > healthy["hr_rise"]
     assert mixed["map_final"] >= MAP_FLOOR_MMHG

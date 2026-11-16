@@ -32,9 +32,9 @@ MAP_FLOOR_MMHG = 70.0
 # --------------------------------------------------------- VAL-LC-AUTONOMIC
 def test_autonomic_subgroup_hr_rise_at_least_30_bpm(run_cached):
     metrics = orthostatic_metrics(run_cached("long-covid-autonomic", "head-up-tilt"))
-    assert metrics["hr_rise"] >= POTS_RISE_CRITERION_BPM, (
-        f"long-covid-autonomic HR rise {metrics['hr_rise']:.2f} bpm below "
-        f"{POTS_RISE_CRITERION_BPM} bpm"
+    assert metrics["hr_rise_sustained"] >= POTS_RISE_CRITERION_BPM, (
+        f"long-covid-autonomic sustained HR rise "
+        f"{metrics['hr_rise_sustained']:.2f} bpm below {POTS_RISE_CRITERION_BPM} bpm"
     )
 
 
@@ -99,5 +99,5 @@ def test_no_pots_like_hr_criterion_on_exertional_subgroup(run_cached, healthy_ti
     autonomic = orthostatic_metrics(run_cached("long-covid-autonomic", "head-up-tilt"))
     healthy = orthostatic_metrics(healthy_tilt_result)
     assert exertional["hr_rise"] < POTS_RISE_CRITERION_BPM
-    assert autonomic["hr_rise"] >= POTS_RISE_CRITERION_BPM
+    assert autonomic["hr_rise_sustained"] >= POTS_RISE_CRITERION_BPM
     assert exertional["hr_rise"] == pytest.approx(healthy["hr_rise"], abs=1.0)

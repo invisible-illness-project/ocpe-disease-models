@@ -1,5 +1,7 @@
 # Scientific and numerical methodology
 
+This document describes the current Stage 1 four-compartment, eleven-state implementation (model version 0.2.0). The reviewed design record, migration formulas, and per-phenotype fixed-point derivation are in `docs/stage1/revised-physiological-architecture.md`; the supporting evidence decisions are in `docs/stage1/literature-and-evidence-matrix.md`; the audited original three-compartment implementation is preserved unchanged in `docs/stage1/baseline-scientific-report.md` and `validation/baseline/stage0/`.
+
 ## Evidence-to-model workflow
 
 1. **Review each disease independently.** Primary clinical physiology, consensus documents, computational physiology, controlled studies, and reviews are distinguished. Historical JHS/EDS-HT/EDS-III terminology is retained when a cohort predates current hEDS criteria.
@@ -16,7 +18,7 @@
 The parameter registry uses these practical classes:
 
 - `derived_from_published_group_measurements`: a group-level measurement anchors a scenario, such as oxygen extraction 0.49 versus 0.78 in selected Long COVID exertional participants and controls.
-- `calibrated_or_assumed_requires_validation`: a value chosen to express a mechanism or temporal scenario, such as stressed-volume factor 0.92 or hEDS peripheral compliance 140 mL/mmHg.
+- `calibrated_or_assumed_requires_validation`: a value chosen to express a mechanism or temporal scenario, such as stressed-volume factor 0.92 or the hEDS lower-limb venous compliance of 58.3333 mL/mmHg (migrated from the original aggregated peripheral-compliance 140 mL/mmHg scenario as 140 × 50/120).
 - `assumed_computational_operating_point`: a healthy/reference numerical choice required to close the reduced-order equations.
 
 Supported ranges are deterministic sensitivity/scenario ranges, **not** confidence intervals, reference ranges, priors, or population distributions. No value becomes patient-specific because it resembles a published group mean. Important compartment mismatches are explicit: plasma volume is not total stressed volume; arterial pulse-wave velocity is not venous compliance; a normalized cerebral index is not measured volumetric CBF; normalized functional capacity is not VO2.
@@ -29,21 +31,26 @@ POTS configurations demonstrate that neuropathic, hyperadrenergic, and hypovolem
 
 ## Protocols and boundary conditions
 
-Protocols are piecewise-constant normalized inputs:
+Protocols are piecewise-constant normalized inputs. Each segment declares four independent inputs—`upright`, `exertion`, `rhythmic_muscle_activity`, and `sustained_muscle_contraction`—each bounded to [0, 1]. Metabolic exertion is never used as a proxy for either muscle input. The nine registered protocols are:
 
 - `resting-baseline`: stable supine/resting operation.
 - `head-up-tilt`: 120 s supine followed by 480 s upright.
 - `tilt-recovery`: upright stress followed by supine recovery.
+- `inactive-standing`: upright posture with no exertion and no muscle input.
+- `light-rhythmic-activity`: upright rhythmic muscle activity without metabolic exertion, isolating the mechanical pump.
+- `walking`: upright exertion combined with rhythmic muscle-pump activity, followed by supine recovery.
+- `sustained-contraction`: upright sustained muscle contraction without rhythmic pump activity, isolating the venous impediment.
 - `single-exertion-recovery`: baseline, a 20-minute normalized exertion bout, and 72-hour follow-up.
-- `repeated-exertion-recovery`: two bouts separated by 24 hours and subsequent recovery.
+- `repeated-exertion-recovery`: two 20-minute normalized bouts separated by 24 hours, with six-day post-day-2 follow-up (seven-day total duration).
 
-Initial stressed volumes are scaled by `blood_volume_factor`; all later volume exchange is conservative. Sympathetic, exertion, delayed stress, and PEM start at their declared reference values. Flows are clamped to nonnegative values. HR and extraction are bounded for numerical and physiological safety. These clamps are modeling assumptions and can conceal regimes outside the intended operating domain; failed pressure regimes are reported rather than clipped into plausibility.
+All four initial stressed volumes are scaled by `blood_volume_factor`; all later volume exchange is conservative across the four compartments. Uniform volume scaling alone does not preserve the exact supine fixed point, so each phenotype derives its regional resistances, pressure setpoint, and initial cerebral-flow index from the configured volumes and compliances; all ten configurations are tested to be exact supine fixed points. The three autonomic effector states, exertion, delayed stress, and PEM start at their declared reference values (0.5 for each autonomic state, 0 otherwise). Flows are clamped to nonnegative values. HR and extraction are bounded for numerical and physiological safety. These clamps are modeling assumptions and can conceal regimes outside the intended operating domain; failed pressure regimes are reported rather than clipped into plausibility.
 
 ## Solver and numerical checks
 
-DOP853 integrates the eight-state ODE system. Protocol YAML records output interval, maximum internal step, `rtol`, and `atol`. The mathematical layer checks:
+DOP853 integrates the eleven-state ODE system. Protocol YAML records output interval, maximum internal step, `rtol`, and `atol`. The mathematical layer checks:
 
-- exact instantaneous volume-balance cancellation and tight simulated volume drift;
+- exact instantaneous four-volume balance cancellation (RHS telescoping) and tight simulated volume drift, including walking and sustained-contraction protocols;
+- the exact supine fixed point of every registered configuration;
 - finite states and outputs;
 - convergence under tighter tolerances and smaller steps;
 - stable resting behavior and meaningful response directionality.
@@ -54,22 +61,25 @@ Numerical convergence verifies approximation to the implemented equations. It sa
 
 Empirical tests use predeclared broad scenario bands around published group-level observations:
 
-- adult POTS HR-rise criterion, with MAP reported separately;
+- the adult POTS HR-rise criterion applied to the **sustained** response—mean HR over the final 120 s of the upright window minus the supine baseline—with the peak first-300-s rise and MAP reported separately;
 - delayed PEM timing rather than immediate fatigue;
-- heterogeneous repeated-CPET capacity reductions;
+- heterogeneous repeated-CPET capacity reductions over the seven-day repeated-exertion protocol;
 - ME/CFS cerebral-flow group means and recovery limitations;
 - selected invasive-CPET oxygen-extraction findings.
+
+Healthy orthostatic soft anchors are reported explicitly rather than tuned: the early cardiac-output reduction is approximately 5.64%, **below** the broad 10–30% literature-derived plausibility band, and is retained as a warning-level negative result and structural limitation, not converted into a pass. Caudal stressed-volume accumulation is approximately 336.55 mL, inside the broad 300–900 mL soft band. Separately, the healthy end-tilt cerebral-flow-index reduction is approximately 0.003%, outside the broad 3–11% soft band around the reported 7% control reduction; heart-level MAP rises approximately 17.4 mmHg to 117.4 mmHg in that scenario, leaving the pressure-only proxy almost unchanged. This control-side miss emits a second explicit warning. The ME/CFS 15–35% scenario-band assertion is unchanged. None of these bands is a hard fitted target.
 
 These are plausibility comparisons, not fitted individual data, held-out patient predictions, diagnostic sensitivity/specificity, or prospective external validation. Overlapping evidence used for calibration is not relabeled as independent validation.
 
 ## Sensitivity and uncertainty
 
-Local one-at-a-time perturbations calculate centered output changes and normalized sensitivities where a nonzero baseline permits them. Two small full factorial grids examine interacting assumptions:
+Local one-at-a-time perturbations calculate centered output changes and normalized sensitivities where a nonzero baseline permits them. The deterministic sensitivity export contains **42 local scenarios**, **18 grid scenarios**, and **3 chronotropic-split scenarios**:
 
-- hEDS peripheral compliance × gravity offset;
-- ME/CFS delayed-stress constant × PEM onset constant.
+- Local perturbations cover regional compliances, resistances, sympathetic gains, gravity offsets, blood-volume factor, the three autonomic time constants, the autoregulation residual slope (around the neuropathic POTS scenario), the hEDS lower-limb venous compliance, the four muscle-pump parameters (healthy light rhythmic activity), and the sustained-contraction resistance gain (healthy sustained contraction).
+- Two small full factorial grids examine interacting assumptions: hEDS lower-limb venous compliance × lower-limb gravity offset (9 scenarios), and ME/CFS delayed-stress constant × PEM onset constant (9 scenarios).
+- The chronotropic-split scenarios hold total chronotropic gain fixed and vary the cardiac-sympathetic fraction over 0, 0.5, and 1, demonstrating that the split changes the peak but not the sustained HR rise and remains unidentified by current evidence.
 
-Every row has a configuration SHA and is labeled a deterministic scenario with no probability. The analysis retains all outputs, including hEDS combinations that fail the MAP screening threshold. It does not perform patient-cohort simulation, Bayesian inference, global identifiability, or population uncertainty quantification.
+Every row has a configuration SHA and is labeled a deterministic scenario with no probability. **No scenario in the current grids ends below the 70 mmHg MAP screening threshold**—the hEDS grid spans final MAP values of roughly 115–117.7 mmHg. The pre-revision hEDS grid did contain three below-70-mmHg failures (minimum approximately 37.84 mmHg); those remain preserved as historical negative results under `validation/baseline/stage0/` and in the legacy audit, and they continue to motivate the M2 maturity of the hEDS compliance scenario. The analysis does not perform patient-cohort simulation, Bayesian inference, global identifiability, or population uncertainty quantification.
 
 ## Observation mapping
 

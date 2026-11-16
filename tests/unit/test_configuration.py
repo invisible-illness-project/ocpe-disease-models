@@ -43,6 +43,10 @@ ALL_PROTOCOL_IDS = (
     "resting-baseline",
     "head-up-tilt",
     "tilt-recovery",
+    "inactive-standing",
+    "light-rhythmic-activity",
+    "walking",
+    "sustained-contraction",
     "single-exertion-recovery",
     "repeated-exertion-recovery",
 )
@@ -68,6 +72,19 @@ def test_protocol_loads_deterministically(protocol_id):
     for segment in segments_a:
         segment.validate()  # configured protocols must be valid
     assert settings_a["protocol_id"] == protocol_id
+
+
+def test_every_protocol_file_is_registered():
+    root = repository_root()
+    registry = yaml.safe_load(
+        (root / "simulations" / "simulation_registry.yaml").read_text(encoding="utf-8")
+    )
+    registered = {entry["id"]: entry["config"] for entry in registry["protocols"]}
+    for path in (root / "simulations").rglob("*.yaml"):
+        if path.name == "simulation_registry.yaml":
+            continue
+        assert path.stem in registered, f"unregistered protocol {path}"
+        assert registered[path.stem] == str(path.relative_to(root))
 
 
 # ----------------------------------------------------------------- round-trip
@@ -102,7 +119,7 @@ def test_unknown_parameter_fails_explicitly():
 
 def test_unknown_parameter_in_replacement_fails_explicitly():
     with pytest.raises(ValueError, match="Unknown model parameters"):
-        ModelParameters().replaced({"heart_rate_base": 55.0, "bogus": 2.0})
+        ModelParameters().replaced({"heart_rate_rest": 55.0, "bogus": 2.0})
 
 
 def test_unknown_phenotype_fails_explicitly():

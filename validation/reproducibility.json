@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "execution_date": "2026-11-16",
-  "repository_commit": "e87401ddd435d2fd1d5e15420308086051229851",
+  "execution_date": "2026-11-17",
+  "repository_commit": "pending-stage1-validation",
   "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
   "upstream_ocpe_modified": false,
-  "model_version": "0.1.0",
+  "model_version": "0.2.0",
   "environment": {
     "python": "3.12.12",
     "platform": "Linux-6.18.44-x86_64-with-glibc2.36",
@@ -21,7 +21,7 @@
     "python_matrix_status": "Local execution used Python 3.12.12; CI is configured for 3.11 and 3.12, but remote matrix results are not claimed"
   },
   "commands": [
-    "ruff check .",
+    "python -m ruff check .",
     "python -m pytest -q",
     "python scripts/audit_traceability.py --root . --strict",
     "python -m ocpe validate ocpe/packages/disease-models --strict",
@@ -30,330 +30,28 @@
     "python scripts/run_validation.py --no-analysis"
   ],
   "results": {
-    "full_suite": "231 passed",
-    "overall_status": "PASS",
-    "layers": [
-      {
-        "layer": "software",
-        "status": "PASS",
-        "pytest_summary": "104 passed, 127 deselected in 51.95s"
-      },
-      {
-        "layer": "mathematical",
-        "status": "PASS",
-        "pytest_summary": "22 passed, 209 deselected in 5.75s"
-      },
-      {
-        "layer": "physiological",
-        "status": "PASS",
-        "pytest_summary": "16 passed, 215 deselected in 2.13s"
-      },
-      {
-        "layer": "disease_phenotype",
-        "status": "PASS",
-        "pytest_summary": "35 passed, 196 deselected in 47.24s"
-      },
-      {
-        "layer": "empirical",
-        "status": "PASS",
-        "pytest_summary": "9 passed, 222 deselected in 25.28s"
-      },
-      {
-        "layer": "sensitivity_uncertainty",
-        "status": "PASS",
-        "pytest_summary": "11 passed, 220 deselected in 47.17s"
-      },
-      {
-        "layer": "scientific_traceability",
-        "status": "PASS",
-        "pytest_summary": "39 passed, 192 deselected in 4.45s"
-      }
-    ],
+    "full_suite": "PENDING final source-commit run",
+    "overall_status": "PENDING",
+    "pre_finalization_working_tree": "Seven layers passed before final commit binding; two soft-anchor warnings are disclosed",
     "strict_traceability": "0 errors, 0 warnings, 0 infos",
     "strict_ocpe": "0 errors, 0 warnings",
     "ruff": "PASS",
-    "local_sensitivity_scenarios": 14,
+    "local_sensitivity_scenarios": 42,
     "uncertainty_grid_scenarios": 18,
-    "heds_failed_physiological_regimes": 3
+    "chronotropic_split_scenarios": 3,
+    "healthy_early_co_soft_anchor": "WARNING: approximately 5.64% reduction versus broad 10-30% plausibility band",
+    "healthy_cfi_soft_anchor": "WARNING: approximately 0.003% end-tilt reduction versus broad 3-11% disclosure band around the reported 7% control finding"
   },
-  "demonstrations": [
-    {
-      "artifact": "examples/cross_disease_comparison/output/eds-heds-vascular/result.json",
-      "phenotype_id": "eds-heds-vascular",
-      "configuration_sha256": "cd891485b22f457fe3cd37bb0aaca4b31d6a1c19289b6acdc69a93fa4324af76",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "eca6b465474f69db914a9bde7ba7da285bbbdc6a3f8bb2be5e77ef00b7b1c1bb",
-      "trace_npz_sha256": "91e5c530d80a2cb4fe18042bab719f573a4527eee2b8dd9d1adc494021a4862c",
-      "observations_json_sha256": "4151f7fd7a7bb480fb2d6cf638df2d3a8ec008d8c97942873f43c1a9b6edb5bc"
-    },
-    {
-      "artifact": "examples/cross_disease_comparison/output/healthy-reference/result.json",
-      "phenotype_id": "healthy-reference",
-      "configuration_sha256": "3e04c95bbd461ab5710af00f52a07d969fc22f190e07bb75ddb23e4f914eaf3b",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "ae2ef38bb6211908d76145806ef81f491fb9f7867294fd5814ba968adaa32556",
-      "trace_npz_sha256": "c0fd3fef1e0765ae1e16e6679bd4e47b9abafd7bcba8de3ad64e512a0c6a0007",
-      "observations_json_sha256": "24c739cc66f8f6281bbf3b34fbd9773eb3758fa76599073dfc60f799d7af211b"
-    },
-    {
-      "artifact": "examples/cross_disease_comparison/output/long-covid-autonomic/result.json",
-      "phenotype_id": "long-covid-autonomic",
-      "configuration_sha256": "19ea32343d1aa249eb2c59d665f955c5cc1229e4b7c8b63e933655ffd0f51b9d",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "0c92f8c29c5cfa83cee89d88b754bc31abc69cff4d8705cc3b316b5dee682dfe",
-      "trace_npz_sha256": "d476f4746733ba888fb137d03b630e68be018283bbd85e4c084d24910ee8b987",
-      "observations_json_sha256": "373c6b6449de9342b6d089faee42614d3a8f628bdcaa676efdda16b78f7055f1"
-    },
-    {
-      "artifact": "examples/cross_disease_comparison/output/mecfs-pem/result.json",
-      "phenotype_id": "mecfs-pem",
-      "configuration_sha256": "5fb4436f647c2575da0c315aeb57a86fe927af8a3686763ffd3dc1ffda59531d",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "7da6d2a828344cb3e3688bcae381457aeceec134dff4b519ca4f78ee85eb5804",
-      "trace_npz_sha256": "17082b1b451b6a05bf865a6af24411d15130def97c849654903562332a6542ab",
-      "observations_json_sha256": "3de550cb2981492c133b445a087071a5501388387969685fbe5859d6f01a8786"
-    },
-    {
-      "artifact": "examples/cross_disease_comparison/output/pots-neuropathic/result.json",
-      "phenotype_id": "pots-neuropathic",
-      "configuration_sha256": "7aaa6598769d8e12195cf8989ce761f7804cd5b0d3f2108fdb7d7d54af40d260",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "a71355b911c07896e7608cf0f77e6ab2d24b677e63555b5940647e99ad2b3886",
-      "trace_npz_sha256": "3c0fcfec03454b00e99d513969a4b9c865b0007509475470469766c7b349c53d",
-      "observations_json_sha256": "900fe451886fff9e12706b5128793b14c0f1eed416997881635f726fd5e1dda0"
-    },
-    {
-      "artifact": "examples/eds_vascular_mechanics/output/eds-heds-vascular/result.json",
-      "phenotype_id": "eds-heds-vascular",
-      "configuration_sha256": "cd891485b22f457fe3cd37bb0aaca4b31d6a1c19289b6acdc69a93fa4324af76",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "eca6b465474f69db914a9bde7ba7da285bbbdc6a3f8bb2be5e77ef00b7b1c1bb",
-      "trace_npz_sha256": "91e5c530d80a2cb4fe18042bab719f573a4527eee2b8dd9d1adc494021a4862c",
-      "observations_json_sha256": "4151f7fd7a7bb480fb2d6cf638df2d3a8ec008d8c97942873f43c1a9b6edb5bc"
-    },
-    {
-      "artifact": "examples/eds_vascular_mechanics/output/healthy-reference/result.json",
-      "phenotype_id": "healthy-reference",
-      "configuration_sha256": "3e04c95bbd461ab5710af00f52a07d969fc22f190e07bb75ddb23e4f914eaf3b",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "ae2ef38bb6211908d76145806ef81f491fb9f7867294fd5814ba968adaa32556",
-      "trace_npz_sha256": "c0fd3fef1e0765ae1e16e6679bd4e47b9abafd7bcba8de3ad64e512a0c6a0007",
-      "observations_json_sha256": "24c739cc66f8f6281bbf3b34fbd9773eb3758fa76599073dfc60f799d7af211b"
-    },
-    {
-      "artifact": "examples/healthy_baseline/output/result.json",
-      "phenotype_id": "healthy-reference",
-      "configuration_sha256": "b6eacfebb5d32c84cff122aacdceadf704ba7f1643e225f2e86e6ccc68468c2f",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "9d1b780d5c5f3151787b8fde4c2448270ed59589a6b307852acbeb9efd72aaf0",
-      "trace_npz_sha256": "13cee315c7798ebea5854b0bfce694e3b78217c13f8468e5f8f608efa15eb8e8",
-      "observations_json_sha256": "3a429717bd53b5aa9992675e40087e5b94c4c90ee95897afe44cec0e599edadc"
-    },
-    {
-      "artifact": "examples/long_covid_autonomic_phenotype/output/healthy-reference/result.json",
-      "phenotype_id": "healthy-reference",
-      "configuration_sha256": "3e04c95bbd461ab5710af00f52a07d969fc22f190e07bb75ddb23e4f914eaf3b",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "ae2ef38bb6211908d76145806ef81f491fb9f7867294fd5814ba968adaa32556",
-      "trace_npz_sha256": "c0fd3fef1e0765ae1e16e6679bd4e47b9abafd7bcba8de3ad64e512a0c6a0007",
-      "observations_json_sha256": "24c739cc66f8f6281bbf3b34fbd9773eb3758fa76599073dfc60f799d7af211b"
-    },
-    {
-      "artifact": "examples/long_covid_autonomic_phenotype/output/long-covid-autonomic/result.json",
-      "phenotype_id": "long-covid-autonomic",
-      "configuration_sha256": "19ea32343d1aa249eb2c59d665f955c5cc1229e4b7c8b63e933655ffd0f51b9d",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "0c92f8c29c5cfa83cee89d88b754bc31abc69cff4d8705cc3b316b5dee682dfe",
-      "trace_npz_sha256": "d476f4746733ba888fb137d03b630e68be018283bbd85e4c084d24910ee8b987",
-      "observations_json_sha256": "373c6b6449de9342b6d089faee42614d3a8f628bdcaa676efdda16b78f7055f1"
-    },
-    {
-      "artifact": "examples/mecfs_post_exertional_recovery/output/healthy-reference/result.json",
-      "phenotype_id": "healthy-reference",
-      "configuration_sha256": "a46600a2cdd4ac3c3f8dde7efaa5ed168e9a41f0828d17fa6b8b09f2774d4d0c",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 600.0,
-        "max_step": 300.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "3e2f0565f0d87bb3e643bbc5cbe14ae78d224390175e1d37efbacfd153bd7c12",
-      "trace_npz_sha256": "96aef51a7470683b1dc22a22c7c2f4dc7023303526e937c2c74656d839f9d8c5",
-      "observations_json_sha256": "4d2e284a792fdd9722f132b4999e3cb48ad77a0557334f37c4e17dc8636035f1"
-    },
-    {
-      "artifact": "examples/mecfs_post_exertional_recovery/output/mecfs-pem/result.json",
-      "phenotype_id": "mecfs-pem",
-      "configuration_sha256": "3f1d138e86bf8917605b195b71688bca8683b7003e22f1ff9733a1c49a7e79bd",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 600.0,
-        "max_step": 300.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "c85052bfe870172af4d4220c9fa2f003ccfa2d841466450c79e07dff5dfe0bca",
-      "trace_npz_sha256": "4fd0cfc4857a9b8dca7097f43ae5bcc074deadec11ad6858b66f8ccacfaa2118",
-      "observations_json_sha256": "6899d07418c549206c369ace0069591346369a814f64a544e80c52a86fe8e692"
-    },
-    {
-      "artifact": "examples/pots_orthostatic_response/output/healthy-reference/result.json",
-      "phenotype_id": "healthy-reference",
-      "configuration_sha256": "3e04c95bbd461ab5710af00f52a07d969fc22f190e07bb75ddb23e4f914eaf3b",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "ae2ef38bb6211908d76145806ef81f491fb9f7867294fd5814ba968adaa32556",
-      "trace_npz_sha256": "c0fd3fef1e0765ae1e16e6679bd4e47b9abafd7bcba8de3ad64e512a0c6a0007",
-      "observations_json_sha256": "24c739cc66f8f6281bbf3b34fbd9773eb3758fa76599073dfc60f799d7af211b"
-    },
-    {
-      "artifact": "examples/pots_orthostatic_response/output/pots-hyperadrenergic/result.json",
-      "phenotype_id": "pots-hyperadrenergic",
-      "configuration_sha256": "528181f4c3cbf9bb6b2f7d7b6065b7fe01c8e6e871c21305308ecaff8deacb11",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "3a1e7d9ab4e2d2882c41ac87ac21ca4ec6e2555ad68568dbbf03b9fd13e25014",
-      "trace_npz_sha256": "a8073863342f55f41edf2514ef5d2e4fdc17d82083313ed4eb66caa21e11b26b",
-      "observations_json_sha256": "be9a49079c570c035f554b2bab1cc2474d36193b1213e382fd316a5d3b0019b1"
-    },
-    {
-      "artifact": "examples/pots_orthostatic_response/output/pots-hypovolemic/result.json",
-      "phenotype_id": "pots-hypovolemic",
-      "configuration_sha256": "00c596947cc6cfa7b680a4eef27ed5e76dd40cb81cbe19e90fd2dc70f2e3d6cc",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "1493c693e4c0eb74b46efe5c9cabf6903cdb05dc24ecbd704ee9663ceaf5844e",
-      "trace_npz_sha256": "67194b07ad25bf69e45298187028ddb2a9682321e77c2bda00bcd56c0448ca0a",
-      "observations_json_sha256": "f321e92a40d9115cf8778455171878f27f5d55213248bd839072c3be768b8a46"
-    },
-    {
-      "artifact": "examples/pots_orthostatic_response/output/pots-neuropathic/result.json",
-      "phenotype_id": "pots-neuropathic",
-      "configuration_sha256": "7aaa6598769d8e12195cf8989ce761f7804cd5b0d3f2108fdb7d7d54af40d260",
-      "solver": {
-        "method": "DOP853",
-        "sample_interval": 2.0,
-        "max_step": 2.0,
-        "rtol": 1e-07,
-        "atol": 1e-08,
-        "seed": 0
-      },
-      "result_json_sha256": "a71355b911c07896e7608cf0f77e6ab2d24b677e63555b5940647e99ad2b3886",
-      "trace_npz_sha256": "3c0fcfec03454b00e99d513969a4b9c865b0007509475470469766c7b349c53d",
-      "observations_json_sha256": "900fe451886fff9e12706b5128793b14c0f1eed416997881635f726fd5e1dda0"
-    }
-  ],
-  "artifact_hashes": {
-    "validation/reports/validation-report.json": "252fb1da115bb7592416fe9c66cb23e634b03785c12607437e3aed2dcdfc0809",
-    "validation/reports/validation-report.md": "466d5098c7feb92ee162856e4807c11b6a71fa534baa38ecbf381aee62099e96",
-    "validation/traceability/audit/traceability_report.json": "0b273e1ecddbbd61025048b966c0cfc89227c1628cdb5a8233260a92e481aa62",
-    "validation/traceability/audit/traceability_report.md": "f082c8aec68c55c72867f22ffad781415a88e6ea6fde7e4c748277a98bf69fd4",
-    "validation/sensitivity/local_sensitivity.json": "09f2108b7b10abcc8df669021aa2d0accd9d65ff778879f7d8f5654faa6bf0b3",
-    "validation/sensitivity/local_sensitivity.csv": "8d63165805d13fcc1b32fab26124708f63fe005b01e5c06065c0415d258928aa",
-    "validation/sensitivity/uncertainty_grid.json": "21563ed00d09e69980cb75e8246151bcfae12966e9dbbeb2b6f575aedc74bccb",
-    "validation/sensitivity/uncertainty_grid.csv": "68b3cd265531a2f4258367228876e2a9ea45952e444f1e3b894ee0061ce99349",
-    "validation/sensitivity/sensitivity-report.md": "a4ef50b83f611e6fc040a9abc393b3f7c7fc27e92ed58b963196e437bba462be",
-    "validation/sensitivity/figure.png": "e3a19e2f2af28aec4bc0c34dfb7e327ca81815e4c6f369187c9cd4a516ba97b3",
-    "validation/validation_registry.yaml": "324073e892d8a0cf34c1c7f285ebe24e2c13c71335d86980971e82f6343b2b48"
-  },
-  "reproducibility_interpretation": "Hashes bind small curated artifacts to the source commit, configuration, solver and dependency environment. They do not establish physiological or clinical validity.",
+  "demonstrations": [],
+  "artifact_hashes": {},
+  "reproducibility_interpretation": "This pending manifest reserves the release-binding contract. Final commit, demonstration, and artifact hashes will be filled only after the final source/configuration commit has passed the complete validation cycle. Hashes bind curated artifacts to source, configuration, solver, and dependency environment; they do not establish physiological or clinical validity.",
   "seed_interpretation": "Seed 0 is recorded where applicable; simulations and scenario grids are deterministic and contain no synthetic patients or stochastic cohort.",
   "limitations": [
     "Source checkout or OCPE_DM_ROOT is required for configuration and registry discovery.",
     "Trailing numerical digits may vary across platforms and dependency builds.",
-    "hEDS failed pressure regimes remain visible and are not valid phenotypes.",
+    "Healthy early-CO and healthy control-side CFI soft-anchor misses remain disclosed.",
+    "The ME/CFS PEM scenario crosses 0.05 approximately 5.7 hours after the day-1 bout ends, earlier than the 12-48-hour daily-activity onset window but within reported post-CPET onset within 24 hours.",
     "No independent clinical validation, wearable sensor/error model, Stage 2 dataset, or Stage 3 predictor is provided."
   ],
-  "commit_binding_policy": "repository_commit and last_validated_commit identify the final tested source/configuration commit. The subsequent release-record commit adds executed reports, regenerated curated outputs, this manifest, registry results, and handoff documentation; it is not represented as a source revision tested before it existed. Any later source or configuration change requires a new validation cycle."
+  "commit_binding_policy": "repository_commit and last_validated_commit will identify the final tested source/configuration commit. The subsequent release-record commit will add executed reports, regenerated curated outputs, this manifest, registry results, and handoff documentation; it will not be represented as a source revision tested before it existed. Any later source or configuration change requires a new validation cycle."
 }

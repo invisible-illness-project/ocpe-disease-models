@@ -565,3 +565,570 @@ references:
     relevant_findings: Provides cautionary evidence against assuming a large arterial-stiffness abnormality in POTS plus EDS-III.
     limitations: Very small historical-diagnosis sample; arterial stiffness is not venous capacitance and small venous effects cannot be excluded.
     diseases: [hEDS, POTS]
+  - id: REF-TANEJA-2007
+    title: Differential effects of lower body negative pressure and upright tilt on splanchnic blood volume
+    authors:
+    - I. Taneja
+    - C. Moran
+    - M. S. Medow
+    - J. L. Glover
+    - L. D. Montgomery
+    - J. M. Stewart
+    year: 2007
+    journal: American Journal of Physiology-Heart and Circulatory Physiology
+    volume: '292'
+    pages: H1420-H1426
+    doi: 10.1152/ajpheart.01096.2006
+    url: https://doi.org/10.1152/ajpheart.01096.2006
+    study_type: Small controlled human physiology study
+    measured_variables:
+    - segmental splanchnic blood volume
+    - thoracic impedance
+    - heart rate
+    - blood pressure
+    relevant_findings: Splanchnic segmental volume increased during 70-degree upright tilt but decreased
+      during lower-body negative pressure; tilt and LBNP are not interchangeable splanchnic stressors.
+    limitations: Impedance-based measurements are relative, not absolute regional blood volumes; small cohort.
+    diseases:
+    - POTS
+  - id: REF-STEWART-2004
+    title: Regional blood volume and peripheral blood flow in postural tachycardia syndrome
+    authors:
+    - J. M. Stewart
+    - L. D. Montgomery
+    year: 2004
+    journal: American Journal of Physiology-Heart and Circulatory Physiology
+    volume: '287'
+    pages: H1319-H1327
+    pmcid: PMC4515760
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC4515760/
+    study_type: Controlled adolescent tilt physiology study
+    measured_variables:
+    - regional blood volume
+    - peripheral blood flow
+    - heart rate
+    - blood pressure
+    relevant_findings: Adolescent POTS and control tilt data support region-specific rather than uniform
+      pooling, including splanchnic filling on upright tilt.
+    limitations: Adolescent values are not healthy-adult parameter defaults; impedance estimates are relative.
+    diseases:
+    - POTS
+  - id: REF-SMITH-1994
+    title: Hemodynamic response to the upright posture
+    authors:
+    - J. J. Smith
+    - C. M. Porth
+    - M. Erickson
+    year: 1994
+    journal: Journal of Clinical Pharmacology
+    volume: '34'
+    pages: 375-386
+    pmid: '8089249'
+    url: https://pubmed.ncbi.nlm.nih.gov/8089249/
+    study_type: Authoritative human physiology synthesis
+    measured_variables:
+    - central blood volume
+    - cardiac output
+    - stroke volume
+    - heart rate
+    relevant_findings: Synthesizes roughly 500-800 mL redistribution below the diaphragm and an approximately
+      20% early cardiac-output reduction on standing.
+    limitations: Protocol and population differences preclude using these as exact model targets; used only
+      as a broad plausibility anchor.
+    diseases:
+    - shared
+  - id: REF-ROWELL-1972
+    title: Importance of the splanchnic vascular bed in human blood pressure regulation
+    authors:
+    - L. B. Rowell
+    - J. M. R. Detry
+    - J. R. Blackmon
+    - C. Wyss
+    year: 1972
+    journal: Journal of Applied Physiology
+    volume: '32'
+    pages: 213-220
+    doi: 10.1152/jappl.1972.32.2.213
+    url: https://doi.org/10.1152/jappl.1972.32.2.213
+    study_type: Controlled invasive human physiology study
+    measured_variables:
+    - splanchnic blood volume
+    - arterial pressure
+    - cardiac output
+    relevant_findings: Pharmacologic splanchnic vasoconstriction measurably defends arterial pressure, supporting
+      a distinct splanchnic capacitance and resistance bed.
+    limitations: Small invasive cohort; absolute awake-human splanchnic compliance and resistance values
+      are not supplied.
+    diseases:
+    - shared
+  - id: REF-TANI-2000
+    title: Splanchnic-mesenteric capacitance bed in the postural tachycardia syndrome (POTS)
+    authors:
+    - H. Tani
+    - et al.
+    year: 2000
+    journal: Autonomic Neuroscience
+    volume: '86'
+    pages: 107-113
+    pmid: '11269915'
+    url: https://pubmed.ncbi.nlm.nih.gov/11269915/
+    study_type: Controlled clinical physiology study
+    measured_variables:
+    - splanchnic-mesenteric capacitance
+    - orthostatic vital signs
+    relevant_findings: Supports exaggerated splanchnic pooling in a POTS subgroup rather than a universal
+      disease value.
+    limitations: Selected subgroup; regional capacitance estimates do not identify lumped whole-model parameters.
+    diseases:
+    - POTS
+  - id: REF-PERSICHINI-2022
+    title: 'Venous return and mean systemic filling pressure: physiology and clinical applications'
+    authors:
+    - R. Persichini
+    - et al.
+    year: 2022
+    journal: Critical Care
+    volume: '26'
+    pages: '150'
+    doi: 10.1186/s13054-022-04024-x
+    url: https://doi.org/10.1186/s13054-022-04024-x
+    study_type: Physiological review with human bedside estimates
+    measured_variables:
+    - mean systemic filling pressure
+    - venous return
+    - right atrial pressure
+    relevant_findings: Human bedside estimates support the importance of small filling-pressure gradients
+      driving venous return.
+    limitations: Bedside MSFP estimates remain model-dependent; not a direct calibration source.
+    diseases:
+    - shared
+  - id: REF-MAGDER-2016
+    title: Volume and its relationship to cardiac output and venous return
+    authors:
+    - S. Magder
+    year: 2016
+    journal: Critical Care
+    volume: '20'
+    pages: '271'
+    doi: 10.1186/s13054-016-1438-7
+    url: https://doi.org/10.1186/s13054-016-1438-7
+    study_type: Narrative physiological synthesis
+    measured_variables:
+    - stressed volume
+    - unstressed volume
+    - mean systemic filling pressure
+    relevant_findings: Clarifies the stressed/unstressed volume distinction underlying pressure-gradient
+      venous return; the 2017 erratum accompanies use.
+    limitations: Human regional stressed-volume fractions are inferred, not measured; no direct regional
+      parameter values.
+    diseases:
+    - shared
+  - id: REF-ROTHE-1983
+    title: Reflex control of veins and vascular capacitance
+    authors:
+    - C. F. Rothe
+    year: 1983
+    journal: Physiological Reviews
+    volume: '63'
+    pages: 1281-1342
+    pmid: '6361810'
+    url: https://pubmed.ncbi.nlm.nih.gov/6361810/
+    study_type: Authoritative review
+    measured_variables:
+    - venous capacitance
+    - venomotor reflexes
+    relevant_findings: Authoritative venous-capacitance review supporting explicit venous capacitance compartments.
+    limitations: Much quantitative venomotor evidence is animal-derived and is not promoted to human parameter
+      truth; no venomotor gain is implemented.
+    diseases:
+    - shared
+  - id: REF-GUYTON-1955
+    title: Effect of mean circulatory filling pressure and other peripheral circulatory factors on cardiac
+      output
+    authors:
+    - A. C. Guyton
+    - A. W. Lindsey
+    - B. N. Kaufmann
+    year: 1955
+    journal: American Journal of Physiology
+    volume: '180'
+    pages: 463-468
+    doi: 10.1152/ajplegacy.1955.180.3.463
+    url: https://doi.org/10.1152/ajplegacy.1955.180.3.463
+    study_type: Classical animal experimental study (right-heart bypass)
+    measured_variables:
+    - mean circulatory filling pressure
+    - venous return
+    - cardiac output
+    relevant_findings: Origin of the mean-filling-pressure analytical framework for pressure-gradient venous
+      return.
+    limitations: Classical dog values are explicitly indirect for human regional parameter values.
+    diseases:
+    - shared
+  - id: REF-GONZALEZALONSO-2008
+    title: 'Haemodynamic responses to exercise, ATP infusion and thigh compression in humans: insight into
+      the role of muscle mechanisms on cardiovascular function'
+    authors:
+    - J. Gonzalez-Alonso
+    - et al.
+    year: 2008
+    journal: Journal of Physiology
+    volume: '586'
+    pages: 2405-2417
+    doi: 10.1113/jphysiol.2008.152058
+    url: https://doi.org/10.1113/jphysiol.2008.152058
+    study_type: Controlled human exercise physiology study
+    measured_variables:
+    - cardiac output
+    - leg blood flow
+    - heart rate
+    relevant_findings: Small-muscle-mass exercise cardiac output can rise without obligatory muscle-pump
+      action; the pump is not the sole exercise cardiac-output mechanism.
+    limitations: One-legged exercise cannot be generalized to every upright activity; contested and generalizability-limited.
+    diseases:
+    - shared
+  - id: REF-ROWELL-1986
+    title: 'Human Circulation: Regulation During Physical Stress'
+    authors:
+    - L. B. Rowell
+    year: 1986
+    journal: Oxford University Press
+    isbn: 0-19-504075-4
+    study_type: Authoritative human physiology monograph
+    measured_variables:
+    - regional blood flow
+    - venous return
+    - muscle pump
+    relevant_findings: Classical synthesis supporting the rhythmic skeletal-muscle pump, regional vascular
+      distinctions, and flow impediment during sustained contractions.
+    limitations: Quantitative values require consultation of the underlying experiments rather than blind
+      transfer.
+    diseases:
+    - shared
+  - id: REF-ROWELL-1993
+    title: Human Cardiovascular Control
+    authors:
+    - L. B. Rowell
+    year: 1993
+    journal: Oxford University Press
+    study_type: Authoritative human physiology monograph
+    measured_variables:
+    - cardiovascular control
+    - orthostatic responses
+    - exercise responses
+    relevant_findings: Companion synthesis for muscle-pump, sustained-contraction and regional-control mechanisms
+      cited from this literature base.
+    limitations: Quantitative values require consultation of the underlying experiments rather than blind
+      transfer.
+    diseases:
+    - shared
+  - id: REF-COHEN-2002
+    title: 'Short-term cardiovascular oscillations in man: measuring and modelling the physiologies'
+    authors:
+    - M. A. Cohen
+    - J. A. Taylor
+    year: 2002
+    journal: Journal of Physiology
+    volume: '542'
+    pages: 669-683
+    doi: 10.1113/jphysiol.2002.017483
+    url: https://doi.org/10.1113/jphysiol.2002.017483
+    study_type: Human physiological measurement and modeling study
+    measured_variables:
+    - heart rate variability
+    - blood pressure variability
+    - autonomic transfer functions
+    relevant_findings: Supports faster vagal than sympathetic heart-rate effects and separate autonomic
+      transfer elements.
+    limitations: Does not identify one constant time lag across all people and conditions.
+    diseases:
+    - shared
+  - id: REF-CEVESE-2001
+    title: Baroreflex and oscillation of heart period at 0.1 Hz studied by alpha-blockade and cross-spectral
+      analysis in healthy humans
+    authors:
+    - A. Cevese
+    - et al.
+    year: 2001
+    journal: Journal of Physiology
+    volume: '531'
+    pages: 235-244
+    pmcid: PMC2278442
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC2278442/
+    study_type: Controlled human pharmacologic physiology study
+    measured_variables:
+    - heart period
+    - blood pressure
+    - cross-spectral baroreflex measures
+    relevant_findings: Pharmacologic human evidence distinguishes vascular sympathetic and vagal cardiac
+      contributions to baroreflex-mediated oscillations.
+    limitations: Pharmacologic blockade in healthy volunteers; does not measure every regional sympathetic
+      bed.
+    diseases:
+    - shared
+  - id: REF-DEBOER-1987
+    title: 'Hemodynamic fluctuations and baroreflex sensitivity in humans: a beat-to-beat model'
+    authors:
+    - R. W. deBoer
+    - J. M. Karemaker
+    - J. Strackee
+    year: 1987
+    journal: American Journal of Physiology
+    volume: '253'
+    pages: H680-H689
+    doi: 10.1152/ajpheart.1987.253.3.H680
+    url: https://doi.org/10.1152/ajpheart.1987.253.3.H680
+    study_type: Human beat-to-beat modeling study
+    measured_variables:
+    - beat-to-beat blood pressure
+    - heart rate
+    - baroreflex sensitivity
+    relevant_findings: Supports delayed baroreflex coupling and fast vagal versus slower sympathetic heart-rate
+      control in humans.
+    limitations: Linear open-loop identification limits parameter transfer to this closed-loop reduced-order
+      model.
+    diseases:
+    - shared
+  - id: REF-FAGIUS-1985
+    title: Sympathetic outflow in man after anaesthesia of the glossopharyngeal and vagus nerves
+    authors:
+    - J. Fagius
+    - et al.
+    year: 1985
+    journal: Brain
+    volume: '108'
+    pages: 423-438
+    doi: 10.1093/brain/108.2.423
+    url: https://doi.org/10.1093/brain/108.2.423
+    study_type: Human microneurography study
+    measured_variables:
+    - muscle sympathetic nerve activity
+    - blood pressure
+    relevant_findings: Human neural evidence for baroreflex control of vascular sympathetic outflow.
+    limitations: MSNA does not measure cardiac or splanchnic sympathetic outflow directly.
+    diseases:
+    - shared
+  - id: REF-HAMMER-2005
+    title: 'Resonance in a mathematical model of baroreflex control: arterial blood pressure waves accompanying
+      postural stress'
+    authors:
+    - P. E. Hammer
+    - J. P. Saul
+    year: 2005
+    journal: American Journal of Physiology-Regulatory, Integrative and Comparative Physiology
+    volume: '288'
+    issue: '6'
+    pages: R1637-R1648
+    doi: 10.1152/ajpregu.00050.2004
+    pmid: '15718393'
+    url: https://pubmed.ncbi.nlm.nih.gov/15718393/
+    study_type: Computational baroreflex stability analysis
+    measured_variables:
+    - baroreflex open-loop frequency response
+    - postural blood-pressure oscillations
+    relevant_findings: Baroreflex delays and pathway gains govern feedback stability; reduced central volume
+      decreases stability margins during postural stress.
+    limitations: Does not validate arbitrary delay/gain combinations; supports pathway-specific lag structure
+      only.
+    diseases:
+    - shared
+    - POTS
+  - id: REF-LEVINE-1994
+    title: Cerebral versus systemic hemodynamics during graded orthostatic stress in humans
+    authors:
+    - B. D. Levine
+    - et al.
+    year: 1994
+    journal: Circulation
+    volume: '90'
+    pages: 298-306
+    doi: 10.1161/01.CIR.90.1.298
+    url: https://doi.org/10.1161/01.CIR.90.1.298
+    study_type: Controlled human graded orthostatic stress study
+    measured_variables:
+    - cerebral blood-flow velocity
+    - systemic hemodynamics
+    - orthostatic tolerance
+    relevant_findings: Brain-level cerebral perfusion pressure differs from brachial or systemic mean arterial
+      pressure during orthostasis.
+    limitations: Transcranial Doppler velocity is not volumetric cerebral blood flow.
+    diseases:
+    - shared
+  - id: REF-AASLID-1989
+    title: Cerebral autoregulation dynamics in humans
+    authors:
+    - R. Aaslid
+    - K. F. Lindegaard
+    - W. Sorteberg
+    - H. Nornes
+    year: 1989
+    journal: Stroke
+    volume: '20'
+    pages: 45-52
+    doi: 10.1161/01.STR.20.1.45
+    url: https://doi.org/10.1161/01.STR.20.1.45
+    study_type: Controlled human thigh-cuff step study
+    measured_variables:
+    - cerebral blood-flow velocity
+    - arterial pressure
+    relevant_findings: Establishes dynamic cerebral autoregulation acting over seconds and the CO2 dependence
+      of cerebral flow.
+    limitations: The step stimulus and TCD surrogate limit direct calibration of the model's normalized
+      curve.
+    diseases:
+    - shared
+  - id: REF-NOVAK-1998
+    title: Hypocapnia and cerebral hypoperfusion in orthostatic intolerance
+    authors:
+    - V. Novak
+    - J. M. Spies
+    - P. Novak
+    - et al.
+    year: 1998
+    journal: Stroke
+    volume: '29'
+    pages: 1876-1881
+    doi: 10.1161/01.STR.29.9.1876
+    url: https://doi.org/10.1161/01.STR.29.9.1876
+    study_type: Controlled human orthostatic physiology study
+    measured_variables:
+    - cerebral blood-flow velocity
+    - end-tidal carbon dioxide
+    - orthostatic symptoms
+    relevant_findings: Hypocapnia accompanies cerebral hypoperfusion in orthostatic intolerance, evidencing
+      the CO2 dependence that this model deliberately omits.
+    limitations: Selected orthostatic-intolerance cohort; TCD velocity is not volumetric flow.
+    diseases:
+    - shared
+    - POTS
+  - id: REF-CLAASSEN-2016
+    title: 'Transfer function analysis of dynamic cerebral autoregulation: a white paper from the International
+      Cerebral Autoregulation Research Network'
+    authors:
+    - J. A. H. R. Claassen
+    - et al.
+    year: 2016
+    journal: Journal of Cerebral Blood Flow & Metabolism
+    volume: '36'
+    pages: 665-680
+    doi: 10.1177/0271678X15626425
+    url: https://doi.org/10.1177/0271678X15626425
+    study_type: International methodological consensus white paper
+    measured_variables:
+    - dynamic cerebral autoregulation methods
+    relevant_findings: Consensus methods for dynamic autoregulation assessment; supports treating autoregulation
+      as a bounded dynamic process.
+    limitations: Methodological consensus; not a new physiological parameter source for this model.
+    diseases:
+    - shared
+  - id: REF-WILLIE-2014
+    title: Integrative regulation of human brain blood flow
+    authors:
+    - C. K. Willie
+    - Y. C. Tzeng
+    - J. A. Fisher
+    - P. N. Ainslie
+    year: 2014
+    journal: Journal of Physiology
+    volume: '592'
+    pages: 841-859
+    doi: 10.1113/jphysiol.2013.268953
+    url: https://doi.org/10.1113/jphysiol.2013.268953
+    study_type: Integrative physiological review
+    measured_variables:
+    - cerebral perfusion pressure
+    - blood gases
+    - autonomic influences
+    relevant_findings: Integrates cerebral perfusion pressure, blood gases, autonomic and cardiac-output
+      influences; explains why a pressure-only cerebral-flow index is incomplete.
+    limitations: Narrative integration; does not supply the model's normalized curve parameters.
+    diseases:
+    - shared
+  - id: REF-LEWIS-2014
+    title: Impact of hypocapnia and cerebral perfusion on orthostatic tolerance
+    authors:
+    - N. C. S. Lewis
+    - et al.
+    year: 2014
+    journal: Journal of Physiology
+    volume: '592'
+    pages: 5203-5219
+    doi: 10.1113/jphysiol.2014.280586
+    url: https://doi.org/10.1113/jphysiol.2014.280586
+    study_type: Controlled human orthostatic study
+    measured_variables:
+    - cerebral perfusion
+    - end-tidal carbon dioxide
+    - orthostatic tolerance
+    relevant_findings: Hypocapnia amplifies cerebral hypoperfusion while tolerance can be buffered by oxygen
+      extraction; a lower cerebral-flow index must not be equated with syncope.
+    limitations: Controlled laboratory protocol; CO2 effects cannot be inferred from this model's pressure-only
+      index.
+    diseases:
+    - shared
+  - id: REF-HELDT-2002
+    title: Computational modeling of cardiovascular response to orthostatic stress
+    authors:
+    - T. Heldt
+    - E. B. Shim
+    - R. D. Kamm
+    - R. G. Mark
+    year: 2002
+    journal: Journal of Applied Physiology
+    volume: '92'
+    pages: 1239-1254
+    doi: 10.1152/japplphysiol.00241.2001
+    url: https://doi.org/10.1152/japplphysiol.00241.2001
+    study_type: Population-calibrated computational cardiovascular model
+    measured_variables:
+    - orthostatic cardiovascular responses
+    relevant_findings: Regional compartments and distinct autonomic effector pathways reproduce human orthostatic
+      responses; supports this model's compartment and effector structure.
+    limitations: Its parameter values are model assumptions, not direct measurements for this reduced-order
+      model.
+    diseases:
+    - shared
+  - id: REF-OLUFSEN-2005
+    title: 'Blood pressure and blood flow variation during postural change from sitting to standing: model
+      development and validation'
+    authors:
+    - M. S. Olufsen
+    - et al.
+    year: 2005
+    journal: Journal of Applied Physiology
+    volume: '99'
+    pages: 1523-1537
+    doi: 10.1152/japplphysiol.00177.2005
+    url: https://doi.org/10.1152/japplphysiol.00177.2005
+    study_type: Computational model with human validation
+    measured_variables:
+    - postural blood pressure
+    - cerebral flow
+    - heart rate
+    relevant_findings: Coupled gravity, autonomic and cerebral regulation reproduce sit-to-stand dynamics;
+      supports hydrostatic heart-to-head correction and autoregulated cerebral flow.
+    limitations: Detailed calibration relied on a limited number of subjects.
+    diseases:
+    - shared
+  - id: REF-VANHEUSDEN-2006
+    title: 'Mathematical modeling of gravitational effects on the circulation: importance of the time course
+      of venous pooling and blood volume changes in the lungs'
+    authors:
+    - K. van Heusden
+    - et al.
+    year: 2006
+    journal: American Journal of Physiology-Heart and Circulatory Physiology
+    volume: '291'
+    pages: H2152-H2165
+    doi: 10.1152/ajpheart.01268.2004
+    url: https://doi.org/10.1152/ajpheart.01268.2004
+    study_type: Computational model validated against human tilt data
+    measured_variables:
+    - venous pooling time course
+    - orthostatic cardiovascular responses
+    relevant_findings: Gravitational pooling develops over a finite time course, supporting conservative
+      compartment dynamics rather than instantaneous volume reassignment.
+    limitations: Lung-volume dynamics remain outside this revision; no unique pooling time constant per
+      person or posture.
+    diseases:
+    - shared

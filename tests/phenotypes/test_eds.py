@@ -1,6 +1,6 @@
 """VAL-EDS-DIRECTION: exploratory hEDS vascular-mechanics scenario (phenotype).
 
-Tests the consequences of an *assumed* peripheral-compliance increase
+Tests the consequences of an *assumed* lower-limb venous-compliance increase
 (hypothesis-constrained phenomenology), not the truth or magnitude of venous
 hypercompliance. Acceptance: scenario labeled exploratory and hEDS-specific;
 HR rise exceeds healthy; results finite with MAP above 70 mmHg; sensitivity
@@ -70,11 +70,10 @@ def test_volume_conserved(heds_metrics):
 
 
 def test_sensitivity_includes_healthy_compliance_value():
-    """The exported sensitivity ranges must include both the assumed increased
-    hEDS compliance (140 mL/mmHg) and the healthy value (120 mL/mmHg)."""
+    """The exported ranges include healthy and assumed hEDS lower-limb compliance."""
     fixture = json.loads(SENSITIVITY_FIXTURE.read_text(encoding="utf-8"))
-    compliance = fixture["parameters"]["peripheral_venous_compliance"]
+    compliance = fixture["parameters"]["lower_limb_venous_compliance"]
     values = {float(v) for v in compliance["sampled_values"]}
     values |= {float(v) for v in compliance["heds_assumption"]["sampled_values"]}
-    assert 120.0 in values, "healthy compliance value missing from sensitivity"
-    assert 140.0 in values, "assumed hEDS compliance missing from sensitivity"
+    assert 50.0 in values, "healthy compliance value missing from sensitivity"
+    assert 58.333333333333336 in values, "assumed hEDS compliance missing from sensitivity"

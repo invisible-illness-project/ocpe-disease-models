@@ -1,0 +1,7 @@
+id: inactive-standing
+title: Quiet standing without exertion or muscle-pump activity
+scientific_note: Normalized upright posture with no rhythmic or sustained muscle input; a standing scenario rather than an angle-specific tilt model.
+solver: {sample_interval: 2.0, max_step: 2.0, rtol: 1.0e-7, atol: 1.0e-8}
+segments:
+  - {start: 0, end: 120, upright: 0.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.0, label: supine}
+  - {start: 120, end: 600, upright: 1.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.0, label: inactive-standing}

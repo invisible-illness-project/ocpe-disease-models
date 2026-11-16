@@ -3,21 +3,47 @@ ocpe: "0.1"
 package: disease-models
 title: Disease-model declarative models
 description: >
-  Declarative specification of the three-compartment cardiovascular model
-  used by the ocpe-disease-models simulations. OCPE stores the specification
-  only; numerical execution lives in the Python implementation.
+  Declarative specification of the shared 11-state cardiovascular, autonomic,
+  muscle-pump, cerebral-perfusion and PEM physiology model executed by the
+  ocpe-disease-models simulations. OCPE stores the specification only;
+  numerical execution lives in the Python implementation. Every symbol carries
+  an `x-executable-*` binding to its counterpart in
+  src/ocpe_disease_models/models/shared/model.py so the declarative and
+  executable forms can be checked for consistency.
 entities:
-  - id: ocpe:disease-models/three-compartment-cardiovascular
+  - id: ocpe:disease-models/shared-physiology
     kind: model
-    label: Three-compartment cardiovascular model with baroreflex
+    label: Shared cardiovascular-autonomic-PEM physiology model
     definition: >
-      Lumped three-compartment (arterial, peripheral venous, central venous)
-      cardiovascular model with a first-order baroreflex-driven sympathetic
-      state. Cardiac pumping moves blood from the central venous to the
-      arterial compartment; systemic and venous return flows are driven by
-      compartment pressure differences. Total blood volume is conserved.
+      Beat-averaged lumped physiology model with four compliant
+      stressed-blood-volume compartments (arterial, central venous, splanchnic
+      venous, lower-limb venous), a preload-dependent cardiac pump, rectified
+      Ohm-law regional flows, a skeletal-muscle pump, and three differentiated
+      first-order baroreflex-driven autonomic states (cardiac sympathetic,
+      vascular sympathetic, vagal). A cerebral flow index tracks head-level
+      perfusion pressure with asymmetric decline/recovery dynamics, and a
+      phenomenological exertional-load/delayed-stress/PEM cascade couples
+      exertion to metabolic capacity. Total stressed blood volume is conserved.
+    description: >
+      The identifier `ocpe:disease-models/shared-physiology` supersedes the
+      legacy three-compartment identifier, retained below as an alias for
+      archived observation records. The current declaration is the 11-state
+      shared physiology architecture; the legacy three-compartment,
+      single-sympathetic-state declarations were superseded. Time is seconds,
+      volumes mL, pressures mmHg, flows mL/s. Initial state: volumes from the
+      initial-volume/pressure parameters scaled by f_bv, autonomic states 0.5,
+      load/stress/PEM states 0, and CFI at its pressure-derived target. Clip
+      bounds 30-220 /min (heart rate), +/-40 (baroreflex error), 0.05
+      (metabolic capacity floor) and 0.2 (contractility floor) are fixed
+      numerical safeguards of the specification, not calibrated parameters.
+    aliases:
+      - value: three-compartment-cardiovascular
+        type: legacy-id
+    status: provisional
     formalism: ode
-    scope: Resting-to-mild-exertion cardiovascular regulation in adults.
+    scope: >
+      Supine-to-upright and rest-to-mild-exertion cardiovascular, autonomic,
+      cerebral-perfusion and exertion/PEM regulation in adults.
     symbols:
       - symbol: t
         role: time
@@ -26,137 +52,475 @@ entities:
       # ------------------------------------------------------------- states
       - symbol: V_a
         role: state
-        label: Arterial volume
+        label: Arterial stressed volume
         unit: mL
         represents: ocpe:disease-models/arterial-blood-volume
-        nominal_value: 750.0
+        nominal_value: 150.0
         value_range: {min: 0.0}
+        x-executable-state: arterial_volume
       - symbol: V_cv
         role: state
-        label: Central venous volume
+        label: Central venous stressed volume
         unit: mL
         represents: ocpe:disease-models/central-venous-blood-volume
-        nominal_value: 1250.0
+        nominal_value: 700.0
         value_range: {min: 0.0}
-      - symbol: V_pv
+        x-executable-state: central_venous_volume
+      - symbol: V_sv
         role: state
-        label: Peripheral venous volume
+        label: Splanchnic venous stressed volume
         unit: mL
-        represents: ocpe:disease-models/peripheral-venous-blood-volume
-        nominal_value: 3000.0
+        represents: ocpe:disease-models/splanchnic-venous-blood-volume
+        nominal_value: 700.0
         value_range: {min: 0.0}
-      - symbol: S
+        x-executable-state: splanchnic_venous_volume
+      - symbol: V_lv
         role: state
-        label: Sympathetic state
+        label: Lower-limb venous stressed volume
+        unit: mL
+        represents: ocpe:disease-models/lower-limb-venous-blood-volume
+        nominal_value: 500.0
+        value_range: {min: 0.0}
+        x-executable-state: lower_limb_venous_volume
+      - symbol: S_c
+        role: state
+        label: Cardiac sympathetic state
         unit: "1"
-        represents: ocpe:disease-models/sympathetic-activation
-        nominal_value: 0.2
+        nominal_value: 0.5
         value_range: {min: 0.0, max: 1.0}
-      # ---------------------------------------------------------- parameters
+        x-executable-state: cardiac_sympathetic_state
+      - symbol: S_v
+        role: state
+        label: Vascular sympathetic state
+        unit: "1"
+        nominal_value: 0.5
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-state: vascular_sympathetic_state
+      - symbol: S_vag
+        role: state
+        label: Vagal state
+        unit: "1"
+        nominal_value: 0.5
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-state: vagal_state
+      - symbol: L_ex
+        role: state
+        label: Exertional load (exertion relative to metabolic capacity)
+        unit: "1"
+        nominal_value: 0.0
+        value_range: {min: 0.0}
+        x-executable-state: exertional_load
+      - symbol: D
+        role: state
+        label: Delayed stress (slow exertion integral)
+        unit: "1"
+        nominal_value: 0.0
+        value_range: {min: 0.0}
+        x-executable-state: delayed_stress
+      # ---------------------------------------------- regional vascular beds
       - symbol: C_a
         role: parameter
         label: Arterial compliance
         unit: mL/mm[Hg]
-        nominal_value: 8.33
+        nominal_value: 1.5
         value_range: {min: 0.0}
+        x-executable-parameter: arterial_compliance
       - symbol: C_cv
         role: parameter
         label: Central venous compliance
         unit: mL/mm[Hg]
-        nominal_value: 250.0
+        nominal_value: 140.0
         value_range: {min: 0.0}
-      - symbol: C_pv
+        x-executable-parameter: central_venous_compliance
+      - symbol: C_sv
         role: parameter
-        label: Peripheral venous compliance
+        label: Splanchnic venous compliance
         unit: mL/mm[Hg]
+        nominal_value: 70.0
+        value_range: {min: 0.0}
+        x-executable-parameter: splanchnic_venous_compliance
+      - symbol: C_lv
+        role: parameter
+        label: Lower-limb venous compliance
+        unit: mL/mm[Hg]
+        nominal_value: 50.0
+        value_range: {min: 0.0}
+        x-executable-parameter: lower_limb_venous_compliance
+      - symbol: R_sa0
+        role: parameter
+        label: Splanchnic arterial resistance (reference)
+        unit: mm[Hg].s/mL
+        nominal_value: 2.204081632653061
+        value_range: {min: 0.0}
+        x-executable-parameter: splanchnic_arterial_resistance
+      - symbol: R_la0
+        role: parameter
+        label: Lower-limb arterial resistance (reference)
+        unit: mm[Hg].s/mL
+        nominal_value: 2.204081632653061
+        value_range: {min: 0.0}
+        x-executable-parameter: lower_limb_arterial_resistance
+      - symbol: R_sv0
+        role: parameter
+        label: Splanchnic venous resistance
+        unit: mm[Hg].s/mL
+        nominal_value: 0.12244897959183673
+        value_range: {min: 0.0}
+        x-executable-parameter: splanchnic_venous_resistance
+      - symbol: R_lv0
+        role: parameter
+        label: Lower-limb venous resistance (reference)
+        unit: mm[Hg].s/mL
+        nominal_value: 0.12244897959183673
+        value_range: {min: 0.0}
+        x-executable-parameter: lower_limb_venous_resistance
+      - symbol: g_sr
+        role: parameter
+        label: Splanchnic resistance vascular-sympathetic gain
+        unit: "1"
+        nominal_value: 0.8
+        value_range: {min: 0.0, max: 2.0}
+        x-executable-parameter: splanchnic_resistance_sympathetic_gain
+      - symbol: g_lr
+        role: parameter
+        label: Lower-limb resistance vascular-sympathetic gain
+        unit: "1"
+        nominal_value: 0.8
+        value_range: {min: 0.0, max: 2.0}
+        x-executable-parameter: lower_limb_resistance_sympathetic_gain
+      - symbol: dP_gs
+        role: parameter
+        label: Splanchnic upright hydrostatic pressure offset
+        unit: mm[Hg]
+        nominal_value: 4.0
+        value_range: {min: 0.0}
+        x-executable-parameter: splanchnic_gravity_pressure_offset
+      - symbol: dP_gl
+        role: parameter
+        label: Lower-limb upright hydrostatic pressure offset
+        unit: mm[Hg]
+        nominal_value: 8.0
+        value_range: {min: 0.0}
+        x-executable-parameter: lower_limb_gravity_pressure_offset
+      # -------------------------------------------------- initial conditions
+      - symbol: V_a0
+        role: parameter
+        label: Initial arterial stressed volume
+        unit: mL
+        nominal_value: 150.0
+        value_range: {min: 0.0}
+        x-executable-parameter: arterial_volume_initial
+      - symbol: V_cv0
+        role: parameter
+        label: Initial central venous stressed volume
+        unit: mL
+        nominal_value: 700.0
+        value_range: {min: 0.0}
+        x-executable-parameter: central_venous_volume_initial
+      - symbol: P_sv0
+        role: parameter
+        label: Initial splanchnic venous pressure
+        unit: mm[Hg]
+        nominal_value: 10.0
+        value_range: {min: 0.0}
+        x-executable-parameter: splanchnic_venous_pressure_initial
+      - symbol: P_lv0
+        role: parameter
+        label: Initial lower-limb venous pressure
+        unit: mm[Hg]
+        nominal_value: 10.0
+        value_range: {min: 0.0}
+        x-executable-parameter: lower_limb_venous_pressure_initial
+      - symbol: f_bv
+        role: parameter
+        label: Blood volume scaling factor
+        unit: "1"
+        nominal_value: 1.0
+        value_range: {min: 0.0}
+        x-executable-parameter: blood_volume_factor
+      # ----------------------------------------- cardiac and baroreflex loop
+      - symbol: SV_max
+        role: parameter
+        label: Maximum stroke volume
+        unit: mL
+        nominal_value: 100.0
+        value_range: {min: 0.0}
+        x-executable-parameter: stroke_volume_max
+      - symbol: V_half
+        role: parameter
+        label: Central venous volume at half-maximal stroke volume
+        unit: mL
         nominal_value: 300.0
         value_range: {min: 0.0}
-      - symbol: R_s
+        x-executable-parameter: stroke_volume_half_volume
+      - symbol: g_ct
         role: parameter
-        label: Systemic vascular resistance
-        unit: mm[Hg].s/mL
-        nominal_value: 0.96
+        label: Contractility cardiac-sympathetic gain
+        unit: "1"
+        nominal_value: 0.25
         value_range: {min: 0.0}
-      - symbol: R_v
-        role: parameter
-        label: Venous return resistance
-        unit: mm[Hg].s/mL
-        nominal_value: 0.06
-        value_range: {min: 0.0}
+        x-executable-parameter: contractility_sympathetic_gain
       - symbol: HR_0
         role: parameter
-        label: Baseline heart rate
+        label: Resting heart rate
         unit: "/min"
-        nominal_value: 60.0
-        value_range: {min: 30.0, max: 120.0}
-      - symbol: g_hr
-        role: parameter
-        label: Sympathetic heart-rate gain
-        unit: "1"
-        nominal_value: 1.0
+        nominal_value: 70.0
         value_range: {min: 0.0}
-      - symbol: SV_0
+        x-executable-parameter: heart_rate_rest
+      - symbol: g_hrc
         role: parameter
-        label: Baseline stroke volume
-        unit: mL
-        nominal_value: 60.0
+        label: Heart-rate cardiac-sympathetic gain
+        unit: "/min"
+        nominal_value: 20.0
         value_range: {min: 0.0}
-      - symbol: g_sv
+        x-executable-parameter: heart_rate_cardiac_sympathetic_gain
+      - symbol: g_hrv
         role: parameter
-        label: Sympathetic stroke-volume gain
-        unit: "1"
-        nominal_value: 0.3
+        label: Heart-rate vagal gain
+        unit: "/min"
+        nominal_value: 20.0
         value_range: {min: 0.0}
-      - symbol: MAP_set
+        x-executable-parameter: heart_rate_vagal_gain
+      - symbol: P_set
         role: parameter
-        label: Baroreflex set-point pressure
+        label: Baroreflex pressure set-point
         unit: mm[Hg]
-        nominal_value: 93.0
-        value_range: {min: 50.0, max: 150.0}
-      - symbol: k_br
-        role: parameter
-        label: Baroreflex sigmoid slope
-        unit: /mm[Hg]
-        nominal_value: 0.11
+        nominal_value: 100.0
         value_range: {min: 0.0}
-      - symbol: tau_S
+        x-executable-parameter: baroreflex_pressure_setpoint
+      - symbol: P_scale
         role: parameter
-        label: Sympathetic response time constant
+        label: Baroreflex pressure scale
+        unit: mm[Hg]
+        nominal_value: 2.0
+        value_range: {min: 0.0}
+        x-executable-parameter: baroreflex_pressure_scale
+      - symbol: tau_c
+        role: parameter
+        label: Cardiac sympathetic time constant
+        unit: s
+        nominal_value: 6.0
+        value_range: {min: 0.0}
+        x-executable-parameter: cardiac_sympathetic_time_constant
+      - symbol: tau_v
+        role: parameter
+        label: Vascular sympathetic time constant
         unit: s
         nominal_value: 10.0
-        value_range: {min: 0.1}
-      - symbol: MAP_ref
-        role: parameter
-        label: Reference (baseline) mean arterial pressure
-        unit: mm[Hg]
-        nominal_value: 93.0
-        value_range: {min: 50.0, max: 150.0}
-      - symbol: g_cvr
-        role: parameter
-        label: Sympathetic cerebrovascular resistance gain
-        unit: "1"
-        nominal_value: 0.5
         value_range: {min: 0.0}
-      - symbol: MC_0
+        x-executable-parameter: vascular_sympathetic_time_constant
+      - symbol: tau_vag
         role: parameter
-        label: Reference metabolic capacity
+        label: Vagal time constant
+        unit: s
+        nominal_value: 1.0
+        value_range: {min: 0.0}
+        x-executable-parameter: vagal_time_constant
+      - symbol: g_ex
+        role: parameter
+        label: Exertion heart-rate gain
+        unit: "/min"
+        nominal_value: 70.0
+        value_range: {min: 0.0}
+        x-executable-parameter: exercise_heart_rate_gain
+      - symbol: k_exr
+        role: parameter
+        label: Exertional lower-limb resistance reduction fraction
+        unit: "1"
+        nominal_value: 0.3
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-parameter: exercise_resistance_reduction
+      # ------------------------------------------------- skeletal muscle pump
+      - symbol: SV_mp
+        role: parameter
+        label: Muscle pump stroke volume
+        unit: mL
+        nominal_value: 20.0
+        value_range: {min: 0.0}
+        x-executable-parameter: muscle_pump_stroke_volume
+      - symbol: f_mp
+        role: parameter
+        label: Muscle pump frequency
+        unit: Hz
+        nominal_value: 1.0
+        value_range: {min: 0.0}
+        x-executable-parameter: muscle_pump_frequency
+      - symbol: eta_mp
+        role: parameter
+        label: Muscle pump effectiveness
         unit: "1"
         nominal_value: 1.0
-        value_range: {min: 0.0, max: 1.0}
-      - symbol: g_mc
+        value_range: {min: 0.0}
+        x-executable-parameter: muscle_pump_effectiveness
+      - symbol: V_half_mp
         role: parameter
-        label: Sympathetic metabolic-capacity suppression gain
+        label: Lower-limb volume at half-maximal muscle pump flow
+        unit: mL
+        nominal_value: 500.0
+        value_range: {min: 0.0}
+        x-executable-parameter: muscle_pump_half_volume
+      - symbol: k_sc
+        role: parameter
+        label: Sustained-contraction venous resistance gain
+        unit: "1"
+        nominal_value: 3.0
+        value_range: {min: 0.0}
+        x-executable-parameter: sustained_contraction_resistance_gain
+      # --------------------------------------------------------- cerebral bed
+      - symbol: dP_head
+        role: parameter
+        label: Head hydrostatic pressure offset when fully upright
+        unit: mm[Hg]
+        nominal_value: 20.0
+        value_range: {min: 0.0}
+        x-executable-parameter: head_hydrostatic_pressure_offset
+      - symbol: P_cpp_ref
+        role: parameter
+        label: Reference cerebral perfusion pressure
+        unit: mm[Hg]
+        nominal_value: 95.0
+        value_range: {min: 0.0}
+        x-executable-parameter: cerebral_reference_perfusion_pressure
+      - symbol: s_ar
+        role: parameter
+        label: Cerebral autoregulation residual slope
+        unit: "1"
+        nominal_value: 0.2
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-parameter: cerebral_autoregulation_residual_slope
+      - symbol: k_oi
+        role: parameter
+        label: Cerebral orthostatic impairment fraction
+        unit: "1"
+        nominal_value: 0.0
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-parameter: cerebral_orthostatic_impairment
+      - symbol: tau_dec
+        role: parameter
+        label: Cerebral flow decline time constant
+        unit: s
+        nominal_value: 5.0
+        value_range: {min: 0.0}
+        x-executable-parameter: cerebral_decline_time_constant
+      - symbol: tau_rec
+        role: parameter
+        label: Cerebral flow recovery time constant
+        unit: s
+        nominal_value: 12.0
+        value_range: {min: 0.0}
+        x-executable-parameter: cerebral_recovery_time_constant
+      # --------------------------------------------- oxygen use and capacity
+      - symbol: MC_0
+        role: parameter
+        label: Baseline metabolic capacity
+        unit: "1"
+        nominal_value: 1.0
+        value_range: {min: 0.0}
+        x-executable-parameter: baseline_metabolic_capacity
+      - symbol: X_0
+        role: parameter
+        label: Oxygen extraction fraction
+        unit: "1"
+        nominal_value: 0.78
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-parameter: oxygen_extraction_fraction
+      - symbol: X_ref
+        role: parameter
+        label: Reference extraction for functional capacity
+        unit: "1"
+        nominal_value: 0.78
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-parameter: functional_capacity_reference_extraction
+      - symbol: k_cap
+        role: parameter
+        label: PEM metabolic-capacity penalty
         unit: "1"
         nominal_value: 0.5
         value_range: {min: 0.0, max: 1.0}
+        x-executable-parameter: pem_capacity_penalty
+      - symbol: k_x
+        role: parameter
+        label: PEM oxygen-extraction penalty
+        unit: "1"
+        nominal_value: 0.1
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-parameter: pem_extraction_penalty
+      # ------------------------------------------- phenomenological PEM chain
+      - symbol: tau_load
+        role: parameter
+        label: Exertional load time constant
+        unit: s
+        nominal_value: 1800.0
+        value_range: {min: 0.0}
+        x-executable-parameter: exertional_load_time_constant
+      - symbol: tau_delay
+        role: parameter
+        label: Delayed stress time constant
+        unit: s
+        nominal_value: 21600.0
+        value_range: {min: 0.0}
+        x-executable-parameter: delayed_stress_time_constant
+      - symbol: tau_onset
+        role: parameter
+        label: PEM onset time constant
+        unit: s
+        nominal_value: 86400.0
+        value_range: {min: 0.0}
+        x-executable-parameter: pem_onset_time_constant
+      - symbol: tau_recov
+        role: parameter
+        label: PEM recovery time constant
+        unit: s
+        nominal_value: 172800.0
+        value_range: {min: 0.0}
+        x-executable-parameter: pem_recovery_time_constant
+      - symbol: theta_pem
+        role: parameter
+        label: PEM trigger threshold (delayed stress)
+        unit: "1"
+        nominal_value: 0.999
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-parameter: pem_trigger_threshold
+      - symbol: g_pem
+        role: parameter
+        label: PEM response gain
+        unit: "1"
+        nominal_value: 0.0
+        value_range: {min: 0.0}
+        x-executable-parameter: pem_response_gain
       # -------------------------------------------------------------- inputs
+      - symbol: U
+        role: input
+        label: Upright fraction
+        description: Normalized orthostatic stress (0 = supine, 1 = fully upright).
+        unit: "1"
+        nominal_value: 0.0
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-input: upright
       - symbol: E
         role: input
         label: Exertion demand
         description: Normalized exertion demand (0 = rest, 1 = healthy capacity).
         unit: "1"
         nominal_value: 0.0
-        value_range: {min: 0.0}
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-input: exertion
+      - symbol: A_r
+        role: input
+        label: Rhythmic muscle activity
+        description: Normalized rhythmic skeletal-muscle activity driving the muscle pump.
+        unit: "1"
+        nominal_value: 0.0
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-input: rhythmic_muscle_activity
+      - symbol: A_s
+        role: input
+        label: Sustained muscle contraction
+        description: Normalized sustained contraction impeding lower-limb venous return.
+        unit: "1"
+        nominal_value: 0.0
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-input: sustained_muscle_contraction
       # ---------------------------------------------------------- auxiliaries
       - symbol: P_a
         role: auxiliary
@@ -166,66 +530,179 @@ entities:
         role: auxiliary
         label: Central venous pressure
         unit: mm[Hg]
-      - symbol: P_pv
+        x-executable-output: central_venous_pressure
+      - symbol: P_sv
         role: auxiliary
-        label: Peripheral venous pressure
+        label: Splanchnic venous pressure
         unit: mm[Hg]
+        x-executable-output: splanchnic_venous_pressure
+      - symbol: P_lv
+        role: auxiliary
+        label: Lower-limb venous pressure
+        unit: mm[Hg]
+        x-executable-output: lower_limb_venous_pressure
+      - symbol: P_head
+        role: auxiliary
+        label: Head-level (baroreflex) arterial pressure
+        unit: mm[Hg]
+        x-executable-output: baroreflex_pressure
+      - symbol: P_cpp
+        role: auxiliary
+        label: Cerebral perfusion pressure
+        unit: mm[Hg]
+        represents: ocpe:disease-models/cerebral-perfusion-pressure
+        x-executable-output: cerebral_perfusion_pressure
+      - symbol: R_sa
+        role: auxiliary
+        label: Effective splanchnic arterial resistance
+        unit: mm[Hg].s/mL
+        x-executable-output: splanchnic_arterial_resistance_effective
+      - symbol: R_la
+        role: auxiliary
+        label: Effective lower-limb arterial resistance
+        unit: mm[Hg].s/mL
+        x-executable-output: lower_limb_arterial_resistance_effective
+      - symbol: R_lve
+        role: auxiliary
+        label: Effective lower-limb venous resistance
+        unit: mm[Hg].s/mL
+        x-executable-output: lower_limb_venous_resistance_effective
+      - symbol: R_par
+        role: auxiliary
+        label: Effective parallel systemic arterial resistance
+        unit: mm[Hg].s/mL
+        x-executable-output: systemic_resistance_effective
+      - symbol: F_ct
+        role: auxiliary
+        label: Contractility factor
+        unit: "1"
+      - symbol: S_br
+        role: auxiliary
+        label: Baroreflex autonomic target
+        unit: "1"
       - symbol: Q_h
         role: auxiliary
         label: Cardiac pump flow
         unit: mL/s
-      - symbol: Q_s
+        x-executable-output: cardiac_output
+      - symbol: Q_sa
         role: auxiliary
-        label: Systemic blood flow
+        label: Splanchnic arterial inflow
         unit: mL/s
-      - symbol: Q_v
+        x-executable-output: splanchnic_arterial_flow
+      - symbol: Q_la
         role: auxiliary
-        label: Venous return flow
+        label: Lower-limb arterial inflow
         unit: mL/s
-      - symbol: S_target
+        x-executable-output: lower_limb_arterial_flow
+      - symbol: Q_sys
         role: auxiliary
-        label: Baroreflex sympathetic target
+        label: Total systemic arterial outflow
+        unit: mL/s
+        x-executable-output: systemic_flow
+      - symbol: Q_svr
+        role: auxiliary
+        label: Splanchnic venous return
+        unit: mL/s
+        x-executable-output: splanchnic_venous_return
+      - symbol: Q_lvr
+        role: auxiliary
+        label: Lower-limb venous return (including muscle pump)
+        unit: mL/s
+        x-executable-output: lower_limb_venous_return
+      - symbol: Q_mp
+        role: auxiliary
+        label: Muscle pump flow
+        unit: mL/s
+        x-executable-output: muscle_pump_flow
+      - symbol: Q_vr
+        role: auxiliary
+        label: Total venous return
+        unit: mL/s
+        x-executable-output: venous_return
+      - symbol: CFI_t
+        role: auxiliary
+        label: Cerebral flow index target
         unit: "1"
+        x-executable-output: cerebral_flow_target
+      - symbol: X
+        role: auxiliary
+        label: Effective oxygen extraction fraction
+        unit: "1"
+        x-executable-output: oxygen_extraction
       # ------------------------------------------------------------- outputs
       - symbol: HR
         role: output
         label: Heart rate
         unit: "/min"
         represents: ocpe:disease-models/heart-rate
+        x-executable-output: heart_rate
       - symbol: MAP
         role: output
         label: Mean arterial pressure
         unit: mm[Hg]
         represents: ocpe:disease-models/mean-arterial-pressure
+        x-executable-output: mean_arterial_pressure
       - symbol: SV
         role: output
         label: Stroke volume
         unit: mL
         represents: ocpe:disease-models/stroke-volume
+        x-executable-output: stroke_volume
       - symbol: CO
         role: output
         label: Cardiac output
         unit: L/min
         represents: ocpe:disease-models/cardiac-output
+        x-executable-output: cardiac_output_l_min
       - symbol: CFI
         role: output
         label: Cerebral flow index
+        description: >
+          Time-integrated dynamic state (eleventh ODE state) exposed as an
+          exchanged output; bounded by [0, 1.25] in the executable.
         unit: "1"
         represents: ocpe:disease-models/cerebral-flow-index
+        nominal_value: 1.0
+        value_range: {min: 0.0, max: 1.25}
+        x-executable-output: cerebral_flow_index
+        x-executable-state: cerebral_flow_index
       - symbol: MC
         role: output
         label: Metabolic capacity
         unit: "1"
         represents: ocpe:disease-models/metabolic-capacity
+        x-executable-output: metabolic_capacity
       - symbol: PEM
         role: output
         label: PEM severity
+        description: >
+          Time-integrated dynamic state (phenomenological PEM cascade) exposed
+          as an exchanged output.
         unit: "1"
         represents: ocpe:disease-models/pem-severity
+        nominal_value: 0.0
+        value_range: {min: 0.0, max: 1.0}
+        x-executable-output: pem_severity
+        x-executable-state: pem_severity
+      - symbol: S_sym
+        role: output
+        label: Mean sympathetic state
+        description: Mean of the cardiac and vascular sympathetic states.
+        unit: "1"
+        represents: ocpe:disease-models/sympathetic-activation
+        x-executable-output: sympathetic_state
+      - symbol: FC
+        role: output
+        label: Functional capacity
+        description: Metabolic capacity weighted by relative oxygen extraction.
+        unit: "1"
+        x-executable-output: functional_capacity
     equations:
+      # ---------------------------------------------------- compartment laws
       - id: eq_arterial_pressure
         form: algebraic
-        label: Arterial pressure
+        label: Arterial pressure (linear stressed-volume law)
         expression_latex: "P_a = \\frac{V_a}{C_a}"
         inputs: [V_a]
         parameters: [C_a]
@@ -237,127 +714,289 @@ entities:
         inputs: [V_cv]
         parameters: [C_cv]
         outputs: [P_cv]
-      - id: eq_peripheral_venous_pressure
+      - id: eq_splanchnic_venous_pressure
         form: algebraic
-        label: Peripheral venous pressure
-        expression_latex: "P_{pv} = \\frac{V_{pv}}{C_{pv}}"
-        inputs: [V_pv]
-        parameters: [C_pv]
-        outputs: [P_pv]
-      - id: eq_heart_rate
+        label: Splanchnic venous pressure
+        expression_latex: "P_{sv} = \\frac{V_{sv}}{C_{sv}}"
+        inputs: [V_sv]
+        parameters: [C_sv]
+        outputs: [P_sv]
+      - id: eq_lower_limb_venous_pressure
         form: algebraic
-        label: Heart rate law
-        expression_latex: "HR = HR_0\\,(1 + g_{hr}\\,S)"
-        inputs: [S]
-        parameters: [HR_0, g_hr]
-        outputs: [HR]
+        label: Lower-limb venous pressure
+        expression_latex: "P_{lv} = \\frac{V_{lv}}{C_{lv}}"
+        inputs: [V_lv]
+        parameters: [C_lv]
+        outputs: [P_lv]
+      # ----------------------------------------------------- effector levels
+      - id: eq_metabolic_capacity
+        form: piecewise
+        label: Metabolic capacity with PEM penalty and floor
+        expression_latex: "MC = \\max\\!\\big(0.05,\\; MC_0\\,(1 - k_{cap}\\,\\min(1, PEM))\\big)"
+        inputs: [PEM]
+        parameters: [MC_0, k_cap]
+        outputs: [MC]
+      - id: eq_splanchnic_resistance
+        form: algebraic
+        label: Splanchnic arterial resistance (vascular sympathetic modulation)
+        expression_latex: "R_{sa} = R_{sa0}\\,\\big(1 + g_{sr}\\,(S_v - \\tfrac{1}{2})\\big)"
+        inputs: [S_v]
+        parameters: [R_sa0, g_sr]
+        outputs: [R_sa]
+      - id: eq_lower_limb_arterial_resistance
+        form: algebraic
+        label: Lower-limb arterial resistance (sympathetic and exertion modulation)
+        expression_latex: "R_{la} = R_{la0}\\,\\big(1 + g_{lr}\\,(S_v - \\tfrac{1}{2})\\big)\\,(1 - k_{exr}\\,E)"
+        inputs: [S_v, E]
+        parameters: [R_la0, g_lr, k_exr]
+        outputs: [R_la]
+      - id: eq_lower_limb_venous_resistance
+        form: algebraic
+        label: Lower-limb venous resistance (sustained contraction impediment)
+        expression_latex: "R_{lve} = R_{lv0}\\,(1 + k_{sc}\\,A_s)"
+        inputs: [A_s]
+        parameters: [R_lv0, k_sc]
+        outputs: [R_lve]
+      - id: eq_parallel_systemic_resistance
+        form: algebraic
+        label: Effective parallel systemic arterial resistance
+        expression_latex: "R_{par} = \\left(\\frac{1}{R_{sa}} + \\frac{1}{R_{la}}\\right)^{-1}"
+        inputs: [R_sa, R_la]
+        outputs: [R_par]
+      - id: eq_contractility
+        form: piecewise
+        label: Contractility factor with floor
+        expression_latex: "F_{ct} = \\max\\!\\big(0.2,\\; 1 + g_{ct}\\,(S_c - \\tfrac{1}{2})\\big)"
+        inputs: [S_c]
+        parameters: [g_ct]
+        outputs: [F_ct]
+      # ------------------------------------------------------- cardiac pump
       - id: eq_stroke_volume
         form: algebraic
-        label: Stroke volume law
-        expression_latex: "SV = SV_0\\,(1 + g_{sv}\\,S)"
-        inputs: [S]
-        parameters: [SV_0, g_sv]
+        label: Preload-dependent stroke volume (saturating Frank-Starling law)
+        expression_latex: "SV = SV_{max}\\,F_{ct}\\,\\frac{V_{cv}}{V_{cv} + V_{half}}"
+        inputs: [F_ct, V_cv]
+        parameters: [SV_max, V_half]
         outputs: [SV]
-      - id: eq_cardiac_output
-        form: algebraic
-        label: Cardiac output
-        expression_latex: "CO = HR \\cdot SV \\cdot \\frac{1\\,\\mathrm{L}}{1000\\,\\mathrm{mL}}"
-        inputs: [HR, SV]
-        outputs: [CO]
+      - id: eq_heart_rate
+        form: piecewise
+        label: Heart rate law (autonomic and exertion drive, clipped)
+        expression_latex: "HR = \\operatorname{clip}\\!\\big(HR_0 + g_{hrc}\\,(S_c - \\tfrac{1}{2}) + g_{hrv}\\,(\\tfrac{1}{2} - S_{vag}) + g_{ex}\\,E\\,MC,\\; 30,\\; 220\\big)"
+        inputs: [S_c, S_vag, E, MC]
+        parameters: [HR_0, g_hrc, g_hrv, g_ex]
+        outputs: [HR]
       - id: eq_cardiac_pump_flow
         form: algebraic
         label: Cardiac pump flow
         expression_latex: "Q_h = HR \\cdot SV \\cdot \\frac{1\\,\\mathrm{min}}{60\\,\\mathrm{s}}"
         inputs: [HR, SV]
         outputs: [Q_h]
+      - id: eq_cardiac_output
+        form: algebraic
+        label: Cardiac output in litres per minute
+        expression_latex: "CO = Q_h \\cdot \\frac{60\\,\\mathrm{s}}{1\\,\\mathrm{min}} \\cdot \\frac{1\\,\\mathrm{L}}{1000\\,\\mathrm{mL}}"
+        inputs: [Q_h]
+        outputs: [CO]
+      # ------------------------------------------------------------ flows
+      - id: eq_splanchnic_arterial_flow
+        form: piecewise
+        label: Splanchnic arterial inflow (rectified Ohm law)
+        expression_latex: "Q_{sa} = \\max\\!\\big(0,\\; \\frac{P_a - P_{sv}}{R_{sa}}\\big)"
+        inputs: [P_a, P_sv, R_sa]
+        outputs: [Q_sa]
+      - id: eq_lower_limb_arterial_flow
+        form: piecewise
+        label: Lower-limb arterial inflow (rectified Ohm law)
+        expression_latex: "Q_{la} = \\max\\!\\big(0,\\; \\frac{P_a - P_{lv}}{R_{la}}\\big)"
+        inputs: [P_a, P_lv, R_la]
+        outputs: [Q_la]
       - id: eq_systemic_flow
         form: algebraic
-        label: Systemic flow (Ohm law)
-        expression_latex: "Q_s = \\frac{P_a - P_{pv}}{R_s}"
-        inputs: [P_a, P_pv]
-        parameters: [R_s]
-        outputs: [Q_s]
-      - id: eq_venous_flow
+        label: Total systemic arterial outflow
+        expression_latex: "Q_{sys} = Q_{sa} + Q_{la}"
+        inputs: [Q_sa, Q_la]
+        outputs: [Q_sys]
+      - id: eq_splanchnic_venous_return
+        form: piecewise
+        label: Splanchnic venous return against upright hydrostatic offset
+        expression_latex: "Q_{svr} = \\max\\!\\big(0,\\; \\frac{P_{sv} - P_{cv} - \\Delta P_{gs}\\,U}{R_{sv0}}\\big)"
+        inputs: [P_sv, P_cv, U]
+        parameters: [dP_gs, R_sv0]
+        outputs: [Q_svr]
+      - id: eq_muscle_pump_flow
         form: algebraic
-        label: Venous return flow (Ohm law)
-        expression_latex: "Q_v = \\frac{P_{pv} - P_{cv}}{R_v}"
-        inputs: [P_pv, P_cv]
-        parameters: [R_v]
-        outputs: [Q_v]
-      - id: eq_map
+        label: Rhythmic skeletal muscle pump flow
+        expression_latex: "Q_{mp} = f_{mp}\\,SV_{mp}\\,\\eta_{mp}\\,A_r\\,\\frac{V_{lv}}{V_{lv} + V_{half,mp}}"
+        inputs: [A_r, V_lv]
+        parameters: [f_mp, SV_mp, eta_mp, V_half_mp]
+        outputs: [Q_mp]
+      - id: eq_lower_limb_venous_return
+        form: piecewise
+        label: Lower-limb venous return plus muscle pump
+        expression_latex: "Q_{lvr} = \\max\\!\\big(0,\\; \\frac{P_{lv} - P_{cv} - \\Delta P_{gl}\\,U}{R_{lve}}\\big) + Q_{mp}"
+        inputs: [P_lv, P_cv, U, R_lve, Q_mp]
+        parameters: [dP_gl]
+        outputs: [Q_lvr]
+      - id: eq_venous_return
         form: algebraic
-        label: Mean arterial pressure
+        label: Total venous return
+        expression_latex: "Q_{vr} = Q_{svr} + Q_{lvr}"
+        inputs: [Q_svr, Q_lvr]
+        outputs: [Q_vr]
+      # ------------------------------------------------- baroreflex targets
+      - id: eq_baroreflex_pressure
+        form: piecewise
+        label: Head-level arterial pressure sensed by the baroreflex
+        expression_latex: "P_{head} = \\max\\!\\big(0,\\; P_a - \\Delta P_{head}\\,U\\big)"
+        inputs: [P_a, U]
+        parameters: [dP_head]
+        outputs: [P_head]
+      - id: eq_baroreflex_target
+        form: piecewise
+        label: Baroreflex autonomic target (clipped logistic)
+        expression_latex: "S_{br} = \\frac{1}{1 + e^{-\\varepsilon}},\\quad \\varepsilon = \\operatorname{clip}\\!\\left(\\frac{P_{set} - P_{head}}{P_{scale}},\\; -40,\\; 40\\right)"
+        inputs: [P_head]
+        parameters: [P_set, P_scale]
+        outputs: [S_br]
+      # ------------------------------------------------------- cerebral bed
+      - id: eq_cerebral_perfusion_pressure
+        form: piecewise
+        label: Cerebral perfusion pressure
+        expression_latex: "P_{cpp} = \\max\\!\\big(0,\\; P_{head} - P_{cv}\\big)"
+        inputs: [P_head, P_cv]
+        outputs: [P_cpp]
+      - id: eq_cerebral_flow_target
+        form: piecewise
+        label: Cerebral flow index target (residual autoregulation, orthostatic impairment)
+        expression_latex: "CFI_t = \\frac{r}{s_{ar} + (1 - s_{ar})\\,r}\\;\\max\\!\\big(0,\\; 1 - k_{oi}\\,U\\big),\\quad r = \\frac{P_{cpp}}{P_{cpp,ref}}"
+        inputs: [P_cpp, U]
+        parameters: [P_cpp_ref, s_ar, k_oi]
+        outputs: [CFI_t]
+      # --------------------------------------------------- oxygen and outputs
+      - id: eq_oxygen_extraction
+        form: piecewise
+        label: Effective oxygen extraction with PEM penalty
+        expression_latex: "X = \\operatorname{clip}\\!\\big(X_0\\,(1 - k_x\\,\\min(1, PEM)),\\; 0,\\; 0.99\\big)"
+        inputs: [PEM]
+        parameters: [X_0, k_x]
+        outputs: [X]
+      - id: eq_functional_capacity
+        form: algebraic
+        label: Functional capacity relative to reference extraction
+        expression_latex: "FC = \\frac{MC \\cdot X}{X_{ref}}"
+        inputs: [MC, X]
+        parameters: [X_ref]
+        outputs: [FC]
+      - id: eq_mean_arterial_pressure
+        form: algebraic
+        label: Mean arterial pressure (beat-averaged arterial pressure)
         expression_latex: "MAP = P_a"
         inputs: [P_a]
         outputs: [MAP]
-      - id: eq_baroreflex_target
+      - id: eq_mean_sympathetic_state
         form: algebraic
-        label: Baroreflex sympathetic target (decreasing sigmoid)
-        expression_latex: "S_{target} = \\frac{1}{1 + e^{k_{br}\\,(MAP - MAP_{set})}}"
-        inputs: [MAP]
-        parameters: [k_br, MAP_set]
-        outputs: [S_target]
-      - id: eq_sympathetic_dynamics
-        form: differential
-        label: Sympathetic state dynamics (first-order lag)
-        expression_latex: "\\frac{dS}{dt} = \\frac{S_{target} - S}{\\tau_S}"
-        inputs: [S_target, S]
-        parameters: [tau_S]
-        outputs: [S]
-      - id: eq_arterial_volume
+        label: Mean sympathetic state
+        expression_latex: "S_{sym} = \\frac{S_c + S_v}{2}"
+        inputs: [S_c, S_v]
+        outputs: [S_sym]
+      # ------------------------------------------------- volume conservation
+      - id: eq_arterial_volume_balance
         form: differential
         label: Arterial volume balance
-        expression_latex: "\\frac{dV_a}{dt} = Q_h - Q_s"
-        inputs: [Q_h, Q_s]
+        expression_latex: "\\frac{dV_a}{dt} = Q_h - Q_{sys}"
+        inputs: [Q_h, Q_sys]
         outputs: [V_a]
-      - id: eq_peripheral_venous_volume
-        form: differential
-        label: Peripheral venous volume balance
-        expression_latex: "\\frac{dV_{pv}}{dt} = Q_s - Q_v"
-        inputs: [Q_s, Q_v]
-        outputs: [V_pv]
-      - id: eq_central_venous_volume
+      - id: eq_central_venous_volume_balance
         form: differential
         label: Central venous volume balance
-        expression_latex: "\\frac{dV_{cv}}{dt} = Q_v - Q_h"
-        inputs: [Q_v, Q_h]
+        expression_latex: "\\frac{dV_{cv}}{dt} = Q_{vr} - Q_h"
+        inputs: [Q_vr, Q_h]
         outputs: [V_cv]
-      - id: eq_cerebral_flow_index
-        form: algebraic
-        label: Cerebral flow index
-        expression_latex: "CFI = \\frac{MAP}{MAP_{ref}\\,(1 + g_{cvr}\\,S)}"
-        inputs: [MAP, S]
-        parameters: [MAP_ref, g_cvr]
-        outputs: [CFI]
-      - id: eq_metabolic_capacity
-        form: algebraic
-        label: Metabolic capacity
-        expression_latex: "MC = MC_0\\,(1 - g_{mc}\\,S)"
-        inputs: [S]
-        parameters: [MC_0, g_mc]
-        outputs: [MC]
-      - id: eq_pem_severity
-        form: piecewise
-        label: PEM severity from exertion exceeding metabolic capacity
-        expression_latex: "PEM = 10\\,\\max\\!\\big(0,\\; E - MC\\big)"
-        inputs: [E, MC]
+      - id: eq_splanchnic_venous_volume_balance
+        form: differential
+        label: Splanchnic venous volume balance
+        expression_latex: "\\frac{dV_{sv}}{dt} = Q_{sa} - Q_{svr}"
+        inputs: [Q_sa, Q_svr]
+        outputs: [V_sv]
+      - id: eq_lower_limb_venous_volume_balance
+        form: differential
+        label: Lower-limb venous volume balance
+        expression_latex: "\\frac{dV_{lv}}{dt} = Q_{la} - Q_{lvr}"
+        inputs: [Q_la, Q_lvr]
+        outputs: [V_lv]
+      # ----------------------------------------- differentiated autonomic loop
+      - id: eq_cardiac_sympathetic_dynamics
+        form: differential
+        label: Cardiac sympathetic state (first-order baroreflex lag)
+        expression_latex: "\\frac{dS_c}{dt} = \\frac{S_{br} - S_c}{\\tau_c}"
+        inputs: [S_br, S_c]
+        parameters: [tau_c]
+        outputs: [S_c]
+      - id: eq_vascular_sympathetic_dynamics
+        form: differential
+        label: Vascular sympathetic state (first-order baroreflex lag)
+        expression_latex: "\\frac{dS_v}{dt} = \\frac{S_{br} - S_v}{\\tau_v}"
+        inputs: [S_br, S_v]
+        parameters: [tau_v]
+        outputs: [S_v]
+      - id: eq_vagal_dynamics
+        form: differential
+        label: Vagal state (reciprocal first-order baroreflex lag)
+        expression_latex: "\\frac{dS_{vag}}{dt} = \\frac{1 - S_{br} - S_{vag}}{\\tau_{vag}}"
+        inputs: [S_br, S_vag]
+        parameters: [tau_vag]
+        outputs: [S_vag]
+      # ------------------------------------------- phenomenological PEM chain
+      - id: eq_exertional_load_dynamics
+        form: differential
+        label: Exertional load relative to metabolic capacity
+        expression_latex: "\\frac{dL_{ex}}{dt} = \\frac{E/MC - L_{ex}}{\\tau_{load}}"
+        inputs: [E, MC, L_ex]
+        parameters: [tau_load]
+        outputs: [L_ex]
+      - id: eq_delayed_stress_dynamics
+        form: differential
+        label: Delayed stress (slow tracking of exertional load)
+        expression_latex: "\\frac{dD}{dt} = \\frac{L_{ex} - D}{\\tau_{delay}}"
+        inputs: [L_ex, D]
+        parameters: [tau_delay]
+        outputs: [D]
+      - id: eq_pem_severity_dynamics
+        form: differential
+        label: PEM severity with threshold trigger and asymmetric onset/recovery
+        expression_latex: "\\frac{dPEM}{dt} = \\frac{PEM_{target} - PEM}{\\tau_{pem}},\\quad PEM_{target} = \\min\\!\\Big(1,\\; g_{pem}\\,\\max\\!\\big(0,\\, \\tfrac{D - \\theta_{pem}}{1 - \\theta_{pem}}\\big)\\Big),\\quad \\tau_{pem} = \\begin{cases} \\tau_{onset} & PEM_{target} > PEM \\\\ \\tau_{recov} & \\text{otherwise} \\end{cases}"
+        inputs: [D, PEM]
+        parameters: [g_pem, theta_pem, tau_onset, tau_recov]
         outputs: [PEM]
+      - id: eq_cerebral_flow_dynamics
+        form: differential
+        label: Cerebral flow index with asymmetric decline/recovery
+        expression_latex: "\\frac{dCFI}{dt} = \\frac{CFI_t - CFI}{\\tau_{cbf}},\\quad \\tau_{cbf} = \\begin{cases} \\tau_{dec} & CFI_t < CFI \\\\ \\tau_{rec} & \\text{otherwise} \\end{cases}"
+        inputs: [CFI_t, CFI]
+        parameters: [tau_dec, tau_rec]
+        outputs: [CFI]
     assumptions:
-      - Lumped compliant compartments with linear pressure-volume relations.
-      - Total blood volume is conserved (closed circulation, no transcapillary exchange).
-      - The heart is modelled as a prescribed flow source Q_h = HR * SV.
-      - Sympathetic activation is a normalized scalar driven by the baroreflex only.
-      - Pressures are stressed-volume pressures referenced to zero unstressed volume.
+      - Four lumped compliant compartments (arterial, central venous, splanchnic venous, lower-limb venous) with linear stressed pressure-volume relations and zero unstressed volume.
+      - Total stressed blood volume is conserved (closed circulation; the volume-balance derivatives telescope exactly, and the muscle pump redistributes volume without creating blood).
+      - The heart is a prescribed flow source Q_h = HR * SV with preload-dependent, saturating stroke volume and sympathetic contractility modulation.
+      - Regional flows are rectified (unidirectional) Ohm-law flows driven by compartment pressure differences and upright hydrostatic offsets.
+      - "The baroreflex senses head-level arterial pressure and drives three differentiated first-order autonomic states: cardiac sympathetic, vascular sympathetic and vagal."
+      - Protocol inputs (upright fraction, exertion, rhythmic and sustained muscle activity) are piecewise-constant scalars normalized to [0, 1].
+      - The exertional-load/delayed-stress/PEM cascade is an explicitly phenomenological exertion-delay-recovery approximation, not a claim that the cellular cause of PEM is known.
     limitations:
-      - No hydrostatic (postural) gradients; orthostasis must be added by the caller.
-      - No ventricular dynamics, valve mechanics or pulmonary circulation.
-      - Cerebral flow index is a lumped conductance approximation, not autoregulation.
-      - Metabolic capacity and PEM severity are phenomenological couplings.
+      - "Beat-averaged: no pulsatile ventricular dynamics, valve mechanics or pulmonary circulation."
+      - Hydrostatics enter only as constant pressure offsets scaled by the upright fraction; there is no distributed postural geometry.
+      - Cerebral flow index is a lumped perfusion-pressure approximation with a residual autoregulation slope, not vessel-level autoregulation.
+      - No transcapillary fluid exchange, haemorrhage or renal volume regulation; blood volume changes only through the blood volume factor operating point.
+      - Metabolic capacity, oxygen extraction and PEM dynamics are phenomenological couplings; their parameters are calibration assumptions, not clinical measurements.
+      - Solver settings (method, step size, tolerances) are implementation concerns and are intentionally outside this specification.
     validity_domain:
       - scope_note: >
-          Resting-to-mild-exertion adult physiology near the nominal operating
-          point; not validated for exercise, haemorrhage or critical care.
+          Supine-to-upright and rest-to-mild-exertion adult physiology near the
+          nominal operating point; not validated for strenuous exercise,
+          haemorrhage or critical care.
         activity: rest
+        posture: supine-to-upright
     provenance:
       contributors:
         - name: ocpe-disease-models maintainers
@@ -366,5 +1005,17 @@ entities:
       created: "2026-01-01"
       notes: >
         Authored for OCPE specification 0.1 at pinned upstream commit
-        3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d.
+        3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d. Declarations aligned with the
+        executable reference implementation (model_version 0.2.0) in
+        src/ocpe_disease_models/models/shared/model.py via the per-symbol
+        x-executable-state, x-executable-parameter, x-executable-input and
+        x-executable-output bindings.
+    implementations:
+      - name: ocpe-disease-models reference simulator
+        language: Python
+        status: reference implementation
+        conformance_note: >
+          ComputationalPatient in src/ocpe_disease_models/models/shared/model.py
+          (this repository) executes this specification; numerical solver
+          settings and run orchestration live there, not in this document.
     since: "0.1.0"

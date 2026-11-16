@@ -1,5 +1,5 @@
 id: repeated-exertion-recovery
-title: Two standardized exertion bouts separated by 24 hours with approximately 48-hour post-day-2 follow-up (72-hour total duration)
+title: Two standardized exertion bouts separated by 24 hours with six-day post-day-2 follow-up (seven-day total duration)
 scientific_note: Small model-validation trace, not a synthetic patient cohort or wearable dataset.
 solver: {sample_interval: 600.0, max_step: 300.0, rtol: 1.0e-7, atol: 1.0e-8}
 segments:
@@ -7,4 +7,4 @@ segments:
   - {start: 3600, end: 4800, upright: 0.0, exertion: 0.8, label: exertion-day-1}
   - {start: 4800, end: 86400, upright: 0.0, exertion: 0.0, label: recovery-day-1}
   - {start: 86400, end: 87600, upright: 0.0, exertion: 0.8, label: exertion-day-2}
-  - {start: 87600, end: 259200, upright: 0.0, exertion: 0.0, label: recovery-days-2-3}
+  - {start: 87600, end: 604800, upright: 0.0, exertion: 0.0, label: extended-recovery-days-2-7}

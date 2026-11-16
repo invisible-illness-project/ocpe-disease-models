@@ -56,7 +56,7 @@ def run_phenotype(phenotype_id: str, protocol_id: str, **solver_overrides):
 
 def stressed_volume_drift(result) -> float:
     """Maximum absolute drift of total stressed volume (mL) from its initial value."""
-    total = result.states[0] + result.states[1] + result.states[2]
+    total = result.states[:4].sum(axis=0)
     return float(np.abs(total - total[0]).max())
 
 
@@ -73,8 +73,9 @@ def orthostatic_metrics(result) -> dict[str, float]:
     sym = result.outputs["sympathetic_state"]
     venous = result.outputs["venous_return"]
     supine = (t >= 0.0) & (t <= TILT_START - 2.0)
-    upright_first300 = (t >= TILT_START) & (t <= min(TILT_START + 300.0, t[-1]))
-    upright_late = (t >= max(TILT_START, t[-1] - 120.0)) & (t <= t[-1])
+    upright_end = min(TILT_END, float(t[-1]))
+    upright_first300 = (t >= TILT_START) & (t <= min(TILT_START + 300.0, upright_end))
+    upright_late = (t >= max(TILT_START, upright_end - 120.0)) & (t <= upright_end)
     baseline = float(hr[supine].mean())
     return {
         "hr_baseline": baseline,
@@ -82,7 +83,7 @@ def orthostatic_metrics(result) -> dict[str, float]:
         "hr_rise": float(hr[upright_first300].max() - baseline),
         "hr_rise_sustained": float(hr[upright_late].mean() - baseline),
         "map_final": float(map_[-1]),
-        "map_upright_min": float(map_[t >= TILT_START].min()),
+        "map_upright_min": float(map_[(t >= TILT_START) & (t <= upright_end)].min()),
         "sympathetic_supine": float(sym[supine].mean()),
         "sympathetic_upright_late": float(sym[upright_late].mean()),
         "venous_return_supine": float(venous[(t >= TILT_START - 20.0) & (t <= TILT_START - 2.0)].mean()),

@@ -26,16 +26,16 @@ exertion input e
    ▼  EQ-RCV-001  dL/dt = (e/C − L)/τ_L          τ_L = 1800 s        [assumption]
 exertional load L  (C = current capacity, EQ-MET-001)
    │
-   ▼  EQ-RCV-002  dD/dt = (L − D)/τ_D           τ_D = 43200 s in mecfs-pem [assumption]
+   ▼  EQ-RCV-002  dD/dt = (L − D)/τ_D           τ_D = 72000 s in mecfs-pem [assumption]
 delayed stress D
    │
    ▼  EQ-RCV-003  PEM_target = min(1, g·max(0,(D−θ)/(1−θ)))
                                    θ = 0.001, g = 20.0 in mecfs-pem  [assumption]
-                                   (healthy θ = 99.0 disables PEM)
+                                   (healthy θ = 0.999 and g = 0.0 disable PEM)
    │
    ▼  EQ-RCV-004  dPEM/dt with asymmetric τ
-                                   τ_onset = 172800 s in mecfs-pem    [assumption]
-                                   τ_recovery = 86400 s in mecfs-pem  [assumption]
+                                   τ_onset = 86400 s in mecfs-pem     [assumption]
+                                   τ_recovery = 172800 s in mecfs-pem [assumption]
 PEM state
    │
    ├──► EQ-MET-001  C = max(0.05, C_0·(1 − k_C·PEM))
@@ -55,15 +55,23 @@ after CPET (REF-STUSSMAN-2020); day-2 VO2peak decrements of 13.8%
 in CLM-ME-CPET. The time constants are operating points whose plausibility
 windows these findings constrain; the equation *form* (first-order delay,
 threshold, asymmetric recovery) is **[assumption]** — the registry records
-"exploratory for equation form" on MEC-RCV-PEM.
+"exploratory for equation form" on MEC-RCV-PEM. The 72000 s delayed-stress
+constant is an explicit exception above the declared 14400–43200 s local
+sensitivity range, not a patient measurement. In the current repeated-exertion
+scenario, PEM first exceeds 0.05 at approximately 5.7 h after the day-1 bout
+ends, earlier than the 12–48 h daily-activity onset window but within reported
+post-CPET onset within 24 h; the separate peak at approximately 39.2 h after
+the bout remains compatible with the delayed-peak evidence. This onset-window tension is retained as a limitation.
 
 ## Cerebral-flow branch
 
 ```
-arterial pressure P_a ──► EQ-CBF-001  CFI_target = (P_a/P_set)^α·(1 − β·u)
-                          α = 0.8 [assumption]; β = 0.23 in mecfs-pem
-                          ([measured] anchor: 26% vs 7% end-tilt reduction,
-                           REF-VANCAMPEN-2020, E2/single-center Doppler)
+CPP = P_a − G_head·u − P_c ──► EQ-CBF-001  r = CPP/CPP_ref
+        CFI_target = r/(s_ar + (1−s_ar)r) · (1−β·u)
+                     CPP_ref = 95 mmHg, s_ar = 0.2 [assumptions]
+                     β = 0.23 in mecfs-pem [calibrated assumption]
+                     ([measured] anchor: 26% vs 7% end-tilt reduction,
+                      REF-VANCAMPEN-2020, E2/single-center Doppler)
                           ▼
 EQ-CBF-002  asymmetric kinetics: τ_decline = 5 s; τ_recovery = 240 s in mecfs-pem
             ([measured] motivation: incomplete post-tilt recovery,
@@ -71,22 +79,28 @@ EQ-CBF-002  asymmetric kinetics: τ_decline = 5 s; τ_recovery = 240 s in mecfs-
 ```
 
 Guardrail encoded in CLM-ME-CBF: cerebral flow is **not** inferred from MAP
-alone; the impairment term and recovery lag are explicit phenomenological
-states. The index is normalized and is not a Doppler reconstruction.
+alone; CPP includes the heart-to-head correction and venous back pressure, and
+the impairment term and recovery lag are explicit phenomenological elements.
+The index is normalized and is not a Doppler reconstruction. Healthy end-tilt
+CFI reduction is approximately 0.003% versus the reported 7% control finding,
+so the control-side response remains a disclosed soft-anchor miss rather than
+a successful validation.
 
 ## Configuration and validation
 
 `phenotypes/mecfs/mecfs-pem.yaml` (M3, `phenomenological_dynamic_model`):
-gravity offset 9.0; HR base 45.0; HR gain 50.0; cerebral impairment 0.23;
-cerebral recovery τ 240.0 s; baseline capacity 0.85; extraction 0.74; PEM
-threshold 0.001; PEM gain 20.0 — every entry a calibrated value inside a
-declared registry sensitivity range.
+splanchnic/lower-limb gravity offsets 4.5/9.0 mmHg; HR rest 70.0 bpm;
+cardiac-sympathetic/vagal chronotropic gains 25.0/25.0 bpm; cerebral impairment
+0.23; cerebral recovery τ 240.0 s; baseline capacity 0.85; extraction 0.74;
+delayed-stress τ 72000.0 s (explicit range exception); PEM onset/recovery τ
+86400.0/172800.0 s; PEM threshold 0.001; PEM gain 20.0. These are calibrated
+scenario values, not patient measurements.
 
 | Validation | What it establishes | What it does not establish |
 |---|---|---|
 | VAL-ME-PEM (M3) | Delayed, non-immediate PEM with slow recovery; healthy stays PEM-free | Any molecular or inflammatory cause |
 | VAL-ME-CPET (M3) | Subsequent capacity reduction within a predeclared broad 2–20% band around the 5.3%/13.8% anchors | Patient-level or prospective external validation |
-| VAL-ME-CBF (M3) | End-tilt index reduction within a broad 15–35% band around the 26% group mean; healthy reduction smaller | Volumetric CBF accuracy or single-patient prediction |
+| VAL-ME-CBF (M3) | End-tilt index reduction within a broad 15–35% band around the 26% group mean; healthy reduction smaller; healthy 3–11% soft-band miss warned explicitly | Volumetric CBF accuracy, successful healthy-control reproduction, or single-patient prediction |
 | VAL-PHYS-RECOVERY | Post-tilt recovery behavior | Recovery time-constant identification |
 
 SIM-ME-REPEATED-EXERTION persists the scenario; declared status:

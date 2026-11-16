@@ -137,38 +137,89 @@ entities:
     since: "0.1.0"
   - id: ocpe:disease-models/peripheral-venous-blood-volume
     kind: variable
-    label: Peripheral venous blood volume (lumped compartment)
+    label: Peripheral venous blood volume (legacy aggregated compartment)
     definition: >
-      Blood volume of the lumped peripheral venous compartment in
-      lumped-parameter cardiovascular models.
+      Legacy aggregated peripheral venous compartment retained for semantic
+      compatibility. The 0.2.0 executable uses separate splanchnic and
+      lower-limb stressed-volume compartments instead.
     dimension: volume
     canonical_unit: mL
     value_type: continuous
     observability: model_compartment
     system: ocpe:disease-models/cardiovascular-system
     since: "0.1.0"
+  - id: ocpe:disease-models/splanchnic-venous-blood-volume
+    kind: variable
+    label: Splanchnic venous stressed blood volume
+    definition: >
+      Stressed blood volume in the model's splanchnic venous compartment;
+      a reduced-order computational compartment, not a direct regional
+      measurement of total blood volume.
+    dimension: volume
+    canonical_unit: mL
+    value_type: continuous
+    observability: model_compartment
+    system: ocpe:disease-models/cardiovascular-system
+    since: "0.2.0"
+  - id: ocpe:disease-models/lower-limb-venous-blood-volume
+    kind: variable
+    label: Lower-limb venous stressed blood volume
+    definition: >
+      Stressed blood volume in the model's lower-limb venous compartment;
+      a reduced-order computational compartment, not a direct regional
+      measurement of total blood volume.
+    dimension: volume
+    canonical_unit: mL
+    value_type: continuous
+    observability: model_compartment
+    system: ocpe:disease-models/cardiovascular-system
+    since: "0.2.0"
   # ------------------------------------------------------------ derived metric
+  - id: ocpe:disease-models/cerebral-perfusion-pressure
+    kind: derived_metric
+    label: Cerebral perfusion pressure
+    definition: >
+      Reduced-order brain-level perfusion-pressure proxy: head-level arterial
+      pressure after the orthostatic heart-to-head correction, minus central
+      venous back pressure, floored at zero. Intracranial pressure is not
+      separately modeled.
+    dimension: pressure
+    canonical_unit: mm[Hg]
+    derived_from:
+      - ocpe:disease-models/mean-arterial-pressure
+      - ocpe:disease-models/central-venous-blood-volume
+    computation:
+      method: >
+        CPP = max(0, MAP - DeltaP_head * upright - P_cv), with central venous
+        pressure P_cv = V_cv / C_cv. DeltaP_head is a declared model parameter,
+        not an angle-specific patient measurement.
+      formula: "CPP = \\max(0, MAP - \\Delta P_{head}u - P_{cv})"
+      input_requirements: Simultaneous mean arterial pressure, central venous stressed volume and compliance, upright input, and head hydrostatic-pressure parameter.
+    aliases:
+      - value: CPP
+        type: abbreviation
+    since: "0.2.0"
   - id: ocpe:disease-models/cerebral-flow-index
     kind: derived_metric
     label: Cerebral flow index
     definition: >
-      Cerebral blood flow expressed relative to its resting supine baseline:
-      CFI = 1 means baseline cerebral perfusion. In the
-      three-compartment cardiovascular model it is approximated from mean
-      arterial pressure and sympathetically modulated cerebrovascular
-      resistance.
+      Normalized dynamic cerebral-flow proxy governed by cerebral perfusion
+      pressure, a bounded residual-autoregulation curve, optional exploratory
+      orthostatic impairment, and asymmetric decline/recovery lags. CFI = 1
+      denotes the healthy reference perfusion-pressure point; it is not a direct
+      volumetric CBF or Doppler measurement.
     dimension: dimensionless
     canonical_unit: "1"
     derived_from:
-      - ocpe:disease-models/mean-arterial-pressure
-      - ocpe:disease-models/sympathetic-activation
+      - ocpe:disease-models/cerebral-perfusion-pressure
     computation:
       method: >
-        Ratio of modelled cerebral blood flow to its resting baseline:
-        CFI = MAP / (MAP_ref * (1 + g_cvr * S)), where MAP_ref is the resting
-        mean arterial pressure and S the sympathetic activation state.
-      formula: "CFI = \\frac{MAP}{MAP_{ref}\\,(1 + g_{cvr}\\,S)}"
-      input_requirements: Simultaneous mean arterial pressure and sympathetic activation state.
+        With r = CPP / CPP_ref, the pressure target is
+        r / (s_ar + (1 - s_ar) * r). The dynamic CFI state approaches this
+        target, multiplied by max(0, 1 - beta * upright), using separate decline
+        and recovery time constants. No CO2-dependent mechanism is represented.
+      formula: "CFI_{pressure} = \\frac{r}{s_{ar} + (1-s_{ar})r},\\quad r = \\frac{CPP}{CPP_{ref}}"
+      input_requirements: Cerebral perfusion pressure, reference CPP, residual autoregulation slope, upright input, exploratory impairment multiplier, and dynamic state.
     aliases:
       - value: CFI
         type: abbreviation

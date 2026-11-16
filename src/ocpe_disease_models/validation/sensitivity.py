@@ -22,6 +22,7 @@ from ..config import compose_phenotypes, load_protocol, repository_root
 SOLVER_KEYS = {"sample_interval", "max_step", "rtol", "atol", "seed"}
 METRICS = (
     "orthostatic_heart_rate_rise_bpm",
+    "orthostatic_heart_rate_sustained_rise_bpm",
     "mean_arterial_pressure_final_mmHg",
     "pem_peak",
     "functional_capacity_final",
@@ -64,19 +65,46 @@ def local_sensitivity(root: Path | None = None) -> list[dict[str, Any]]:
     plans = (
         (
             "pots-neuropathic",
+            "head-up-tilt",
             {
-                "gravity_pressure_offset": (-0.10, 0.10),
-                "venous_return_resistance": (-0.10, 0.10),
-                "resistance_sympathetic_gain": (-0.10, 0.10),
+                "splanchnic_venous_compliance": (-0.10, 0.10),
+                "lower_limb_venous_compliance": (-0.10, 0.10),
+                "splanchnic_venous_resistance": (-0.10, 0.10),
+                "lower_limb_venous_resistance": (-0.10, 0.10),
+                "splanchnic_resistance_sympathetic_gain": (-0.10, 0.10),
+                "lower_limb_resistance_sympathetic_gain": (-0.10, 0.10),
+                "splanchnic_gravity_pressure_offset": (-0.10, 0.10),
+                "lower_limb_gravity_pressure_offset": (-0.10, 0.10),
                 "blood_volume_factor": (-0.10, 0.10),
-                "heart_rate_sympathetic_gain": (-0.10, 0.10),
+                "cardiac_sympathetic_time_constant": (-0.25, 0.25),
+                "vascular_sympathetic_time_constant": (-0.25, 0.25),
+                "vagal_time_constant": (-0.25, 0.25),
+                "cerebral_autoregulation_residual_slope": (-0.25, 0.25),
             },
         ),
-        ("eds-heds-vascular", {"peripheral_venous_compliance": (-1 / 7, 1 / 7)}),
+        (
+            "eds-heds-vascular",
+            "head-up-tilt",
+            {"lower_limb_venous_compliance": (-1 / 7, 1 / 7)},
+        ),
+        (
+            "healthy-reference",
+            "light-rhythmic-activity",
+            {
+                "muscle_pump_stroke_volume": (-0.25, 0.25),
+                "muscle_pump_frequency": (-0.25, 0.25),
+                "muscle_pump_effectiveness": (-0.25, 0.25),
+                "muscle_pump_half_volume": (-0.25, 0.25),
+            },
+        ),
+        (
+            "healthy-reference",
+            "sustained-contraction",
+            {"sustained_contraction_resistance_gain": (-0.25, 0.25)},
+        ),
     )
     rows: list[dict[str, Any]] = []
-    for phenotype_id, parameters in plans:
-        protocol_id = "head-up-tilt"
+    for phenotype_id, protocol_id, parameters in plans:
         base_row, base_result = _run(phenotype_id, protocol_id, {}, root)
         base_summary = base_result.summary()
         rows.append({**base_row, "analysis": "local_sensitivity", "parameter": "baseline", "level": "base"})
@@ -121,18 +149,18 @@ def uncertainty_grid(root: Path | None = None) -> list[dict[str, Any]]:
         (
             "eds-heds-vascular",
             "head-up-tilt",
-            "peripheral_venous_compliance",
-            (120.0, 140.0, 160.0),
-            "gravity_pressure_offset",
+            "lower_limb_venous_compliance",
+            (50.0, 58.333333333333336, 66.66666666666667),
+            "lower_limb_gravity_pressure_offset",
             (7.0, 9.0, 11.0),
         ),
         (
             "mecfs-pem",
             "single-exertion-recovery",
             "delayed_stress_time_constant",
-            (14400.0, 21600.0, 43200.0),
+            (43200.0, 72000.0, 86400.0),
             "pem_onset_time_constant",
-            (43200.0, 86400.0, 172800.0),
+            (86400.0, 129600.0, 172800.0),
         ),
     )
     rows: list[dict[str, Any]] = []
@@ -150,6 +178,34 @@ def uncertainty_grid(root: Path | None = None) -> list[dict[str, Any]]:
                     }
                 )
                 rows.append(row)
+    return rows
+
+
+def chronotropic_split_grid(root: Path | None = None) -> list[dict[str, Any]]:
+    """Vary the unidentified vagal/cardiac-sympathetic gain split at fixed total."""
+    root = root or repository_root()
+    phenotype_id = "pots-neuropathic"
+    patient = compose_phenotypes([phenotype_id], root=root)
+    total = (
+        patient.parameters.heart_rate_cardiac_sympathetic_gain
+        + patient.parameters.heart_rate_vagal_gain
+    )
+    rows: list[dict[str, Any]] = []
+    for fraction in (0.0, 0.5, 1.0):
+        overrides = {
+            "heart_rate_cardiac_sympathetic_gain": total * fraction,
+            "heart_rate_vagal_gain": total * (1.0 - fraction),
+        }
+        row, _ = _run(phenotype_id, "head-up-tilt", overrides, root)
+        row.update(
+            {
+                "analysis": "chronotropic_split",
+                "cardiac_sympathetic_fraction": fraction,
+                "total_chronotropic_gain": total,
+                "identifiability": "split is not identified by the current evidence",
+            }
+        )
+        rows.append(row)
     return rows
 
 
@@ -222,12 +278,12 @@ def _markdown(local: list[dict[str, Any]], grid: list[dict[str, Any]]) -> str:
             value = row.get("normalized_sensitivity", {}).get(metric)
             rendered = "n/a" if value is None else f"{value:.4g}"
             lines.append(f"| {row['phenotype_id']} | {parameter} | {metric} | {rendered} |")
-    lines.extend(["", "## Deterministic assumption grids", "", "| Phenotype | Overrides | HR rise (bpm) | Final MAP (mmHg) | PEM peak | Final capacity |", "|---|---|---:|---:|---:|---:|"])
+    lines.extend(["", "## Deterministic assumption grids", "", "| Phenotype | Overrides | Peak HR rise (bpm) | Sustained HR rise (bpm) | Final MAP (mmHg) | PEM peak | Final capacity |", "|---|---|---:|---:|---:|---:|---:|"])
     for row in grid:
         overrides = ", ".join(f"{key}={value}" for key, value in row["overrides"].items())
         values = [row.get(metric) for metric in METRICS]
         rendered = ["n/a" if value is None else f"{value:.4g}" for value in values]
-        lines.append(f"| {row['phenotype_id']} | {overrides} | {rendered[0]} | {rendered[1]} | {rendered[2]} | {rendered[3]} |")
+        lines.append(f"| {row['phenotype_id']} | {overrides} | {rendered[0]} | {rendered[1]} | {rendered[2]} | {rendered[3]} | {rendered[4]} |")
     summary = _grid_summary(grid)
     lines.extend(["", "## Range summary and failed physiological regimes", ""])
     for phenotype_id, record in summary.items():
@@ -242,7 +298,7 @@ def _markdown(local: list[dict[str, Any]], grid: list[dict[str, Any]]) -> str:
         else:
             lines.append("- No scenario in this grid ends below the 70 mmHg MAP screening threshold.")
         lines.append("")
-    lines.extend(["## Interpretation limits", "", "- hEDS peripheral venous compliance includes the healthy reference value and both exploratory increases; it is not a measured hEDS coefficient.", "- ME/CFS delay and onset constants are phenomenological and are not probability distributions over patients.", "- Configuration hashes and solver settings are retained in JSON; no random seed is used because no stochastic sampling occurs.", "- Sensitivity does not validate equation structure or clinical utility."])
+    lines.extend(["## Interpretation limits", "", "- hEDS lower-limb venous compliance includes the healthy reference value and exploratory changes; it is not a measured hEDS coefficient.", "- ME/CFS delay and onset constants are phenomenological and are not probability distributions over patients.", "- Configuration hashes and solver settings are retained in JSON; no random seed is used because no stochastic sampling occurs.", "- Sensitivity does not validate equation structure or clinical utility."])
     return "\n".join(lines) + "\n"
 
 
@@ -273,12 +329,33 @@ def run_analysis(root: Path | None = None, out_dir: Path | None = None) -> dict[
     out_dir.mkdir(parents=True, exist_ok=True)
     local = local_sensitivity(root)
     grid = uncertainty_grid(root)
-    for name, rows in (("local_sensitivity", local), ("uncertainty_grid", grid)):
+    split = chronotropic_split_grid(root)
+    for name, rows in (
+        ("local_sensitivity", local),
+        ("uncertainty_grid", grid),
+        ("chronotropic_split", split),
+    ):
         payload: dict[str, Any] = {"schema_version": "1.0", "rows": rows}
         if name == "uncertainty_grid":
             payload["summary"] = _grid_summary(rows)
         (out_dir / f"{name}.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
         _write_csv(out_dir / f"{name}.csv", rows)
-    (out_dir / "sensitivity-report.md").write_text(_markdown(local, grid), encoding="utf-8")
+    report = _markdown(local, grid)
+    report += "\n## Unidentified chronotropic split\n\n"
+    report += "Total chronotropic gain is fixed; only the cardiac-sympathetic fraction changes. These scenarios demonstrate structural non-identifiability rather than alternative patients.\n\n"
+    report += "| Cardiac-sympathetic fraction | Peak HR rise (bpm) | Sustained HR rise (bpm) | Final MAP (mmHg) |\n|---:|---:|---:|---:|\n"
+    for row in split:
+        report += (
+            f"| {row['cardiac_sympathetic_fraction']:.1f} "
+            f"| {row['orthostatic_heart_rate_rise_bpm']:.4g} "
+            f"| {row['orthostatic_heart_rate_sustained_rise_bpm']:.4g} "
+            f"| {row['mean_arterial_pressure_final_mmHg']:.4g} |\n"
+        )
+    (out_dir / "sensitivity-report.md").write_text(report, encoding="utf-8")
     _plot(local, out_dir / "figure.png")
-    return {"local_scenarios": len(local), "grid_scenarios": len(grid), "output_directory": str(out_dir)}
+    return {
+        "local_scenarios": len(local),
+        "grid_scenarios": len(grid),
+        "chronotropic_split_scenarios": len(split),
+        "output_directory": str(out_dir),
+    }

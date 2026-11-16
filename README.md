@@ -6,9 +6,9 @@ Literature-grounded, executable research models of POTS, hEDS-associated orthost
 
 ## What is implemented
 
-- A beat-averaged, volume-conserving cardiovascular and autonomic model with orthostatic stress, preload-dependent stroke volume, and bounded sympathetic feedback.
+- A beat-averaged, volume-conserving cardiovascular and autonomic model (Stage 1 revision, eleven states) with four conservative stressed-volume compartments (arterial, central venous, splanchnic venous, lower-limb venous), differentiated vagal, cardiac-sympathetic, and vascular-sympathetic effector states, an explicit rhythmic skeletal-muscle pump, an independent sustained-contraction venous impediment, preload-dependent stroke volume, and a cerebral-perfusion-pressure-based normalized cerebral-flow index (CPP/CFI).
 - POTS neuropathic, hyperadrenergic, hypovolemic, and explicitly mixed configurations.
-- An exploratory hEDS peripheral venous-compliance scenario; it does not generalize to other EDS subtypes or treat arterial elasticity as venous compliance.
+- An exploratory hEDS lower-limb venous-compliance scenario (migrated from the original aggregated peripheral-compliance scenario); it does not generalize to other EDS subtypes or treat arterial elasticity as venous compliance.
 - A phenomenological ME/CFS exertion → delayed stress → PEM → reduced subsequent capacity cascade with asymmetric recovery.
 - Separate Long COVID autonomic and exertional/oxygen-extraction configurations rather than one uniform disease model.
 - OCPE semantic packages, strict observation mapping, compact reproducible traces, six demonstrations, sensitivity/uncertainty analyses, and an end-to-end traceability audit.
@@ -75,6 +75,12 @@ Start with:
 - `simulations/simulation_registry.yaml`
 
 `docs/architecture.md` explains the numerical and OCPE boundaries; `docs/methodology.md` documents equations and protocols; `docs/maturity-model.md` separates evidence grades from M0–M4 maturity; `docs/limitations.md` records unresolved scientific and engineering issues. `docs/technical-handoff.md` provides the A–L release handoff, and `validation/reproducibility.json` binds the executed results to source and artifact hashes.
+
+The Stage 1 design and review record lives under `docs/stage1/`:
+
+- `docs/stage1/baseline-scientific-report.md` — audit of the original three-compartment implementation (Stage 0, preserved as history).
+- `docs/stage1/literature-and-evidence-matrix.md` — evidence-to-mechanism decisions for the revision.
+- `docs/stage1/revised-physiological-architecture.md` — the reviewed four-compartment eleven-state architecture, migration formulas, per-phenotype fixed-point derivation, and calibration record implemented in the current code.
 
 ## Scope
 

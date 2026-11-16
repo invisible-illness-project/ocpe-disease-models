@@ -18,6 +18,9 @@ evidence_claims:
   mechanism: Conservative lumped hemodynamics and pressure-feedback control
   references:
   - REF-GEDDES-2022
+  - REF-HELDT-2002
+  - REF-OLUFSEN-2005
+  - REF-VANHEUSDEN-2006
   evidence_type: computational physiology supported by clinical observations
   measured_variables:
   - pressure
@@ -25,7 +28,7 @@ evidence_claims:
   - flow
   - heart rate
   reported_effect: Closed-loop compartment models reproduce orthostatic HR/BP dynamics and mechanistic POTS configurations.
-  parameter_implications: Supports equation structure, not the numerical values in this reduced three-compartment adaptation.
+  parameter_implications: Supports equation structure, not the numerical values in this reduced four-compartment adaptation.
   evidence_grade: E3
   confidence: medium
   limitations: Structural support does not validate this simpler model or its calibrated operating point.
@@ -652,3 +655,471 @@ evidence_claims:
   - MEC-SLEEP-CIRCADIAN
   validation_links: []
   confidence_detail: low for computational specification
+- id: CLM-CV-VENOUS-RETURN
+  statement: Venous return is driven by small pressure gradients between upstream venous filling pressures
+    and central venous pressure; the mean-systemic-filling-pressure framework is an established analytical
+    basis.
+  description: Venous return is driven by small pressure gradients between regional venous filling pressures
+    and central venous pressure; resistance-opposed pressure-gradient returns are a defensible reduced-order
+    form.
+  diseases:
+  - shared
+  mechanism: Pressure-gradient venous return
+  references:
+  - REF-PERSICHINI-2022
+  - REF-MAGDER-2016
+  - REF-GUYTON-1955
+  evidence_type: physiological framework with human bedside estimates
+  measured_variables:
+  - mean systemic filling pressure
+  - central venous pressure
+  - venous return
+  reported_effect: Human bedside estimates support the importance of small filling-pressure gradients;
+    the classical framework originates from animal right-heart-bypass experiments.
+  parameter_implications: Supports the pressure-gradient structure of the regional venous-return equations,
+    not the numerical resistance values.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Bedside filling-pressure estimates remain model-dependent; classical quantitative values
+    are animal-derived.
+  modeling_implications: Implement venous return as resistance-opposed pressure-gradient flow with a nonnegative
+    ideal-valve floor.
+  implementation_links:
+  - MEC-CV-VOLUME
+  - MEC-VASC-POOLING
+  validation_links:
+  - VAL-PHYS-BASELINE
+  - VAL-PHYS-TILT
+  confidence_detail: moderate for structure, low for magnitudes
+- id: CLM-CV-STRESSED-VOLUME
+  statement: Only stressed blood volume generates the elastic recoil pressure that drives flow; stressed
+    and unstressed volumes are distinct constructs.
+  description: Only stressed blood volume generates the elastic recoil pressure that drives flow; the
+    model keeps explicit stressed volumes and defers any dynamic unstressed reservoir.
+  diseases:
+  - shared
+  mechanism: Stressed versus unstressed venous volume
+  references:
+  - REF-MAGDER-2016
+  - REF-ROTHE-1983
+  - REF-GUYTON-1955
+  evidence_type: established physiological concept with limited human quantification
+  measured_variables:
+  - stressed volume
+  - unstressed volume
+  - vascular capacitance
+  reported_effect: The stressed/unstressed distinction is established, but quantitative regional human
+    distributions are uncertain and much venomotor evidence is animal-derived.
+  parameter_implications: Supports explicit stressed-volume compartments and linear compliance initialization;
+    does not justify invented regional unstressed volumes or venomotor gains.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Regional human stressed-volume fractions are inferred; venomotor reflexes are not implemented.
+  modeling_implications: Keep stressed volumes only; no dynamic unstressed-volume reservoir in this scope.
+  implementation_links:
+  - MEC-CV-VOLUME
+  - MEC-VOL-REGULATION
+  validation_links:
+  - VAL-MATH-CONSERVATION
+  confidence_detail: moderate for the concept, low for regional fractions
+- id: CLM-ORTHO-SPLANCHNIC
+  statement: The splanchnic bed is a distinct capacitance region that fills during upright tilt and participates
+    in blood pressure regulation; POTS subgroups can show exaggerated splanchnic pooling.
+  description: The splanchnic bed is a distinct capacitance region that fills during upright tilt and
+    participates in blood pressure regulation; POTS subgroups can show exaggerated splanchnic pooling.
+  diseases:
+  - shared
+  - POTS
+  mechanism: Regional splanchnic pooling
+  references:
+  - REF-ROWELL-1972
+  - REF-TANEJA-2007
+  - REF-STEWART-2004
+  - REF-TANI-2000
+  evidence_type: controlled human physiology and clinical studies
+  measured_variables:
+  - splanchnic blood volume
+  - arterial pressure
+  - orthostatic vital signs
+  reported_effect: Splanchnic segmental volume increases on upright tilt, splanchnic vasoconstriction
+    defends pressure, and a POTS subgroup shows exaggerated splanchnic pooling.
+  parameter_implications: Supports a separate splanchnic venous compartment with its own arterial inflow,
+    venous return and gravity offset; does not supply absolute awake-human compliance or resistance values.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Impedance measurements are relative; subgroup findings are not universal disease values.
+  modeling_implications: Separate the splanchnic compartment from the lower-limb compartment.
+  implementation_links:
+  - MEC-VASC-POOLING
+  validation_links:
+  - VAL-PHYS-TILT
+  confidence_detail: moderate-high for the regional distinction
+- id: CLM-ORTHO-LOWER-LIMB
+  statement: Upright posture redistributes roughly 500-800 mL of blood below the diaphragm over a finite
+    time course, with an approximately 20% early cardiac-output reduction in the literature synthesis.
+  description: Upright posture redistributes roughly 500-800 mL of blood below the diaphragm over a finite
+    time course; human-calibrated models support a separate lower-limb venous compartment.
+  diseases:
+  - shared
+  mechanism: Lower-limb orthostatic pooling
+  references:
+  - REF-SMITH-1994
+  - REF-HELDT-2002
+  - REF-VANHEUSDEN-2006
+  evidence_type: human synthesis and validated computational models
+  measured_variables:
+  - regional blood volume
+  - cardiac output
+  - pooling time course
+  reported_effect: The synthesis reports roughly 500-800 mL caudal redistribution and an approximately
+    20% early cardiac-output reduction; pooling develops over time rather than instantaneously.
+  parameter_implications: Supports a separate lower-limb venous compartment and conservative pooling dynamics;
+    the 500-800 mL and 20% figures are broad plausibility anchors, not fitted targets.
+  evidence_grade: E3
+  confidence: medium
+  limitations: No unique pooling time constant or regional compliance for every posture and person.
+  modeling_implications: Use conservative compartment dynamics and compare only against broad redistribution
+    bands.
+  implementation_links:
+  - MEC-CV-VOLUME
+  - MEC-VASC-POOLING
+  validation_links:
+  - VAL-PHYS-TILT
+  confidence_detail: moderate for direction and order of magnitude
+- id: CLM-ORTHO-TILT-LBNP
+  statement: 'Lower body negative pressure and upright tilt are not interchangeable splanchnic stressors:
+    splanchnic volume increased during tilt but decreased during LBNP in controlled comparison.'
+  description: 'Lower body negative pressure and upright tilt are not interchangeable splanchnic stressors:
+    splanchnic volume increased during tilt but decreased during LBNP in controlled comparison.'
+  diseases:
+  - shared
+  - POTS
+  mechanism: Stressor-specific regional volume responses
+  references:
+  - REF-TANEJA-2007
+  evidence_type: small controlled human study
+  measured_variables:
+  - segmental splanchnic blood volume
+  - hemodynamics
+  reported_effect: Opposite splanchnic volume directions under tilt versus LBNP in the same laboratory
+    paradigm.
+  parameter_implications: Validation protocols must not treat LBNP and standing/tilt as interchangeable.
+  evidence_grade: E2
+  confidence: medium
+  limitations: Small impedance-based cohort; mechanistically important but not a parameter source.
+  modeling_implications: Restrict orthostatic validation comparisons to the declared posture inputs.
+  implementation_links:
+  - MEC-VASC-POOLING
+  validation_links: []
+  confidence_detail: moderate for the qualitative distinction
+- id: CLM-MUSCLE-PUMP
+  statement: Rhythmic skeletal-muscle activity augments venous return by transferring lower-limb venous
+    volume toward the central compartment.
+  description: Rhythmic skeletal-muscle activity augments venous return by transferring lower-limb venous
+    volume toward the central compartment.
+  diseases:
+  - shared
+  mechanism: Rhythmic skeletal-muscle pump
+  references:
+  - REF-ROWELL-1986
+  - REF-ROWELL-1993
+  - REF-HELDT-2002
+  evidence_type: established human physiology and human-calibrated modeling
+  measured_variables:
+  - venous return
+  - leg blood flow
+  - cardiac output
+  reported_effect: Rhythmic contraction empties the lower-limb venous bed and raises venous return during
+    walking and similar activity.
+  parameter_implications: Supports an explicit pumped flow proportional to contraction frequency, pumped
+    volume and available venous volume; does not identify a universal pump flow or effectiveness.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Pump magnitude, frequency content and valve efficiency vary across people and activities.
+  modeling_implications: Model the pump as an explicit protocol-driven volume transfer that cannot create
+    blood.
+  implementation_links:
+  - MEC-MUSCLE-PUMP
+  validation_links:
+  - VAL-MATH-CONSERVATION
+  confidence_detail: moderate for mechanism, low for magnitude
+- id: CLM-MUSCLE-PUMP-LIMITS
+  statement: The muscle pump is not obligatory for every exercise-associated cardiac-output increase;
+    small-muscle-mass exercise cardiac output can rise without obligatory pump action.
+  description: The muscle pump is not obligatory for every exercise-associated cardiac-output increase;
+    small-muscle-mass exercise cardiac output can rise without obligatory pump action.
+  diseases:
+  - shared
+  mechanism: Limits of muscle-pump-centric exercise models
+  references:
+  - REF-GONZALEZALONSO-2008
+  evidence_type: controlled human evidence, contested and generalizability-limited
+  measured_variables:
+  - cardiac output
+  - leg blood flow
+  - thigh compression responses
+  reported_effect: Cardiac output rose during small-muscle-mass exercise paradigms without obligatory
+    muscle-pump action.
+  parameter_implications: Keep arterial vasodilation independent of the pump input; no obligatory pump
+    multiplier on cardiac output.
+  evidence_grade: E2
+  confidence: medium
+  limitations: One-legged exercise cannot be generalized to every upright activity.
+  modeling_implications: Rhythmic muscle activity, sustained contraction and metabolic exertion are independent
+    protocol inputs.
+  implementation_links:
+  - MEC-MUSCLE-PUMP
+  validation_links:
+  - VAL-SENSITIVITY
+  confidence_detail: moderate as a constraining finding
+- id: CLM-MUSCLE-SUSTAINED
+  statement: Sustained (static) muscle contraction mechanically impedes venous outflow from the working
+    muscle.
+  description: Sustained (static) muscle contraction mechanically impedes venous outflow from the working
+    muscle.
+  diseases:
+  - shared
+  mechanism: Sustained-contraction venous impediment
+  references:
+  - REF-ROWELL-1986
+  - REF-ROWELL-1993
+  evidence_type: established human exercise physiology for direction
+  measured_variables:
+  - muscle blood flow
+  - venous outflow
+  - contraction intensity
+  reported_effect: Static contractions compress intramuscular vessels and impede venous drainage during
+    the effort.
+  parameter_implications: Supports increasing lower-limb venous resistance with an explicit sustained-contraction
+    input; no precise universal resistance gain is identified.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Magnitude is uncertain and depends on contraction intensity and muscle mass.
+  modeling_implications: Represent impediment as a venous-resistance multiplier driven only by the sustained-contraction
+    input.
+  implementation_links:
+  - MEC-SUSTAINED-CONTRACTION
+  validation_links:
+  - VAL-MATH-CONSERVATION
+  confidence_detail: moderate for direction, low for the calibrated gain
+- id: CLM-AUT-VAGAL-FAST
+  statement: Vagal cardiac control acts on a substantially faster timescale than sympathetic control in
+    humans.
+  description: Vagal cardiac control acts on a substantially faster timescale than sympathetic control
+    in humans.
+  diseases:
+  - shared
+  mechanism: Fast vagal versus slow sympathetic heart-rate control
+  references:
+  - REF-COHEN-2002
+  - REF-DEBOER-1987
+  - REF-CEVESE-2001
+  evidence_type: convergent human physiology
+  measured_variables:
+  - heart rate variability
+  - baroreflex transfer functions
+  - heart period oscillations
+  reported_effect: Vagal effects on heart period operate within about one beat to a few seconds, while
+    sympathetic effects are slower.
+  parameter_implications: Supports a separate vagal state with a shorter first-order lag than the sympathetic
+    states; does not identify one constant across all people and conditions.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Population and condition variability; transfer-function surrogates rather than direct nerve
+    recordings.
+  modeling_implications: Assign the vagal pathway the shortest autonomic time constant.
+  implementation_links:
+  - MEC-AUT-BAROREFLEX
+  validation_links:
+  - VAL-MATH-CONVERGENCE
+  - VAL-PHYS-TILT
+  confidence_detail: moderate-high for the ordering of timescales
+- id: CLM-AUT-SYMPATHETIC-PATHWAYS
+  statement: Cardiac sympathetic and vascular sympathetic outflows are distinguishable pathways with different
+    effectors and dynamics.
+  description: Cardiac sympathetic and vascular sympathetic outflows are distinguishable pathways with
+    different effectors and dynamics.
+  diseases:
+  - shared
+  - POTS
+  mechanism: Distinct cardiac and vascular sympathetic effector pathways
+  references:
+  - REF-FAGIUS-1985
+  - REF-CEVESE-2001
+  - REF-HELDT-2002
+  evidence_type: human neural evidence and convergent models
+  measured_variables:
+  - muscle sympathetic nerve activity
+  - heart rate
+  - vascular resistance
+  reported_effect: Human microneurography and pharmacologic studies distinguish vascular sympathetic from
+    cardiac chronotropic control.
+  parameter_implications: Supports separate cardiac-sympathetic and vascular-sympathetic effector states
+    with distinct time constants; MSNA is not a direct measurement of cardiac or splanchnic outflow.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Regional sympathetic outflows are not interchangeable measurements.
+  modeling_implications: Prevent heart rate from proxying all autonomic activity.
+  implementation_links:
+  - MEC-AUT-BAROREFLEX
+  - MEC-VASC-CONSTRICTION
+  validation_links:
+  - VAL-PHYS-TILT
+  confidence_detail: moderate
+- id: CLM-AUT-DELAYS
+  statement: Baroreflex lags and pathway gains govern feedback dynamics and stability during postural
+    stress.
+  description: Baroreflex lags and pathway gains govern feedback dynamics and stability during postural
+    stress.
+  diseases:
+  - shared
+  - POTS
+  mechanism: Baroreflex feedback delays
+  references:
+  - REF-DEBOER-1987
+  - REF-HAMMER-2005
+  - REF-OLUFSEN-2005
+  evidence_type: human identification plus computational theory
+  measured_variables:
+  - baroreflex sensitivity
+  - blood-pressure oscillations
+  - postural responses
+  reported_effect: Beat-to-beat identification and stability analysis show delayed baroreflex coupling
+    shaping orthostatic dynamics and low-frequency oscillations.
+  parameter_implications: Supports pathway-specific first-order lags; does not validate arbitrary delay/gain
+    combinations.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Open-loop identification limits parameter transfer; no pure-delay differential equations
+    are used.
+  modeling_implications: Use separate first-order lags per autonomic pathway.
+  implementation_links:
+  - MEC-AUT-BAROREFLEX
+  validation_links:
+  - VAL-MATH-CONVERGENCE
+  confidence_detail: moderate
+- id: CLM-CBF-CPP
+  statement: Brain-level cerebral perfusion pressure differs from brachial or systemic mean arterial pressure
+    during orthostasis because of the heart-to-brain hydrostatic gradient and venous back pressure.
+  description: Brain-level cerebral perfusion pressure differs from brachial or systemic mean arterial
+    pressure during orthostasis because of the heart-to-brain hydrostatic gradient and venous back pressure.
+  diseases:
+  - shared
+  mechanism: Brain-level cerebral perfusion pressure
+  references:
+  - REF-LEVINE-1994
+  - REF-WILLIE-2014
+  evidence_type: strong human physiological evidence
+  measured_variables:
+  - cerebral blood-flow velocity
+  - systemic hemodynamics
+  - orthostatic tolerance
+  reported_effect: Cerebral and systemic hemodynamics diverge under graded orthostatic stress; hydrostatic
+    correction is required to interpret head-level pressure.
+  parameter_implications: Supports subtracting an orthostatic hydrostatic offset and central venous back
+    pressure; does not supply intracranial pressure or patient-specific cerebral perfusion pressure.
+  evidence_grade: E3
+  confidence: medium
+  limitations: TCD velocity is not volumetric cerebral blood flow.
+  modeling_implications: Compute cerebral perfusion pressure at brain level rather than equating it with
+    systemic MAP.
+  implementation_links:
+  - MEC-CBF-AUTOREG
+  validation_links:
+  - VAL-ME-CBF
+  confidence_detail: moderate-high for structure
+- id: CLM-CBF-AUTOREG-DYNAMIC
+  statement: Dynamic cerebral autoregulation buffers cerebral perfusion-pressure changes over a timescale
+    of seconds.
+  description: Dynamic cerebral autoregulation buffers cerebral perfusion-pressure changes over a timescale
+    of seconds.
+  diseases:
+  - shared
+  mechanism: Dynamic cerebral autoregulation
+  references:
+  - REF-AASLID-1989
+  - REF-CLAASSEN-2016
+  - REF-WILLIE-2014
+  evidence_type: human physiology and international methodological consensus
+  measured_variables:
+  - cerebral blood-flow velocity
+  - arterial pressure steps
+  reported_effect: Thigh-cuff step experiments establish dynamic autoregulation over seconds; consensus
+    methods treat autoregulation as a bounded dynamic process.
+  parameter_implications: Supports a bounded dynamic normalized pressure-flow proxy; does not validate
+    the selected curve or the index as volumetric CBF.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Consensus methods are not a new physiological parameter source; the residual slope is assumed.
+  modeling_implications: Use a bounded autoregulation curve with asymmetric decline and recovery lags.
+  implementation_links:
+  - MEC-CBF-AUTOREG
+  validation_links:
+  - VAL-ME-CBF
+  - VAL-PHYS-RECOVERY
+  confidence_detail: moderate
+- id: CLM-CBF-CO2
+  statement: Carbon dioxide materially regulates cerebral blood flow; hypocapnia amplifies cerebral hypoperfusion
+    during orthostasis.
+  description: Carbon dioxide materially regulates cerebral blood flow; hypocapnia amplifies cerebral
+    hypoperfusion during orthostasis.
+  diseases:
+  - shared
+  - POTS
+  mechanism: CO2-dependent cerebral vasomotor regulation
+  references:
+  - REF-WILLIE-2014
+  - REF-LEWIS-2014
+  - REF-NOVAK-1998
+  - REF-AASLID-1989
+  evidence_type: controlled human evidence
+  measured_variables:
+  - end-tidal carbon dioxide
+  - cerebral blood-flow velocity
+  - orthostatic tolerance
+  reported_effect: Hypocapnia amplifies cerebral hypoperfusion while orthostatic tolerance can be buffered
+    by oxygen extraction.
+  parameter_implications: The model has no CO2 input, so no hypocapnia mechanism can be inferred and the
+    omission must be declared rather than hidden inside an autoregulation gain.
+  evidence_grade: E3
+  confidence: medium
+  limitations: No CO2 state exists in the current scope; a lower cerebral-flow index must not be equated
+    with syncope.
+  modeling_implications: Keep CO2 effects out of the executable cerebral-flow claim; declare the omission.
+  implementation_links:
+  - MEC-CBF-CO2-OMISSION
+  validation_links: []
+  confidence_detail: moderate as a constraining finding
+- id: CLM-CV-VOLUME-REGULATION
+  statement: Blood volume is regulated over longer horizons by renal, endocrine and fluid-shift processes;
+    fixed total stressed volume is a short-protocol approximation.
+  description: Blood volume is regulated over longer horizons by renal, endocrine and fluid-shift processes;
+    the model keeps total stressed volume fixed for short orthostatic protocols.
+  diseases:
+  - shared
+  - POTS
+  mechanism: Longer-horizon blood-volume regulation
+  references:
+  - REF-MAGDER-2016
+  - REF-SMITH-1994
+  - REF-RAJ-2005
+  evidence_type: established physiological direction with multi-timescale complexity
+  measured_variables:
+  - blood volume
+  - plasma volume
+  - fluid shifts
+  reported_effect: Orthostatic fluid shifts and volume-regulatory hormones act over minutes to days, beyond
+    the modeled protocol horizons.
+  parameter_implications: Supports the blood-volume factor as an initial-condition scaling only; no renal,
+    endocrine, plasma-refill or interstitial-fluid prediction is made.
+  evidence_grade: E3
+  confidence: medium
+  limitations: No dynamic volume regulation is implemented; the factor must not be interpreted as a RAAS
+    simulation.
+  modeling_implications: Fix total stressed volume within a simulation and disclose the approximation.
+  implementation_links:
+  - MEC-VOL-REGULATION
+  - MEC-VOL-HYPOVOLEMIA
+  validation_links:
+  - VAL-SENSITIVITY
+  confidence_detail: moderate for direction, low for dynamics

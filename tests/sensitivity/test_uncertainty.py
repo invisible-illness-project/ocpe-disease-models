@@ -35,10 +35,10 @@ pytestmark = pytest.mark.sensitivity_uncertainty
 SCENARIO_LABEL = "deterministic_scenario_not_a_patient"
 
 TILT_GRID = {
-    "gravity_pressure_offset": (8.0, 10.0),
-    "resistance_sympathetic_gain": (0.35, 0.8),
+    "lower_limb_gravity_pressure_offset": (8.0, 10.0),
+    "lower_limb_resistance_sympathetic_gain": (0.35, 0.8),
 }
-PEM_GRID_VALUES = (12.0, 16.0, 20.0)  # pem_response_gain on the ME/CFS background
+PEM_GRID_VALUES = (0.0, 12.0, 16.0, 20.0)  # includes the explicit no-PEM bound
 
 # Shortened deterministic exertion scenario: 1 h baseline, 20 min exertion,
 # 47 h recovery (PEM peak occurs near 12 h, well inside the horizon).
@@ -52,11 +52,11 @@ PEM_PROTOCOL = [
 def _tilt_grid_records():
     segments, _ = load_protocol("head-up-tilt")
     records = []
-    for offset in TILT_GRID["gravity_pressure_offset"]:
-        for gain in TILT_GRID["resistance_sympathetic_gain"]:
+    for offset in TILT_GRID["lower_limb_gravity_pressure_offset"]:
+        for gain in TILT_GRID["lower_limb_resistance_sympathetic_gain"]:
             overrides = {
-                "gravity_pressure_offset": offset,
-                "resistance_sympathetic_gain": gain,
+                "lower_limb_gravity_pressure_offset": offset,
+                "lower_limb_resistance_sympathetic_gain": gain,
             }
             patient = ComputationalPatient(
                 ModelParameters().replaced(overrides), phenotype_id="uncertainty-scenario"
@@ -146,13 +146,13 @@ def test_tilt_grid_scenario_ranking_is_stable(tilt_records):
         return next(
             r["orthostatic_heart_rate_rise_bpm"]
             for r in tilt_records
-            if r["parameters"]["gravity_pressure_offset"] == offset
-            and r["parameters"]["resistance_sympathetic_gain"] == gain
+            if r["parameters"]["lower_limb_gravity_pressure_offset"] == offset
+            and r["parameters"]["lower_limb_resistance_sympathetic_gain"] == gain
         )
 
-    for gain in TILT_GRID["resistance_sympathetic_gain"]:
+    for gain in TILT_GRID["lower_limb_resistance_sympathetic_gain"]:
         assert rise(10.0, gain) > rise(8.0, gain)
-    for offset in TILT_GRID["gravity_pressure_offset"]:
+    for offset in TILT_GRID["lower_limb_gravity_pressure_offset"]:
         assert rise(offset, 0.8) < rise(offset, 0.35)
 
 
@@ -173,5 +173,6 @@ def test_pem_grid_scenario_ranking_is_stable(pem_records):
     assert peaks == sorted(peaks)
     assert capacities == sorted(capacities, reverse=True)
     # A zero-gain scenario is the no-PEM bound of the assumption range.
-    assert all(r["parameters"]["pem_response_gain"] > 0.0 for r in ordered)
-    assert all(r["pem_peak"] > 0.0 for r in ordered)
+    assert ordered[0]["parameters"]["pem_response_gain"] == 0.0
+    assert ordered[0]["pem_peak"] == 0.0
+    assert all(r["pem_peak"] > 0.0 for r in ordered[1:])

@@ -3,7 +3,7 @@
 Loads and strictly validates the external OCPE domain package
 ``ocpe/packages/disease-models`` against the pinned upstream OCPE engine and
 specification, and exposes the registered quantities, the declarative
-three-compartment cardiovascular model, and observation validation through
+shared cardiovascular/autonomic model, and observation validation through
 stable, generic OCPE APIs (``ocpe.load`` / ``ocpe.validate`` /
 ``ocpe.validate_observation`` / ``ocpe.Resolver``).
 """

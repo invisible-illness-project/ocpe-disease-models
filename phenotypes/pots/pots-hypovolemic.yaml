@@ -4,12 +4,20 @@ diseases: [POTS]
 mechanisms: [MEC-VOL-HYPOVOLEMIA, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX]
 evidence_claims: [CLM-POTS-PHENOTYPES, CLM-POTS-HYPOVOLEMIA, CLM-POTS-CRITERIA]
 parameter_overrides:
-  gravity_pressure_offset: 10.0
+  splanchnic_gravity_pressure_offset: 5.0
+  lower_limb_gravity_pressure_offset: 10.0
   blood_volume_factor: 0.92
+  baroreflex_pressure_setpoint: 92.0
   baroreflex_pressure_scale: 6.0
-  heart_rate_base: 30.0
-  heart_rate_sympathetic_gain: 80.0
-  resistance_sympathetic_gain: 0.9
+  splanchnic_resistance_sympathetic_gain: 0.9
+  lower_limb_resistance_sympathetic_gain: 0.9
+  heart_rate_rest: 70.0
+  heart_rate_cardiac_sympathetic_gain: 60.0
+  heart_rate_vagal_gain: 60.0
+  splanchnic_arterial_resistance: 2.08065306122449
+  lower_limb_arterial_resistance: 2.08065306122449
+  splanchnic_venous_resistance: 0.11559183673469388
+  lower_limb_venous_resistance: 0.11559183673469388
 maturity: M3
 classification: mechanistic_approximation
 limitations:

@@ -1,2 +1,8 @@
-................                                                         [100%]
-16 passed, 215 deselected in 2.13s
+.............................                                            [100%]
+=============================== warnings summary ===============================
+tests/physiological/test_orthostatic.py::test_early_co_and_caudal_pooling_soft_anchors_are_explicit
+  /mnt/agents/output/ocpe-disease-models/tests/physiological/test_orthostatic.py:71: UserWarning: early CO reduction 5.64% is outside the 10-30% soft anchor
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+29 passed, 257 deselected, 1 warning in 3.83s

@@ -22,14 +22,15 @@ levels:
 ## Subgroup A — autonomic / POTS-overlap (`long-covid-autonomic`, M3)
 
 ```
-upright input u ──► EQ-ORT-001 venous-return opposition   (MEC-VASC-POOLING)
-                        PAR-GRAVITY-PRESSURE-OFFSET = 11.0          [assumption]
+upright input u ──► EQ-ORT-001 regional venous-return opposition (MEC-VASC-POOLING)
+        splanchnic/lower-limb gravity offsets = 5.5/11.0 mmHg       [assumption]
         ▼
-pressure error ──► EQ-AUT-001/002 sigmoid + lag           (MEC-AUT-BAROREFLEX)
+head-level pressure error ──► EQ-AUT-001/002 sigmoid + differentiated lags
+                                                        (MEC-AUT-BAROREFLEX)
         ▼
-EQ-AUT-003 HR response: base 35.0, sympathetic gain 70.0            [assumption]
+EQ-AUT-003 HR: rest 70.0; cardiac-sympathetic/vagal gains 50.0/50.0 [assumption]
         ▼
-EQ-CBF-001/002 cerebral-flow index: impairment 0.08                 [assumption]
+EQ-CBF-001/002 CPP-based cerebral index: impairment 0.08            [assumption]
         +
 MEC-RCV-PEM: PEM threshold 0.001, response gain 12.0                [assumption]
 ```

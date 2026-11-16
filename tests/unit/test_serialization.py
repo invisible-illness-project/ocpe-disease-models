@@ -42,7 +42,10 @@ EXPECTED_OUTPUT_NAMES = {
     "heart_rate",
     "mean_arterial_pressure",
     "central_venous_pressure",
-    "peripheral_venous_pressure",
+    "splanchnic_venous_pressure",
+    "lower_limb_venous_pressure",
+    "baroreflex_pressure",
+    "cerebral_perfusion_pressure",
     "stroke_volume",
     "cardiac_output_l_min",
     "venous_return",
@@ -137,7 +140,7 @@ def test_non_finite_solver_output_cannot_be_reported_as_success(monkeypatch):
         success = True  # a "successful" solver result must still be rejected
         message = "forced non-finite states for validation"
         t = np.array([0.0, 1.0])
-        y = np.array([[0.0, np.inf]] * 8)
+        y = np.array([[0.0, np.inf]] * 11)
 
     monkeypatch.setattr(model_module, "solve_ivp", lambda *a, **k: NonFiniteSolution())
     patient = ComputationalPatient(phenotype_id="nan-check")
@@ -154,7 +157,7 @@ def test_failed_solver_cannot_be_reported_as_success(monkeypatch):
         success = False
         message = "forced failure for validation"
         t = np.array([0.0])
-        y = np.zeros((8, 1))
+        y = np.zeros((11, 1))
 
     monkeypatch.setattr(
         model_module, "solve_ivp", lambda *a, **k: FailedSolution()
@@ -169,8 +172,8 @@ def test_failed_solver_cannot_be_reported_as_success(monkeypatch):
     ("override", "match"),
     [
         ({"arterial_compliance": 0.0}, "arterial_compliance must be positive"),
-        ({"peripheral_venous_compliance": -1.0}, "peripheral_venous_compliance must be positive"),
-        ({"systemic_resistance": -0.5}, "systemic_resistance must be positive"),
+        ({"lower_limb_venous_compliance": -1.0}, "lower_limb_venous_compliance must be positive"),
+        ({"splanchnic_arterial_resistance": -0.5}, "splanchnic_arterial_resistance must be positive"),
         ({"blood_volume_factor": 0.0}, "blood_volume_factor must be positive"),
         ({"oxygen_extraction_fraction": 1.0}, "oxygen_extraction_fraction"),
         ({"oxygen_extraction_fraction": 0.0}, "oxygen_extraction_fraction"),

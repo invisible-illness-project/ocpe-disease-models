@@ -6,8 +6,8 @@ zero under the same protocol; recovery is slower than a simple
 immediate-fatigue response.
 
 Protocol: repeated-exertion-recovery (baseline 0-3600 s, exertion day 1
-3600-4800 s, recovery, exertion day 2 at 86400 s, approximately 48 h of
-post-day-2 follow-up within a 72 h total protocol).
+3600-4800 s, recovery, exertion day 2 at 86400 s, and six days of post-day-2
+follow-up within a seven-day total protocol).
 """
 
 from __future__ import annotations

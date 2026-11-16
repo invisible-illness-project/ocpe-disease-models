@@ -1,0 +1,7 @@
+id: light-rhythmic-activity
+title: Upright rhythmic muscle activity without metabolic exertion
+scientific_note: Isolates the mechanical muscle-pump contribution from exercise heart-rate and resistance effects.
+solver: {sample_interval: 1.0, max_step: 1.0, rtol: 1.0e-7, atol: 1.0e-8}
+segments:
+  - {start: 0, end: 120, upright: 0.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.0, label: supine}
+  - {start: 120, end: 600, upright: 1.0, exertion: 0.0, rhythmic_muscle_activity: 0.5, sustained_muscle_contraction: 0.0, label: rhythmic-activity}

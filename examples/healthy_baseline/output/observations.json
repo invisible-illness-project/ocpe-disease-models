@@ -7,12 +7,12 @@
       "value": 70.0,
       "unit": "/min",
       "value_kind": "simulated",
-      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "model": "ocpe:disease-models/shared-physiology",
       "provenance": {
         "derived_from": [
           {
             "source": "ocpe/packages/disease-models/models.yaml",
-            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "legacy_id": "ocpe:disease-models/shared-physiology",
             "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
           }
         ],
@@ -32,12 +32,12 @@
       "value": 100.0,
       "unit": "mm[Hg]",
       "value_kind": "simulated",
-      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "model": "ocpe:disease-models/shared-physiology",
       "provenance": {
         "derived_from": [
           {
             "source": "ocpe/packages/disease-models/models.yaml",
-            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "legacy_id": "ocpe:disease-models/shared-physiology",
             "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
           }
         ],
@@ -57,12 +57,12 @@
       "value": 70.0,
       "unit": "mL",
       "value_kind": "simulated",
-      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "model": "ocpe:disease-models/shared-physiology",
       "provenance": {
         "derived_from": [
           {
             "source": "ocpe/packages/disease-models/models.yaml",
-            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "legacy_id": "ocpe:disease-models/shared-physiology",
             "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
           }
         ],
@@ -82,12 +82,12 @@
       "value": 4.9,
       "unit": "L/min",
       "value_kind": "simulated",
-      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "model": "ocpe:disease-models/shared-physiology",
       "provenance": {
         "derived_from": [
           {
             "source": "ocpe/packages/disease-models/models.yaml",
-            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "legacy_id": "ocpe:disease-models/shared-physiology",
             "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
           }
         ],
@@ -107,12 +107,12 @@
       "value": 1.0,
       "unit": "1",
       "value_kind": "simulated",
-      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "model": "ocpe:disease-models/shared-physiology",
       "provenance": {
         "derived_from": [
           {
             "source": "ocpe/packages/disease-models/models.yaml",
-            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "legacy_id": "ocpe:disease-models/shared-physiology",
             "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
           }
         ],
@@ -132,12 +132,12 @@
       "value": 1.0,
       "unit": "1",
       "value_kind": "simulated",
-      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "model": "ocpe:disease-models/shared-physiology",
       "provenance": {
         "derived_from": [
           {
             "source": "ocpe/packages/disease-models/models.yaml",
-            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "legacy_id": "ocpe:disease-models/shared-physiology",
             "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
           }
         ],
@@ -157,12 +157,12 @@
       "value": 0.0,
       "unit": "1",
       "value_kind": "simulated",
-      "model": "ocpe:disease-models/three-compartment-cardiovascular",
+      "model": "ocpe:disease-models/shared-physiology",
       "provenance": {
         "derived_from": [
           {
             "source": "ocpe/packages/disease-models/models.yaml",
-            "legacy_id": "ocpe:disease-models/three-compartment-cardiovascular",
+            "legacy_id": "ocpe:disease-models/shared-physiology",
             "transformation": "Numerical simulation of the declarative OCPE model; OCPE engine pinned at upstream commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d."
           }
         ],

@@ -87,12 +87,17 @@ arterial-rupture representation and is labeled hEDS-specific
 attributed to hEDS specifically.
 
 **Modeling assumption.** The `eds-heds-vascular` phenotype sets
-PAR-PERIPHERAL-VENOUS-COMPLIANCE = 140.0 mL/mmHg (healthy 120.0) — an assumed
-sensitivity value, not measured — together with PAR-GRAVITY-PRESSURE-OFFSET =
-9.0, PAR-RESISTANCE-SYMPATHETIC-GAIN = 0.7, PAR-HEART-RATE-BASE = 40.0 and
-PAR-HEART-RATE-SYMPATHETIC-GAIN = 60.0. VAL-EDS-DIRECTION checks only that the
-assumed compliance increase alters pooling and compensation in the expected
-direction while volume is conserved; it tests the consequences of a
+PAR-LOWER-LIMB-VENOUS-COMPLIANCE = 58.3333 mL/mmHg (healthy 50.0), migrated
+from the legacy aggregated 140 mL/mmHg scenario by 140 × 50/120. This remains
+an assumed sensitivity value, not a measurement. Companion settings are
+PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET = 4.5 mmHg,
+PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET = 9.0 mmHg, both
+PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN and
+PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN = 0.7, PAR-HEART-RATE-REST = 70.0
+bpm, and PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN
+= 30.0 bpm each. VAL-EDS-DIRECTION checks only that the assumed compliance
+increase alters pooling and compensation in the expected direction while all
+four stressed volumes are conserved; it tests the consequences of a
 hypothesis, not its truth.
 
 ## 4. Contradictory baroreflex findings

@@ -8,6 +8,7 @@ anchors -- not fitted individual data and not prospective external validation.
 from __future__ import annotations
 
 import sys
+import warnings
 from pathlib import Path
 
 import numpy as np
@@ -27,6 +28,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 # Predeclared scenario bands from validation_registry.yaml.
 CPET_REDUCTION_BAND_PCT = (2.0, 20.0)  # broad band around 5.3% / 13.8% anchors
 CBF_REDUCTION_BAND_PCT = (15.0, 35.0)  # broad band around the 26% group mean
+HEALTHY_CBF_REDUCTION_SOFT_BAND_PCT = (3.0, 11.0)  # disclosure band around 7% controls
 
 EXERTION_DAY1_START = 3600.0
 EXERTION_DAY2_START = 86400.0
@@ -92,9 +94,14 @@ def _end_tilt_reduction_pct(result):
 def test_mecfs_cerebral_flow_reduction_within_anchor_band(
     mecfs_tilt_recovery_result, healthy_tilt_recovery_result
 ):
-    """End-tilt cerebral-flow-index reduction within the broad 15-35% band
-    around the reported 26% group mean (CLM-ME-CBF); healthy reduction is
-    smaller. Recovery behavior is tested separately (test_recovery.py)."""
+    """ME/CFS end-tilt reduction must meet its broad 15-35% scenario band.
+
+    The healthy comparison is deliberately only directional at the hard-test
+    level. Its separate 3-11% soft band around the reported 7% control mean is
+    a disclosure screen: the current near-zero response emits a warning rather
+    than being hidden or converted into a hard fitted target. Recovery behavior
+    is tested separately (test_recovery.py).
+    """
     mecfs_reduction = _end_tilt_reduction_pct(mecfs_tilt_recovery_result)
     healthy_reduction = _end_tilt_reduction_pct(healthy_tilt_recovery_result)
     assert CBF_REDUCTION_BAND_PCT[0] <= mecfs_reduction <= CBF_REDUCTION_BAND_PCT[1], (
@@ -102,6 +109,19 @@ def test_mecfs_cerebral_flow_reduction_within_anchor_band(
         f"outside the {CBF_REDUCTION_BAND_PCT}% scenario band"
     )
     assert healthy_reduction < mecfs_reduction
+    if not (
+        HEALTHY_CBF_REDUCTION_SOFT_BAND_PCT[0]
+        <= healthy_reduction
+        <= HEALTHY_CBF_REDUCTION_SOFT_BAND_PCT[1]
+    ):
+        warnings.warn(
+            f"Healthy end-tilt cerebral-flow-index reduction {healthy_reduction:.3f}% "
+            f"is outside the broad {HEALTHY_CBF_REDUCTION_SOFT_BAND_PCT}% soft "
+            "plausibility band around the reported 7% control reduction; this "
+            "control-side miss is retained as a structural limitation, not tuned away.",
+            UserWarning,
+            stacklevel=2,
+        )
 
 
 # --------------------------------------------------- VAL-EMPIRICAL-ANCHORS

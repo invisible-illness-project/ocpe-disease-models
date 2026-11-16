@@ -7,4 +7,4 @@ parameter_overrides: {}
 maturity: M3
 classification: mechanistic_approximation
 limitations:
-  - Beat-averaged three-compartment approximation; no pulsatile waveform or patient-specific identification.
+  - Beat-averaged four-compartment approximation; no pulsatile waveform or patient-specific identification.

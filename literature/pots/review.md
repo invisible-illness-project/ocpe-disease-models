@@ -55,15 +55,19 @@ flow and resistance measurements cannot identify whole-body lumped compliance
 or resistance parameters.
 
 **Modeling assumption.** The `pots-neuropathic` configuration implements
-neuropathy as a reduced sympathetic modulation of systemic resistance
-(MEC-VASC-CONSTRICTION, EQ-VASC-001) with
-PAR-RESISTANCE-SYMPATHETIC-GAIN = 0.35 (healthy 0.8), combined with amplified
-orthostatic pooling (MEC-VASC-POOLING, EQ-ORT-001,
-PAR-GRAVITY-PRESSURE-OFFSET = 10.0 mmHg) and calibrated chronotropic settings
-(PAR-HEART-RATE-BASE = 37.5, PAR-HEART-RATE-SYMPATHETIC-GAIN = 65.0). All
-gains are calibrated demonstration values, not patient measurements; the
-single lumped resistance lumps regional denervation and distinct vascular
-beds (per MEC-VASC-CONSTRICTION limitations). Scenario behavior is checked by
+neuropathy as reduced vascular-sympathetic modulation of regional arterial
+resistances (MEC-VASC-CONSTRICTION, EQ-VASC-001), with both
+PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN and
+PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN = 0.35 (healthy 0.8). It combines
+this with regional orthostatic pooling (MEC-VASC-POOLING, EQ-ORT-001;
+PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET = 5.0 mmHg and
+PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET = 10.0 mmHg) and calibrated chronotropic
+settings (PAR-HEART-RATE-REST = 70.0 bpm;
+PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN = 40.0
+bpm each). All gains are calibrated demonstration values, not patient
+measurements. Separate splanchnic and lower-limb paths do not identify the
+anatomical distribution of denervation, and applying the same gain to both
+beds remains a simplification. Scenario behavior is checked by
 VAL-POTS-NEUROPATHIC under SIM-POTS-ORTHOSTATIC.
 
 ## 4. Hyperadrenergic subtype
@@ -83,11 +87,14 @@ hyperadrenergic POTS, and no catecholamine concentration, reuptake, or
 primary-versus-secondary distinction is modeled (CLM-POTS-HYPERADRENERGIC and
 MEC-AUT-HYPERADRENERGIC limitation fields).
 
-**Modeling assumption.** The `pots-hyperadrenergic` configuration raises
-chronotropic gain (PAR-HEART-RATE-SYMPATHETIC-GAIN = 103.0), steepens the
-sigmoidal baroreflex target (PAR-BAROREFLEX-PRESSURE-SCALE = 1.5 in EQ-AUT-001),
-lowers the intercept (PAR-HEART-RATE-BASE = 20.0) and raises resistance
-modulation (PAR-RESISTANCE-SYMPATHETIC-GAIN = 1.0). This is a calibrated
+**Modeling assumption.** The `pots-hyperadrenergic` configuration raises total
+chronotropic gain through PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and
+PAR-HEART-RATE-VAGAL-GAIN = 70.0 bpm each, steepens the sigmoidal baroreflex
+target (PAR-BAROREFLEX-PRESSURE-SCALE = 1.5 mmHg in EQ-AUT-001), sets
+PAR-HEART-RATE-REST = 71.5 bpm, and raises both regional resistance gains to
+1.0. Regional arterial and venous resistances are adjusted to preserve its
+complete resting fixed point. The equal chronotropic split and all gains are
+calibrated assumptions, not measured autonomic outflow. This is a calibrated
 demonstration of direction (MEC-AUT-HYPERADRENERGIC), checked by VAL-POTS-HYPER.
 
 ## 5. Hypovolemic subtype and the RAAS gap
@@ -106,9 +113,13 @@ PAR-BLOOD-VOLUME-FACTOR = 0.92 to all initial stressed compartments in
 `pots-hypovolemic`. The registry is explicit: plasma-volume deficit is not
 equivalent to the model's stressed whole-blood volume scaling, and 0.92 is a
 calibrated assumption within a 0.85–1.05 sensitivity range, not a measured
-deficit. Companion settings (PAR-BAROREFLEX-PRESSURE-SCALE = 6.0,
-PAR-HEART-RATE-BASE = 30.0, PAR-HEART-RATE-SYMPATHETIC-GAIN = 80.0,
-PAR-RESISTANCE-SYMPATHETIC-GAIN = 0.9) are likewise calibrated.
+deficit. Companion settings (PAR-BAROREFLEX-PRESSURE-SETPOINT = 92.0 mmHg,
+PAR-BAROREFLEX-PRESSURE-SCALE = 6.0 mmHg, PAR-HEART-RATE-REST = 70.0 bpm,
+PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN = 60.0
+bpm each, and both regional resistance gains = 0.9) are likewise calibrated.
+The configured regional arterial and venous resistances preserve the reduced-
+volume resting operating point rather than silently restoring healthy cardiac
+output.
 
 **Exploratory hypothesis (M1, unimplemented).** The renin-aldosterone paradox
 is documented, but dynamic RAAS/renal volume regulation is a proposed
@@ -121,8 +132,11 @@ simulation.
 The `pots-mixed` configuration composes MEC-VOL-HYPOVOLEMIA,
 MEC-VASC-CONSTRICTION, MEC-AUT-HYPERADRENERGIC and MEC-VASC-POOLING with
 intermediate calibrated values (PAR-BLOOD-VOLUME-FACTOR = 0.96,
-PAR-BAROREFLEX-PRESSURE-SCALE = 3.0, PAR-RESISTANCE-SYMPATHETIC-GAIN = 0.55,
-PAR-HEART-RATE-BASE = 32.5, PAR-HEART-RATE-SYMPATHETIC-GAIN = 75.0). It is
+PAR-BAROREFLEX-PRESSURE-SETPOINT = 96.0 mmHg,
+PAR-BAROREFLEX-PRESSURE-SCALE = 3.0 mmHg, both regional resistance gains =
+0.55, PAR-HEART-RATE-REST = 70.0 bpm, and both
+PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN = 50.0
+bpm). Its regional resistances preserve the complete resting fixed point. It is
 maturity M2 and exploratory: the joint configuration requires empirical
 calibration and mechanisms need not sum linearly in patients. VAL-POTS-MIXED
 requires that composition is explicit and that conflicting ad hoc overrides
@@ -136,11 +150,16 @@ conflicting findings: REF-FU-2010 found similar baroreflex function between
 POTS and controls, while REF-CELLETTI-2017 found higher — not lower — resting
 spectral baroreflex sensitivity in a JHS/EDS-HT cohort. Consequently no
 universal gain reduction is defensible, and the model uses a bounded sigmoidal
-pressure target (EQ-AUT-001) with a first-order sympathetic lag (EQ-AUT-002,
-PAR-SYMPATHETIC-TIME-CONSTANT = 4.0 s) and separate effector gains. The
-implementation does not reproduce 0.1 Hz oscillations, does not separate vagal
-from sympathetic pathways, and does not distinguish afferent from efferent
-lesions (MEC-AUT-BAROREFLEX limitations).
+head-level-pressure target (EQ-AUT-001) with separate first-order cardiac-
+sympathetic, vascular-sympathetic, and vagal lags (EQ-AUT-002;
+PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT = 6.0 s,
+PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT = 10.0 s, and
+PAR-VAGAL-TIME-CONSTANT = 1.0 s) and separate effector gains. The
+implementation does not reproduce 0.1 Hz oscillations, pure neural transmission
+delays, or afferent/efferent lesion location (MEC-AUT-BAROREFLEX limitations).
+The equal cardiac-sympathetic/vagal chronotropic split is a calibration choice;
+fixed-total-gain scenarios show that current sustained responses do not
+identify that split.
 
 ## 8. Cerebral blood flow
 
@@ -150,16 +169,21 @@ preceding hypocapnic hyperpnea and sympathetic activation, motivating a
 distinct cerebral-flow output rather than inference from blood pressure alone.
 
 **Modeling assumption.** MEC-CBF-AUTOREG provides a normalized cerebral-flow
-index with pressure dependence (EQ-CBF-001, PAR-CEREBRAL-PRESSURE-EXPONENT =
-0.8) and asymmetric decline/recovery kinetics (EQ-CBF-002,
-PAR-CEREBRAL-DECLINE-TIME-CONSTANT = 5.0 s,
-PAR-CEREBRAL-RECOVERY-TIME-CONSTANT = 12.0 s healthy). The index is normalized;
-Doppler velocity is not necessarily volumetric CBF, and the model has no CO2,
-autoregulatory-gain or vascular-territory structure (per REF-DELPOZZI-2014 and
-MEC-CBF-AUTOREG limitation fields). No POTS-specific impairment value is
-assigned in the registry; the PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT phenotype
-values (0.23, 0.08) belong to the ME/CFS, comorbid and Long COVID
-configurations and are discussed in those reviews.
+index driven by cerebral perfusion pressure—head-level arterial pressure minus
+central venous back pressure—through a bounded autoregulation curve (EQ-CBF-001;
+PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE = 95.0 mmHg and
+PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE = 0.2) and asymmetric
+decline/recovery kinetics (EQ-CBF-002, PAR-CEREBRAL-DECLINE-TIME-CONSTANT = 5.0
+s, PAR-CEREBRAL-RECOVERY-TIME-CONSTANT = 12.0 s healthy). The index is
+normalized; Doppler velocity is not necessarily volumetric CBF, and the model
+has no CO2, intracranial-pressure, or vascular-territory structure (per
+REF-DELPOZZI-2014 and MEC-CBF-AUTOREG limitation fields). No POTS-specific
+impairment value is assigned in the registry; the
+PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT phenotype values (0.23, 0.08) belong to the
+ME/CFS, comorbid and Long COVID configurations and are discussed in those
+reviews. The healthy pressure-driven response nearly abolishes the reported
+control-side end-tilt reduction (approximately 0.003% versus 7%), which remains
+an explicit warning rather than a successful control validation.
 
 ## 9. What this model does not claim
 

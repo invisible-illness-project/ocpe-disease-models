@@ -3,7 +3,7 @@
 # models for the ocpe-disease-models disease-model repository.
 id: disease-models
 name: OCPE Disease Models
-version: "0.1.0"
+version: "0.2.0"
 ocpe_spec: ">=0.1.0 <0.2.0"
 status: provisional
 license: Apache-2.0
@@ -13,8 +13,9 @@ description: >
   cardiac output, cerebral flow index), disease-relevant latent constructs
   (metabolic capacity, PEM severity, sympathetic activation), disease concepts
   (ME/CFS, Long COVID, POTS, hypermobile EDS), measurement methods, and a
-  declarative three-compartment cardiovascular ODE model. All model outputs are
-  semantic specifications; numerical simulation lives in the Python package.
+  declarative four-compartment shared cardiovascular/autonomic ODE model. All
+  model outputs are semantic specifications; numerical simulation lives in the
+  Python package.
 maintainers:
   - name: The Invisible Illness Project
     kind: organization

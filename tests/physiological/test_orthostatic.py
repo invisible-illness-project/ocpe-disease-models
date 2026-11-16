@@ -8,6 +8,7 @@ remains conserved. Qualitative physiology independent of POTS thresholds.
 from __future__ import annotations
 
 import sys
+import warnings
 from pathlib import Path
 
 import pytest
@@ -50,6 +51,41 @@ def test_venous_return_initially_falls(metrics):
 
 def test_volume_remains_conserved_during_tilt(healthy_tilt_result):
     assert stressed_volume_drift(healthy_tilt_result) < 1e-6
+
+
+def test_early_co_and_caudal_pooling_soft_anchors_are_explicit(healthy_tilt_result):
+    result = healthy_tilt_result
+    t = result.time
+    supine = (t >= 100.0) & (t < 120.0)
+    early = (t >= 120.0) & (t <= 150.0)
+    late = t >= 480.0
+    baseline_co = result.outputs["cardiac_output"][supine].mean()
+    early_co = result.outputs["cardiac_output"][early].min()
+    reduction_percent = 100.0 * (baseline_co - early_co) / baseline_co
+    initial_regional = result.states[:4, supine].mean(axis=1)
+    late_regional = result.states[:4, late].mean(axis=1)
+    caudal_accumulation = float((late_regional - initial_regional)[2:].sum())
+    assert 0.0 <= reduction_percent <= 50.0
+    assert 0.0 <= caudal_accumulation <= 1200.0
+    if not 10.0 <= reduction_percent <= 30.0:
+        warnings.warn(
+            f"early CO reduction {reduction_percent:.2f}% is outside the 10-30% soft anchor",
+            UserWarning,
+            stacklevel=1,
+        )
+    if not 300.0 <= caudal_accumulation <= 900.0:
+        warnings.warn(
+            f"caudal accumulation {caudal_accumulation:.1f} mL is outside the 300-900 mL soft anchor",
+            UserWarning,
+            stacklevel=1,
+        )
+
+
+def test_summary_sustained_rise_uses_upright_window(healthy_tilt_result):
+    metrics = orthostatic_metrics(healthy_tilt_result)
+    assert healthy_tilt_result.summary()[
+        "orthostatic_heart_rate_sustained_rise_bpm"
+    ] == pytest.approx(metrics["hr_rise_sustained"])
 
 
 def test_pressure_homeostasis_not_destroyed(metrics):

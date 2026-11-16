@@ -74,6 +74,17 @@ def test_mecfs_recovery_is_slower_than_decline(mecfs_tilt_recovery_result):
     assert abs(value_at_120s - baseline) > healthy_recovered_gap
 
 
+def test_orthostatic_summaries_do_not_use_post_tilt_supine_window(healthy_tilt_recovery_result):
+    from conftest import orthostatic_metrics
+
+    summary = healthy_tilt_recovery_result.summary()
+    metrics = orthostatic_metrics(healthy_tilt_recovery_result)
+    assert summary["orthostatic_heart_rate_sustained_rise_bpm"] == pytest.approx(
+        metrics["hr_rise_sustained"]
+    )
+    assert summary["orthostatic_heart_rate_rise_bpm"] == pytest.approx(metrics["hr_rise"])
+
+
 def test_mecfs_cerebral_trace_remains_finite(mecfs_tilt_recovery_result):
     _, cfi, _, _ = _cerebral(mecfs_tilt_recovery_result)
     assert np.all(np.isfinite(cfi))

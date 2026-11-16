@@ -1,20 +1,23 @@
 schema_version: '1.0'
 equations:
 - id: EQ-CV-001
-  expression: P_a=V_a/C_a; P_c=V_c/C_c; P_p=V_p/C_p
-  description: Linear stressed-volume pressure relations.
+  expression: P_a=V_a/C_a; P_c=V_c/C_c; P_s=V_s/C_s; P_l=V_l/C_l
+  description: Linear stressed-volume pressure relations for the four conservative compartments.
   state_variables:
   - arterial_volume
   - central_venous_volume
-  - peripheral_venous_volume
+  - splanchnic_venous_volume
+  - lower_limb_venous_volume
   parameters:
   - PAR-ARTERIAL-COMPLIANCE
   - PAR-CENTRAL-VENOUS-COMPLIANCE
-  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
+  - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
   units: mmHg
-  physiological_interpretation: Linear stressed-volume pressure relations.
+  physiological_interpretation: Linear stressed-volume pressure relations for the four conservative compartments.
   claims:
   - CLM-CV-HEMODYNAMICS
+  - CLM-CV-STRESSED-VOLUME
   assumptions:
   - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
   applicability_limits:
@@ -24,60 +27,48 @@ equations:
   - VAL-MATH-CONSERVATION
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-CV-002
-  expression: Q_sys=max(0,(P_a-P_p)/R_sys_eff)
-  description: Resistance-driven systemic peripheral flow.
+  expression: Q_sa=max(0,(P_a-P_s)/R_sa_eff); Q_la=max(0,(P_a-P_l)/R_la_eff)
+  description: Resistance-driven regional arterial inflows to the splanchnic and lower-limb beds.
   state_variables:
   - arterial_volume
-  - peripheral_venous_volume
+  - splanchnic_venous_volume
+  - lower_limb_venous_volume
   parameters:
-  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
+  - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
   units: mL/s
-  physiological_interpretation: Resistance-driven systemic peripheral flow.
+  physiological_interpretation: Resistance-driven regional arterial inflows to the splanchnic and lower-limb
+    beds.
   claims:
   - CLM-CV-HEMODYNAMICS
+  - CLM-ORTHO-SPLANCHNIC
+  - CLM-ORTHO-LOWER-LIMB
   assumptions:
   - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
   applicability_limits:
   - Research demonstration only; not patient-specific or clinically validated.
+  - Retrograde regional arterial flow is excluded by the nonnegative floor.
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
   validation:
   - VAL-PHYS-BASELINE
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
-- id: EQ-ORT-001
-  expression: Q_vr=max(0,(P_p-P_c-G*u)/R_vr)
-  description: Venous return with a normalized upright pressure opposition.
-  state_variables:
-  - central_venous_volume
-  - peripheral_venous_volume
-  parameters:
-  - PAR-GRAVITY-PRESSURE-OFFSET
-  - PAR-VENOUS-RETURN-RESISTANCE
-  units: mL/s
-  physiological_interpretation: Venous return with a normalized upright pressure opposition.
-  claims:
-  - CLM-POTS-POOLING
-  - CLM-CV-HEMODYNAMICS
-  assumptions:
-  - Upright input u in [0,1] lumps tilt/standing into a constant pressure offset; reverse venous flow is excluded.
-  applicability_limits:
-  - Not an angle-specific hydrostatic model and not a measured splanchnic pooling flux.
-  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
-  validation:
-  - VAL-PHYS-TILT
-  - VAL-POTS-NEUROPATHIC
-  provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-CV-003
-  expression: dV_a/dt=Q_co-Q_sys; dV_p/dt=Q_sys-Q_vr; dV_c/dt=Q_vr-Q_co
-  description: Conservative compartment balances with d(V_a+V_c+V_p)/dt=0.
+  expression: dV_a/dt=Q_co-(Q_sa+Q_la); dV_c/dt=(Q_sv+Q_lv)-Q_co; dV_s/dt=Q_sa-Q_sv; dV_l/dt=Q_la-Q_lv;
+    d(V_a+V_c+V_s+V_l)/dt=0
+  description: 'Four-volume conservation: the arterial, central-venous, splanchnic-venous and lower-limb-venous
+    derivatives telescope exactly.'
   state_variables:
   - arterial_volume
   - central_venous_volume
-  - peripheral_venous_volume
+  - splanchnic_venous_volume
+  - lower_limb_venous_volume
   parameters: []
   units: mL/s
-  physiological_interpretation: Conservative compartment balances with d(V_a+V_c+V_p)/dt=0.
+  physiological_interpretation: 'Four-volume conservation: the arterial, central-venous, splanchnic-venous
+    and lower-limb-venous derivatives telescope exactly.'
   claims:
   - CLM-CV-HEMODYNAMICS
+  - CLM-CV-VENOUS-RETURN
   assumptions:
   - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
   applicability_limits:
@@ -88,17 +79,17 @@ equations:
   - VAL-MATH-CONVERGENCE
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-CV-004
-  expression: SV=SV_max*(1+k_E(S-0.5))*V_c/(V_c+K_SV)
-  description: Preload- and sympathetic-dependent stroke-volume approximation.
+  expression: SV=SV_max*max(0.2,1+k_E(S_card-0.5))*V_c/(V_c+K_SV)
+  description: Preload- and cardiac-sympathetic-dependent stroke-volume approximation.
   state_variables:
   - central_venous_volume
-  - sympathetic_state
+  - cardiac_sympathetic_state
   parameters:
   - PAR-STROKE-VOLUME-MAX
   - PAR-STROKE-VOLUME-HALF-VOLUME
   - PAR-CONTRACTILITY-SYMPATHETIC-GAIN
   units: mL
-  physiological_interpretation: Preload- and sympathetic-dependent stroke-volume approximation.
+  physiological_interpretation: Preload- and cardiac-sympathetic-dependent stroke-volume approximation.
   claims:
   - CLM-CV-HEMODYNAMICS
   - CLM-POTS-POOLING
@@ -115,7 +106,8 @@ equations:
   description: Cardiac output from heart rate and stroke volume.
   state_variables:
   - central_venous_volume
-  - sympathetic_state
+  - cardiac_sympathetic_state
+  - vagal_state
   parameters: []
   units: mL/s
   physiological_interpretation: Cardiac output from heart rate and stroke volume.
@@ -129,16 +121,129 @@ equations:
   validation:
   - VAL-PHYS-BASELINE
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-VASC-001
+  expression: R_sa_eff=R_sa*(1+g_sa(S_vasc-0.5)); R_la_eff=R_la*(1+g_la(S_vasc-0.5))*(1-k_ex*e)
+  description: Effective regional arterial resistances modulated separately by the vascular-sympathetic
+    state and exertion.
+  state_variables:
+  - vascular_sympathetic_state
+  parameters:
+  - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
+  - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
+  - PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-EXERCISE-RESISTANCE-REDUCTION
+  units: mmHg s/mL
+  physiological_interpretation: Effective regional arterial resistances modulated separately by the vascular-sympathetic
+    state and exertion.
+  claims:
+  - CLM-POTS-POOLING
+  - CLM-POTS-PHENOTYPES
+  - CLM-AUT-SYMPATHETIC-PATHWAYS
+  assumptions:
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  - Exercise vasodilation applies only to the lower-limb arterial path.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-POTS-NEUROPATHIC
+  - VAL-SENSITIVITY
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-ORT-001
+  expression: Q_sv=max(0,(P_s-P_c-G_s*u)/R_sv); Q_lv=max(0,(P_l-P_c-G_l*u)/R_lv_eff)+Q_pump
+  description: Regional venous returns with normalized upright pressure opposition plus the muscle-pump
+    contribution.
+  state_variables:
+  - central_venous_volume
+  - splanchnic_venous_volume
+  - lower_limb_venous_volume
+  parameters:
+  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
+  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-VENOUS-RESISTANCE
+  - PAR-LOWER-LIMB-VENOUS-RESISTANCE
+  units: mL/s
+  physiological_interpretation: Regional venous returns with normalized upright pressure opposition plus
+    the muscle-pump contribution.
+  claims:
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  - CLM-ORTHO-SPLANCHNIC
+  - CLM-ORTHO-LOWER-LIMB
+  assumptions:
+  - Upright input u in [0,1] lumps tilt/standing into constant regional pressure offsets; reverse venous
+    flow is excluded.
+  applicability_limits:
+  - Not an angle-specific hydrostatic model and not a measured regional pooling flux; LBNP and tilt are
+    not interchangeable stressors.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-PHYS-TILT
+  - VAL-POTS-NEUROPATHIC
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-MP-001
+  expression: Q_pump=f_pump*SV_pump*eta_pump*m*V_l/(V_l+K_pump)
+  description: Rhythmic muscle-pump flow transferring lower-limb venous volume toward the central compartment.
+  state_variables:
+  - lower_limb_venous_volume
+  parameters:
+  - PAR-MUSCLE-PUMP-STROKE-VOLUME
+  - PAR-MUSCLE-PUMP-FREQUENCY
+  - PAR-MUSCLE-PUMP-EFFECTIVENESS
+  - PAR-MUSCLE-PUMP-HALF-VOLUME
+  units: mL/s
+  physiological_interpretation: Rhythmic muscle-pump flow transferring lower-limb venous volume toward
+    the central compartment.
+  claims:
+  - CLM-MUSCLE-PUMP
+  - CLM-MUSCLE-PUMP-LIMITS
+  assumptions:
+  - Rhythmic muscle activity m is an explicit protocol input; the pump moves conserved stressed volume
+    and cannot create blood.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  - Pump magnitude is a computational assumption; the pump is not obligatory for exercise cardiac output.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-MATH-CONSERVATION
+  - VAL-SENSITIVITY
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-MP-002
+  expression: R_lv_eff=R_lv*(1+k_contract*c)
+  description: Sustained-contraction multiplier impeding lower-limb venous outflow.
+  state_variables:
+  - lower_limb_venous_volume
+  parameters:
+  - PAR-SUSTAINED-CONTRACTION-RESISTANCE-GAIN
+  - PAR-LOWER-LIMB-VENOUS-RESISTANCE
+  units: mmHg s/mL
+  physiological_interpretation: Sustained-contraction multiplier impeding lower-limb venous outflow.
+  claims:
+  - CLM-MUSCLE-SUSTAINED
+  assumptions:
+  - Sustained contraction c is an explicit protocol input distinct from rhythmic activity and exertion.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated.
+  - The calibrated gain is assumed, not a direct human measurement.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-MATH-CONSERVATION
+  - VAL-SENSITIVITY
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-AUT-001
-  expression: S_target=1/(1+exp(-(P_set-P_a)/sigma_P))
-  description: Bounded baroreflex target increasing as arterial pressure falls.
+  expression: B=1/(1+exp(-clip((P_set-P_baro)/sigma_P,-40,40))); P_baro=max(0,P_a-G_head*u)
+  description: Bounded baroreflex target from head-level pressure error, increasing as baroreflex pressure
+    falls.
   state_variables:
   - arterial_volume
   parameters:
   - PAR-BAROREFLEX-PRESSURE-SETPOINT
   - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
   units: '1'
-  physiological_interpretation: Bounded baroreflex target increasing as arterial pressure falls.
+  physiological_interpretation: Bounded baroreflex target from head-level pressure error, increasing as
+    baroreflex pressure falls.
   claims:
   - CLM-POTS-BAROREFLEX
   assumptions:
@@ -150,38 +255,52 @@ equations:
   - VAL-PHYS-TILT
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-AUT-002
-  expression: dS/dt=(S_target-S)/tau_S
-  description: First-order sympathetic feedback lag.
+  expression: dS_card/dt=(B-S_card)/tau_Sc; dS_vasc/dt=(B-S_vasc)/tau_Sv; dVag/dt=(1-B-Vag)/tau_Vag
+  description: Distinct first-order cardiac-sympathetic, vascular-sympathetic and vagal effector states
+    tracking the shared baroreflex target with separate lags.
   state_variables:
-  - sympathetic_state
+  - cardiac_sympathetic_state
+  - vascular_sympathetic_state
+  - vagal_state
   parameters:
-  - PAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
+  - PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-VAGAL-TIME-CONSTANT
   units: 1/s
-  physiological_interpretation: First-order sympathetic feedback lag.
+  physiological_interpretation: Distinct first-order cardiac-sympathetic, vascular-sympathetic and vagal
+    effector states tracking the shared baroreflex target with separate lags.
   claims:
   - CLM-POTS-BAROREFLEX
   - CLM-CV-HEMODYNAMICS
+  - CLM-AUT-VAGAL-FAST
+  - CLM-AUT-SYMPATHETIC-PATHWAYS
+  - CLM-AUT-DELAYS
   assumptions:
   - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
   applicability_limits:
   - Research demonstration only; not patient-specific or clinically validated.
+  - First-order lags approximate distributed neural dynamics; no pure delays or afferent-lesion distinctions.
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
   validation:
   - VAL-MATH-CONVERGENCE
   - VAL-PHYS-TILT
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-AUT-003
-  expression: HR=clip(HR_0+g_HR*S+g_ex*e*C,30,220)
-  description: Heart rate from baseline, sympathetic drive and exertion.
+  expression: HR=clip(HR_0+g_Sc*(S_card-0.5)+g_Vag*(0.5-Vag)+g_ex*e*C,30,220)
+  description: Heart rate from rest, distinct cardiac-sympathetic and vagal states, and capacity-limited
+    exertion.
   state_variables:
-  - sympathetic_state
+  - cardiac_sympathetic_state
+  - vagal_state
   - pem_severity
   parameters:
-  - PAR-HEART-RATE-BASE
-  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  - PAR-HEART-RATE-REST
+  - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
+  - PAR-HEART-RATE-VAGAL-GAIN
   - PAR-EXERCISE-HEART-RATE-GAIN
   units: bpm
-  physiological_interpretation: Heart rate from baseline, sympathetic drive and exertion.
+  physiological_interpretation: Heart rate from rest, distinct cardiac-sympathetic and vagal states, and
+    capacity-limited exertion.
   claims:
   - CLM-POTS-BAROREFLEX
   - CLM-POTS-HYPERADRENERGIC
@@ -194,46 +313,30 @@ equations:
   - VAL-POTS-HYPER
   - VAL-POTS-NEUROPATHIC
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
-- id: EQ-VASC-001
-  expression: R_sys_eff=R_sys*(1+g_R(S-0.5))*(1-k_ex*e)
-  description: Effective systemic resistance modulated by sympathetic state and exertion.
-  state_variables:
-  - sympathetic_state
-  parameters:
-  - PAR-SYSTEMIC-RESISTANCE
-  - PAR-RESISTANCE-SYMPATHETIC-GAIN
-  - PAR-EXERCISE-RESISTANCE-REDUCTION
-  units: mmHg s/mL
-  physiological_interpretation: Effective systemic resistance modulated by sympathetic state and exertion.
-  claims:
-  - CLM-POTS-POOLING
-  - CLM-POTS-PHENOTYPES
-  assumptions:
-  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
-  applicability_limits:
-  - Research demonstration only; not patient-specific or clinically validated.
-  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
-  validation:
-  - VAL-POTS-NEUROPATHIC
-  - VAL-SENSITIVITY
-  provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-CBF-001
-  expression: CFI_target=(P_a/P_set)^alpha*(1-beta*u)
-  description: Normalized cerebral-flow target with pressure dependence and orthostatic impairment.
+  expression: CPP=max(0,P_a-G_head*u-P_c); x=CPP/CPP_ref; CFI_pressure=x/(s_AR+(1-s_AR)*x); CFI_target=CFI_pressure*max(0,1-beta*u)
+  description: Brain-level cerebral perfusion pressure with a bounded autoregulation curve and orthostatic
+    impairment factor.
   state_variables:
   - arterial_volume
+  - central_venous_volume
   parameters:
-  - PAR-CEREBRAL-PRESSURE-EXPONENT
+  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
+  - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
+  - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
   units: '1'
-  physiological_interpretation: Normalized cerebral-flow target with pressure dependence and orthostatic impairment.
+  physiological_interpretation: Brain-level cerebral perfusion pressure with a bounded autoregulation
+    curve and orthostatic impairment factor.
   claims:
   - CLM-ME-CBF
+  - CLM-CBF-CPP
+  - CLM-CBF-AUTOREG-DYNAMIC
   assumptions:
   - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
   applicability_limits:
   - Research demonstration only; not patient-specific or clinically validated.
+  - Normalized proxy; no CO2, intracranial-pressure or territory-resolved content.
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
   validation:
   - VAL-ME-CBF
@@ -281,15 +384,17 @@ equations:
   - VAL-ME-CPET
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-MET-002
-  expression: E_a-v=clip(E_0*(1-k_EO*PEM),0,0.99); F=C*E_a-v/0.78
-  description: Extraction and normalized functional-capacity approximation.
+  expression: E_a-v=clip(E_0*(1-k_EO*PEM),0,0.99); F=C*E_a-v/E_ref
+  description: Extraction and normalized functional capacity with an explicit reference extraction parameter.
   state_variables:
   - pem_severity
   parameters:
   - PAR-OXYGEN-EXTRACTION-FRACTION
   - PAR-PEM-EXTRACTION-PENALTY
+  - PAR-FUNCTIONAL-CAPACITY-REFERENCE-EXTRACTION
   units: '1'
-  physiological_interpretation: Extraction and normalized functional-capacity approximation.
+  physiological_interpretation: Extraction and normalized functional capacity with an explicit reference
+    extraction parameter.
   claims:
   - CLM-LC-EXTRACTION
   - CLM-ME-PRELOAD
@@ -303,14 +408,16 @@ equations:
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-RCV-001
   expression: dL/dt=(e/C-L)/tau_L
-  description: Exertional load accumulates relative to current capacity and clears with a first-order lag.
+  description: Exertional load accumulates relative to current capacity and clears with a first-order
+    lag.
   state_variables:
   - exertional_load
   - pem_severity
   parameters:
   - PAR-EXERTIONAL-LOAD-TIME-CONSTANT
   units: 1/s
-  physiological_interpretation: Exertional load accumulates relative to current capacity and clears with a first-order lag.
+  physiological_interpretation: Exertional load accumulates relative to current capacity and clears with
+    a first-order lag.
   claims:
   - CLM-ME-PEM-KINETICS
   assumptions:
@@ -355,7 +462,8 @@ equations:
   - CLM-ME-PEM-KINETICS
   - CLM-LC-PEM
   assumptions:
-  - Threshold and gain are calibrated; healthy threshold 99 disables PEM by construction.
+  - Threshold and gain are calibrated; the healthy operating point (threshold 0.999 with gain 0.0) disables
+    PEM by construction.
   applicability_limits:
   - Research demonstration only; not patient-specific or clinically validated.
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient

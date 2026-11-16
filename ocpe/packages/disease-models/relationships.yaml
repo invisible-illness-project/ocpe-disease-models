@@ -78,8 +78,8 @@ entities:
     since: "0.1.0"
   - id: ocpe:disease-models/model-estimates-sympathetic-activation
     kind: relationship
-    label: The three-compartment model estimates sympathetic activation
+    label: The shared physiology model estimates sympathetic activation
     subject: ocpe:disease-models/sympathetic-activation
     predicate: ESTIMATED_BY
-    object: ocpe:disease-models/three-compartment-cardiovascular
-    since: "0.1.0"
+    object: ocpe:disease-models/shared-physiology
+    since: "0.2.0"

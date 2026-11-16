@@ -17,6 +17,7 @@ import ocpe  # noqa: E402
 from ocpe_disease_models.interfaces.ocpe_adapter import (  # noqa: E402
     MODEL_CURIE,
     PACKAGE_ID,
+    PACKAGE_VERSION,
     DiseaseModelsOCPEAdapter,
     OCPERegistryError,
     default_package_dir,
@@ -30,7 +31,7 @@ from ocpe_disease_models.interfaces.ocpe_adapter.adapter import (  # noqa: E402
 pytestmark = pytest.mark.software
 
 PINNED_COMMIT = "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d"
-UPSTREAM_CHECKOUT = Path("/mnt/agents/open-computational-physiology-engine")
+UPSTREAM_CHECKOUT = Path("/mnt/agents/output/open-computational-physiology-engine")
 
 EXPECTED_QUANTITIES = {
     "ocpe:disease-models/heart-rate",
@@ -40,6 +41,26 @@ EXPECTED_QUANTITIES = {
     "ocpe:disease-models/cerebral-flow-index",
     "ocpe:disease-models/metabolic-capacity",
     "ocpe:disease-models/pem-severity",
+}
+
+# The declarative model also exposes the mean sympathetic state as an output.
+EXPECTED_OUTPUT_QUANTITIES = EXPECTED_QUANTITIES | {
+    "ocpe:disease-models/sympathetic-activation",
+}
+
+# Role-"state" symbols of the 11-state executable model; the remaining two
+# dynamic states (PEM severity, cerebral flow index) are declared with role
+# "output" because they are also exchanged quantities.
+EXPECTED_STATE_SYMBOLS = {
+    "V_a",
+    "V_cv",
+    "V_sv",
+    "V_lv",
+    "S_c",
+    "S_v",
+    "S_vag",
+    "L_ex",
+    "D",
 }
 
 
@@ -122,6 +143,9 @@ def test_all_seven_simulated_quantities_registered():
     adapter = load_adapter()
     registered = {e.id for e in adapter.quantities()}
     assert EXPECTED_QUANTITIES <= registered
+    cfi = adapter.get("ocpe:disease-models/cerebral-flow-index")
+    assert cfi.data["derived_from"] == ["ocpe:disease-models/cerebral-perfusion-pressure"]
+    assert "g_{cvr}" not in cfi.data["computation"]["formula"]
 
 
 def test_model_structure():
@@ -129,11 +153,16 @@ def test_model_structure():
     model = adapter.model(MODEL_CURIE)
     assert model.data["formalism"] == "ode"
     states = {s["symbol"] for s in model.data["symbols"] if s["role"] == "state"}
-    assert states == {"V_a", "V_cv", "V_pv", "S"}
+    assert states == EXPECTED_STATE_SYMBOLS
     outputs = adapter.output_quantities()
-    assert {"HR", "MAP", "SV", "CO", "CFI", "MC", "PEM"} <= set(outputs)
+    assert {"HR", "MAP", "SV", "CO", "CFI", "MC", "PEM", "S_sym"} <= set(outputs)
     # Every model output accounts for a registered quantity.
-    assert set(outputs.values()) <= EXPECTED_QUANTITIES
+    assert set(outputs.values()) <= EXPECTED_OUTPUT_QUANTITIES
+    # One differential equation per dynamic state of the executable model:
+    # the nine role-"state" symbols plus PEM and CFI (role "output").
+    differential = [eq for eq in model.data["equations"] if eq.get("form") == "differential"]
+    diff_outputs = {out for eq in differential for out in eq["outputs"]}
+    assert diff_outputs == EXPECTED_STATE_SYMBOLS | {"PEM", "CFI"}
     # Equations carry formal LaTeX expressions.
     assert model.data["equations"]
     for eq in model.data["equations"]:
@@ -150,7 +179,7 @@ def test_summary_reports_pin_and_package():
     adapter = load_adapter()
     summary = adapter.summary()
     assert summary["upstream_commit"] == UPSTREAM_COMMIT
-    assert summary["packages"][PACKAGE_ID] == "0.1.0"
+    assert summary["packages"][PACKAGE_ID] == PACKAGE_VERSION
     assert "core" in summary["packages"]
 
 

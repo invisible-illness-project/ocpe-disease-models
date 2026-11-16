@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "model_version": "0.1.0",
+  "repository_commit": "e87401ddd435d2fd1d5e15420308086051229851",
+  "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
+  "python_version": "3.12.12",
+  "clinical_status": "Research software and scenario validation only; no clinical validity or diagnostic accuracy is established.",
+  "required_tests_policy": "A missing layer, empty pytest selection, failed audit, or warning in strict traceability is a failure, not a skip.",
+  "overall_status": "PASS",
+  "layers": [
+    {
+      "layer": "software",
+      "marker": "software or regression",
+      "command": [
+        "/usr/local/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-m",
+        "software or regression"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "pytest_summary": "104 passed, 127 deselected in 51.95s",
+      "log": "validation/reports/software.log"
+    },
+    {
+      "layer": "mathematical",
+      "marker": "mathematical",
+      "command": [
+        "/usr/local/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-m",
+        "mathematical"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "pytest_summary": "22 passed, 209 deselected in 5.75s",
+      "log": "validation/reports/mathematical.log"
+    },
+    {
+      "layer": "physiological",
+      "marker": "physiological",
+      "command": [
+        "/usr/local/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-m",
+        "physiological"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "pytest_summary": "16 passed, 215 deselected in 2.13s",
+      "log": "validation/reports/physiological.log"
+    },
+    {
+      "layer": "disease_phenotype",
+      "marker": "phenotype",
+      "command": [
+        "/usr/local/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-m",
+        "phenotype"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "pytest_summary": "35 passed, 196 deselected in 47.24s",
+      "log": "validation/reports/disease_phenotype.log"
+    },
+    {
+      "layer": "empirical",
+      "marker": "empirical",
+      "command": [
+        "/usr/local/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-m",
+        "empirical"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "pytest_summary": "9 passed, 222 deselected in 25.28s",
+      "log": "validation/reports/empirical.log"
+    },
+    {
+      "layer": "sensitivity_uncertainty",
+      "marker": "sensitivity_uncertainty",
+      "command": [
+        "/usr/local/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-m",
+        "sensitivity_uncertainty"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "pytest_summary": "11 passed, 220 deselected in 47.17s",
+      "log": "validation/reports/sensitivity_uncertainty.log"
+    },
+    {
+      "layer": "scientific_traceability",
+      "marker": "scientific_traceability",
+      "command": [
+        "/usr/local/bin/python3",
+        "-m",
+        "pytest",
+        "-q",
+        "-m",
+        "scientific_traceability"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "pytest_summary": "39 passed, 192 deselected in 4.45s",
+      "log": "validation/reports/scientific_traceability.log",
+      "audit": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "total_findings": 0,
+        "status": "pass"
+      }
+    }
+  ]
+}

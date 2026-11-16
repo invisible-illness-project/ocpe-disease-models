@@ -1,0 +1,7 @@
+id: sustained-contraction
+title: Upright sustained muscle contraction without rhythmic pump activity
+scientific_note: Isolates sustained-contraction venous impediment; the input is independent of metabolic exertion.
+solver: {sample_interval: 1.0, max_step: 1.0, rtol: 1.0e-7, atol: 1.0e-8}
+segments:
+  - {start: 0, end: 120, upright: 0.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.0, label: supine}
+  - {start: 120, end: 600, upright: 1.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.5, label: sustained-contraction}

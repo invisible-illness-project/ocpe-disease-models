@@ -1,12 +1,13 @@
 """Unit tests for the scientific traceability audit subsystem.
 
-All tests build temporary registries under ``tmp_path``; the repository's
-real registries are never touched.
+Audit cases build temporary registries under ``tmp_path`` and never modify the
+repository's real registries. The generated bibliography is checked read-only.
 """
 
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -692,3 +693,16 @@ def test_parameter_defaults_and_phenotype_overrides_match_registry():
                     f"{record['id']} {phenotype_id}={expected['value']} is outside "
                     f"[{bounds['min']}, {bounds['max']}] without a range_exception"
                 )
+
+
+def test_generated_bibliography_matches_reference_registry():
+    references = yaml.safe_load(
+        (REPO_ROOT / "literature" / "references.yaml").read_text(encoding="utf-8")
+    )["references"]
+    bibliography = (REPO_ROOT / "literature" / "bibliography.bib").read_text(encoding="utf-8")
+    entries = re.findall(r"^@(article|book)\{([^,]+),", bibliography, flags=re.MULTILINE)
+    registry_ids = re.findall(r"Stable registry identifier: (REF-[A-Z0-9-]+)", bibliography)
+    assert len(entries) == len(references)
+    assert len({key for _, key in entries}) == len(entries)
+    assert set(registry_ids) == {reference["id"] for reference in references}
+    assert len(registry_ids) == len(references)

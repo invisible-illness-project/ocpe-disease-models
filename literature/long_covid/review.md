@@ -40,10 +40,12 @@ Methods and patient selection are heterogeneous; there is no universal gain.
 **Modeling assumption.** `long-covid-autonomic` (M3,
 `phenomenological_composition`) reuses the shared autonomic and venous
 mechanisms (MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-RCV-PEM) with calibrated
-overrides: PAR-GRAVITY-PRESSURE-OFFSET = 11.0, PAR-HEART-RATE-BASE = 35.0,
-PAR-HEART-RATE-SYMPATHETIC-GAIN = 70.0, PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT =
-0.08, PAR-BASELINE-METABOLIC-CAPACITY = 0.85, PAR-PEM-TRIGGER-THRESHOLD =
-0.001, PAR-PEM-RESPONSE-GAIN = 12.0. VAL-LC-AUTONOMIC requires an orthostatic
+overrides: PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET = 5.5 mmHg,
+PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET = 11.0 mmHg, PAR-HEART-RATE-REST = 70.0
+bpm, PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN =
+50.0 bpm each, PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT = 0.08,
+PAR-BASELINE-METABOLIC-CAPACITY = 0.85, PAR-PEM-TRIGGER-THRESHOLD = 0.001, and
+PAR-PEM-RESPONSE-GAIN = 12.0. VAL-LC-AUTONOMIC requires an orthostatic
 HR rise of at least 30 bpm with MAP at least 70 mmHg — a POTS-like scenario
 criterion for this one subgroup, not a characterization of Long COVID.
 Viral persistence, microclots and immune signaling are not causally encoded

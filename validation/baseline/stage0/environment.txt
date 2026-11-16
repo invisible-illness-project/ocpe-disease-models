@@ -1,0 +1,7 @@
+47923223d4cf2e8a9c6a1ae8cff485b9d4327dc9
+3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+Python 3.12.12
+numpy 2.2.5
+scipy 1.16.2
+PyYAML 6.0.2
+pytest 9.2.0

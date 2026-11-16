@@ -1,7 +1,7 @@
 """VAL-MATH-CONSERVATION: stressed-volume conservation (layer: mathematical).
 
 The compartment equations imply
-    dV_arterial + dV_central + dV_peripheral = 0
+    dV_arterial + dV_central + dV_splanchnic + dV_lower_limb = 0
 exactly, so total stressed volume is an invariant. Drift would reveal an
 implementation or solver error.
 
@@ -39,6 +39,8 @@ CONSERVATION_RUNS = (
     ("pots-hypovolemic", "head-up-tilt"),
     ("eds-heds-vascular", "head-up-tilt"),
     ("long-covid-autonomic", "head-up-tilt"),
+    ("pots-neuropathic", "walking"),
+    ("eds-heds-vascular", "sustained-contraction"),
 )
 
 
@@ -57,8 +59,7 @@ def test_total_stressed_volume_is_invariant(phenotype_id, protocol_id):
 
 
 def test_rhs_volume_derivatives_sum_to_zero_exactly(run_cached):
-    """The instantaneous volume RHS must be exactly telescoping (dVa+dVc+dVp=0)
-    for healthy and stressed states, independent of the solver."""
+    """All four instantaneous volume derivatives telescope exactly."""
     from ocpe_disease_models.config import compose_phenotypes
 
     trajectory = run_cached("healthy-reference", "head-up-tilt")
@@ -68,8 +69,8 @@ def test_rhs_volume_derivatives_sum_to_zero_exactly(run_cached):
         t = float(trajectory.time[idx])
         y = trajectory.states[:, idx]
         rhs = patient.rhs(t, y, trajectory.protocol)
-        volume_sum = float(rhs[0] + rhs[1] + rhs[2])
-        scale = max(1.0, float(np.abs(rhs[:3]).max()))
+        volume_sum = float(rhs[:4].sum())
+        scale = max(1.0, float(np.abs(rhs[:4]).max()))
         assert abs(volume_sum) <= 1e-12 * scale, (
             f"volume derivatives do not telescope at t={t}: sum={volume_sum}"
         )
@@ -78,9 +79,7 @@ def test_rhs_volume_derivatives_sum_to_zero_exactly(run_cached):
 def test_conservation_holds_under_reduced_volume(run_cached):
     """Hypovolemia scales the invariant; it must still be conserved."""
     result = run_cached("pots-hypovolemic", "head-up-tilt")
-    initial_total = float(
-        result.states[0, 0] + result.states[1, 0] + result.states[2, 0]
-    )
-    healthy_total = 150.0 + 700.0 + 1200.0
+    initial_total = float(result.states[:4, 0].sum())
+    healthy_total = 150.0 + 700.0 + 700.0 + 500.0
     assert initial_total == pytest.approx(0.92 * healthy_total, rel=1e-12)
     assert stressed_volume_drift(result) < VOLUME_DRIFT_TOLERANCE_ML

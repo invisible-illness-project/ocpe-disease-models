@@ -14,52 +14,65 @@ separate dynamics except through declared mechanisms.
 
 ```
 SHARED SUBSTRATE (M3)
-  MEC-CV-VOLUME      EQ-CV-001..005   conservative compartments, flows, SV, CO
-  MEC-AUT-BAROREFLEX EQ-AUT-001..003  sigmoid target, lag, chronotropy
-  MEC-VASC-POOLING   EQ-ORT-001       upright venous-return opposition
-  MEC-CBF-AUTOREG    EQ-CBF-001/002   cerebral-flow index, asymmetric kinetics
+  MEC-CV-VOLUME      EQ-CV-001..005   four conservative stressed-volume compartments,
+                                      regional pressure-gradient flows, SV, CO
+  MEC-AUT-BAROREFLEX EQ-AUT-001..003  head-level-pressure sigmoid; vagal, cardiac-
+                                      sympathetic and vascular-sympathetic states
+  MEC-VASC-POOLING   EQ-ORT-001       regional splanchnic/lower-limb pooling
+  MEC-MUSCLE-PUMP    EQ-MP-001        conservative rhythmic lower-limb-to-central transfer
+  MEC-SUSTAINED-CONTRACTION EQ-MP-002 lower-limb venous-resistance impediment
+  MEC-CBF-AUTOREG    EQ-CBF-001/002   CPP-based normalized index, asymmetric kinetics
 
 DISEASE OVERLAYS
-  POTS       MEC-VASC-CONSTRICTION (EQ-VASC-001 gain)      M3
-             MEC-AUT-HYPERADRENERGIC (EQ-AUT-003 gain,
-                                      EQ-AUT-001 scale)    M3
-             MEC-VOL-HYPOVOLEMIA (initial-volume factor)   M3
-             MEC-RAAS                                      M1  [exploratory, no impl]
-  hEDS       MEC-VASC-COMPLIANCE (assumed venous
-             compliance 140.0 mL/mmHg)                         M2  [exploratory]
-             MEC-CONNECTIVE                                M1  [exploratory, no impl]
-             MEC-GI-DYSMOTILITY, MEC-PAIN-AUT              M0  [exploratory, no impl]
-  ME/CFS     MEC-RCV-PEM (EQ-RCV-001..004)                 M3
-             MEC-MET-CAPACITY (EQ-MET-001)                 M3
-             MEC-MET-EXTRACTION (EQ-MET-002)               M3
+  POTS       MEC-VASC-CONSTRICTION (EQ-VASC-001 regional gains) M3
+             MEC-AUT-HYPERADRENERGIC (EQ-AUT-003 gains,
+                                      EQ-AUT-001 scale)         M3
+             MEC-VOL-HYPOVOLEMIA (initial-volume factor)        M3
+             MEC-RAAS                                           M1  [exploratory, no impl]
+  hEDS       MEC-VASC-COMPLIANCE (assumed lower-limb venous
+             compliance 58.3333 versus healthy 50.0 mL/mmHg)     M2  [exploratory]
+             MEC-CONNECTIVE                                     M1  [exploratory, no impl]
+             MEC-GI-DYSMOTILITY, MEC-PAIN-AUT                   M0  [exploratory, no impl]
+  ME/CFS     MEC-RCV-PEM (EQ-RCV-001..004)                      M3
+             MEC-MET-CAPACITY (EQ-MET-001)                      M3
+             MEC-MET-EXTRACTION (EQ-MET-002)                    M3
   Long COVID MEC-RCV-PEM / MEC-MET-CAPACITY /
-             MEC-MET-EXTRACTION (shared, subgroup gains)   M3
-             autonomic overlay (pooling + baroreflex gains) M3
-             MEC-RESP-LC                                   M1  [exploratory, no impl]
-             MEC-MICROVASC                                 M0  [exploratory, no impl]
-  Cross      MEC-INFL-SIGNAL, MEC-SLEEP-CIRCADIAN          M0  [exploratory, no impl]
+             MEC-MET-EXTRACTION (shared, subgroup gains)        M3
+             autonomic overlay (regional pooling + chronotropy) M3
+             MEC-RESP-LC                                        M1  [exploratory, no impl]
+             MEC-MICROVASC                                      M0  [exploratory, no impl]
+  Cross      MEC-INFL-SIGNAL, MEC-SLEEP-CIRCADIAN               M0  [exploratory, no impl]
 ```
 
 ## Shared vs distinct parameter posture
 
 | Parameter | Healthy | POTS overrides | hEDS overrides | ME/CFS | Long COVID |
 |---|---|---|---|---|---|
-| PAR-GRAVITY-PRESSURE-OFFSET | 8.0 | 10.0 (all four POTS configs) | 9.0 | 9.0 | 11.0 (autonomic) |
-| PAR-RESISTANCE-SYMPATHETIC-GAIN | 0.8 | 0.35 / 1.0 / 0.9 / 0.55 by subtype | 0.7 | — | — |
-| PAR-HEART-RATE-SYMPATHETIC-GAIN | 40.0 | 65 / 100 / 80 / 75 by subtype | 60 | 50 | 70 (autonomic) |
+| PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET | 4.0 mmHg | 5.0 (all four POTS configs) | 4.5 | 4.5 | 5.5 (autonomic) |
+| PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET | 8.0 mmHg | 10.0 (all four POTS configs) | 9.0 | 9.0 | 11.0 (autonomic) |
+| PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN and PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN | 0.8 each | 0.35 / 1.0 / 0.9 / 0.55 each by subtype | 0.7 each | — | — |
+| PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN | 20.0 bpm each | 40 / 70 / 60 / 50 bpm each by subtype | 30 each | 25 each | 50 each (autonomic) |
 | PAR-BLOOD-VOLUME-FACTOR | 1.0 | 0.92 hypo / 0.96 mixed | — | — | — |
-| PAR-PERIPHERAL-VENOUS-COMPLIANCE | 120.0 | — | 140.0 (assumed) | — | — |
+| PAR-LOWER-LIMB-VENOUS-COMPLIANCE | 50.0 mL/mmHg | — | 58.3333 (assumed) | — | — |
 | PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT | 0.0 | — | 0.23 (comorbid only) | 0.23 | 0.08 (autonomic) |
 | PAR-CEREBRAL-RECOVERY-TIME-CONSTANT | 12.0 s | — | 240.0 s (comorbid) | 240.0 s | — |
 | PAR-BASELINE-METABOLIC-CAPACITY | 1.0 | — | 0.85 (comorbid) | 0.85 | 0.85 / 0.8 |
 | PAR-OXYGEN-EXTRACTION-FRACTION | 0.78 | — | 0.74 (comorbid) | 0.74 | 0.49 (exertional) |
-| PAR-PEM-TRIGGER-THRESHOLD | 99.0 (disables) | — | 0.001 (comorbid) | 0.001 | 0.001 |
+| PAR-DELAYED-STRESS-TIME-CONSTANT | 21600.0 s | — | 72000.0 s (comorbid) | 72000.0 s | 21600.0 s (default) |
+| PAR-PEM-TRIGGER-THRESHOLD | 0.999 (disables) | — | 0.001 (comorbid) | 0.001 | 0.001 |
 | PAR-PEM-RESPONSE-GAIN | 0.0 | — | 20.0 (comorbid) | 20.0 | 12.0 / 16.0 |
 
 Every non-healthy entry is **[assumption]** within a declared sensitivity
-range; measured anchors exist only for direction, timing windows, and selected
-group-level magnitudes (e.g., 0.49 extraction from REF-SINGH-2022; 0.74 from
-the REF-JOSEPH-2021 subgroup; 26% CBF reduction from REF-VANCAMPEN-2020).
+range unless explicitly marked as a range exception; measured anchors exist
+only for direction, timing windows, and selected group-level magnitudes (e.g.,
+0.49 extraction from REF-SINGH-2022; 0.74 from the REF-JOSEPH-2021 subgroup;
+26% CBF reduction from REF-VANCAMPEN-2020). The healthy early-CO reduction
+(approximately 5.64%) and healthy end-tilt CFI reduction (approximately 0.003%)
+miss their broad soft anchors and remain explicit warnings. The ME/CFS PEM
+scenario first crosses 0.05 at approximately 5.7 hours after the day-1 bout
+ends, earlier than the 12–48-hour daily-activity onset window but within
+reported post-CPET onset within 24 hours; its approximately 39.2-hour post-bout
+peak is separately reported.
 
 ## Comorbidity composition
 

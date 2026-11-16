@@ -1,5 +1,15 @@
 schema_version: "1.0"
 registry_scope: Curated persistent demonstration runs; ephemeral unit-test solver calls are not separate simulation records. Every persisted run includes its own configuration SHA, protocol, parameters, solver settings, dependency versions, and OCPE commit.
+protocols:
+  - {id: resting-baseline, config: simulations/baseline/resting-baseline.yaml}
+  - {id: head-up-tilt, config: simulations/orthostatic/head-up-tilt.yaml}
+  - {id: tilt-recovery, config: simulations/orthostatic/tilt-recovery.yaml}
+  - {id: inactive-standing, config: simulations/orthostatic/inactive-standing.yaml}
+  - {id: light-rhythmic-activity, config: simulations/orthostatic/light-rhythmic-activity.yaml}
+  - {id: walking, config: simulations/orthostatic/walking.yaml}
+  - {id: sustained-contraction, config: simulations/orthostatic/sustained-contraction.yaml}
+  - {id: single-exertion-recovery, config: simulations/recovery/single-exertion-recovery.yaml}
+  - {id: repeated-exertion-recovery, config: simulations/exertion/repeated-exertion-recovery.yaml}
 simulations:
   - id: SIM-HEALTHY-BASELINE
     name: Healthy resting baseline
@@ -8,7 +18,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.1.0
+    model_version: 0.2.0
     mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-CBF-AUTOREG]
     validation: [VAL-PHYS-BASELINE, VAL-MATH-CONSERVATION, VAL-MATH-CONVERGENCE]
     outputs: [examples/healthy_baseline/output/trace.npz, examples/healthy_baseline/output/result.json, examples/healthy_baseline/output/observations.json, examples/healthy_baseline/output/figure.png]
@@ -20,7 +30,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.1.0
+    model_version: 0.2.0
     mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-AUT-HYPERADRENERGIC, MEC-VOL-HYPOVOLEMIA]
     validation: [VAL-POTS-NEUROPATHIC, VAL-POTS-HYPER, VAL-POTS-HYPO, VAL-EMPIRICAL-ANCHORS]
     outputs: [examples/pots_orthostatic_response/output/, examples/pots_orthostatic_response/output/figure.png]
@@ -32,7 +42,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.1.0
+    model_version: 0.2.0
     mechanisms: [MEC-CV-VOLUME, MEC-VASC-POOLING, MEC-VASC-COMPLIANCE]
     validation: [VAL-EDS-DIRECTION, VAL-SENSITIVITY]
     outputs: [examples/eds_vascular_mechanics/output/, examples/eds_vascular_mechanics/output/figure.png]
@@ -44,7 +54,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.1.0
+    model_version: 0.2.0
     mechanisms: [MEC-RCV-PEM, MEC-MET-CAPACITY, MEC-MET-EXTRACTION]
     validation: [VAL-ME-PEM, VAL-ME-CPET]
     outputs: [examples/mecfs_post_exertional_recovery/output/, examples/mecfs_post_exertional_recovery/output/figure.png]
@@ -56,7 +66,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.1.0
+    model_version: 0.2.0
     mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-AUT-HYPERADRENERGIC, MEC-VASC-POOLING]
     validation: [VAL-LC-AUTONOMIC]
     outputs: [examples/long_covid_autonomic_phenotype/output/, examples/long_covid_autonomic_phenotype/output/figure.png]
@@ -68,7 +78,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.1.0
+    model_version: 0.2.0
     mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-VASC-COMPLIANCE, MEC-CBF-AUTOREG]
     validation: [VAL-PHYS-TILT, VAL-POTS-NEUROPATHIC, VAL-EDS-DIRECTION, VAL-LC-AUTONOMIC]
     outputs: [examples/cross_disease_comparison/output/, examples/cross_disease_comparison/output/figure.png]
@@ -80,7 +90,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.1.0
+    model_version: 0.2.0
     mechanisms: [MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-VOL-HYPOVOLEMIA, MEC-VASC-COMPLIANCE]
     validation: [VAL-SENSITIVITY]
     outputs: [validation/sensitivity/local_sensitivity.json, validation/sensitivity/local_sensitivity.csv, validation/sensitivity/figure.png]
@@ -92,7 +102,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.1.0
+    model_version: 0.2.0
     mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-RCV-PEM, MEC-MET-CAPACITY]
     validation: [VAL-UNCERTAINTY]
     outputs: [validation/sensitivity/uncertainty_grid.json, validation/sensitivity/uncertainty_grid.csv, validation/sensitivity/sensitivity-report.md]

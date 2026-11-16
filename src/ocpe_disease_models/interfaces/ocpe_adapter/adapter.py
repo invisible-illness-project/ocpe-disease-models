@@ -36,10 +36,10 @@ UPSTREAM_COMMIT = "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d"
 
 # Identity of the external OCPE domain package shipped by this repository.
 PACKAGE_ID = "disease-models"
-PACKAGE_VERSION = "0.1.0"
+PACKAGE_VERSION = "0.2.0"
 
-# The declarative three-compartment cardiovascular ODE model.
-MODEL_CURIE = "ocpe:disease-models/three-compartment-cardiovascular"
+# The declarative shared four-compartment cardiovascular/autonomic ODE model.
+MODEL_CURIE = "ocpe:disease-models/shared-physiology"
 
 # OCPE specification version implemented by the pinned engine (e.g. "0.1.0").
 OCPE_SPEC_VERSION = ocpe.spec_version()
@@ -137,7 +137,7 @@ class DiseaseModelsOCPEAdapter:
         return out
 
     def model(self, curie: str = MODEL_CURIE) -> EntityRecord:
-        """The declarative three-compartment cardiovascular model."""
+        """The declarative four-compartment shared physiological model."""
         ent = self.get(curie)
         if ent.kind != "model":
             raise OCPEAdapterError(f"{curie} is a {ent.kind}, not a model")
