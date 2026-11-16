@@ -20,13 +20,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-SW-SERIALIZATION
   name: Serialization and numerical failure behavior
   layer: software
@@ -40,13 +43,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-SW-OCPE
   name: Strict OCPE package and observation interoperability
   layer: software
@@ -60,13 +66,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-MATH-CONSERVATION
   name: Stressed-volume conservation
   layer: mathematical
@@ -95,13 +104,16 @@ validation_tests:
   - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
   - PAR-PERIPHERAL-VENOUS-VOLUME-INITIAL
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-MATH-CONVERGENCE
   name: Solver convergence and bounded states
   layer: mathematical
@@ -142,13 +154,16 @@ validation_tests:
   - PAR-HEART-RATE-BASE
   - PAR-HEART-RATE-SYMPATHETIC-GAIN
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-PHYS-BASELINE
   name: Healthy resting operating point
   layer: physiological
@@ -189,13 +204,16 @@ validation_tests:
   - PAR-HEART-RATE-BASE
   - PAR-HEART-RATE-SYMPATHETIC-GAIN
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-PHYS-TILT
   name: Orthostatic directionality and compensation
   layer: physiological
@@ -236,13 +254,16 @@ validation_tests:
   - PAR-RESISTANCE-SYMPATHETIC-GAIN
   - PAR-SYSTEMIC-RESISTANCE
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-PHYS-RECOVERY
   name: Post-tilt cerebral recovery
   layer: physiological
@@ -265,13 +286,16 @@ validation_tests:
   - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
   - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-POTS-NEUROPATHIC
   name: Neuropathic POTS scenario
   layer: disease_phenotype
@@ -312,13 +336,16 @@ validation_tests:
   - PAR-HEART-RATE-BASE
   - PAR-HEART-RATE-SYMPATHETIC-GAIN
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-POTS-HYPER
   name: Hyperadrenergic POTS scenario
   layer: disease_phenotype
@@ -348,13 +375,16 @@ validation_tests:
   - PAR-VENOUS-RETURN-RESISTANCE
   - PAR-PERIPHERAL-VENOUS-COMPLIANCE
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-POTS-HYPO
   name: Hypovolemic POTS scenario
   layer: disease_phenotype
@@ -381,13 +411,16 @@ validation_tests:
   - PAR-VENOUS-RETURN-RESISTANCE
   - PAR-PERIPHERAL-VENOUS-COMPLIANCE
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-POTS-MIXED
   name: Explicit mixed POTS composition
   layer: disease_phenotype
@@ -427,13 +460,16 @@ validation_tests:
   - PAR-HEART-RATE-SYMPATHETIC-GAIN
   - PAR-BAROREFLEX-PRESSURE-SCALE
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-EDS-DIRECTION
   name: Exploratory hEDS vascular-mechanics scenario
   layer: disease_phenotype
@@ -460,13 +496,16 @@ validation_tests:
   - PAR-GRAVITY-PRESSURE-OFFSET
   - PAR-VENOUS-RETURN-RESISTANCE
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-ME-PEM
   name: Delayed PEM onset and prolonged recovery
   layer: disease_phenotype
@@ -495,13 +534,16 @@ validation_tests:
   - PAR-PEM-TRIGGER-THRESHOLD
   - PAR-PEM-RESPONSE-GAIN
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-ME-CPET
   name: Reduced subsequent exertional capacity
   layer: empirical
@@ -539,13 +581,16 @@ validation_tests:
   - PAR-BASELINE-METABOLIC-CAPACITY
   - PAR-PEM-CAPACITY-PENALTY
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-ME-CBF
   name: ME/CFS cerebral-flow group-level comparison
   layer: empirical
@@ -568,13 +613,16 @@ validation_tests:
   - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
   - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-LC-AUTONOMIC
   name: Long COVID autonomic subgroup
   layer: disease_phenotype
@@ -613,13 +661,16 @@ validation_tests:
   - PAR-VENOUS-RETURN-RESISTANCE
   - PAR-PERIPHERAL-VENOUS-COMPLIANCE
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-LC-EXTRACTION
   name: Long COVID exertional/extraction subgroup
   layer: disease_phenotype
@@ -649,13 +700,16 @@ validation_tests:
   - PAR-BASELINE-METABOLIC-CAPACITY
   - PAR-PEM-CAPACITY-PENALTY
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-EMPIRICAL-ANCHORS
   name: Empirical anchor coverage and provenance
   layer: empirical
@@ -674,13 +728,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-SENSITIVITY
   name: Deterministic local sensitivity analysis
   layer: sensitivity_uncertainty
@@ -728,13 +785,16 @@ validation_tests:
   - PAR-HEART-RATE-BASE
   - PAR-HEART-RATE-SYMPATHETIC-GAIN
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-UNCERTAINTY
   name: Assumption uncertainty propagation
   layer: sensitivity_uncertainty
@@ -780,13 +840,16 @@ validation_tests:
   - PAR-BASELINE-METABOLIC-CAPACITY
   - PAR-PEM-CAPACITY-PENALTY
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
   mechanisms:
   - MEC-VASC-POOLING
   - MEC-VASC-CONSTRICTION
@@ -805,13 +868,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-REGRESSION
   name: Approved scientific regression fixtures
   layer: software
@@ -824,13 +890,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Declared computational/scientific check only; not clinical validation
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
 - id: VAL-SCOPE-FUTURE
   name: Unimplemented mechanism scope guard
   layer: scientific_traceability
@@ -851,10 +920,22 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: REGISTERED_NOT_YET_EXECUTED
+    status: PASS
+    execution_date: '2026-11-16'
     report: validation/reports/validation-report.json
+    scope: Scope guard passed; future mechanisms remain unimplemented and are not physiologically validated
   execution_environment:
-    python: '>=3.11'
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: null
+  last_validated_commit: e87401ddd435d2fd1d5e15420308086051229851
+execution_summary:
+  repository_commit: e87401ddd435d2fd1d5e15420308086051229851
+  ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+  full_suite: 231 passed
+  seven_layer_report: validation/reports/validation-report.json
+  traceability_report: validation/traceability/audit/traceability_report.json
+  strict_ocpe: 0 errors, 0 warnings
+  lint: PASS
+  clinical_status: No clinical validity, diagnostic accuracy, treatment efficacy, or patient-specific calibration established

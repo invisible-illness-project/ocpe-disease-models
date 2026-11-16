@@ -20,7 +20,8 @@
       "maturity": "M3",
       "limitations": [
         "Renin-angiotensin-aldosterone dynamics are not implemented.",
-        "The 0.92 stressed-volume factor is an assumed demonstration value, not a direct blood-volume measurement."
+        "The 0.92 stressed-volume factor is an assumed demonstration value, not a direct blood-volume measurement.",
+        "The 6.0 mmHg baroreflex pressure scale is an intentional scenario calibration above the declared 1.5-3.0 mmHg local sensitivity range, with an explicit registry range exception; independent calibration remains required."
       ]
     },
     "configuration_sha256": "00c596947cc6cfa7b680a4eef27ed5e76dd40cb81cbe19e90fd2dc70f2e3d6cc",

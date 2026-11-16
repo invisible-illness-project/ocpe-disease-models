@@ -31,9 +31,9 @@ Migrate the scientific intent of the pre-0.1 OCPE validation system without copy
 1. **Historical reproduction — completed.** Run parent, authoritative refactor, and pinned current OCPE suites independently; record strict package/dependency checks and archived-test path limitations.
 2. **Semantic integration — completed.** Add an OCPE disease package, adapter, unit-safe observation mapping, and strict validation.
 3. **Scientific registries — completed.** Implement stable references, claims, mechanisms, equations, parameters, validation and simulation records, schemas, BibTeX, and strict audits.
-4. **Numerical/scientific validation — verification controlled by the final report.** Implement conservation/convergence, physiology, phenotype, empirical, sensitivity, regression, and traceability checks. A registry entry alone is not marked passed.
-5. **CI and reproducibility — verification controlled by workflow runs.** Run lint, unit/integration, mathematical and registry checks on pull requests; run extended scenarios and analyses in the extended workflow. Archive small reports.
-6. **Handoff — final gate.** Record exact commits, dependencies, fixtures, failures, limitations, and migration deviations. Do not declare legacy capabilities migrated if they were intentionally deferred or have not executed.
+4. **Numerical/scientific validation — completed locally at the recorded source commit.** Conservation/convergence, physiology, phenotype, empirical, sensitivity, regression, and traceability checks execute independently. A registry entry alone was not marked passed; `validation/reports/validation-report.json` is the execution record.
+5. **CI and reproducibility — configuration and local verification completed; remote matrix execution pending.** Lint, full tests, strict semantic/provenance checks, extended scenarios, and analyses pass locally. Pull-request and extended workflows are configured to run the same gates and archive small reports, but no unexecuted GitHub run is claimed.
+6. **Handoff — completed with scope deviations intact.** `docs/technical-handoff.md` records exact commits, dependencies, fixtures, failures, limitations, and migration deviations. Deferred wearable/cohort capabilities and unexecuted remote validation are not declared migrated or complete.
 
 ## Compatibility deviations
 

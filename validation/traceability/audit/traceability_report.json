@@ -1,0 +1,205 @@
+{
+  "tool": "ocpe-traceability-audit",
+  "version": "1.0.0",
+  "generated_at": "2026-11-16T17:15:21+00:00",
+  "git_sha": "e87401ddd435d2fd1d5e15420308086051229851",
+  "ocpe_commit": null,
+  "deterministic": false,
+  "schema_validation": "ran",
+  "root": "/mnt/agents/output/ocpe-disease-models",
+  "summary": {
+    "errors": 0,
+    "warnings": 0,
+    "infos": 0,
+    "total_findings": 0,
+    "status": "pass"
+  },
+  "registries": {
+    "references": {
+      "path": "literature/references.yaml",
+      "found": true,
+      "entries": 38,
+      "id_prefix": "REF-",
+      "load_errors": []
+    },
+    "evidence": {
+      "path": "literature/evidence_registry.yaml",
+      "found": true,
+      "entries": 22,
+      "id_prefix": "CLM-",
+      "load_errors": []
+    },
+    "mechanisms": {
+      "path": "literature/mechanism_registry.yaml",
+      "found": true,
+      "entries": 19,
+      "id_prefix": "MEC-",
+      "load_errors": []
+    },
+    "equations": {
+      "path": "literature/equation_registry.yaml",
+      "found": true,
+      "entries": 18,
+      "id_prefix": "EQ-",
+      "load_errors": []
+    },
+    "parameters": {
+      "path": "literature/parameter_registry.yaml",
+      "found": true,
+      "entries": 35,
+      "id_prefix": "PAR-",
+      "load_errors": []
+    },
+    "validation_tests": {
+      "path": "validation/validation_registry.yaml",
+      "found": true,
+      "entries": 24,
+      "id_prefix": "VAL-",
+      "load_errors": []
+    },
+    "simulations": {
+      "path": "simulations/simulation_registry.yaml",
+      "found": true,
+      "entries": 8,
+      "id_prefix": "SIM-",
+      "load_errors": []
+    }
+  },
+  "completeness": {
+    "references": {
+      "entries_with_id": {
+        "passed": 38,
+        "total": 38,
+        "rate": 1.0
+      }
+    },
+    "evidence": {
+      "entries_with_id": {
+        "passed": 22,
+        "total": 22,
+        "rate": 1.0
+      },
+      "claims_with_references": {
+        "passed": 22,
+        "total": 22,
+        "rate": 1.0
+      }
+    },
+    "mechanisms": {
+      "entries_with_id": {
+        "passed": 19,
+        "total": 19,
+        "rate": 1.0
+      },
+      "mechanisms_with_claims_or_exploratory": {
+        "passed": 19,
+        "total": 19,
+        "rate": 1.0
+      },
+      "implemented_mechanisms_with_tests": {
+        "passed": 11,
+        "total": 11,
+        "rate": 1.0
+      }
+    },
+    "equations": {
+      "entries_with_id": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "equations_with_expression": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "equations_with_assumptions": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "equations_with_provenance": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "equations_fully_documented": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      }
+    },
+    "parameters": {
+      "entries_with_id": {
+        "passed": 35,
+        "total": 35,
+        "rate": 1.0
+      },
+      "parameters_with_source": {
+        "passed": 35,
+        "total": 35,
+        "rate": 1.0
+      },
+      "parameters_with_estimation_method": {
+        "passed": 35,
+        "total": 35,
+        "rate": 1.0
+      },
+      "parameters_with_provenance": {
+        "passed": 35,
+        "total": 35,
+        "rate": 1.0
+      },
+      "parameters_fully_documented": {
+        "passed": 35,
+        "total": 35,
+        "rate": 1.0
+      }
+    },
+    "validation_tests": {
+      "entries_with_id": {
+        "passed": 24,
+        "total": 24,
+        "rate": 1.0
+      },
+      "tests_with_expected_behavior": {
+        "passed": 24,
+        "total": 24,
+        "rate": 1.0
+      },
+      "tests_with_acceptance_criteria": {
+        "passed": 24,
+        "total": 24,
+        "rate": 1.0
+      },
+      "tests_with_justification": {
+        "passed": 24,
+        "total": 24,
+        "rate": 1.0
+      },
+      "tests_fully_specified": {
+        "passed": 24,
+        "total": 24,
+        "rate": 1.0
+      }
+    },
+    "simulations": {
+      "entries_with_id": {
+        "passed": 8,
+        "total": 8,
+        "rate": 1.0
+      },
+      "simulations_with_config": {
+        "passed": 8,
+        "total": 8,
+        "rate": 1.0
+      },
+      "simulations_with_model_provenance": {
+        "passed": 8,
+        "total": 8,
+        "rate": 1.0
+      }
+    }
+  },
+  "findings": []
+}

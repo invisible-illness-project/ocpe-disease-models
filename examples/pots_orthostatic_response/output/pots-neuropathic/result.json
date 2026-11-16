@@ -20,7 +20,8 @@
       "maturity": "M3",
       "limitations": [
         "Neuropathic impairment is represented by reduced sympathetic resistance modulation; gains are calibrated, not patient measurements.",
-        "Phenotype labels overlap and are not mutually exclusive clinical diagnoses."
+        "Phenotype labels overlap and are not mutually exclusive clinical diagnoses.",
+        "The 0.35 resistance gain is an intentional scenario calibration below the declared 0.4-1.2 local sensitivity range, with an explicit registry range exception; it does not widen or clinically validate that range."
       ]
     },
     "configuration_sha256": "7aaa6598769d8e12195cf8989ce761f7804cd5b0d3f2108fdb7d7d54af40d260",
