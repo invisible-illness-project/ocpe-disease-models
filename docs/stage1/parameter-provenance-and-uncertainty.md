@@ -433,16 +433,19 @@ plausibility screens, not fitted targets.
    dynamics; linear compliances; clipped ideal-valve flows; the cerebral-flow
    index is a normalized proxy, and central venous stressed volume is a
    preload proxy, not end-diastolic volume.
-8. **Validation status at audit time.** The 26 records in
-   `validation/validation_registry.yaml` remain `status: PENDING` until the
-   final source commit has been created and its complete clean validation has
-   executed successfully. They will then be bound to that tested source commit;
-   the subsequent validation-record commit is not retroactively described as
-   tested before it existed. Parameter values in this document are audited
-   against the registry and executable defaults, which are mutually consistent;
-   pending status limits the executed-validation claim, not the provenance
-   record. Final executed counts and warning totals are recorded in
-   `docs/stage1/final-validation-report.md` and `validation/reproducibility.json`.
+8. **Validation status at audit time.** All 26 records in
+   `validation/validation_registry.yaml` are `status: PASS` and bound to tested
+   source/configuration commit `fb13cb21aa811da9babff6b271f006b8c79ec30f`. The complete clean run at that
+   revision passed 287 tests with two intended soft-anchor warnings, and all
+   seven independently selected layers passed. The subsequent validation-record
+   commit adds executed records and is not retroactively described as tested
+   before it existed. Parameter values in this document are audited against the
+   registry and executable defaults, which are mutually consistent. PASS status
+   is limited to the declared computational checks and does not raise the
+   provenance class, evidence grade, maturity, or clinical validity of any
+   parameter. Final executed counts, warning totals, commands, and artifact
+   hashes are recorded in `docs/stage1/final-validation-report.md` and
+   `validation/reproducibility.json`.
 
 ## 8. Traceability to the machine-readable registry
 

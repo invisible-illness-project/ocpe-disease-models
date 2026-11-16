@@ -21,16 +21,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-SW-SERIALIZATION
   name: Serialization and numerical failure behavior
   layer: software
@@ -44,16 +44,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-SW-OCPE
   name: Strict OCPE package and observation interoperability
   layer: software
@@ -67,16 +67,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-MATH-CONSERVATION
   name: Stressed-volume conservation
   layer: mathematical
@@ -111,16 +111,16 @@ validation_tests:
   - PAR-SPLANCHNIC-VENOUS-PRESSURE-INITIAL
   - PAR-LOWER-LIMB-VENOUS-PRESSURE-INITIAL
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-MATH-EQUILIBRIUM
   name: All-phenotype supine fixed points and flow identities
   layer: mathematical
@@ -171,16 +171,16 @@ validation_tests:
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-MATH-CONVERGENCE
   name: Solver convergence and bounded states
   layer: mathematical
@@ -228,16 +228,16 @@ validation_tests:
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-PHYS-BASELINE
   name: Healthy resting operating point
   layer: physiological
@@ -285,16 +285,16 @@ validation_tests:
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-PHYS-SHARED
   name: Regional muscle, autonomic and cerebral shared mechanisms
   layer: physiological
@@ -348,16 +348,16 @@ validation_tests:
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-PHYS-TILT
   name: Orthostatic directionality and compensation
   layer: physiological
@@ -408,16 +408,16 @@ validation_tests:
   - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-PHYS-RECOVERY
   name: Post-tilt cerebral recovery
   layer: physiological
@@ -442,16 +442,16 @@ validation_tests:
   - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
   - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-POTS-NEUROPATHIC
   name: Neuropathic POTS scenario
   layer: disease_phenotype
@@ -501,16 +501,16 @@ validation_tests:
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-POTS-HYPER
   name: Hyperadrenergic POTS scenario
   layer: disease_phenotype
@@ -544,16 +544,16 @@ validation_tests:
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-POTS-HYPO
   name: Hypovolemic POTS scenario
   layer: disease_phenotype
@@ -583,16 +583,16 @@ validation_tests:
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-POTS-MIXED
   name: Explicit mixed POTS composition
   layer: disease_phenotype
@@ -638,16 +638,16 @@ validation_tests:
   - PAR-HEART-RATE-VAGAL-GAIN
   - PAR-BAROREFLEX-PRESSURE-SCALE
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-EDS-DIRECTION
   name: Exploratory hEDS vascular-mechanics scenario
   layer: disease_phenotype
@@ -677,16 +677,16 @@ validation_tests:
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-ME-PEM
   name: Delayed PEM onset and prolonged recovery
   layer: disease_phenotype
@@ -719,16 +719,16 @@ validation_tests:
   - PAR-PEM-TRIGGER-THRESHOLD
   - PAR-PEM-RESPONSE-GAIN
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-ME-CPET
   name: Reduced subsequent exertional capacity
   layer: empirical
@@ -766,16 +766,16 @@ validation_tests:
   - PAR-BASELINE-METABOLIC-CAPACITY
   - PAR-PEM-CAPACITY-PENALTY
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-ME-CBF
   name: ME/CFS cerebral-flow group-level comparison
   layer: empirical
@@ -803,16 +803,16 @@ validation_tests:
   - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
   - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-LC-AUTONOMIC
   name: Long COVID autonomic subgroup
   layer: disease_phenotype
@@ -857,16 +857,16 @@ validation_tests:
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-LC-EXTRACTION
   name: Long COVID exertional/extraction subgroup
   layer: disease_phenotype
@@ -896,16 +896,16 @@ validation_tests:
   - PAR-BASELINE-METABOLIC-CAPACITY
   - PAR-PEM-CAPACITY-PENALTY
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-EMPIRICAL-ANCHORS
   name: Empirical anchor coverage and provenance
   layer: empirical
@@ -924,16 +924,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-SENSITIVITY
   name: Deterministic local sensitivity analysis
   layer: sensitivity_uncertainty
@@ -1008,16 +1008,16 @@ validation_tests:
   - PAR-MUSCLE-PUMP-HALF-VOLUME
   - PAR-SUSTAINED-CONTRACTION-RESISTANCE-GAIN
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-UNCERTAINTY
   name: Assumption uncertainty propagation
   layer: sensitivity_uncertainty
@@ -1069,16 +1069,16 @@ validation_tests:
   - PAR-BASELINE-METABOLIC-CAPACITY
   - PAR-PEM-CAPACITY-PENALTY
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
   mechanisms:
   - MEC-VASC-POOLING
   - MEC-VASC-CONSTRICTION
@@ -1098,16 +1098,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-REGRESSION
   name: Approved scientific regression fixtures
   layer: software
@@ -1121,16 +1121,16 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - id: VAL-SCOPE-FUTURE
   name: Unimplemented mechanism scope guard
   layer: scientific_traceability
@@ -1151,23 +1151,25 @@ validation_tests:
   equation_ids: []
   parameter_ids: []
   validation_result:
-    status: PENDING
+    status: PASS
     execution_date: '2026-11-17'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check awaiting final Stage 1 clean run; not clinical validation
+    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: pending-stage1-validation
+  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
 execution_summary:
-  repository_commit: pending-stage1-validation
+  repository_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
   ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-  full_suite: PENDING final clean run
+  full_suite: 287 passed, 2 warnings in 250.94s (0:04:10)
   seven_layer_report: validation/reports/validation-report.json
+  seven_layer_status: PASS
+  validation_records: 26 PASS, 0 FAIL, 0 PENDING
   traceability_report: validation/traceability/audit/traceability_report.json
   strict_ocpe: 0 errors, 0 warnings (declarative/executable consistency checks passed 2026-11-17)
-  lint: PENDING final clean run
+  lint: PASS (Ruff)
   clinical_status: No clinical validity, diagnostic accuracy, treatment efficacy, or patient-specific calibration
     established

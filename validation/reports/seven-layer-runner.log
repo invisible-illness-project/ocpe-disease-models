@@ -1,0 +1,18 @@
+# Seven-layer validation report
+
+A pass denotes completion of the declared computational check only. Software execution, numerical convergence, phenotype threshold matching, and group-level empirical agreement are independently necessary and are not clinical validation.
+
+| Layer | Status | Pytest result |
+|---|---|---|
+| software | PASS | 122 passed, 165 deselected in 143.47s (0:02:23) |
+| mathematical | PASS | 44 passed, 243 deselected in 7.23s |
+| physiological | PASS | 29 passed, 258 deselected, 1 warning in 3.84s |
+| disease_phenotype | PASS | 35 passed, 252 deselected in 139.67s (0:02:19) |
+| empirical | PASS | 9 passed, 278 deselected, 1 warning in 72.56s (0:01:12) |
+| sensitivity_uncertainty | PASS | 13 passed, 274 deselected in 90.85s (0:01:30) |
+| scientific_traceability | PASS | 40 passed, 247 deselected in 3.40s |
+
+Strict traceability: PASS — 0 errors, 0 warnings.
+
+**Overall: PASS**
+

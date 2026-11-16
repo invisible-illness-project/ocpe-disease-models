@@ -1,8 +1,8 @@
 {
   "tool": "ocpe-traceability-audit",
   "version": "1.0.0",
-  "generated_at": "2026-11-16T20:44:37+00:00",
-  "git_sha": "47923223d4cf2e8a9c6a1ae8cff485b9d4327dc9",
+  "generated_at": "2026-11-16T21:24:30+00:00",
+  "git_sha": "fb13cb21aa811da9babff6b271f006b8c79ec30f",
   "ocpe_commit": null,
   "deterministic": false,
   "schema_validation": "ran",

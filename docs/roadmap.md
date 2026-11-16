@@ -8,11 +8,12 @@ clinically validated, and no planned work changes that.
 ## Current state (snapshot)
 
 - All seven validation layers have executable tests and independent
-  pre-finalization PASS records in `validation/reports/validation-report.json`.
-  The full suite contains **287 tests** (counted once per parametrized case;
+  commit-bound PASS records in `validation/reports/validation-report.json`.
+  The full suite passed **287 tests** with two intended soft-anchor warnings at
+  source/configuration commit `fb13cb21aa811da9babff6b271f006b8c79ec30f` (counted once per parametrized case;
   dual-marked tests make per-layer counts sum higher), and no required marker
-  selection is empty. Final registry status remains PENDING until the clean
-  source-commit validation is complete.
+  selection is empty. All 26 validation-registry records are PASS and bound to
+  that tested source commit.
 - Strict scientific traceability and strict OCPE package validation complete
   with zero errors and zero warnings.
 - Six curated demonstrations run and are pinned in

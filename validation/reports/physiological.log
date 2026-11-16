@@ -5,4 +5,4 @@ tests/physiological/test_orthostatic.py::test_early_co_and_caudal_pooling_soft_a
     warnings.warn(
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-29 passed, 257 deselected, 1 warning in 3.83s
+29 passed, 258 deselected, 1 warning in 3.84s

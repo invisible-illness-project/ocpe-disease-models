@@ -8,7 +8,7 @@ A PASS below means that the declared computational check executed successfully. 
 
 ## Executive outcome
 
-- The complete suite contains **287 tests**. Pre-finalization checks passed, but the commit-bound full-suite result remains PENDING until the final source commit has been created and tested; the executed result will be recorded in the reproducibility manifest.
+- The commit-bound complete suite passed **287 tests** at source/configuration commit `fb13cb21aa811da9babff6b271f006b8c79ec30f`: `287 passed, 2 warnings in 250.94s (0:04:10)`. The exact command outputs and artifact hashes are recorded in the reproducibility manifest.
 - All seven independently selected validation layers pass. Dual-marked tests make the layer counts sum to more than the unique full-suite count.
 - Ruff, strict OCPE validation, and strict scientific traceability pass. OCPE reports zero errors and zero warnings; traceability reports zero errors, warnings, and infos.
 - Six demonstrations regenerate 16 persisted runs with current 11-state traces, parameters, protocols, configuration hashes, observations, and figures.

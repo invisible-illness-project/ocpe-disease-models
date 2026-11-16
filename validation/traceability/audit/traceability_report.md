@@ -1,8 +1,8 @@
 # Scientific Traceability Audit Report
 
 - Tool: `ocpe-traceability-audit` v1.0.0
-- Generated at: 2026-11-16T20:44:37+00:00
-- Git SHA: 47923223d4cf2e8a9c6a1ae8cff485b9d4327dc9
+- Generated at: 2026-11-16T21:24:30+00:00
+- Git SHA: fb13cb21aa811da9babff6b271f006b8c79ec30f
 - OCPE commit: unknown
 - Schema validation: ran
 - **Status: PASS** (0 errors, 0 warnings, 0 infos)

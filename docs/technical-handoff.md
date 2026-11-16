@@ -16,17 +16,18 @@ Stage 1 replaces the aggregated cardiovascular/autonomic foundation with a conse
 
 All ten phenotype configurations begin at complete supine fixed points. Four-volume conservation holds analytically and in integrated tests. POTS and Long COVID autonomic scenarios are evaluated using sustained final-120-second-upright HR rise rather than peak-only responses. Original fixtures and negative results remain archived.
 
-The pre-finalization working-tree validation position is:
+The commit-bound validation position at source/configuration commit `fb13cb21aa811da9babff6b271f006b8c79ec30f` is:
 
-- 287 unique tests collected in the complete suite;
-- seven independently reported validation layers passing before the final source commit;
-- strict traceability with zero errors, warnings, and infos;
-- strict OCPE package validation with zero errors and warnings;
-- Ruff PASS;
+- **287 unique tests passed** in the complete suite, with two intended soft-anchor warnings (`287 passed, 2 warnings in 250.94s (0:04:10)`);
+- all seven independently selected validation layers passed;
+- all 26 validation-registry records are PASS and bound to that tested source commit;
+- strict traceability passed with zero errors, warnings, and infos;
+- strict OCPE package validation passed with zero errors and warnings;
+- Ruff passed;
+- 42 local-sensitivity executions, 18 deterministic grid scenarios, and three fixed-total chronotropic-split scenarios completed; and
+- six demonstrations regenerated 16 persisted current-model runs.
 
-The 26 registry records remain PENDING until the final source-commit run; these preliminary results are not yet the commit-bound release record.
-- 42 local-sensitivity executions, 18 deterministic grid scenarios, and three fixed-total chronotropic-split scenarios;
-- six demonstrations and 16 persisted current-model runs.
+The subsequent validation-record commit adds these executed records and does not claim to have been tested before it existed.
 
 Two healthy empirical soft-anchor misses remain. Early CO reduction is approximately 5.64%, below the broad 10–30% plausibility band. End-tilt cerebral-flow-index reduction is approximately 0.003%, below the broad 3–11% band around the reported 7% control finding, while heart-level MAP rises approximately 17.4 mmHg to 117.4 mmHg. Both are reported as warnings and unresolved structural limitations, not concealed by calibration.
 

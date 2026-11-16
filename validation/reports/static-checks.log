@@ -1,0 +1,10 @@
+$ python -m ruff check .
+All checks passed!
+$ python scripts/audit_traceability.py --root . --strict
+traceability audit: PASS (0 errors, 0 warnings, 0 infos)
+  JSON report:     /mnt/agents/output/ocpe-disease-models/validation/traceability/audit/traceability_report.json
+  Markdown report: /mnt/agents/output/ocpe-disease-models/validation/traceability/audit/traceability_report.md
+$ python -m ocpe validate ocpe/packages/disease-models --strict
+
+OK: 0 error(s), 0 warning(s) across disease-models@0.2.0
+Note: structural validation only; it does not establish scientific validity.
