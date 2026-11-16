@@ -99,6 +99,8 @@ def test_required_metadata_and_arrays_present(tmp_path):
     payload = json.loads((tmp_path / "result.json").read_text(encoding="utf-8"))
     assert REQUIRED_METADATA_KEYS <= set(payload["metadata"])
     assert payload["metadata"]["solver"]["method"] == "DOP853"
+    assert payload["metadata"]["solver"]["sample_interval"] == 2.0
+    assert payload["metadata"]["solver"]["seed"] == 0
     assert "not clinically validated" in payload["metadata"]["scientific_status"]
 
     trace = np.load(tmp_path / "trace.npz")

@@ -424,7 +424,14 @@ class ComputationalPatient:
             "numpy_version": np.__version__,
             "scipy_version": scipy.__version__,
             "seed": seed,
-            "solver": {"method": "DOP853", "rtol": rtol, "atol": atol, "max_step": max_step},
+            "solver": {
+                "method": "DOP853",
+                "sample_interval": sample_interval,
+                "max_step": max_step,
+                "rtol": rtol,
+                "atol": atol,
+                "seed": seed,
+            },
             "scientific_status": "research demonstration; not clinically validated",
         }
         return SimulationResult(

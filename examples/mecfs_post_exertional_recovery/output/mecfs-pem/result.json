@@ -32,9 +32,11 @@
     "seed": 0,
     "solver": {
       "method": "DOP853",
+      "sample_interval": 600.0,
+      "max_step": 300.0,
       "rtol": 1e-07,
       "atol": 1e-08,
-      "max_step": 300.0
+      "seed": 0
     },
     "scientific_status": "research demonstration; not clinically validated"
   },

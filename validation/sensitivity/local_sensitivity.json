@@ -52,9 +52,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -114,9 +116,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -185,9 +189,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -256,9 +262,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -327,9 +335,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -398,9 +408,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -469,9 +481,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -540,9 +554,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -611,9 +627,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -682,9 +700,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -753,9 +773,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -822,9 +844,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -884,9 +908,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
@@ -955,9 +981,11 @@
       },
       "solver": {
         "method": "DOP853",
+        "sample_interval": 2.0,
+        "max_step": 2.0,
         "rtol": 1e-07,
         "atol": 1e-08,
-        "max_step": 2.0
+        "seed": 0
       },
       "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
       "analysis": "local_sensitivity",
