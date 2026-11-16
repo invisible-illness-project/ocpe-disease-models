@@ -190,7 +190,7 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "scenario_interpretation",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow({**row, "overrides": json.dumps(row["overrides"], sort_keys=True)})
