@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "OCPE Disease Models"
+message: "If you use this software, please cite it and the underlying OCPE specification."
+type: software
+authors:
+  - name: "The Invisible Illness Project"
+repository-code: "https://github.com/invisible-illness-project/ocpe-disease-models"
+version: 0.1.0
+date-released: 2026-11-16
+license: Apache-2.0

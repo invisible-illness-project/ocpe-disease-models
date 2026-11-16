@@ -1,0 +1,11 @@
+id: head-up-tilt
+title: Supine baseline followed by upright orthostatic stress
+scientific_note: Upright input is a normalized tilt/standing approximation, not an angle-specific hydrostatic model.
+solver:
+  sample_interval: 2.0
+  max_step: 2.0
+  rtol: 1.0e-7
+  atol: 1.0e-8
+segments:
+  - {start: 0, end: 120, upright: 0.0, exertion: 0.0, label: supine}
+  - {start: 120, end: 600, upright: 1.0, exertion: 0.0, label: upright}

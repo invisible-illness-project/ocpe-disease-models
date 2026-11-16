@@ -1,0 +1,49 @@
+# OCPE domain package: disease-models
+# Quantities, concepts, measurement methods, relationships and declarative
+# models for the ocpe-disease-models disease-model repository.
+id: disease-models
+name: OCPE Disease Models
+version: "0.1.0"
+ocpe_spec: ">=0.1.0 <0.2.0"
+status: provisional
+license: Apache-2.0
+description: >
+  Domain content for the ocpe-disease-models repository: cardiovascular and
+  orthostatic quantities (heart rate, mean arterial pressure, stroke volume,
+  cardiac output, cerebral flow index), disease-relevant latent constructs
+  (metabolic capacity, PEM severity, sympathetic activation), disease concepts
+  (ME/CFS, Long COVID, POTS, hypermobile EDS), measurement methods, and a
+  declarative three-compartment cardiovascular ODE model. All model outputs are
+  semantic specifications; numerical simulation lives in the Python package.
+maintainers:
+  - name: The Invisible Illness Project
+    kind: organization
+keywords:
+  - cardiovascular
+  - mecfs
+  - long-covid
+  - pots
+  - eds
+  - orthostatic-intolerance
+  - post-exertional-malaise
+dependencies:
+  - package: core
+    version: ">=0.1.0 <0.2.0"
+    reason: Relationship predicates and generic functional forms.
+contents:
+  - quantities.yaml
+  - concepts.yaml
+  - methods.yaml
+  - functional-forms.yaml
+  - relationships.yaml
+  - models.yaml
+changelog: CHANGELOG.md
+provenance:
+  contributors:
+    - name: ocpe-disease-models maintainers
+      kind: organization
+      role: package authors
+  created: "2026-01-01"
+  notes: >
+    Initial OCPE 0.1 package authored against the pinned upstream OCPE
+    specification commit 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d.

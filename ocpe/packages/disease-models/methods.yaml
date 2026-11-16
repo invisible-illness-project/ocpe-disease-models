@@ -1,0 +1,55 @@
+# Measurement methods for the observable quantities of the disease models.
+ocpe: "0.1"
+package: disease-models
+title: Disease-model measurement methods
+description: >
+  Devices and processing pipelines by which the package's measurable
+  quantities are observed in practice.
+entities:
+  - id: ocpe:disease-models/ecg-heart-rate-monitor
+    kind: measurement_method
+    label: ECG heart-rate monitor
+    definition: >
+      Electrocardiographic measurement of heart rate from the R-R interval
+      of the QRS complex.
+    method_type: device
+    modality: electrocardiography
+    measures:
+      - target: ocpe:disease-models/heart-rate
+        mode: direct
+    failure_modes:
+      - Motion artifact corrupting R-peak detection.
+      - Ectopic beats biasing short-window rate estimates.
+    since: "0.1.0"
+  - id: ocpe:disease-models/oscillometric-bp-cuff
+    kind: measurement_method
+    label: Oscillometric blood-pressure cuff
+    definition: >
+      Automated brachial-cuff sphygmomanometer estimating mean arterial
+      pressure from cuff-pressure oscillations.
+    method_type: device
+    modality: oscillometry
+    measures:
+      - target: ocpe:disease-models/mean-arterial-pressure
+        mode: direct
+    failure_modes:
+      - Poor cuff sizing.
+      - Arrhythmia degrading oscillometric envelope estimation.
+    since: "0.1.0"
+  - id: ocpe:disease-models/impedance-cardiography
+    kind: measurement_method
+    label: Impedance cardiography
+    definition: >
+      Transthoracic bioimpedance pipeline estimating stroke volume and hence
+      cardiac output from impedance changes over the cardiac cycle.
+    method_type: signal_processing
+    modality: transthoracic bioimpedance
+    measures:
+      - target: ocpe:disease-models/stroke-volume
+        mode: estimated
+      - target: ocpe:disease-models/cardiac-output
+        mode: estimated
+    failure_modes:
+      - Electrode displacement.
+      - Posture-dependent baseline drift.
+    since: "0.1.0"

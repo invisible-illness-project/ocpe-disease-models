@@ -1,0 +1,860 @@
+schema_version: '1.0'
+validation_policy:
+  independence: Each layer is reported separately; a pass in one layer cannot substitute for another.
+  clinical_status: No layer establishes clinical validity, diagnostic accuracy, treatment efficacy, or patient-specific calibration.
+  empirical_comparisons: Group-level literature anchors are heterogeneous plausibility checks, not fitted individual data
+    or prospective external validation.
+  required_test_behavior: Missing required tests, registry entries, references, or outputs are failures and must not be hidden
+    by skips.
+validation_tests:
+- id: VAL-SW-CONFIG
+  name: Configuration and phenotype composition
+  layer: software
+  expected_behavior: YAML configurations load deterministically; unknown parameters, invalid protocols, and conflicting comorbidity
+    overrides fail explicitly.
+  acceptance_criteria: All healthy and disease configurations round-trip without silent changes; conflicting parameter values
+    raise ValueError; mixed non-conflicting mechanisms compose deterministically.
+  justification: Prevents silent parameter override ordering and unrecorded configuration drift.
+  test_path: tests/unit/test_configuration.py
+  evidence_claims: []
+  equation_ids: []
+  parameter_ids: []
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-SW-SERIALIZATION
+  name: Serialization and numerical failure behavior
+  layer: software
+  expected_behavior: Small traces and metadata serialize reproducibly; non-finite or failed solver output cannot be reported
+    as success.
+  acceptance_criteria: Saved parameters/protocol/configuration hash match the in-memory run; required metadata and arrays
+    are present; invalid parameter domains raise explicit errors.
+  justification: Execution integrity is necessary but is not physiological or clinical validation.
+  test_path: tests/unit/test_serialization.py
+  evidence_claims: []
+  equation_ids: []
+  parameter_ids: []
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-SW-OCPE
+  name: Strict OCPE package and observation interoperability
+  layer: software
+  expected_behavior: The disease package passes strict OCPE validation and simulated observations preserve declared units
+    and evidence references.
+  acceptance_criteria: Zero strict OCPE errors and warnings; mapped observations validate; cardiac output is mapped from cardiac_output_l_min
+    in L/min.
+  justification: Tests semantic interoperability and unit safety rather than numerical correctness.
+  test_path: tests/unit/test_ocpe_adapter.py; tests/unit/test_observation_mapping.py
+  evidence_claims: []
+  equation_ids: []
+  parameter_ids: []
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-MATH-CONSERVATION
+  name: Stressed-volume conservation
+  layer: mathematical
+  mechanisms:
+  - MEC-CV-VOLUME
+  expected_behavior: The sum of arterial, central-venous, and peripheral-venous stressed volumes remains invariant.
+  acceptance_criteria: Maximum absolute volume drift is below 1e-6 mL over baseline and orthostatic runs; instantaneous RHS
+    volume derivatives sum to zero within floating-point tolerance.
+  justification: The compartment equations imply exact conservation; drift would reveal an implementation or solver error.
+  test_path: tests/mathematical/test_conservation.py
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  equation_ids:
+  - EQ-CV-001
+  - EQ-CV-002
+  - EQ-CV-003
+  - EQ-CV-004
+  - EQ-CV-005
+  parameter_ids:
+  - PAR-ARTERIAL-COMPLIANCE
+  - PAR-CENTRAL-VENOUS-COMPLIANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-ARTERIAL-VOLUME-INITIAL
+  - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
+  - PAR-PERIPHERAL-VENOUS-VOLUME-INITIAL
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-MATH-CONVERGENCE
+  name: Solver convergence and bounded states
+  layer: mathematical
+  mechanisms:
+  - MEC-CV-VOLUME
+  - MEC-AUT-BAROREFLEX
+  expected_behavior: Solutions converge under tighter tolerances and remain finite in all demonstrated protocols.
+  acceptance_criteria: Tightening rtol/atol and max_step changes key summary metrics by less than 0.1 bpm, 0.1 mmHg, or 0.001
+    normalized units; all states and outputs are finite.
+  justification: Detects numerical artifacts without claiming that numerical convergence establishes model truth.
+  test_path: tests/mathematical/test_convergence.py
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-CRITERIA
+  - CLM-LC-HETEROGENEITY
+  equation_ids:
+  - EQ-CV-001
+  - EQ-CV-002
+  - EQ-CV-003
+  - EQ-CV-004
+  - EQ-CV-005
+  - EQ-AUT-001
+  - EQ-AUT-002
+  - EQ-AUT-003
+  parameter_ids:
+  - PAR-ARTERIAL-COMPLIANCE
+  - PAR-CENTRAL-VENOUS-COMPLIANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-ARTERIAL-VOLUME-INITIAL
+  - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
+  - PAR-PERIPHERAL-VENOUS-VOLUME-INITIAL
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-HEART-RATE-BASE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-PHYS-BASELINE
+  name: Healthy resting operating point
+  layer: physiological
+  mechanisms:
+  - MEC-CV-VOLUME
+  - MEC-AUT-BAROREFLEX
+  expected_behavior: The healthy reference has a stable plausible resting HR, pressure, cardiac output, and no PEM.
+  acceptance_criteria: Mean supine HR 55–85 bpm; MAP 80–105 mmHg; cardiac output 4–8 L/min; PEM severity zero; late-rest HR
+    drift below 0.1 bpm.
+  justification: Broad operating-point checks catch non-physiological configurations but are not population validation.
+  test_path: tests/physiological/test_baseline.py
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-CRITERIA
+  - CLM-LC-HETEROGENEITY
+  equation_ids:
+  - EQ-CV-001
+  - EQ-CV-002
+  - EQ-CV-003
+  - EQ-CV-004
+  - EQ-CV-005
+  - EQ-AUT-001
+  - EQ-AUT-002
+  - EQ-AUT-003
+  parameter_ids:
+  - PAR-ARTERIAL-COMPLIANCE
+  - PAR-CENTRAL-VENOUS-COMPLIANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-ARTERIAL-VOLUME-INITIAL
+  - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
+  - PAR-PERIPHERAL-VENOUS-VOLUME-INITIAL
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-HEART-RATE-BASE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-PHYS-TILT
+  name: Orthostatic directionality and compensation
+  layer: physiological
+  mechanisms:
+  - MEC-VASC-POOLING
+  - MEC-AUT-BAROREFLEX
+  - MEC-VASC-CONSTRICTION
+  expected_behavior: Upright posture reduces venous return initially and evokes compensatory sympathetic and HR responses
+    without destroying pressure homeostasis.
+  acceptance_criteria: Healthy upright HR increases 3–20 bpm; upright MAP remains above 70 mmHg; sympathetic state increases;
+    venous return initially falls; volume remains conserved.
+  justification: Qualitative physiology and broad healthy ranges are independent of the POTS threshold checks.
+  test_path: tests/physiological/test_orthostatic.py
+  evidence_claims:
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-CRITERIA
+  - CLM-LC-HETEROGENEITY
+  - CLM-POTS-PHENOTYPES
+  equation_ids:
+  - EQ-ORT-001
+  - EQ-CV-003
+  - EQ-AUT-001
+  - EQ-AUT-002
+  - EQ-AUT-003
+  - EQ-VASC-001
+  - EQ-CV-002
+  parameter_ids:
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-HEART-RATE-BASE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  - PAR-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-SYSTEMIC-RESISTANCE
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-PHYS-RECOVERY
+  name: Post-tilt cerebral recovery
+  layer: physiological
+  mechanisms:
+  - MEC-CBF-AUTOREG
+  expected_behavior: Return to supine removes the orthostatic cerebral target penalty and recovery follows the configured
+    lag.
+  acceptance_criteria: Healthy cerebral index returns within 0.01 of baseline by 120 s; ME/CFS recovery is slower than decline
+    and remains finite; no negative cerebral index occurs.
+  justification: Separately tests recovery dynamics rather than only end-tilt responses.
+  test_path: tests/physiological/test_recovery.py
+  evidence_claims:
+  - CLM-ME-CBF
+  equation_ids:
+  - EQ-CBF-001
+  - EQ-CBF-002
+  parameter_ids:
+  - PAR-CEREBRAL-PRESSURE-EXPONENT
+  - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
+  - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
+  - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-POTS-NEUROPATHIC
+  name: Neuropathic POTS scenario
+  layer: disease_phenotype
+  mechanisms:
+  - MEC-VASC-POOLING
+  - MEC-VASC-CONSTRICTION
+  - MEC-AUT-BAROREFLEX
+  expected_behavior: Reduced vascular compensation produces an adult POTS-like orthostatic HR rise with preserved MAP.
+  acceptance_criteria: Orthostatic HR rise is at least 30 bpm and exceeds healthy; final MAP is at least 70 mmHg; total stressed
+    volume is conserved.
+  justification: Tests internal coherence of a literature-motivated subgroup mechanism against a consensus scenario threshold,
+    not diagnostic accuracy.
+  test_path: tests/phenotypes/test_pots.py
+  evidence_claims:
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-PHENOTYPES
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-CRITERIA
+  - CLM-LC-HETEROGENEITY
+  equation_ids:
+  - EQ-ORT-001
+  - EQ-CV-003
+  - EQ-VASC-001
+  - EQ-CV-002
+  - EQ-AUT-001
+  - EQ-AUT-002
+  - EQ-AUT-003
+  parameter_ids:
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-HEART-RATE-BASE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-POTS-HYPER
+  name: Hyperadrenergic POTS scenario
+  layer: disease_phenotype
+  mechanisms:
+  - MEC-AUT-HYPERADRENERGIC
+  - MEC-VASC-POOLING
+  expected_behavior: Increased chronotropic feedback gain produces sustained orthostatic tachycardia.
+  acceptance_criteria: Orthostatic HR rise is at least 30 bpm and exceeds healthy; final MAP is at least 70 mmHg; the rise
+    is not obtained by disabling volume conservation.
+  justification: Demonstrates a calibrated hyperadrenergic configuration without inferring catecholamine concentrations.
+  test_path: tests/phenotypes/test_pots.py
+  evidence_claims:
+  - CLM-POTS-HYPERADRENERGIC
+  - CLM-POTS-PHENOTYPES
+  - CLM-LC-AUTONOMIC
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  equation_ids:
+  - EQ-AUT-001
+  - EQ-AUT-003
+  - EQ-ORT-001
+  - EQ-CV-003
+  parameter_ids:
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-POTS-HYPO
+  name: Hypovolemic POTS scenario
+  layer: disease_phenotype
+  mechanisms:
+  - MEC-VOL-HYPOVOLEMIA
+  - MEC-VASC-POOLING
+  expected_behavior: Reduced initial stressed volume lowers reserve and produces orthostatic tachycardia.
+  acceptance_criteria: Initial total stressed volume equals 0.92 times healthy within solver tolerance; orthostatic HR rise
+    is at least 30 bpm; final MAP is at least 70 mmHg.
+  justification: Checks the configured mechanism and scenario response; the 0.92 factor is not equated with the measured plasma-volume
+    deficit.
+  test_path: tests/phenotypes/test_pots.py
+  evidence_claims:
+  - CLM-POTS-HYPOVOLEMIA
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  equation_ids:
+  - EQ-CV-001
+  - EQ-CV-003
+  - EQ-ORT-001
+  parameter_ids:
+  - PAR-BLOOD-VOLUME-FACTOR
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-POTS-MIXED
+  name: Explicit mixed POTS composition
+  layer: disease_phenotype
+  mechanisms:
+  - MEC-VOL-HYPOVOLEMIA
+  - MEC-VASC-POOLING
+  - MEC-VASC-CONSTRICTION
+  - MEC-AUT-HYPERADRENERGIC
+  expected_behavior: A declared mixed configuration combines mechanisms without silent conflicts and can produce a larger
+    compensatory response.
+  acceptance_criteria: Mixed configuration has explicit mechanism provenance; HR rise is at least 30 bpm; conflicting ad hoc
+    composition raises ValueError.
+  justification: POTS mechanisms overlap, so mixture behavior must be explicit and auditable.
+  test_path: tests/phenotypes/test_pots.py; tests/unit/test_configuration.py
+  evidence_claims:
+  - CLM-POTS-HYPOVOLEMIA
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-PHENOTYPES
+  - CLM-POTS-HYPERADRENERGIC
+  - CLM-LC-AUTONOMIC
+  equation_ids:
+  - EQ-CV-001
+  - EQ-CV-003
+  - EQ-ORT-001
+  - EQ-VASC-001
+  - EQ-CV-002
+  - EQ-AUT-001
+  - EQ-AUT-003
+  parameter_ids:
+  - PAR-BLOOD-VOLUME-FACTOR
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-EDS-DIRECTION
+  name: Exploratory hEDS vascular-mechanics scenario
+  layer: disease_phenotype
+  mechanisms:
+  - MEC-VASC-COMPLIANCE
+  - MEC-VASC-POOLING
+  expected_behavior: An assumed peripheral-compliance increase alters orthostatic pooling and compensation while preserving
+    conservation.
+  acceptance_criteria: The scenario is labeled exploratory and hEDS-specific; HR rise exceeds healthy; results remain finite
+    and MAP stays above 70 mmHg; sensitivity includes the healthy compliance value.
+  justification: Tests the consequences of a hypothesis, not the truth or magnitude of venous hypercompliance.
+  test_path: tests/phenotypes/test_eds.py
+  evidence_claims:
+  - CLM-EDS-VASCULAR
+  - CLM-EDS-OI
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  equation_ids:
+  - EQ-CV-001
+  - EQ-ORT-001
+  - EQ-CV-003
+  parameter_ids:
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-ME-PEM
+  name: Delayed PEM onset and prolonged recovery
+  layer: disease_phenotype
+  mechanisms:
+  - MEC-RCV-PEM
+  expected_behavior: Exertion is followed by delayed, non-immediate PEM and gradual recovery; healthy reference does not develop
+    PEM under the same protocol.
+  acceptance_criteria: PEM is below 0.01 during exertion and the first hour; subsequent peak exceeds 0.05; peak occurs after
+    exertion; healthy PEM remains zero; recovery is slower than a simple immediate-fatigue response.
+  justification: Directly tests the defining temporal distinction between PEM and immediate exertional fatigue.
+  test_path: tests/phenotypes/test_mecfs.py
+  evidence_claims:
+  - CLM-ME-PEM-KINETICS
+  - CLM-LC-PEM
+  - CLM-ME-CPET
+  equation_ids:
+  - EQ-RCV-001
+  - EQ-RCV-002
+  - EQ-RCV-003
+  - EQ-RCV-004
+  parameter_ids:
+  - PAR-EXERTIONAL-LOAD-TIME-CONSTANT
+  - PAR-DELAYED-STRESS-TIME-CONSTANT
+  - PAR-PEM-ONSET-TIME-CONSTANT
+  - PAR-PEM-RECOVERY-TIME-CONSTANT
+  - PAR-PEM-TRIGGER-THRESHOLD
+  - PAR-PEM-RESPONSE-GAIN
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-ME-CPET
+  name: Reduced subsequent exertional capacity
+  layer: empirical
+  mechanisms:
+  - MEC-RCV-PEM
+  - MEC-MET-CAPACITY
+  expected_behavior: A single-exertion scenario reduces subsequent normalized functional capacity by a magnitude broadly comparable
+    with heterogeneous repeated-CPET observations.
+  acceptance_criteria: Subsequent capacity reduction is greater than zero and within a predeclared broad 2–20% scenario band;
+    output is labeled a normalized construct rather than measured VO2.
+  justification: Uses 5.3% and 13.8% VO2peak findings as heterogeneous group-level anchors, with extra width for construct
+    mismatch; not external validation.
+  test_path: tests/empirical/test_group_anchors.py
+  evidence_claims:
+  - CLM-ME-PEM-KINETICS
+  - CLM-LC-PEM
+  - CLM-ME-CPET
+  - CLM-LC-CPET
+  - CLM-ME-METABOLISM
+  - CLM-LC-MUSCLE
+  - CLM-LC-HETEROGENEITY
+  equation_ids:
+  - EQ-RCV-001
+  - EQ-RCV-002
+  - EQ-RCV-003
+  - EQ-RCV-004
+  - EQ-MET-001
+  parameter_ids:
+  - PAR-EXERTIONAL-LOAD-TIME-CONSTANT
+  - PAR-DELAYED-STRESS-TIME-CONSTANT
+  - PAR-PEM-ONSET-TIME-CONSTANT
+  - PAR-PEM-RECOVERY-TIME-CONSTANT
+  - PAR-PEM-TRIGGER-THRESHOLD
+  - PAR-PEM-RESPONSE-GAIN
+  - PAR-BASELINE-METABOLIC-CAPACITY
+  - PAR-PEM-CAPACITY-PENALTY
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-ME-CBF
+  name: ME/CFS cerebral-flow group-level comparison
+  layer: empirical
+  mechanisms:
+  - MEC-CBF-AUTOREG
+  expected_behavior: The ME/CFS tilt scenario produces a larger cerebral-flow-index reduction than healthy and delayed post-tilt
+    recovery.
+  acceptance_criteria: End-tilt index reduction is within a broad 15–35% scenario band around the reported 26% group mean;
+    healthy reduction is smaller; recovery behavior is reported separately.
+  justification: Provides an empirical plausibility comparison while retaining Doppler and construct limitations.
+  test_path: tests/empirical/test_group_anchors.py; tests/physiological/test_recovery.py
+  evidence_claims:
+  - CLM-ME-CBF
+  equation_ids:
+  - EQ-CBF-001
+  - EQ-CBF-002
+  parameter_ids:
+  - PAR-CEREBRAL-PRESSURE-EXPONENT
+  - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
+  - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
+  - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-LC-AUTONOMIC
+  name: Long COVID autonomic subgroup
+  layer: disease_phenotype
+  mechanisms:
+  - MEC-AUT-BAROREFLEX
+  - MEC-AUT-HYPERADRENERGIC
+  - MEC-VASC-POOLING
+  expected_behavior: One explicitly defined Long COVID subgroup can produce POTS-like autonomic responses without representing
+    all Long COVID.
+  acceptance_criteria: Autonomic subgroup HR rise is at least 30 bpm and MAP remains at least 70 mmHg; exertional and autonomic
+    configurations remain distinct in the registry.
+  justification: Preserves physiological heterogeneity and avoids a universal Long COVID parameter set.
+  test_path: tests/phenotypes/test_long_covid.py
+  evidence_claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-CRITERIA
+  - CLM-LC-HETEROGENEITY
+  - CLM-POTS-HYPERADRENERGIC
+  - CLM-POTS-PHENOTYPES
+  - CLM-LC-AUTONOMIC
+  - CLM-POTS-POOLING
+  equation_ids:
+  - EQ-AUT-001
+  - EQ-AUT-002
+  - EQ-AUT-003
+  - EQ-ORT-001
+  - EQ-CV-003
+  parameter_ids:
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-HEART-RATE-BASE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-LC-EXTRACTION
+  name: Long COVID exertional/extraction subgroup
+  layer: disease_phenotype
+  mechanisms:
+  - MEC-MET-EXTRACTION
+  - MEC-MET-CAPACITY
+  expected_behavior: Reduced extraction lowers functional capacity independently of an autonomic HR-rise requirement.
+  acceptance_criteria: Extraction fraction is 0.49 versus 0.78 healthy; functional capacity is lower at matched PEM severity;
+    no POTS-like HR criterion is imposed on this subgroup.
+  justification: Matches the direction reported in selected invasive-CPET subgroups without asserting prevalence or a universal
+    mechanism.
+  test_path: tests/phenotypes/test_long_covid.py
+  evidence_claims:
+  - CLM-LC-EXTRACTION
+  - CLM-ME-PRELOAD
+  - CLM-ME-CPET
+  - CLM-LC-CPET
+  - CLM-ME-METABOLISM
+  - CLM-LC-MUSCLE
+  - CLM-LC-HETEROGENEITY
+  equation_ids:
+  - EQ-MET-002
+  - EQ-MET-001
+  parameter_ids:
+  - PAR-OXYGEN-EXTRACTION-FRACTION
+  - PAR-PEM-EXTRACTION-PENALTY
+  - PAR-BASELINE-METABOLIC-CAPACITY
+  - PAR-PEM-CAPACITY-PENALTY
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-EMPIRICAL-ANCHORS
+  name: Empirical anchor coverage and provenance
+  layer: empirical
+  expected_behavior: Every quantitative empirical comparison is tied to a cited group-level finding and reports construct/population
+    limitations.
+  acceptance_criteria: POTS criteria, PEM timing, repeated-CPET, cerebral-flow, and extraction comparisons resolve to evidence
+    claims; no patient-level fit or diagnostic accuracy is claimed.
+  justification: Prevents unlabeled curve matching and unsupported empirical claims.
+  test_path: tests/empirical/test_group_anchors.py; tests/unit/test_traceability_audit.py
+  evidence_claims:
+  - CLM-POTS-CRITERIA
+  - CLM-ME-PEM-KINETICS
+  - CLM-ME-CPET
+  - CLM-ME-CBF
+  - CLM-LC-EXTRACTION
+  equation_ids: []
+  parameter_ids: []
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-SENSITIVITY
+  name: Deterministic local sensitivity analysis
+  layer: sensitivity_uncertainty
+  mechanisms:
+  - MEC-VASC-POOLING
+  - MEC-VASC-CONSTRICTION
+  - MEC-VOL-HYPOVOLEMIA
+  - MEC-VASC-COMPLIANCE
+  - MEC-AUT-BAROREFLEX
+  expected_behavior: Key outputs change traceably under declared one-at-a-time parameter perturbations, including reversal
+    of the hEDS exploratory compliance assumption.
+  acceptance_criteria: Selected parameter/output derivatives are finite and reproducible; parameter ranges and assumptions
+    are exported; hEDS sensitivity includes both increased and healthy compliance; no stochastic cohort is generated.
+  justification: Identifies influential assumptions and distinguishes robust directions from calibrated magnitudes.
+  test_path: tests/sensitivity/test_sensitivity.py
+  evidence_claims:
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-PHENOTYPES
+  - CLM-POTS-HYPOVOLEMIA
+  - CLM-EDS-VASCULAR
+  - CLM-EDS-OI
+  - CLM-POTS-BAROREFLEX
+  - CLM-POTS-CRITERIA
+  - CLM-LC-HETEROGENEITY
+  equation_ids:
+  - EQ-ORT-001
+  - EQ-CV-003
+  - EQ-VASC-001
+  - EQ-CV-002
+  - EQ-CV-001
+  - EQ-AUT-001
+  - EQ-AUT-002
+  - EQ-AUT-003
+  parameter_ids:
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-BLOOD-VOLUME-FACTOR
+  - PAR-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-SYMPATHETIC-TIME-CONSTANT
+  - PAR-HEART-RATE-BASE
+  - PAR-HEART-RATE-SYMPATHETIC-GAIN
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-UNCERTAINTY
+  name: Assumption uncertainty propagation
+  layer: sensitivity_uncertainty
+  expected_behavior: A small deterministic parameter grid reports output ranges and scenario ranking stability without implying
+    population probabilities.
+  acceptance_criteria: Minimum/maximum HR rise, MAP, PEM peak, and capacity outputs are reported with configuration hashes;
+    every sampled point is explicitly labeled a deterministic scenario, not a patient.
+  justification: Communicates structural and parameter uncertainty without synthetic patient-cohort generation.
+  test_path: tests/sensitivity/test_uncertainty.py
+  evidence_claims:
+  - CLM-POTS-POOLING
+  - CLM-CV-HEMODYNAMICS
+  - CLM-POTS-PHENOTYPES
+  - CLM-ME-PEM-KINETICS
+  - CLM-LC-PEM
+  - CLM-ME-CPET
+  - CLM-LC-CPET
+  - CLM-ME-METABOLISM
+  - CLM-LC-MUSCLE
+  - CLM-LC-HETEROGENEITY
+  equation_ids:
+  - EQ-ORT-001
+  - EQ-CV-003
+  - EQ-VASC-001
+  - EQ-CV-002
+  - EQ-RCV-001
+  - EQ-RCV-002
+  - EQ-RCV-003
+  - EQ-RCV-004
+  - EQ-MET-001
+  parameter_ids:
+  - PAR-GRAVITY-PRESSURE-OFFSET
+  - PAR-VENOUS-RETURN-RESISTANCE
+  - PAR-PERIPHERAL-VENOUS-COMPLIANCE
+  - PAR-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-SYSTEMIC-RESISTANCE
+  - PAR-EXERTIONAL-LOAD-TIME-CONSTANT
+  - PAR-DELAYED-STRESS-TIME-CONSTANT
+  - PAR-PEM-ONSET-TIME-CONSTANT
+  - PAR-PEM-RECOVERY-TIME-CONSTANT
+  - PAR-PEM-TRIGGER-THRESHOLD
+  - PAR-PEM-RESPONSE-GAIN
+  - PAR-BASELINE-METABOLIC-CAPACITY
+  - PAR-PEM-CAPACITY-PENALTY
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+  mechanisms:
+  - MEC-VASC-POOLING
+  - MEC-VASC-CONSTRICTION
+  - MEC-RCV-PEM
+  - MEC-MET-CAPACITY
+- id: VAL-TRACEABILITY
+  name: Scientific traceability audit
+  layer: scientific_traceability
+  expected_behavior: Literature-to-output chains resolve without duplicate IDs, broken references, undocumented equations/parameters,
+    or untested implemented mechanisms.
+  acceptance_criteria: Strict schema and cross-registry audit has zero errors and zero warnings; all seven registries are
+    present; all simulations have configuration and model provenance.
+  justification: Makes unsupported or orphaned scientific claims visible and prevents incomplete chains from passing silently.
+  test_path: tests/unit/test_traceability_audit.py
+  evidence_claims: []
+  equation_ids: []
+  parameter_ids: []
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-REGRESSION
+  name: Approved scientific regression fixtures
+  layer: software
+  expected_behavior: Key metrics remain stable unless a reviewed scientific change explicitly updates fixtures and provenance.
+  acceptance_criteria: Stored summary metrics match within declared numerical tolerances; fixture changes require a change
+    record explaining mechanism, evidence, and expected direction.
+  justification: Detects unintended numerical and scientific drift without freezing legitimate model revisions.
+  test_path: tests/regression/test_regression_fixtures.py
+  evidence_claims: []
+  equation_ids: []
+  parameter_ids: []
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null
+- id: VAL-SCOPE-FUTURE
+  name: Unimplemented mechanism scope guard
+  layer: scientific_traceability
+  mechanisms:
+  - MEC-GI-DYSMOTILITY
+  - MEC-PAIN-AUT
+  - MEC-RESP-LC
+  expected_behavior: Specified future mechanisms remain explicitly non-executable and cannot be silently presented as validated
+    implementations.
+  acceptance_criteria: Each mechanism has proposed/hypothesis status, M0/M1 maturity, an explicit limitation, no numerical
+    parameter link, and a review-path provenance record.
+  justification: Prevents scope drift from literature hypotheses into unsupported executable claims.
+  test_path: tests/unit/test_traceability_audit.py
+  evidence_claims:
+  - CLM-EDS-OI
+  - CLM-LC-CPET
+  - CLM-LC-EXTRACTION
+  equation_ids: []
+  parameter_ids: []
+  validation_result:
+    status: REGISTERED_NOT_YET_EXECUTED
+    report: validation/reports/validation-report.json
+  execution_environment:
+    python: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: null

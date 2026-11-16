@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ocpe-disease-models/schemas/parameter_registry.schema.json",
+  "title": "Parameter Registry",
+  "description": "Model parameters with sources and estimation methods. File: parameter_registry.yaml, top-level key: parameters.",
+  "type": "object",
+  "required": ["parameters"],
+  "additionalProperties": true,
+  "properties": {
+    "parameters": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/parameter" }
+    }
+  },
+  "$defs": {
+    "parameter": {
+      "type": "object",
+      "required": ["id", "source", "estimation_method", "provenance"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^PAR-[A-Za-z0-9_.-]+$",
+          "description": "Stable parameter identifier."
+        },
+        "name": { "type": "string" },
+        "symbol": { "type": "string" },
+        "value": { "type": ["number", "string"] },
+        "units": { "type": "string" },
+        "source": {
+          "description": "Literature reference or dataset the value comes from.",
+          "anyOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "object" }
+          ]
+        },
+        "estimation_method": {
+          "type": "string",
+          "minLength": 1,
+          "description": "How the value was estimated (e.g. literature meta-analysis, least-squares fit, expert elicitation)."
+        },
+        "provenance": {
+          "description": "Traceability note: who/when/how the value entered the model.",
+          "anyOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "object" }
+          ]
+        },
+        "uncertainty": { "type": ["number", "string", "object"] }
+      }
+    }
+  }
+}

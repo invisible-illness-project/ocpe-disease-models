@@ -1,0 +1,16 @@
+id: eds-heds-vascular
+label: hEDS-associated vascular compliance and orthostatic intolerance
+diseases: [hEDS]
+mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX]
+evidence_claims: [CLM-EDS-OI, CLM-EDS-VASCULAR]
+parameter_overrides:
+  gravity_pressure_offset: 9.0
+  peripheral_venous_compliance: 140.0
+  resistance_sympathetic_gain: 0.7
+  heart_rate_base: 40.0
+  heart_rate_sympathetic_gain: 60.0
+maturity: M2
+classification: hypothesis_constrained_phenomenology
+limitations:
+  - Increased peripheral compliance is a modeling hypothesis motivated by clinical association, not an hEDS-specific measured value.
+  - This configuration does not generalize to vascular EDS or other EDS subtypes and makes no arterial-rupture representation.

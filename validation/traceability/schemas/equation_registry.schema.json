@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ocpe-disease-models/schemas/equation_registry.schema.json",
+  "title": "Equation Registry",
+  "description": "Model equations with assumptions and provenance. File: equation_registry.yaml, top-level key: equations.",
+  "type": "object",
+  "required": ["equations"],
+  "additionalProperties": true,
+  "properties": {
+    "equations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/equation" }
+    }
+  },
+  "$defs": {
+    "equation": {
+      "type": "object",
+      "required": ["id", "expression", "assumptions", "provenance"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^EQ-[A-Za-z0-9_.-]+$",
+          "description": "Stable equation identifier."
+        },
+        "name": { "type": "string" },
+        "expression": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Mathematical expression (plain text or LaTeX)."
+        },
+        "assumptions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Assumptions under which the equation holds."
+        },
+        "provenance": {
+          "description": "Where the equation comes from (reference id, derivation note, or structured source).",
+          "anyOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "object" }
+          ]
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^PAR-[A-Za-z0-9_.-]+$"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+id: eds-heds-mecfs-comorbid
+label: Exploratory comorbid hEDS vascular and ME/CFS PEM configuration
+diseases: [hEDS, ME/CFS]
+mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-RCV-PEM, MEC-MET-CAPACITY]
+evidence_claims: [CLM-EDS-OI, CLM-ME-PEM-KINETICS]
+parameter_overrides:
+  gravity_pressure_offset: 9.0
+  peripheral_venous_compliance: 140.0
+  resistance_sympathetic_gain: 0.7
+  heart_rate_base: 40.0
+  heart_rate_sympathetic_gain: 60.0
+  cerebral_orthostatic_impairment: 0.23
+  cerebral_recovery_time_constant: 240.0
+  baseline_metabolic_capacity: 0.85
+  oxygen_extraction_fraction: 0.74
+  pem_trigger_threshold: 0.001
+  pem_response_gain: 20.0
+maturity: M2
+classification: exploratory_comorbidity
+limitations:
+  - Demonstrates technical composition only; no claim that this joint parameter distribution is epidemiologically typical.

@@ -1,0 +1,85 @@
+# Relationships between the disease-model entities, using the core predicate
+# vocabulary plus the package-specific sigmoid functional form.
+ocpe: "0.1"
+package: disease-models
+title: Disease-model relationships
+description: >
+  Typed assertions linking disease concepts, physiological quantities,
+  measurement methods and the cardiovascular model.
+entities:
+  - id: ocpe:disease-models/heart-rate-measured-by-ecg
+    kind: relationship
+    label: Heart rate is measured by ECG heart-rate monitor
+    subject: ocpe:disease-models/heart-rate
+    predicate: MEASURED_BY
+    object: ocpe:disease-models/ecg-heart-rate-monitor
+    since: "0.1.0"
+  - id: ocpe:disease-models/map-measured-by-cuff
+    kind: relationship
+    label: Mean arterial pressure is measured by oscillometric cuff
+    subject: ocpe:disease-models/mean-arterial-pressure
+    predicate: MEASURED_BY
+    object: ocpe:disease-models/oscillometric-bp-cuff
+    since: "0.1.0"
+  - id: ocpe:disease-models/stroke-volume-estimated-by-icg
+    kind: relationship
+    label: Stroke volume is estimated by impedance cardiography
+    subject: ocpe:disease-models/stroke-volume
+    predicate: ESTIMATED_BY
+    object: ocpe:disease-models/impedance-cardiography
+    since: "0.1.0"
+  - id: ocpe:disease-models/sympathetic-regulates-heart-rate
+    kind: relationship
+    label: Sympathetic activation regulates heart rate
+    subject: ocpe:disease-models/sympathetic-activation
+    predicate: REGULATES
+    object: ocpe:disease-models/heart-rate
+    direction_of_effect: positive
+    functional_form: linear
+    known_limitations: Saturates at high activation; the linear form is a local approximation.
+    since: "0.1.0"
+  - id: ocpe:disease-models/baroreflex-regulates-sympathetic-activation
+    kind: relationship
+    label: Mean arterial pressure regulates sympathetic activation via the baroreflex
+    subject: ocpe:disease-models/mean-arterial-pressure
+    predicate: REGULATES
+    object: ocpe:disease-models/sympathetic-activation
+    direction_of_effect: negative
+    functional_form: decreasing_sigmoid
+    see_also:
+      - ocpe:disease-models/baroreflex
+    since: "0.1.0"
+  - id: ocpe:disease-models/mecfs-decreases-metabolic-capacity
+    kind: relationship
+    label: ME/CFS is associated with reduced metabolic capacity
+    subject: ocpe:disease-models/mecfs
+    predicate: DECREASES
+    object: ocpe:disease-models/metabolic-capacity
+    applicable_contexts:
+      - population: adults with ME/CFS
+        scope_note: Qualitative disease-level association; magnitude is individual.
+    since: "0.1.0"
+  - id: ocpe:disease-models/pots-increases-heart-rate
+    kind: relationship
+    label: POTS is associated with exaggerated orthostatic heart-rate increase
+    subject: ocpe:disease-models/pots
+    predicate: INCREASES
+    object: ocpe:disease-models/heart-rate
+    applicable_contexts:
+      - posture: upright
+        scope_note: Orthostatic context; not a resting association.
+    since: "0.1.0"
+  - id: ocpe:disease-models/pem-severity-associated-with-pem
+    kind: relationship
+    label: PEM severity quantifies post-exertional malaise
+    subject: ocpe:disease-models/pem-severity
+    predicate: ASSOCIATED_WITH
+    object: ocpe:disease-models/post-exertional-malaise
+    since: "0.1.0"
+  - id: ocpe:disease-models/model-estimates-sympathetic-activation
+    kind: relationship
+    label: The three-compartment model estimates sympathetic activation
+    subject: ocpe:disease-models/sympathetic-activation
+    predicate: ESTIMATED_BY
+    object: ocpe:disease-models/three-compartment-cardiovascular
+    since: "0.1.0"

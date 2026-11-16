@@ -1,0 +1,15 @@
+id: long-covid-exertional
+label: Long COVID impaired-extraction exertional phenotype
+diseases: [Long COVID]
+mechanisms: [MEC-MET-EXTRACTION, MEC-MET-CAPACITY, MEC-RCV-PEM]
+evidence_claims: [CLM-LC-EXTRACTION, CLM-LC-CPET, CLM-LC-MUSCLE]
+parameter_overrides:
+  baseline_metabolic_capacity: 0.8
+  oxygen_extraction_fraction: 0.49
+  pem_trigger_threshold: 0.001
+  pem_response_gain: 16.0
+maturity: M3
+classification: empirically_anchored_phenomenology
+limitations:
+  - Extraction fraction is anchored to a small selected invasive-CPET study and is not a population estimate.
+  - Peripheral shunt, mitochondrial flux and ventilatory control are lumped into an extraction/capacity approximation.

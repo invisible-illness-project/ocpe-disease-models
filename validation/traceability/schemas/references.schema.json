@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ocpe-disease-models/schemas/references.schema.json",
+  "title": "Literature References Registry",
+  "description": "Registry of bibliographic references supporting evidence claims. File: literature/references.yaml, top-level key: references.",
+  "type": "object",
+  "required": ["references"],
+  "additionalProperties": true,
+  "properties": {
+    "references": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/reference" }
+    }
+  },
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "required": ["id", "title"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^REF-[A-Za-z0-9_.-]+$",
+          "description": "Stable reference identifier."
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "authors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "year": { "type": "integer", "minimum": 1500, "maximum": 2100 },
+        "venue": { "type": "string" },
+        "doi": { "type": "string" },
+        "url": { "type": "string" },
+        "pmid": { "type": ["string", "integer"] },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ocpe-disease-models/schemas/simulation_registry.schema.json",
+  "title": "Simulation Registry",
+  "description": "Simulation outputs/runs with config and model provenance. File: simulations/simulation_registry.yaml, top-level key: simulations.",
+  "type": "object",
+  "required": ["simulations"],
+  "additionalProperties": true,
+  "properties": {
+    "simulations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/simulation" }
+    }
+  },
+  "$defs": {
+    "simulation": {
+      "type": "object",
+      "required": ["id", "config", "model"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SIM-[A-Za-z0-9_.-]+$",
+          "description": "Stable simulation identifier."
+        },
+        "name": { "type": "string" },
+        "config": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path or digest of the simulation configuration."
+        },
+        "model": {
+          "description": "Model provenance: identifier, version, or commit.",
+          "anyOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "object" }
+          ]
+        },
+        "model_version": { "type": "string" },
+        "model_commit": { "type": "string" },
+        "mechanisms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^MEC-[A-Za-z0-9_.-]+$"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "date": { "type": "string" }
+      }
+    }
+  }
+}

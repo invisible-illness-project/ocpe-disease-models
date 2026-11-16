@@ -1,0 +1,15 @@
+id: pots-hyperadrenergic
+label: Hyperadrenergic POTS computational phenotype
+diseases: [POTS]
+mechanisms: [MEC-AUT-HYPERADRENERGIC, MEC-VASC-POOLING]
+evidence_claims: [CLM-POTS-PHENOTYPES, CLM-POTS-HYPERADRENERGIC, CLM-POTS-CRITERIA]
+parameter_overrides:
+  gravity_pressure_offset: 10.0
+  baroreflex_pressure_scale: 1.5
+  heart_rate_base: 20.0
+  heart_rate_sympathetic_gain: 103.0
+  resistance_sympathetic_gain: 1.0
+maturity: M3
+classification: mechanistic_approximation
+limitations:
+  - Chronotropic gain is calibrated to demonstrate a hyperadrenergic response; plasma catecholamine dynamics are not modeled.

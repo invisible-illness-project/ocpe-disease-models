@@ -1,0 +1,18 @@
+# Package-specific functional forms (beyond the generic core vocabulary).
+ocpe: "0.1"
+package: disease-models
+title: Disease-model functional forms
+description: Named qualitative/mathematical shapes of dependency used in this package.
+entities:
+  - id: ocpe:disease-models/decreasing-sigmoid
+    kind: functional_form
+    token: decreasing_sigmoid
+    label: Decreasing sigmoid
+    definition: >
+      Smooth saturating decrease of the object from an upper to a lower
+      plateau as the subject increases; the canonical baroreflex shape
+      (sympathetic activation as a function of arterial pressure).
+    expression_latex: "y = y_{min} + \\frac{y_{max} - y_{min}}{1 + e^{k\\,(x - x_{mid})}}"
+    parameters: [y_min, y_max, k, x_mid]
+    monotonicity: decreasing
+    since: "0.1.0"

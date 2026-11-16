@@ -1,0 +1,23 @@
+id: mecfs-pem
+label: ME/CFS post-exertional malaise and delayed recovery
+diseases: [ME/CFS]
+mechanisms: [MEC-RCV-PEM, MEC-MET-CAPACITY, MEC-CBF-AUTOREG]
+evidence_claims: [CLM-ME-PEM-KINETICS, CLM-ME-CPET, CLM-ME-CBF, CLM-ME-PRELOAD]
+parameter_overrides:
+  gravity_pressure_offset: 9.0
+  heart_rate_base: 45.0
+  heart_rate_sympathetic_gain: 50.0
+  cerebral_orthostatic_impairment: 0.23
+  cerebral_recovery_time_constant: 240.0
+  baseline_metabolic_capacity: 0.85
+  oxygen_extraction_fraction: 0.74
+  delayed_stress_time_constant: 43200.0
+  pem_onset_time_constant: 172800.0
+  pem_recovery_time_constant: 86400.0
+  pem_trigger_threshold: 0.001
+  pem_response_gain: 20.0
+maturity: M3
+classification: phenomenological_dynamic_model
+limitations:
+  - PEM state transitions reproduce reported temporal features but do not assert a molecular cause.
+  - Exertional-load threshold and gain are calibrated; severe or bedbound patients are underrepresented in source studies.

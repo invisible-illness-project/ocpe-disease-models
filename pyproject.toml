@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ocpe-disease-models"
+version = "0.1.0"
+description = "Literature-grounded computational disease models with OCPE semantic interoperability"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+authors = [{name = "The Invisible Illness Project"}]
+dependencies = [
+  "numpy>=1.26,<3",
+  "scipy>=1.11,<2",
+  "PyYAML>=6,<7",
+  "matplotlib>=3.8,<4",
+  "ocpe @ git+https://github.com/invisible-illness-project/open-computational-physiology-engine.git@3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d#subdirectory=implementations/python",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "pytest-cov>=5,<8", "ruff>=0.8,<1", "jsonschema>=4,<5"]
+
+[project.scripts]
+ocpe-dm = "ocpe_disease_models.cli:main"
+ocpe-dm-traceability = "ocpe_disease_models.validation.traceability.audit:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ocpe_disease_models"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "software: software and API validation",
+  "mathematical: equation, dimensional, conservation and numerical validation",
+  "physiological: physiological directionality, bounds and recovery",
+  "phenotype: disease phenotype and comorbidity behavior",
+  "empirical: comparisons with published observations",
+  "sensitivity_uncertainty: deterministic sensitivity and assumption-uncertainty validation",
+  "scientific_traceability: registry, provenance and scope validation",
+  "regression: migrated and numerical regression checks",
+]
+addopts = "--strict-markers"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]

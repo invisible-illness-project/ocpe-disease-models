@@ -1,0 +1,15 @@
+id: pots-neuropathic
+label: Neuropathic POTS computational phenotype
+diseases: [POTS]
+mechanisms: [MEC-VASC-POOLING, MEC-AUT-BAROREFLEX, MEC-VASC-CONSTRICTION]
+evidence_claims: [CLM-POTS-PHENOTYPES, CLM-POTS-POOLING, CLM-POTS-CRITERIA]
+parameter_overrides:
+  gravity_pressure_offset: 10.0
+  resistance_sympathetic_gain: 0.35
+  heart_rate_base: 37.5
+  heart_rate_sympathetic_gain: 65.0
+maturity: M3
+classification: mechanistic_approximation
+limitations:
+  - Neuropathic impairment is represented by reduced sympathetic resistance modulation; gains are calibrated, not patient measurements.
+  - Phenotype labels overlap and are not mutually exclusive clinical diagnoses.

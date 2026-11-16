@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+.venv/
+.env
+.env.*
+!.env.example
+*.pat
+*token*
+validation/reports/*.npz
+validation/reports/*.png

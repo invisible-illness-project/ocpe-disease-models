@@ -1,0 +1,99 @@
+schema_version: "1.0"
+registry_scope: Curated persistent demonstration runs; ephemeral unit-test solver calls are not separate simulation records. Every persisted run includes its own configuration SHA, protocol, parameters, solver settings, dependency versions, and OCPE commit.
+simulations:
+  - id: SIM-HEALTHY-BASELINE
+    name: Healthy resting baseline
+    config: phenotypes/healthy/healthy-reference.yaml + simulations/baseline/resting-baseline.yaml
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.1.0
+    mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-CBF-AUTOREG]
+    validation: [VAL-PHYS-BASELINE, VAL-MATH-CONSERVATION, VAL-MATH-CONVERGENCE]
+    outputs: [examples/healthy_baseline/output/trace.npz, examples/healthy_baseline/output/result.json, examples/healthy_baseline/output/observations.json, examples/healthy_baseline/output/figure.png]
+    scientific_status: Research demonstration; not clinically validated.
+  - id: SIM-POTS-ORTHOSTATIC
+    name: POTS orthostatic phenotype comparison
+    config: phenotypes/pots/*.yaml + simulations/orthostatic/head-up-tilt.yaml; persisted neuropathic, hyperadrenergic, and hypovolemic configurations
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.1.0
+    mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-AUT-HYPERADRENERGIC, MEC-VOL-HYPOVOLEMIA]
+    validation: [VAL-POTS-NEUROPATHIC, VAL-POTS-HYPER, VAL-POTS-HYPO, VAL-EMPIRICAL-ANCHORS]
+    outputs: [examples/pots_orthostatic_response/output/, examples/pots_orthostatic_response/output/figure.png]
+    scientific_status: Calibrated subgroup scenarios; passing an HR threshold is not diagnostic validation.
+  - id: SIM-EDS-VASCULAR
+    name: Exploratory hEDS vascular mechanics
+    config: phenotypes/eds/eds-heds-vascular.yaml + simulations/orthostatic/head-up-tilt.yaml
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.1.0
+    mechanisms: [MEC-CV-VOLUME, MEC-VASC-POOLING, MEC-VASC-COMPLIANCE]
+    validation: [VAL-EDS-DIRECTION, VAL-SENSITIVITY]
+    outputs: [examples/eds_vascular_mechanics/output/, examples/eds_vascular_mechanics/output/figure.png]
+    scientific_status: Hypothesis-constrained hEDS-only scenario; venous-compliance magnitude is assumed, not measured.
+  - id: SIM-ME-REPEATED-EXERTION
+    name: ME/CFS delayed PEM after repeated exertion
+    config: phenotypes/mecfs/mecfs-pem.yaml + simulations/exertion/repeated-exertion-recovery.yaml
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.1.0
+    mechanisms: [MEC-RCV-PEM, MEC-MET-CAPACITY, MEC-MET-EXTRACTION]
+    validation: [VAL-ME-PEM, VAL-ME-CPET]
+    outputs: [examples/mecfs_post_exertional_recovery/output/, examples/mecfs_post_exertional_recovery/output/figure.png]
+    scientific_status: Explicitly phenomenological PEM dynamics; not a cellular causal model or synthetic cohort.
+  - id: SIM-LC-AUTONOMIC
+    name: Long COVID autonomic subgroup
+    config: phenotypes/long_covid/long-covid-autonomic.yaml + simulations/orthostatic/head-up-tilt.yaml
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.1.0
+    mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-AUT-HYPERADRENERGIC, MEC-VASC-POOLING]
+    validation: [VAL-LC-AUTONOMIC]
+    outputs: [examples/long_covid_autonomic_phenotype/output/, examples/long_covid_autonomic_phenotype/output/figure.png]
+    scientific_status: One autonomic subgroup only; not a uniform Long COVID model.
+  - id: SIM-CROSS-DISEASE
+    name: Cross-disease orthostatic comparison
+    config: healthy, POTS neuropathic, exploratory hEDS vascular, ME/CFS PEM, and Long COVID autonomic YAML configurations + simulations/orthostatic/head-up-tilt.yaml
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.1.0
+    mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-VASC-COMPLIANCE, MEC-CBF-AUTOREG]
+    validation: [VAL-PHYS-TILT, VAL-POTS-NEUROPATHIC, VAL-EDS-DIRECTION, VAL-LC-AUTONOMIC]
+    outputs: [examples/cross_disease_comparison/output/, examples/cross_disease_comparison/output/figure.png]
+    scientific_status: Scenario comparison across non-equivalent evidence levels; not a comparative effectiveness or disease-severity ranking.
+  - id: SIM-SENSITIVITY
+    name: Deterministic local sensitivity scenarios
+    config: POTS neuropathic and hEDS vascular YAML configurations + head-up-tilt protocol + declared one-at-a-time perturbations in src/ocpe_disease_models/validation/sensitivity.py
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.1.0
+    mechanisms: [MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-VOL-HYPOVOLEMIA, MEC-VASC-COMPLIANCE]
+    validation: [VAL-SENSITIVITY]
+    outputs: [validation/sensitivity/local_sensitivity.json, validation/sensitivity/local_sensitivity.csv, validation/sensitivity/figure.png]
+    scientific_status: Deterministic scenarios with configuration hashes; not synthetic patients or probability distributions.
+  - id: SIM-UNCERTAINTY-GRID
+    name: Deterministic assumption-uncertainty grids
+    config: hEDS vascular and ME/CFS PEM YAML configurations + declared two-parameter grids in src/ocpe_disease_models/validation/sensitivity.py
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.1.0
+    mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-RCV-PEM, MEC-MET-CAPACITY]
+    validation: [VAL-UNCERTAINTY]
+    outputs: [validation/sensitivity/uncertainty_grid.json, validation/sensitivity/uncertainty_grid.csv, validation/sensitivity/sensitivity-report.md]
+    scientific_status: Scenario ranges without assigned probabilities; not population uncertainty quantification or clinical validation.

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ocpe-disease-models/schemas/mechanism_registry.schema.json",
+  "title": "Mechanism Registry",
+  "description": "Physiological mechanisms represented in the disease models. File: mechanism_registry.yaml, top-level key: mechanisms.",
+  "type": "object",
+  "required": ["mechanisms"],
+  "additionalProperties": true,
+  "properties": {
+    "mechanisms": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/mechanism" }
+    }
+  },
+  "$defs": {
+    "mechanism": {
+      "type": "object",
+      "required": ["id", "name"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^MEC-[A-Za-z0-9_.-]+$",
+          "description": "Stable mechanism identifier."
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CLM-[A-Za-z0-9_.-]+$"
+          },
+          "description": "Evidence claims supporting this mechanism."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "exploratory",
+            "hypothesis",
+            "hypothetical",
+            "speculative",
+            "proposed",
+            "implemented",
+            "coded",
+            "deployed",
+            "validated"
+          ]
+        },
+        "exploratory": { "type": "boolean" },
+        "implemented": { "type": "boolean" },
+        "implementation": { "type": "string" },
+        "code_path": { "type": "string" },
+        "equations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EQ-[A-Za-z0-9_.-]+$"
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^PAR-[A-Za-z0-9_.-]+$"
+          }
+        },
+        "tests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^VAL-[A-Za-z0-9_.-]+$"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+id: pots-hypovolemic
+label: Hypovolemic POTS computational phenotype
+diseases: [POTS]
+mechanisms: [MEC-VOL-HYPOVOLEMIA, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX]
+evidence_claims: [CLM-POTS-PHENOTYPES, CLM-POTS-HYPOVOLEMIA, CLM-POTS-CRITERIA]
+parameter_overrides:
+  gravity_pressure_offset: 10.0
+  blood_volume_factor: 0.92
+  baroreflex_pressure_scale: 6.0
+  heart_rate_base: 30.0
+  heart_rate_sympathetic_gain: 80.0
+  resistance_sympathetic_gain: 0.9
+maturity: M3
+classification: mechanistic_approximation
+limitations:
+  - The 0.92 stressed-volume factor is an assumed demonstration value, not a direct blood-volume measurement.
+  - Renin-angiotensin-aldosterone dynamics are not implemented.

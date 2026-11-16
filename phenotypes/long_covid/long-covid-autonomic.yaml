@@ -1,0 +1,18 @@
+id: long-covid-autonomic
+label: Long COVID autonomic/POTS-overlap phenotype
+diseases: [Long COVID]
+mechanisms: [MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-RCV-PEM]
+evidence_claims: [CLM-LC-HETEROGENEITY, CLM-LC-AUTONOMIC, CLM-LC-PEM]
+parameter_overrides:
+  gravity_pressure_offset: 11.0
+  heart_rate_base: 35.0
+  heart_rate_sympathetic_gain: 70.0
+  cerebral_orthostatic_impairment: 0.08
+  baseline_metabolic_capacity: 0.85
+  pem_trigger_threshold: 0.001
+  pem_response_gain: 12.0
+maturity: M3
+classification: phenomenological_composition
+limitations:
+  - Represents one autonomic subgroup, not Long COVID as a uniform condition.
+  - Viral persistence, microclots and immune signaling are not causally encoded.

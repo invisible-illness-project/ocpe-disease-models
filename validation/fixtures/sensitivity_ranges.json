@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "label": "Deterministic one-at-a-time local sensitivity ranges (executable research baselines, not clinical targets).",
+  "scientific_status": "research demonstration baseline; not clinically validated",
+  "method": {
+    "kind": "deterministic one-at-a-time central finite differences",
+    "no_stochastic_cohort": true,
+    "background": "healthy-reference parameters (ModelParameters defaults)",
+    "protocol": "head-up-tilt",
+    "outputs": ["orthostatic_heart_rate_rise_bpm", "mean_arterial_pressure_final_mmHg"]
+  },
+  "assumptions": [
+    "One parameter is perturbed at a time on the healthy reference background; interactions are not explored.",
+    "The hEDS peripheral-compliance increase (140 mL/mmHg) is a modeling hypothesis, not a measured value; the healthy value (120 mL/mmHg) is included as the reversal of that assumption.",
+    "Derivative magnitudes are local and operating-point dependent; robust directions matter more than calibrated magnitudes."
+  ],
+  "parameters": {
+    "gravity_pressure_offset": {
+      "mechanism": "MEC-VASC-POOLING",
+      "nominal": 8.0,
+      "step": 1.0,
+      "sampled_values": [7.0, 8.0, 9.0],
+      "d_orthostatic_heart_rate_rise_bpm": 2.6585433640696507,
+      "d_mean_arterial_pressure_final_mmHg": -0.7124991791522177
+    },
+    "resistance_sympathetic_gain": {
+      "mechanism": "MEC-VASC-CONSTRICTION",
+      "nominal": 0.8,
+      "step": 0.1,
+      "sampled_values": [0.7, 0.8, 0.9],
+      "d_orthostatic_heart_rate_rise_bpm": -6.150191388239961,
+      "d_mean_arterial_pressure_final_mmHg": 1.5895580371572748
+    },
+    "blood_volume_factor": {
+      "mechanism": "MEC-VOL-HYPOVOLEMIA",
+      "nominal": 1.0,
+      "step": 0.02,
+      "sampled_values": [0.98, 1.0, 1.02],
+      "d_orthostatic_heart_rate_rise_bpm": -38.81211857720466,
+      "d_mean_arterial_pressure_final_mmHg": 13.253890072962093
+    },
+    "peripheral_venous_compliance": {
+      "mechanism": "MEC-VASC-COMPLIANCE",
+      "nominal": 120.0,
+      "step": 10.0,
+      "sampled_values": [110.0, 120.0, 130.0],
+      "d_orthostatic_heart_rate_rise_bpm": 0.2836768180613163,
+      "d_mean_arterial_pressure_final_mmHg": -0.09295856953739232,
+      "heds_assumption": {
+        "healthy_value": 120.0,
+        "assumed_heds_value": 140.0,
+        "sampled_values": [120.0, 140.0],
+        "orthostatic_heart_rate_rise_bpm_at_120": 9.455800161405648,
+        "orthostatic_heart_rate_rise_bpm_at_140": 16.13774801487189,
+        "note": "Includes both the increased (assumed) and healthy compliance values."
+      }
+    }
+  }
+}

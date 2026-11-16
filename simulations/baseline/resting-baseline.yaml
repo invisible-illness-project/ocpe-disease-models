@@ -1,0 +1,5 @@
+id: resting-baseline
+title: Resting cardiovascular and autonomic equilibrium
+solver: {sample_interval: 2.0, max_step: 2.0, rtol: 1.0e-7, atol: 1.0e-8}
+segments:
+  - {start: 0, end: 600, upright: 0.0, exertion: 0.0, label: resting-baseline}

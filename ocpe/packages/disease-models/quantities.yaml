@@ -1,0 +1,230 @@
+# Quantities (variables, derived metrics, latent constructs) of the
+# disease-models package. Units use UCUM codes registered in
+# specification/core/units.yaml of the pinned OCPE specification.
+ocpe: "0.1"
+package: disease-models
+title: Disease-model quantities
+description: >
+  Physiological quantities exchanged by the disease models: directly or
+  indirectly measurable cardiovascular variables, a derived cerebral flow
+  index, lumped compartment volumes (model abstractions), and latent
+  constructs for metabolic capacity, PEM severity and sympathetic activation.
+entities:
+  # ------------------------------------------------------------------ variables
+  - id: ocpe:disease-models/heart-rate
+    kind: variable
+    label: Heart rate
+    definition: Number of cardiac contractions per unit time.
+    dimension: event_rate
+    canonical_unit: "/min"
+    accepted_units: ["/s"]
+    value_type: continuous
+    observability: directly_measurable
+    system: ocpe:disease-models/cardiovascular-system
+    aliases:
+      - value: HR
+        type: abbreviation
+      - value: bpm
+        type: legacy-id
+        unit: "/min"
+    reference_ranges:
+      - range_type: reference_interval
+        min: 50
+        max: 100
+        unit: "/min"
+        context:
+          population: healthy adults
+          posture: supine
+          activity: rest
+          scope_note: Indicative resting supine interval, not a diagnostic threshold.
+    since: "0.1.0"
+  - id: ocpe:disease-models/mean-arterial-pressure
+    kind: variable
+    label: Mean arterial pressure
+    definition: Time-averaged arterial blood pressure over one cardiac cycle.
+    dimension: pressure
+    canonical_unit: mm[Hg]
+    accepted_units: [kPa]
+    value_type: continuous
+    observability: directly_measurable
+    system: ocpe:disease-models/cardiovascular-system
+    aliases:
+      - value: MAP
+        type: abbreviation
+    reference_ranges:
+      - range_type: reference_interval
+        min: 70
+        max: 100
+        unit: mm[Hg]
+        context:
+          population: healthy adults
+          posture: supine
+          activity: rest
+          scope_note: Indicative resting supine interval, not a diagnostic threshold.
+    since: "0.1.0"
+  - id: ocpe:disease-models/stroke-volume
+    kind: variable
+    label: Stroke volume
+    definition: Volume of blood ejected from the left ventricle per heartbeat.
+    dimension: volume
+    canonical_unit: mL
+    accepted_units: [L]
+    value_type: continuous
+    observability: indirectly_measurable
+    system: ocpe:disease-models/cardiovascular-system
+    aliases:
+      - value: SV
+        type: abbreviation
+    reference_ranges:
+      - range_type: reference_interval
+        min: 55
+        max: 100
+        unit: mL
+        context:
+          population: healthy adults
+          posture: supine
+          activity: rest
+          scope_note: Indicative resting supine interval, not a diagnostic threshold.
+    since: "0.1.0"
+  - id: ocpe:disease-models/cardiac-output
+    kind: variable
+    label: Cardiac output
+    definition: Volume of blood ejected by the heart per unit time (heart rate x stroke volume).
+    dimension: volume_flow
+    canonical_unit: L/min
+    accepted_units: ["mL/s"]
+    value_type: continuous
+    observability: indirectly_measurable
+    system: ocpe:disease-models/cardiovascular-system
+    aliases:
+      - value: CO
+        type: abbreviation
+    reference_ranges:
+      - range_type: reference_interval
+        min: 4.0
+        max: 8.0
+        unit: L/min
+        context:
+          population: healthy adults
+          posture: supine
+          activity: rest
+          scope_note: Indicative resting supine interval, not a diagnostic threshold.
+    since: "0.1.0"
+  - id: ocpe:disease-models/arterial-blood-volume
+    kind: variable
+    label: Arterial blood volume (lumped compartment)
+    definition: >
+      Blood volume of the lumped arterial compartment in lumped-parameter
+      cardiovascular models; an abstraction without a directly measurable
+      anatomical counterpart.
+    dimension: volume
+    canonical_unit: mL
+    value_type: continuous
+    observability: model_compartment
+    system: ocpe:disease-models/cardiovascular-system
+    since: "0.1.0"
+  - id: ocpe:disease-models/central-venous-blood-volume
+    kind: variable
+    label: Central venous blood volume (lumped compartment)
+    definition: >
+      Blood volume of the lumped central venous compartment in
+      lumped-parameter cardiovascular models.
+    dimension: volume
+    canonical_unit: mL
+    value_type: continuous
+    observability: model_compartment
+    system: ocpe:disease-models/cardiovascular-system
+    since: "0.1.0"
+  - id: ocpe:disease-models/peripheral-venous-blood-volume
+    kind: variable
+    label: Peripheral venous blood volume (lumped compartment)
+    definition: >
+      Blood volume of the lumped peripheral venous compartment in
+      lumped-parameter cardiovascular models.
+    dimension: volume
+    canonical_unit: mL
+    value_type: continuous
+    observability: model_compartment
+    system: ocpe:disease-models/cardiovascular-system
+    since: "0.1.0"
+  # ------------------------------------------------------------ derived metric
+  - id: ocpe:disease-models/cerebral-flow-index
+    kind: derived_metric
+    label: Cerebral flow index
+    definition: >
+      Cerebral blood flow expressed relative to its resting supine baseline:
+      CFI = 1 means baseline cerebral perfusion. In the
+      three-compartment cardiovascular model it is approximated from mean
+      arterial pressure and sympathetically modulated cerebrovascular
+      resistance.
+    dimension: dimensionless
+    canonical_unit: "1"
+    derived_from:
+      - ocpe:disease-models/mean-arterial-pressure
+      - ocpe:disease-models/sympathetic-activation
+    computation:
+      method: >
+        Ratio of modelled cerebral blood flow to its resting baseline:
+        CFI = MAP / (MAP_ref * (1 + g_cvr * S)), where MAP_ref is the resting
+        mean arterial pressure and S the sympathetic activation state.
+      formula: "CFI = \\frac{MAP}{MAP_{ref}\\,(1 + g_{cvr}\\,S)}"
+      input_requirements: Simultaneous mean arterial pressure and sympathetic activation state.
+    aliases:
+      - value: CFI
+        type: abbreviation
+    since: "0.1.0"
+  # --------------------------------------------------------- latent constructs
+  - id: ocpe:disease-models/metabolic-capacity
+    kind: latent_construct
+    label: Metabolic capacity
+    definition: >
+      Theoretical ceiling on sustainable aerobic energy production relative to
+      a healthy reference (1 = full capacity). Not observable even in
+      principle; values are model- or indicator-conditional estimates.
+    dimension: dimensionless
+    canonical_unit: "1"
+    scale:
+      scale_type: normalized
+      min: 0.0
+      max: 1.0
+      interpretation: 1 is healthy reference capacity; values below 1 indicate reduced capacity.
+    aliases:
+      - value: MC
+        type: abbreviation
+    since: "0.1.0"
+  - id: ocpe:disease-models/pem-severity
+    kind: latent_construct
+    label: Post-exertional malaise severity
+    definition: >
+      Normalized theoretical severity of post-exertional malaise (PEM), where
+      0 = none and 1 = the maximum of this computational scale. Simulated
+      values are model-conditional estimates, not self-reported clinical scores.
+    dimension: dimensionless
+    canonical_unit: "1"
+    scale:
+      scale_type: normalized
+      min: 0.0
+      max: 1.0
+      interpretation: 0 is no PEM; 1 is the computational scale maximum.
+    aliases:
+      - value: PEM severity
+        type: synonym
+    since: "0.1.0"
+  - id: ocpe:disease-models/sympathetic-activation
+    kind: latent_construct
+    label: Sympathetic activation
+    definition: >
+      Theoretical normalized level of sympathetic nervous system activation
+      (0 = none, 1 = maximal). Not observable even in principle; values are
+      model-conditional estimates.
+    dimension: dimensionless
+    canonical_unit: "1"
+    scale:
+      scale_type: normalized
+      min: 0.0
+      max: 1.0
+      interpretation: 0 is no sympathetic activation; 1 is maximal activation.
+    aliases:
+      - value: SNA
+        type: abbreviation
+    since: "0.1.0"

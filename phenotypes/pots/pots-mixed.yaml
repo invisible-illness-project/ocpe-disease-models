@@ -1,0 +1,16 @@
+id: pots-mixed
+label: Mixed POTS computational phenotype
+diseases: [POTS]
+mechanisms: [MEC-VOL-HYPOVOLEMIA, MEC-VASC-CONSTRICTION, MEC-AUT-HYPERADRENERGIC, MEC-VASC-POOLING]
+evidence_claims: [CLM-POTS-PHENOTYPES, CLM-POTS-HYPOVOLEMIA, CLM-POTS-HYPERADRENERGIC, CLM-POTS-CRITERIA]
+parameter_overrides:
+  gravity_pressure_offset: 10.0
+  blood_volume_factor: 0.96
+  baroreflex_pressure_scale: 3.0
+  resistance_sympathetic_gain: 0.55
+  heart_rate_base: 32.5
+  heart_rate_sympathetic_gain: 75.0
+maturity: M2
+classification: phenomenological_composition
+limitations:
+  - Joint parameter configuration is exploratory and requires empirical calibration; mechanisms need not sum linearly in patients.

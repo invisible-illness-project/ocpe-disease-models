@@ -1,0 +1,95 @@
+# Concepts: physiological systems, mechanisms and disease phenomena relevant
+# to the disease models. Concepts carry no unit or value.
+ocpe: "0.1"
+package: disease-models
+title: Disease-model concepts
+description: >
+  Systems, mechanisms and disease concepts (ME/CFS, Long COVID, POTS,
+  hypermobile EDS, PEM, orthostatic intolerance) referenced by the disease
+  models and their relationships.
+entities:
+  - id: ocpe:disease-models/cardiovascular-system
+    kind: concept
+    label: Cardiovascular system
+    definition: The organ system comprising the heart and the vasculature that circulates blood.
+    concept_type: organ_system
+    since: "0.1.0"
+  - id: ocpe:disease-models/autonomic-nervous-system
+    kind: concept
+    label: Autonomic nervous system
+    definition: The division of the nervous system that regulates involuntary physiological processes.
+    concept_type: organ_system
+    since: "0.1.0"
+  - id: ocpe:disease-models/baroreflex
+    kind: concept
+    label: Baroreflex
+    definition: >
+      Negative-feedback mechanism by which arterial pressure changes modulate
+      autonomic outflow to stabilise blood pressure.
+    concept_type: mechanism
+    part_of:
+      - ocpe:disease-models/autonomic-nervous-system
+    since: "0.1.0"
+  - id: ocpe:disease-models/mecfs
+    kind: concept
+    label: Myalgic encephalomyelitis / chronic fatigue syndrome (ME/CFS)
+    definition: >
+      A multi-system disease characterised by profound fatigue,
+      post-exertional malaise, unrefreshing sleep and cognitive impairment.
+    concept_type: phenomenon
+    aliases:
+      - value: ME/CFS
+        type: abbreviation
+    since: "0.1.0"
+  - id: ocpe:disease-models/long-covid
+    kind: concept
+    label: Long COVID
+    definition: >
+      Post-acute sequelae of SARS-CoV-2 infection; frequently overlaps with
+      ME/CFS and orthostatic intolerance phenotypes.
+    concept_type: phenomenon
+    since: "0.1.0"
+  - id: ocpe:disease-models/pots
+    kind: concept
+    label: Postural orthostatic tachycardia syndrome (POTS)
+    definition: >
+      A syndrome of orthostatic intolerance with excessive heart-rate
+      increase on standing without orthostatic hypotension.
+    concept_type: phenomenon
+    aliases:
+      - value: POTS
+        type: abbreviation
+    since: "0.1.0"
+  - id: ocpe:disease-models/hypermobile-eds
+    kind: concept
+    label: Hypermobile Ehlers-Danlos syndrome (hEDS)
+    definition: >
+      A heritable connective-tissue disorder characterised by joint
+      hypermobility; commonly comorbid with POTS and ME/CFS.
+    concept_type: phenomenon
+    aliases:
+      - value: hEDS
+        type: abbreviation
+    since: "0.1.0"
+  - id: ocpe:disease-models/post-exertional-malaise
+    kind: concept
+    label: Post-exertional malaise (PEM)
+    definition: >
+      Delayed worsening of symptoms after physical or cognitive exertion
+      exceeding the individual's capacity; a hallmark of ME/CFS.
+    concept_type: phenomenon
+    aliases:
+      - value: PEM
+        type: abbreviation
+    since: "0.1.0"
+  - id: ocpe:disease-models/orthostatic-intolerance
+    kind: concept
+    label: Orthostatic intolerance
+    definition: >
+      Development of symptoms on assuming or maintaining upright posture that
+      resolve on recumbency.
+    concept_type: phenomenon
+    aliases:
+      - value: OI
+        type: abbreviation
+    since: "0.1.0"
