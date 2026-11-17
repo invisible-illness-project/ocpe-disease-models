@@ -40,14 +40,31 @@ REQUIRED_METADATA_KEYS = {
 
 EXPECTED_OUTPUT_NAMES = {
     "heart_rate",
+    "arterial_pressure",
     "mean_arterial_pressure",
+    "heart_level_mean_arterial_pressure",
     "central_venous_pressure",
     "splanchnic_venous_pressure",
     "lower_limb_venous_pressure",
-    "baroreflex_pressure",
+    "other_systemic_venous_pressure",
+    "aortic_baroreceptor_pressure",
+    "carotid_sinus_pressure",
+    "brain_arterial_pressure",
+    "integrated_baroreflex_input",
+    "baroreflex_target",
+    "cerebral_outflow_pressure",
     "cerebral_perfusion_pressure",
+    "end_tidal_co2_mmHg",
+    "cerebral_co2_factor",
+    "cerebral_impairment_factor",
+    "tilt_angle_deg",
+    "upright",
     "stroke_volume",
     "cardiac_output_l_min",
+    "other_systemic_arterial_flow",
+    "other_systemic_venous_return",
+    "other_systemic_arterial_resistance_effective",
+    "other_systemic_venous_volume",
     "venous_return",
     "systemic_resistance_effective",
     "metabolic_capacity",
@@ -60,6 +77,9 @@ EXPECTED_OUTPUT_NAMES = {
     "delayed_stress",
     "sympathetic_state",
 }
+
+# The ambiguous heart-level "baroreflex_pressure" output was removed in Stage 1.1.
+REMOVED_OUTPUT_NAMES = {"baroreflex_pressure"}
 
 
 def _small_result():
@@ -108,10 +128,13 @@ def test_required_metadata_and_arrays_present(tmp_path):
 
     trace = np.load(tmp_path / "trace.npz")
     assert EXPECTED_OUTPUT_NAMES <= set(trace.files)
+    assert REMOVED_OUTPUT_NAMES.isdisjoint(trace.files)
     assert trace["states"].shape == (
         len(payload["state_names"]),
         trace["time"].shape[0],
     )
+    assert payload["metadata"]["model_version"] == "0.3.0"
+    assert len(payload["state_names"]) == 12
     for name in trace.files:
         assert np.all(np.isfinite(trace[name])), f"non-finite values in {name}"
 
@@ -140,7 +163,7 @@ def test_non_finite_solver_output_cannot_be_reported_as_success(monkeypatch):
         success = True  # a "successful" solver result must still be rejected
         message = "forced non-finite states for validation"
         t = np.array([0.0, 1.0])
-        y = np.array([[0.0, np.inf]] * 11)
+        y = np.array([[0.0, np.inf]] * 12)
 
     monkeypatch.setattr(model_module, "solve_ivp", lambda *a, **k: NonFiniteSolution())
     patient = ComputationalPatient(phenotype_id="nan-check")
@@ -157,7 +180,7 @@ def test_failed_solver_cannot_be_reported_as_success(monkeypatch):
         success = False
         message = "forced failure for validation"
         t = np.array([0.0])
-        y = np.zeros((11, 1))
+        y = np.zeros((12, 1))
 
     monkeypatch.setattr(
         model_module, "solve_ivp", lambda *a, **k: FailedSolution()
@@ -193,6 +216,13 @@ def test_invalid_parameter_domains_raise_explicit_errors(override, match):
         [ProtocolSegment(start=0.0, end=10.0), ProtocolSegment(start=5.0, end=12.0)],  # overlap
         [ProtocolSegment(start=0.0, end=10.0, upright=1.5)],  # input outside [0, 1]
         [ProtocolSegment(start=0.0, end=10.0, exertion=-0.1)],
+        # Stage 1.1 posture semantics
+        [ProtocolSegment(start=0.0, end=10.0, upright=0.5, tilt_angle_deg=30.0)],  # ambiguous
+        [ProtocolSegment(start=0.0, end=10.0, tilt_angle_deg=120.0)],  # outside [0, 90]
+        [ProtocolSegment(start=0.0, end=10.0, tilt_angle_deg=-5.0)],
+        [ProtocolSegment(start=0.0, end=10.0, transition_duration=-1.0)],
+        [ProtocolSegment(start=0.0, end=10.0, transition_duration=20.0)],  # exceeds segment
+        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=0.0)],  # must be positive
     ],
 )
 def test_invalid_protocols_fail_explicitly(protocol):

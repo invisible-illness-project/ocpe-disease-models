@@ -1,20 +1,22 @@
 schema_version: '1.0'
 equations:
 - id: EQ-CV-001
-  expression: P_a=V_a/C_a; P_c=V_c/C_c; P_s=V_s/C_s; P_l=V_l/C_l
-  description: Linear stressed-volume pressure relations for the four conservative compartments.
+  expression: P_a=V_a/C_a; P_c=V_c/C_c; P_s=V_s/C_s; P_l=V_l/C_l; P_o=V_o/C_o
+  description: Linear stressed-volume pressure relations for the five conservative compartments.
   state_variables:
   - arterial_volume
   - central_venous_volume
   - splanchnic_venous_volume
   - lower_limb_venous_volume
+  - other_systemic_venous_volume
   parameters:
   - PAR-ARTERIAL-COMPLIANCE
   - PAR-CENTRAL-VENOUS-COMPLIANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
   units: mmHg
-  physiological_interpretation: Linear stressed-volume pressure relations for the four conservative compartments.
+  physiological_interpretation: Linear stressed-volume pressure relations for the five conservative compartments.
   claims:
   - CLM-CV-HEMODYNAMICS
   - CLM-CV-STRESSED-VOLUME
@@ -27,18 +29,21 @@ equations:
   - VAL-MATH-CONSERVATION
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-CV-002
-  expression: Q_sa=max(0,(P_a-P_s)/R_sa_eff); Q_la=max(0,(P_a-P_l)/R_la_eff)
-  description: Resistance-driven regional arterial inflows to the splanchnic and lower-limb beds.
+  expression: Q_sa=max(0,(P_a-P_s)/R_sa_eff); Q_la=max(0,(P_a-P_l)/R_la_eff); Q_oa=max(0,(P_a-P_o)/R_oa_eff)
+  description: Resistance-driven regional arterial inflows to the splanchnic, lower-limb and residual
+    other-systemic beds.
   state_variables:
   - arterial_volume
   - splanchnic_venous_volume
   - lower_limb_venous_volume
+  - other_systemic_venous_volume
   parameters:
   - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
   units: mL/s
-  physiological_interpretation: Resistance-driven regional arterial inflows to the splanchnic and lower-limb
-    beds.
+  physiological_interpretation: Resistance-driven regional arterial inflows to the splanchnic, lower-limb
+    and residual other-systemic beds.
   claims:
   - CLM-CV-HEMODYNAMICS
   - CLM-ORTHO-SPLANCHNIC
@@ -53,19 +58,20 @@ equations:
   - VAL-PHYS-BASELINE
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-CV-003
-  expression: dV_a/dt=Q_co-(Q_sa+Q_la); dV_c/dt=(Q_sv+Q_lv)-Q_co; dV_s/dt=Q_sa-Q_sv; dV_l/dt=Q_la-Q_lv;
-    d(V_a+V_c+V_s+V_l)/dt=0
-  description: 'Four-volume conservation: the arterial, central-venous, splanchnic-venous and lower-limb-venous
-    derivatives telescope exactly.'
+  expression: dV_a/dt=Q_co-(Q_sa+Q_la+Q_oa); dV_c/dt=(Q_sv+Q_lv+Q_ov)-Q_co; dV_s/dt=Q_sa-Q_sv; dV_l/dt=Q_la-Q_lv;
+    dV_o/dt=Q_oa-Q_ov; d(V_a+V_c+V_s+V_l+V_o)/dt=0
+  description: 'Five-volume conservation: the arterial, central-venous, splanchnic-venous, lower-limb-venous
+    and residual other-systemic venous derivatives telescope exactly.'
   state_variables:
   - arterial_volume
   - central_venous_volume
   - splanchnic_venous_volume
   - lower_limb_venous_volume
+  - other_systemic_venous_volume
   parameters: []
   units: mL/s
-  physiological_interpretation: 'Four-volume conservation: the arterial, central-venous, splanchnic-venous
-    and lower-limb-venous derivatives telescope exactly.'
+  physiological_interpretation: 'Five-volume conservation: the arterial, central-venous, splanchnic-venous,
+    lower-limb-venous and residual other-systemic venous derivatives telescope exactly.'
   claims:
   - CLM-CV-HEMODYNAMICS
   - CLM-CV-VENOUS-RETURN
@@ -122,7 +128,7 @@ equations:
   - VAL-PHYS-BASELINE
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-VASC-001
-  expression: R_sa_eff=R_sa*(1+g_sa(S_vasc-0.5)); R_la_eff=R_la*(1+g_la(S_vasc-0.5))*(1-k_ex*e)
+  expression: R_sa_eff=R_sa*(1+g_sa(S_vasc-0.5)); R_la_eff=R_la*(1+g_la(S_vasc-0.5))*(1-k_ex*e); R_oa_eff=R_oa*(1+g_oa(S_vasc-0.5))
   description: Effective regional arterial resistances modulated separately by the vascular-sympathetic
     state and exertion.
   state_variables:
@@ -130,8 +136,10 @@ equations:
   parameters:
   - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
   - PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN
   - PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-OTHER-SYSTEMIC-RESISTANCE-SYMPATHETIC-GAIN
   - PAR-EXERCISE-RESISTANCE-REDUCTION
   units: mmHg s/mL
   physiological_interpretation: Effective regional arterial resistances modulated separately by the vascular-sympathetic
@@ -151,36 +159,74 @@ equations:
   - VAL-SENSITIVITY
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-ORT-001
-  expression: Q_sv=max(0,(P_s-P_c-G_s*u)/R_sv); Q_lv=max(0,(P_l-P_c-G_l*u)/R_lv_eff)+Q_pump
-  description: Regional venous returns with normalized upright pressure opposition plus the muscle-pump
-    contribution.
+  expression: Q_sv=max(0,(P_s-P_c-dP_hydro(h_s))/R_sv); Q_lv=max(0,(P_l-P_c-dP_hydro(h_l))/R_lv_eff)+Q_pump;
+    Q_ov=max(0,(P_o-P_c-dP_hydro(h_o))/R_ov)
+  description: Regional venous returns from the splanchnic, lower-limb and residual other-systemic beds with
+    hydrostatic sine-angle pressure opposition (EQ-ORT-002) plus the muscle-pump contribution.
   state_variables:
   - central_venous_volume
   - splanchnic_venous_volume
   - lower_limb_venous_volume
+  - other_systemic_venous_volume
   parameters:
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
+  - PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
   units: mL/s
-  physiological_interpretation: Regional venous returns with normalized upright pressure opposition plus
+  physiological_interpretation: Regional venous returns with height-times-sine hydrostatic opposition plus
     the muscle-pump contribution.
   claims:
   - CLM-POTS-POOLING
   - CLM-CV-HEMODYNAMICS
   - CLM-ORTHO-SPLANCHNIC
   - CLM-ORTHO-LOWER-LIMB
+  - CLM-ORTHO-HYDROSTATIC
   assumptions:
-  - Upright input u in [0,1] lumps tilt/standing into constant regional pressure offsets; reverse venous
-    flow is excluded.
+  - Hydrostatic opposition is 0.7356 mmHg/cm times the lumped regional height times sin(tilt angle); at 0
+    degrees every hydrostatic term is exactly zero; reverse venous flow is excluded.
   applicability_limits:
-  - Not an angle-specific hydrostatic model and not a measured regional pooling flux; LBNP and tilt are
-    not interchangeable stressors.
+  - Lumped per-region geometry, not a measured hydrostatic column or regional pooling flux; LBNP and tilt
+    are not interchangeable stressors.
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
   validation:
   - VAL-PHYS-TILT
+  - VAL-PHYS-TILT-ANGLE
+  - VAL-PHYS-GRADED-TILT
   - VAL-POTS-NEUROPATHIC
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-ORT-002
+  expression: dP_hydro(h)=0.7356*h*sin(theta); theta=tilt_angle_deg in [0,90] (legacy upright u migrates as
+    theta=arcsin(u)); during a transition only theta is linearly interpolated
+  description: Shared hydrostatic sine-angle pressure correction for a lumped height h (cm) under the resolved
+    tilt angle; used by the regional venous returns, the aortic/carotid baroreceptor pressures and the
+    brain-level arterial pressure.
+  state_variables: []
+  parameters:
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
+  - PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT
+  - PAR-AORTIC-BARORECEPTOR-HEIGHT
+  - PAR-CAROTID-BARORECEPTOR-HEIGHT
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  units: mmHg
+  physiological_interpretation: Hydrostatic pressure correction scales with vertical heart-to-site height
+    and the sine of the tilt angle; replaces the Stage 1 fixed mmHg gravity offsets.
+  claims:
+  - CLM-ORTHO-HYDROSTATIC
+  - CLM-ORTHO-GRADED-TILT
+  assumptions:
+  - 0.7356 mmHg/cm conversion; lumped heights are regional geometry, not measured hydrostatic columns;
+    angle-only linear transitions with all other inputs piecewise constant.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated; angle restricted to [0, 90]
+    degrees (supine-to-upright head-up tilt).
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-PHYS-TILT-ANGLE
+  - VAL-PHYS-GRADED-TILT
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-MP-001
   expression: Q_pump=f_pump*SV_pump*eta_pump*m*V_l/(V_l+K_pump)
@@ -232,27 +278,37 @@ equations:
   - VAL-SENSITIVITY
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-AUT-001
-  expression: B=1/(1+exp(-clip((P_set-P_baro)/sigma_P,-40,40))); P_baro=max(0,P_a-G_head*u)
-  description: Bounded baroreflex target from head-level pressure error, increasing as baroreflex pressure
-    falls.
+  expression: P_ao=max(0,P_a-dP_hydro(h_ao)); P_ca=max(0,P_a-dP_hydro(h_ca)); B=1/(1+exp(-clip(w_ao*(P_set_ao-P_ao)/sigma_ao+w_ca*(P_set_ca-P_ca)/sigma_ca,-40,40)))
+  description: Bounded baroreflex target integrating separate aortic-arch and carotid-sinus pressure errors,
+    each hydrostatically corrected at its own sensor height, with validated weights summing to 1.
   state_variables:
   - arterial_volume
   parameters:
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
-  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-WEIGHT
+  - PAR-CAROTID-BAROREFLEX-WEIGHT
+  - PAR-AORTIC-BARORECEPTOR-HEIGHT
+  - PAR-CAROTID-BARORECEPTOR-HEIGHT
   units: '1'
-  physiological_interpretation: Bounded baroreflex target from head-level pressure error, increasing as
-    baroreflex pressure falls.
+  physiological_interpretation: Dual-pressure weighted baroreflex target, increasing as either sensor pressure
+    falls; the weights are computational assumptions, not measurements of relative afferent contributions.
   claims:
   - CLM-POTS-BAROREFLEX
+  - CLM-AUT-DUAL-SENSOR
   assumptions:
-  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
+  - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation;
+    aortic and carotid weights are validated to sum to 1 within 1e-6; sensor errors are clipped at +/-40
+    before the sigmoid.
   applicability_limits:
-  - Research demonstration only; not patient-specific or clinically validated.
+  - Research demonstration only; not patient-specific or clinically validated; brain-level pressure is not
+    a baroreflex sensor.
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
   validation:
   - VAL-PHYS-TILT
+  - VAL-PHYS-TILT-ANGLE
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-AUT-002
   expression: dS_card/dt=(B-S_card)/tau_Sc; dS_vasc/dt=(B-S_vasc)/tau_Sv; dVag/dt=(1-B-Vag)/tau_Vag
@@ -314,29 +370,31 @@ equations:
   - VAL-POTS-NEUROPATHIC
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-CBF-001
-  expression: CPP=max(0,P_a-G_head*u-P_c); x=CPP/CPP_ref; CFI_pressure=x/(s_AR+(1-s_AR)*x); CFI_target=CFI_pressure*max(0,1-beta*u)
-  description: Brain-level cerebral perfusion pressure with a bounded autoregulation curve and orthostatic
-    impairment factor.
+  expression: P_brain=max(0,P_a-dP_hydro(h_brain)); CPP=max(0,P_brain-P_out); x=CPP/CPP_ref; CFI_pressure=x/(s_AR+(1-s_AR)*x)
+  description: Brain-level cerebral perfusion pressure (brain arterial pressure minus the fixed effective
+    cerebral outflow pressure) with the bounded autoregulation curve.
   state_variables:
   - arterial_volume
-  - central_venous_volume
   parameters:
-  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
-  - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
   units: '1'
-  physiological_interpretation: Brain-level cerebral perfusion pressure with a bounded autoregulation
-    curve and orthostatic impairment factor.
+  physiological_interpretation: Brain-level cerebral perfusion pressure with a bounded autoregulation curve;
+    the fixed 5 mmHg effective outflow pressure is neither thoracic central venous pressure nor a separately
+    resolved intracranial pressure.
   claims:
   - CLM-ME-CBF
   - CLM-CBF-CPP
+  - CLM-CBF-OUTFLOW
   - CLM-CBF-AUTOREG-DYNAMIC
   assumptions:
   - Beat-averaged deterministic reduced-order representation; parameters are constant within a simulation.
   applicability_limits:
   - Research demonstration only; not patient-specific or clinically validated.
-  - Normalized proxy; no CO2, intracranial-pressure or territory-resolved content.
+  - Normalized proxy; no intracranial-pressure state, venous-sinus collapse dynamics or territory-resolved
+    content.
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
   validation:
   - VAL-ME-CBF
@@ -361,6 +419,32 @@ equations:
   validation:
   - VAL-ME-CBF
   - VAL-PHYS-RECOVERY
+  provenance: literature-grounded reduced-order specification; see claims and parameter registry
+- id: EQ-CBF-003
+  expression: f_CO2=exp(k_CO2*clip(ETCO2-ETCO2_ref,-D_CO2,D_CO2)); CFI_target=CFI_pressure*f_CO2*max(0,1-beta*sin(theta));
+    ETCO2 defaults to ETCO2_ref when a segment omits it
+  description: Cerebral-flow target assembly combining the pressure-autoregulation target (EQ-CBF-001), a
+    bounded exponential end-tidal-CO2 factor, and the orthostatic impairment factor.
+  state_variables: []
+  parameters:
+  - PAR-END-TIDAL-CO2-REFERENCE
+  - PAR-CEREBRAL-CO2-REACTIVITY
+  - PAR-CEREBRAL-CO2-EXTRAPOLATION-LIMIT
+  - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
+  units: '1'
+  physiological_interpretation: Hypocapnia reduces the cerebral-flow target through a bounded exponential
+    end-tidal-CO2 factor; the +/-15 mmHg clip bounds extrapolation outside the evidence-supported range.
+  claims:
+  - CLM-CBF-CO2
+  assumptions:
+  - End-tidal CO2 is an explicit per-segment protocol input consumed directly (no ETCO2-to-PaCO2 correction);
+    no posture-inferred hypocapnia; upright segments that omit ETCO2 stay at the 40 mmHg reference.
+  applicability_limits:
+  - Research demonstration only; not patient-specific or clinically validated; end-tidal CO2 is an approximate,
+    biased surrogate of arterial PCO2; no CO2 state or ventilation dynamics are modeled.
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  validation:
+  - VAL-PHYS-CBF-CO2
   provenance: literature-grounded reduced-order specification; see claims and parameter registry
 - id: EQ-MET-001
   expression: C=max(0.05,C_0*(1-k_C*PEM))

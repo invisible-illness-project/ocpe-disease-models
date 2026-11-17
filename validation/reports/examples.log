@@ -22,53 +22,53 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 81.44693683442998,
-        "mean_arterial_pressure_final_mmHg": 117.39597580662887,
+        "heart_rate_final_bpm": 77.72292070087273,
+        "mean_arterial_pressure_final_mmHg": 111.33165951054737,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 82.81000762608596,
-        "orthostatic_heart_rate_rise_bpm": 12.810007626085962,
-        "orthostatic_heart_rate_sustained_rise_bpm": 11.446936834429977
+        "heart_rate_upright_peak_bpm": 77.74753748514372,
+        "orthostatic_heart_rate_rise_bpm": 7.747537485143724,
+        "orthostatic_heart_rate_sustained_rise_bpm": 7.722920700873132
       },
       "pots-neuropathic": {
         "phenotype_id": "pots-neuropathic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.62989216713933,
-        "mean_arterial_pressure_final_mmHg": 115.7063085849298,
+        "heart_rate_final_bpm": 87.42812143838977,
+        "mean_arterial_pressure_final_mmHg": 111.0930519045171,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 103.22565167237525,
-        "orthostatic_heart_rate_rise_bpm": 33.22565167237525,
-        "orthostatic_heart_rate_sustained_rise_bpm": 31.629892167139346
+        "heart_rate_upright_peak_bpm": 87.43270706442695,
+        "orthostatic_heart_rate_rise_bpm": 17.43270706442695,
+        "orthostatic_heart_rate_sustained_rise_bpm": 17.42812143839049
       },
       "pots-hyperadrenergic": {
         "phenotype_id": "pots-hyperadrenergic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.87845440819548,
-        "mean_arterial_pressure_final_mmHg": 118.6056381963049,
+        "heart_rate_final_bpm": 91.15945245782216,
+        "mean_arterial_pressure_final_mmHg": 112.0948988242302,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 71.5,
-        "heart_rate_upright_peak_bpm": 105.18049459427104,
-        "orthostatic_heart_rate_rise_bpm": 33.68049459427104,
-        "orthostatic_heart_rate_sustained_rise_bpm": 30.37845440819568
+        "heart_rate_upright_peak_bpm": 91.20536557113473,
+        "orthostatic_heart_rate_rise_bpm": 19.705365571134735,
+        "orthostatic_heart_rate_sustained_rise_bpm": 19.65945245782548
       },
       "pots-hypovolemic": {
         "phenotype_id": "pots-hypovolemic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 100.6604222028603,
-        "mean_arterial_pressure_final_mmHg": 105.23089888065368,
+        "heart_rate_final_bpm": 89.39894026699844,
+        "mean_arterial_pressure_final_mmHg": 100.93656535217566,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 103.53397544027538,
-        "orthostatic_heart_rate_rise_bpm": 33.533975440275384,
-        "orthostatic_heart_rate_sustained_rise_bpm": 30.66042220286029
+        "heart_rate_upright_peak_bpm": 89.45684918046365,
+        "orthostatic_heart_rate_rise_bpm": 19.45684918046365,
+        "orthostatic_heart_rate_sustained_rise_bpm": 19.39894026699878
       }
     }
   },
@@ -80,27 +80,27 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 81.44693683442998,
-        "mean_arterial_pressure_final_mmHg": 117.39597580662887,
+        "heart_rate_final_bpm": 77.72292070087273,
+        "mean_arterial_pressure_final_mmHg": 111.33165951054737,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 82.81000762608596,
-        "orthostatic_heart_rate_rise_bpm": 12.810007626085962,
-        "orthostatic_heart_rate_sustained_rise_bpm": 11.446936834429977
+        "heart_rate_upright_peak_bpm": 77.74753748514372,
+        "orthostatic_heart_rate_rise_bpm": 7.747537485143724,
+        "orthostatic_heart_rate_sustained_rise_bpm": 7.722920700873132
       },
       "eds-heds-vascular": {
         "phenotype_id": "eds-heds-vascular",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 89.61651349219741,
-        "mean_arterial_pressure_final_mmHg": 116.87178599356112,
+        "heart_rate_final_bpm": 82.44786041490933,
+        "mean_arterial_pressure_final_mmHg": 111.1945091664896,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 91.43610970960133,
-        "orthostatic_heart_rate_rise_bpm": 21.436109709601325,
-        "orthostatic_heart_rate_sustained_rise_bpm": 19.616513492197356
+        "heart_rate_upright_peak_bpm": 82.46060032099854,
+        "orthostatic_heart_rate_rise_bpm": 12.460600320998537,
+        "orthostatic_heart_rate_sustained_rise_bpm": 12.447860414913436
       }
     }
   },
@@ -112,8 +112,8 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 604800.0,
         "samples": 1009,
-        "heart_rate_final_bpm": 69.99999996889184,
-        "mean_arterial_pressure_final_mmHg": 100.00000000761707,
+        "heart_rate_final_bpm": 70.00000004535335,
+        "mean_arterial_pressure_final_mmHg": 99.9999998414146,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0
       },
@@ -121,10 +121,10 @@
         "phenotype_id": "mecfs-pem",
         "duration_s": 604800.0,
         "samples": 1009,
-        "heart_rate_final_bpm": 69.9999966761107,
-        "mean_arterial_pressure_final_mmHg": 99.99999667999684,
-        "pem_peak": 0.17523434368611493,
-        "functional_capacity_final": 0.7980790360006718
+        "heart_rate_final_bpm": 70.0000010121417,
+        "mean_arterial_pressure_final_mmHg": 99.99999926832811,
+        "pem_peak": 0.1752343429345128,
+        "functional_capacity_final": 0.7980790360366129
       }
     }
   },
@@ -136,27 +136,27 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 81.44693683442998,
-        "mean_arterial_pressure_final_mmHg": 117.39597580662887,
+        "heart_rate_final_bpm": 77.72292070087273,
+        "mean_arterial_pressure_final_mmHg": 111.33165951054737,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 82.81000762608596,
-        "orthostatic_heart_rate_rise_bpm": 12.810007626085962,
-        "orthostatic_heart_rate_sustained_rise_bpm": 11.446936834429977
+        "heart_rate_upright_peak_bpm": 77.74753748514372,
+        "orthostatic_heart_rate_rise_bpm": 7.747537485143724,
+        "orthostatic_heart_rate_sustained_rise_bpm": 7.722920700873132
       },
       "long-covid-autonomic": {
         "phenotype_id": "long-covid-autonomic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.14145589419122,
-        "mean_arterial_pressure_final_mmHg": 117.08154415760917,
+        "heart_rate_final_bpm": 88.93067444480633,
+        "mean_arterial_pressure_final_mmHg": 111.3669499413163,
         "pem_peak": 0.0,
         "functional_capacity_final": 0.85,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 104.647954888675,
-        "orthostatic_heart_rate_rise_bpm": 34.647954888675,
-        "orthostatic_heart_rate_sustained_rise_bpm": 31.141455894190784
+        "heart_rate_upright_peak_bpm": 88.9664792415974,
+        "orthostatic_heart_rate_rise_bpm": 18.966479241597398,
+        "orthostatic_heart_rate_sustained_rise_bpm": 18.930674444805533
       }
     }
   },
@@ -168,66 +168,66 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 81.44693683442998,
-        "mean_arterial_pressure_final_mmHg": 117.39597580662887,
+        "heart_rate_final_bpm": 77.72292070087273,
+        "mean_arterial_pressure_final_mmHg": 111.33165951054737,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 82.81000762608596,
-        "orthostatic_heart_rate_rise_bpm": 12.810007626085962,
-        "orthostatic_heart_rate_sustained_rise_bpm": 11.446936834429977
+        "heart_rate_upright_peak_bpm": 77.74753748514372,
+        "orthostatic_heart_rate_rise_bpm": 7.747537485143724,
+        "orthostatic_heart_rate_sustained_rise_bpm": 7.722920700873132
       },
       "pots-neuropathic": {
         "phenotype_id": "pots-neuropathic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.62989216713933,
-        "mean_arterial_pressure_final_mmHg": 115.7063085849298,
+        "heart_rate_final_bpm": 87.42812143838977,
+        "mean_arterial_pressure_final_mmHg": 111.0930519045171,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 103.22565167237525,
-        "orthostatic_heart_rate_rise_bpm": 33.22565167237525,
-        "orthostatic_heart_rate_sustained_rise_bpm": 31.629892167139346
+        "heart_rate_upright_peak_bpm": 87.43270706442695,
+        "orthostatic_heart_rate_rise_bpm": 17.43270706442695,
+        "orthostatic_heart_rate_sustained_rise_bpm": 17.42812143839049
       },
       "eds-heds-vascular": {
         "phenotype_id": "eds-heds-vascular",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 89.61651349219741,
-        "mean_arterial_pressure_final_mmHg": 116.87178599356112,
+        "heart_rate_final_bpm": 82.44786041490933,
+        "mean_arterial_pressure_final_mmHg": 111.1945091664896,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 91.43610970960133,
-        "orthostatic_heart_rate_rise_bpm": 21.436109709601325,
-        "orthostatic_heart_rate_sustained_rise_bpm": 19.616513492197356
+        "heart_rate_upright_peak_bpm": 82.46060032099854,
+        "orthostatic_heart_rate_rise_bpm": 12.460600320998537,
+        "orthostatic_heart_rate_sustained_rise_bpm": 12.447860414913436
       },
       "mecfs-pem": {
         "phenotype_id": "mecfs-pem",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 85.09054095983132,
-        "mean_arterial_pressure_final_mmHg": 117.20469867876987,
+        "heart_rate_final_bpm": 79.96405751869422,
+        "mean_arterial_pressure_final_mmHg": 111.27295626118138,
         "pem_peak": 0.0,
         "functional_capacity_final": 0.8064102564102564,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 86.81245564694954,
-        "orthostatic_heart_rate_rise_bpm": 16.812455646949545,
-        "orthostatic_heart_rate_sustained_rise_bpm": 15.090540959831344
+        "heart_rate_upright_peak_bpm": 79.99117904107246,
+        "orthostatic_heart_rate_rise_bpm": 9.991179041072456,
+        "orthostatic_heart_rate_sustained_rise_bpm": 9.96405751869466
       },
       "long-covid-autonomic": {
         "phenotype_id": "long-covid-autonomic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.14145589419122,
-        "mean_arterial_pressure_final_mmHg": 117.08154415760917,
+        "heart_rate_final_bpm": 88.93067444480633,
+        "mean_arterial_pressure_final_mmHg": 111.3669499413163,
         "pem_peak": 0.0,
         "functional_capacity_final": 0.85,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 104.647954888675,
-        "orthostatic_heart_rate_rise_bpm": 34.647954888675,
-        "orthostatic_heart_rate_sustained_rise_bpm": 31.141455894190784
+        "heart_rate_upright_peak_bpm": 88.9664792415974,
+        "orthostatic_heart_rate_rise_bpm": 18.966479241597398,
+        "orthostatic_heart_rate_sustained_rise_bpm": 18.930674444805533
       }
     }
   }

@@ -27,6 +27,12 @@ METRICS = (
     "pem_peak",
     "functional_capacity_final",
 )
+CEREBRAL_METRICS = (
+    "cerebral_flow_index_final",
+    "cerebral_co2_factor_final",
+    "end_tidal_co2_final_mmHg",
+)
+EXPORT_METRICS = (*METRICS, *CEREBRAL_METRICS)
 
 
 def _run(
@@ -51,6 +57,13 @@ def _run(
     }
     for metric in METRICS:
         row[metric] = summary.get(metric)
+    row.update(
+        {
+            "cerebral_flow_index_final": float(result.outputs["cerebral_flow_index"][-1]),
+            "cerebral_co2_factor_final": float(result.outputs["cerebral_co2_factor"][-1]),
+            "end_tidal_co2_final_mmHg": float(result.outputs["end_tidal_co2_mmHg"][-1]),
+        }
+    )
     row["heart_rate_baseline_bpm"] = summary.get("heart_rate_baseline_bpm")
     row["heart_rate_final_bpm"] = summary["heart_rate_final_bpm"]
     row["parameters"] = asdict(patient.parameters)
@@ -69,23 +82,37 @@ def local_sensitivity(root: Path | None = None) -> list[dict[str, Any]]:
             {
                 "splanchnic_venous_compliance": (-0.10, 0.10),
                 "lower_limb_venous_compliance": (-0.10, 0.10),
+                "other_systemic_venous_compliance": (-0.10, 0.10),
                 "splanchnic_venous_resistance": (-0.10, 0.10),
                 "lower_limb_venous_resistance": (-0.10, 0.10),
+                "other_systemic_venous_resistance": (-0.10, 0.10),
                 "splanchnic_resistance_sympathetic_gain": (-0.10, 0.10),
                 "lower_limb_resistance_sympathetic_gain": (-0.10, 0.10),
-                "splanchnic_gravity_pressure_offset": (-0.10, 0.10),
-                "lower_limb_gravity_pressure_offset": (-0.10, 0.10),
+                "other_systemic_resistance_sympathetic_gain": (-0.10, 0.10),
+                "splanchnic_hydrostatic_height_cm": (-0.10, 0.10),
+                "lower_limb_hydrostatic_height_cm": (-0.10, 0.10),
+                "carotid_baroreceptor_height_cm": (-0.10, 0.10),
+                "brain_hydrostatic_height_cm": (-0.10, 0.10),
                 "blood_volume_factor": (-0.10, 0.10),
                 "cardiac_sympathetic_time_constant": (-0.25, 0.25),
                 "vascular_sympathetic_time_constant": (-0.25, 0.25),
                 "vagal_time_constant": (-0.25, 0.25),
                 "cerebral_autoregulation_residual_slope": (-0.25, 0.25),
+                "cerebral_outflow_pressure_mmHg": (-0.25, 0.25),
             },
         ),
         (
             "eds-heds-vascular",
             "head-up-tilt",
             {"lower_limb_venous_compliance": (-1 / 7, 1 / 7)},
+        ),
+        (
+            "healthy-reference",
+            "co2-reduction",
+            {
+                "cerebral_co2_reactivity_per_mmHg": (-0.25, 0.25),
+                "cerebral_co2_extrapolation_limit_mmHg": (-0.50, 0.50),
+            },
         ),
         (
             "healthy-reference",
@@ -106,7 +133,6 @@ def local_sensitivity(root: Path | None = None) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for phenotype_id, protocol_id, parameters in plans:
         base_row, base_result = _run(phenotype_id, protocol_id, {}, root)
-        base_summary = base_result.summary()
         rows.append({**base_row, "analysis": "local_sensitivity", "parameter": "baseline", "level": "base"})
         for parameter, fractions in parameters.items():
             nominal = getattr(base_result.parameters, parameter)
@@ -126,8 +152,8 @@ def local_sensitivity(root: Path | None = None) -> list[dict[str, Any]]:
                 )
                 rows.append(row)
                 perturbed[label] = row
-            for metric in METRICS:
-                base_value = base_summary.get(metric)
+            for metric in EXPORT_METRICS:
+                base_value = base_row.get(metric)
                 low = perturbed["low"].get(metric)
                 high = perturbed["high"].get(metric)
                 if base_value is None or low is None or high is None:
@@ -151,8 +177,8 @@ def uncertainty_grid(root: Path | None = None) -> list[dict[str, Any]]:
             "head-up-tilt",
             "lower_limb_venous_compliance",
             (50.0, 58.333333333333336, 66.66666666666667),
-            "lower_limb_gravity_pressure_offset",
-            (7.0, 9.0, 11.0),
+            "lower_limb_hydrostatic_height_cm",
+            (7.0 / 0.7356, 9.0 / 0.7356, 11.0 / 0.7356),
         ),
         (
             "mecfs-pem",
@@ -161,6 +187,14 @@ def uncertainty_grid(root: Path | None = None) -> list[dict[str, Any]]:
             (43200.0, 72000.0, 86400.0),
             "pem_onset_time_constant",
             (86400.0, 129600.0, 172800.0),
+        ),
+        (
+            "healthy-reference",
+            "co2-reduction",
+            "cerebral_co2_reactivity_per_mmHg",
+            (0.025, 0.035, 0.045),
+            "cerebral_outflow_pressure_mmHg",
+            (2.5, 5.0, 7.5),
         ),
     )
     rows: list[dict[str, Any]] = []
@@ -215,7 +249,7 @@ def _grid_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
     for phenotype_id in sorted({row["phenotype_id"] for row in rows}):
         selected = [row for row in rows if row["phenotype_id"] == phenotype_id]
         metrics: dict[str, Any] = {}
-        for metric in METRICS:
+        for metric in EXPORT_METRICS:
             values = [row[metric] for row in selected if row.get(metric) is not None]
             metrics[metric] = {"min": min(values), "max": max(values)} if values else None
         pressure_failures = [
@@ -242,7 +276,7 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "perturbed_value",
         "overrides",
         "configuration_sha256",
-        *METRICS,
+        *EXPORT_METRICS,
         "scenario_interpretation",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
@@ -258,7 +292,7 @@ def _markdown(local: list[dict[str, Any]], grid: list[dict[str, Any]]) -> str:
         "",
         "These deterministic perturbations quantify model-response sensitivity. They are not patient samples, probability distributions, prevalence estimates, or clinical validation.",
         "",
-        "## Local orthostatic sensitivity",
+        "## Local orthostatic and cerebral-CO2 sensitivity",
         "",
         "Normalized sensitivity is the centered output change divided by the fractional parameter span and, where defined, the absolute baseline output. Zero-valued outputs have no normalized elasticity.",
         "",
@@ -270,7 +304,7 @@ def _markdown(local: list[dict[str, Any]], grid: list[dict[str, Any]]) -> str:
         parameter = row.get("parameter")
         if parameter == "baseline":
             continue
-        for metric in METRICS:
+        for metric in EXPORT_METRICS:
             key = (row["phenotype_id"], parameter, metric)
             if key in seen:
                 continue
@@ -298,7 +332,7 @@ def _markdown(local: list[dict[str, Any]], grid: list[dict[str, Any]]) -> str:
         else:
             lines.append("- No scenario in this grid ends below the 70 mmHg MAP screening threshold.")
         lines.append("")
-    lines.extend(["## Interpretation limits", "", "- hEDS lower-limb venous compliance includes the healthy reference value and exploratory changes; it is not a measured hEDS coefficient.", "- ME/CFS delay and onset constants are phenomenological and are not probability distributions over patients.", "- Configuration hashes and solver settings are retained in JSON; no random seed is used because no stochastic sampling occurs.", "- Sensitivity does not validate equation structure or clinical utility."])
+    lines.extend(["## Interpretation limits", "", "- hEDS lower-limb venous compliance includes the healthy reference value and exploratory changes; it is not a measured hEDS coefficient.", "- ME/CFS delay and onset constants are phenomenological and are not probability distributions over patients.", "- CO2 reactivity, clipping, and cerebral-outflow scenarios vary explicit computational assumptions; they do not identify patient-specific reactivity or convert ETCO2 into PaCO2.", "- Configuration hashes and solver settings are retained in JSON; no random seed is used because no stochastic sampling occurs.", "- Sensitivity does not validate equation structure or clinical utility."])
     return "\n".join(lines) + "\n"
 
 

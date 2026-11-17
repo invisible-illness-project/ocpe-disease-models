@@ -124,6 +124,57 @@ def test_mecfs_cerebral_flow_reduction_within_anchor_band(
         )
 
 
+def _reduction_pct_at_offset(result, offset_s: float) -> float:
+    """CFI reduction (%) at ``offset_s`` seconds after tilt onset."""
+    t = result.time
+    cfi = result.outputs["cerebral_flow_index"]
+    baseline = float(cfi[(t >= 0.0) & (t <= TILT_START - 2.0)].mean())
+    value = float(cfi[_at(result, TILT_START + offset_s)])
+    return 100.0 * (baseline - value) / baseline
+
+
+def test_cerebral_flow_reduction_time_course_is_group_separated(
+    mecfs_tilt_recovery_result, healthy_tilt_recovery_result
+):
+    """Protocol-specific time-resolved comparison along the head-up tilt.
+
+    Reductions are compared at immediate (0 s, transition onset), 10 s, 30 s,
+    60 s, 2 min and 5 min after tilt onset plus the sustained end-tilt window.
+    The ME/CFS group must separate above the healthy control at every resolved
+    post-onset time point; no additional numeric thresholds are introduced.
+    """
+    offsets = {
+        "immediate": 0.0,
+        "10s": 10.0,
+        "30s": 30.0,
+        "60s": 60.0,
+        "2min": 120.0,
+        "5min": 300.0,
+    }
+    healthy = {
+        label: _reduction_pct_at_offset(healthy_tilt_recovery_result, off)
+        for label, off in offsets.items()
+    }
+    mecfs = {
+        label: _reduction_pct_at_offset(mecfs_tilt_recovery_result, off)
+        for label, off in offsets.items()
+    }
+    healthy["sustained"] = _end_tilt_reduction_pct(healthy_tilt_recovery_result)
+    mecfs["sustained"] = _end_tilt_reduction_pct(mecfs_tilt_recovery_result)
+    # At transition onset neither group has responded yet.
+    assert healthy["immediate"] == pytest.approx(0.0, abs=1e-6)
+    assert mecfs["immediate"] == pytest.approx(0.0, abs=1e-6)
+    # Group separation at every resolved post-onset time point.
+    for label in ("10s", "30s", "60s", "2min", "5min", "sustained"):
+        assert mecfs[label] > healthy[label], (
+            f"no group separation at {label}: ME/CFS {mecfs[label]:.2f}% "
+            f"vs healthy {healthy[label]:.2f}%"
+        )
+    # The 5 min reading has reached the sustained end-tilt level in both groups.
+    assert mecfs["5min"] == pytest.approx(mecfs["sustained"], abs=1.0)
+    assert healthy["5min"] == pytest.approx(healthy["sustained"], abs=1.0)
+
+
 # --------------------------------------------------- VAL-EMPIRICAL-ANCHORS
 ANCHOR_CLAIMS = {
     "CLM-POTS-CRITERIA": ["30"],  # adult >=30 bpm scenario threshold

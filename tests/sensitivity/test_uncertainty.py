@@ -34,8 +34,10 @@ pytestmark = pytest.mark.sensitivity_uncertainty
 
 SCENARIO_LABEL = "deterministic_scenario_not_a_patient"
 
+# Heights corresponding to the former 8-10 mmHg upright gravity-offset range
+# (mmHg = 0.7356 * height_cm at 90 degrees).
 TILT_GRID = {
-    "lower_limb_gravity_pressure_offset": (8.0, 10.0),
+    "lower_limb_hydrostatic_height_cm": (8.0 / 0.7356, 10.0 / 0.7356),
     "lower_limb_resistance_sympathetic_gain": (0.35, 0.8),
 }
 PEM_GRID_VALUES = (0.0, 12.0, 16.0, 20.0)  # includes the explicit no-PEM bound
@@ -52,10 +54,10 @@ PEM_PROTOCOL = [
 def _tilt_grid_records():
     segments, _ = load_protocol("head-up-tilt")
     records = []
-    for offset in TILT_GRID["lower_limb_gravity_pressure_offset"]:
+    for height in TILT_GRID["lower_limb_hydrostatic_height_cm"]:
         for gain in TILT_GRID["lower_limb_resistance_sympathetic_gain"]:
             overrides = {
-                "lower_limb_gravity_pressure_offset": offset,
+                "lower_limb_hydrostatic_height_cm": height,
                 "lower_limb_resistance_sympathetic_gain": gain,
             }
             patient = ComputationalPatient(
@@ -140,20 +142,21 @@ def test_tilt_grid_reports_ranges_with_configuration_hashes(tilt_records):
 
 
 def test_tilt_grid_scenario_ranking_is_stable(tilt_records):
-    """Stronger pooling (higher gravity offset) ranks above weaker pooling at
-    every sampled compensation level; stronger compensation ranks lower."""
-    def rise(offset, gain):
+    """Stronger pooling (greater hydrostatic height) ranks above weaker pooling
+    at every sampled compensation level; stronger compensation ranks lower."""
+    def rise(height, gain):
         return next(
             r["orthostatic_heart_rate_rise_bpm"]
             for r in tilt_records
-            if r["parameters"]["lower_limb_gravity_pressure_offset"] == offset
+            if r["parameters"]["lower_limb_hydrostatic_height_cm"] == height
             and r["parameters"]["lower_limb_resistance_sympathetic_gain"] == gain
         )
 
+    lo_height, hi_height = TILT_GRID["lower_limb_hydrostatic_height_cm"]
     for gain in TILT_GRID["lower_limb_resistance_sympathetic_gain"]:
-        assert rise(10.0, gain) > rise(8.0, gain)
-    for offset in TILT_GRID["lower_limb_gravity_pressure_offset"]:
-        assert rise(offset, 0.8) < rise(offset, 0.35)
+        assert rise(hi_height, gain) > rise(lo_height, gain)
+    for height in TILT_GRID["lower_limb_hydrostatic_height_cm"]:
+        assert rise(height, 0.8) < rise(height, 0.35)
 
 
 def test_pem_grid_reports_ranges_with_configuration_hashes(pem_records):

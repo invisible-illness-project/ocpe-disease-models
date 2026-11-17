@@ -42,7 +42,7 @@ After the initial migration, the reviewed Stage 1 design gate (`docs/stage1/revi
 - Conservation tests now cover all four volumes, including muscle-pump transfer, at both the RHS-telescoping and integrated-drift levels.
 - Every one of the ten registered configurations is tested as an exact supine fixed point (maximum absolute RHS component below 1e-9); uniform volume scaling alone does not preserve the fixed point, so per-phenotype resistance and setpoint derivations are required and tested.
 - The orthostatic scenario criterion is the sustained final-120-second-upright HR rise; the peak rise is a separate secondary metric.
-- Sensitivity exports now comprise 42 local, 18 grid, and 3 fixed-total chronotropic-split scenarios; no scenario in the current grids ends below the 70 mmHg MAP screening threshold, while the pre-revision below-70-mmHg hEDS failures remain preserved as historical results under `validation/baseline/stage0/`.
+- Sensitivity exports at the Stage 1 (0.2.0) record comprised 42 local, 18 grid, and 3 fixed-total chronotropic-split scenarios (the Stage 1.1/0.3.0 export is 59 local, 27 grid, and 3 split scenarios; see `docs/stage1-1/validation-matrix.md`); no scenario in the current grids ends below the 70 mmHg MAP screening threshold, while the pre-revision below-70-mmHg hEDS failures remain preserved as historical results under `validation/baseline/stage0/`.
 - The Stage 0 fixture, report, and regression values are preserved unchanged as the historical baseline; they are comparators, not evidence for the revised model.
 
 ## Compatibility deviations

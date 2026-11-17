@@ -1,0 +1,6 @@
+{
+  "local_scenarios": 59,
+  "grid_scenarios": 27,
+  "chronotropic_split_scenarios": 3,
+  "output_directory": "/mnt/agents/output/ocpe-disease-models/validation/sensitivity"
+}

@@ -744,7 +744,7 @@ evidence_claims:
   reported_effect: Splanchnic segmental volume increases on upright tilt, splanchnic vasoconstriction
     defends pressure, and a POTS subgroup shows exaggerated splanchnic pooling.
   parameter_implications: Supports a separate splanchnic venous compartment with its own arterial inflow,
-    venous return and gravity offset; does not supply absolute awake-human compliance or resistance values.
+    venous return and hydrostatic height; does not supply absolute awake-human compliance or resistance values.
   evidence_grade: E3
   confidence: medium
   limitations: Impedance measurements are relative; subgroup findings are not universal disease values.
@@ -812,6 +812,71 @@ evidence_claims:
   - MEC-VASC-POOLING
   validation_links: []
   confidence_detail: moderate for the qualitative distinction
+- id: CLM-ORTHO-HYDROSTATIC
+  statement: Hydrostatic pressure corrections scale with the vertical heart-to-site height and the sine of
+    the tilt angle; the heart-to-brain hydrostatic gradient is roughly 25-30 cm.
+  description: Hydrostatic pressure corrections scale with the vertical heart-to-site height and the sine
+    of the tilt angle; the heart-to-brain hydrostatic gradient is roughly 25-30 cm, so distinct sites
+    (heart, carotid sinus, brain) experience different corrections under tilt.
+  diseases:
+  - shared
+  mechanism: Hydrostatic sine-angle posture geometry
+  references:
+  - REF-HARMS-2021
+  - REF-ZAIDI-2000
+  - REF-VANHEUSDEN-2006
+  evidence_type: controlled human physiology and gravitational modeling
+  measured_variables:
+  - heart-to-brain hydrostatic gradient
+  - tilt angle
+  - beat-to-beat blood pressure
+  reported_effect: Active standing and graded tilt produce angle-dependent hydrostatic corrections; the
+    heart-to-brain gradient is reported at roughly 25-30 cm.
+  parameter_implications: Supports lumped per-site hydrostatic heights scaled by sin(tilt angle) in place of
+    fixed mmHg gravity offsets; the heights remain lumped geometry, not measured hydrostatic columns.
+  evidence_grade: E3
+  confidence: medium
+  limitations: Lumped heights are not patient-specific anatomy; angles beyond supine-to-upright head-up tilt
+    are out of scope.
+  modeling_implications: Share one resolved tilt angle across the regional venous returns, the baroreceptor
+    pressures and the brain-level arterial pressure; at 0 degrees every hydrostatic term is exactly zero.
+  implementation_links:
+  - MEC-ORTHO-HYDROSTATIC
+  - MEC-VASC-POOLING
+  validation_links:
+  - VAL-PHYS-TILT-ANGLE
+  confidence_detail: moderate for the sine-angle structure, low for absolute heights
+- id: CLM-ORTHO-GRADED-TILT
+  statement: Graded head-up tilt produces angle-dependent cardiovascular responses, with cardiac output and
+    stroke volume reductions growing with tilt angle up to about 60-70 degrees.
+  description: Graded head-up tilt produces angle-dependent cardiovascular responses; in the cited controlled
+    study, cardiac output fell about 17-20% and stroke volume about 28-34% at 60-70 degrees within 2-5 minutes,
+    with smaller changes at 45 degrees and no further material reduction beyond 60 degrees.
+  diseases:
+  - shared
+  mechanism: Angle-graded orthostatic cardiovascular response
+  references:
+  - REF-ZAIDI-2000
+  evidence_type: small controlled human study
+  measured_variables:
+  - cardiac output
+  - stroke volume
+  - heart rate
+  reported_effect: Cardiac output fell about 17-20% and stroke volume about 28-34% at 60-70 degrees of head-up
+    tilt; responses were angle-graded up to about 60 degrees.
+  parameter_implications: Provides group-level directional and magnitude anchors for graded-tilt scenario
+    comparisons; these are plausibility anchors, not fitted targets.
+  evidence_grade: E2
+  confidence: medium
+  limitations: Single small controlled study; supine-to-tilt group means, not patient-level trajectories.
+  modeling_implications: Compare graded-tilt protocols against the declared group ranges without recalibrating
+    model parameters to force agreement.
+  implementation_links:
+  - MEC-ORTHO-HYDROSTATIC
+  - MEC-VASC-POOLING
+  validation_links:
+  - VAL-PHYS-GRADED-TILT
+  confidence_detail: moderate for direction, limited for exact magnitudes
 - id: CLM-MUSCLE-PUMP
   statement: Rhythmic skeletal-muscle activity augments venous return by transferring lower-limb venous
     volume toward the central compartment.
@@ -998,26 +1063,65 @@ evidence_claims:
   validation_links:
   - VAL-MATH-CONVERGENCE
   confidence_detail: moderate
+- id: CLM-AUT-DUAL-SENSOR
+  statement: Aortic-arch and carotid-sinus baroreceptors sit at different hydrostatic heights, so orthostatic
+    tilt changes their sensed pressures differently, and integrated baroreflex control combines both afferents.
+  description: Aortic-arch and carotid-sinus baroreceptors sit at different hydrostatic heights, so orthostatic
+    tilt changes their sensed pressures differently; integrated baroreflex control combines both afferent
+    pathways rather than a single head-level pressure proxy.
+  diseases:
+  - shared
+  mechanism: Dual aortic/carotid baroreceptor sensing with weighted integration
+  references:
+  - REF-HARMS-2021
+  - REF-MUENTER-2005
+  - REF-DEBOER-1987
+  evidence_type: human integrative physiology and modeling
+  measured_variables:
+  - muscle sympathetic nerve activity
+  - blood pressure
+  - orthostatic responses
+  reported_effect: Orthostatic baroreflex engagement is documented in integrative and microneurographic human
+    studies; sensor-site hydrostatic separation follows from the documented heart-to-brain gradient.
+  parameter_implications: Supports separate aortic and carotid sensor pathways with their own setpoints, scales
+    and heights; the 0.25/0.75 integration weights remain computational assumptions, not measurements of
+    relative afferent contributions.
+  evidence_grade: E3
+  confidence: medium
+  limitations: The literature does not identify numerical integration weights; the weights must not be
+    interpreted as measured afferent fractions.
+  modeling_implications: Separate the two sensor sites from each other and from brain-level pressure; validate
+    that the weights sum to 1.
+  implementation_links:
+  - MEC-AUT-BAROREFLEX
+  validation_links:
+  - VAL-PHYS-TILT-ANGLE
+  confidence_detail: moderate for the structural separation, low for the weighting
 - id: CLM-CBF-CPP
   statement: Brain-level cerebral perfusion pressure differs from brachial or systemic mean arterial pressure
-    during orthostasis because of the heart-to-brain hydrostatic gradient and venous back pressure.
+    during orthostasis because of the heart-to-brain hydrostatic gradient and downstream venous/outflow
+    pressure.
   description: Brain-level cerebral perfusion pressure differs from brachial or systemic mean arterial
-    pressure during orthostasis because of the heart-to-brain hydrostatic gradient and venous back pressure.
+    pressure during orthostasis because of the heart-to-brain hydrostatic gradient and downstream venous/outflow
+    pressure; the cerebral venous outflow pathway itself depends on posture and central venous pressure.
   diseases:
   - shared
   mechanism: Brain-level cerebral perfusion pressure
   references:
   - REF-LEVINE-1994
   - REF-WILLIE-2014
+  - REF-GISOLF-2004
   evidence_type: strong human physiological evidence
   measured_variables:
   - cerebral blood-flow velocity
   - systemic hemodynamics
   - orthostatic tolerance
   reported_effect: Cerebral and systemic hemodynamics diverge under graded orthostatic stress; hydrostatic
-    correction is required to interpret head-level pressure.
-  parameter_implications: Supports subtracting an orthostatic hydrostatic offset and central venous back
-    pressure; does not supply intracranial pressure or patient-specific cerebral perfusion pressure.
+    correction is required to interpret head-level pressure; the cerebral venous outflow pathway shifts with
+    posture and central venous pressure.
+  parameter_implications: Supports a brain-level hydrostatic correction (brain height times sin(tilt angle))
+    and a fixed effective cerebral outflow pressure replacing the Stage 1 central-venous back-pressure
+    subtraction; does not supply intracranial pressure or patient-specific cerebral perfusion pressure.
   evidence_grade: E3
   confidence: medium
   limitations: TCD velocity is not volumetric cerebral blood flow.
@@ -1028,6 +1132,39 @@ evidence_claims:
   validation_links:
   - VAL-ME-CBF
   confidence_detail: moderate-high for structure
+- id: CLM-CBF-OUTFLOW
+  statement: The human cerebral venous outflow pathway depends on posture and central venous pressure, so a
+    single fixed effective downstream pressure is a reduced-order approximation.
+  description: The human cerebral venous outflow pathway depends on posture and central venous pressure
+    (jugular versus vertebral pathways shift with posture); the model therefore uses a fixed effective
+    cerebral outflow pressure of 5 mmHg that is explicitly neither thoracic central venous pressure nor a
+    separately resolved intracranial pressure.
+  diseases:
+  - shared
+  mechanism: Fixed effective cerebral outflow pressure
+  references:
+  - REF-GISOLF-2004
+  - REF-WILLIE-2014
+  evidence_type: controlled human physiology
+  measured_variables:
+  - cerebral venous outflow pathway
+  - central venous pressure
+  - posture
+  reported_effect: Cerebral venous outflow shifts between pathways with posture and central venous pressure.
+  parameter_implications: Supports replacing the Stage 1 central-venous back-pressure subtraction with a fixed
+    effective outflow pressure; the value is a computational operating point, not a measurement.
+  evidence_grade: E3
+  confidence: medium
+  limitations: The fixed value cannot capture posture-dependent pathway switching or intracranial-pressure
+    dynamics.
+  modeling_implications: Keep the outflow pressure fixed per simulation and disclose the approximation; do
+    not reintroduce a CVP subtraction.
+  implementation_links:
+  - MEC-CBF-AUTOREG
+  validation_links:
+  - VAL-ME-CBF
+  - VAL-PHYS-RECOVERY
+  confidence_detail: moderate for posture dependence, low for a single value
 - id: CLM-CBF-AUTOREG-DYNAMIC
   statement: Dynamic cerebral autoregulation buffers cerebral perfusion-pressure changes over a timescale
     of seconds.
@@ -1072,6 +1209,8 @@ evidence_claims:
   - REF-LEWIS-2014
   - REF-NOVAK-1998
   - REF-AASLID-1989
+  - REF-IMMINK-2006
+  - REF-BATTISTI-2011
   evidence_type: controlled human evidence
   measured_variables:
   - end-tidal carbon dioxide
@@ -1079,16 +1218,21 @@ evidence_claims:
   - orthostatic tolerance
   reported_effect: Hypocapnia amplifies cerebral hypoperfusion while orthostatic tolerance can be buffered
     by oxygen extraction.
-  parameter_implications: The model has no CO2 input, so no hypocapnia mechanism can be inferred and the
-    omission must be declared rather than hidden inside an autoregulation gain.
+  parameter_implications: The Stage 1.1 model implements an explicit end-tidal-CO2 input acting on the
+    cerebral-flow target through a bounded exponential factor (0.035/mmHg about the 40 mmHg reference,
+    clipped to +/-15 mmHg); magnitudes are group-level scenario anchors, not patient measurements. Stage 1
+    history is preserved in that the pathway was previously a declared omission, never hidden inside an
+    autoregulation gain.
   evidence_grade: E3
   confidence: medium
-  limitations: No CO2 state exists in the current scope; a lower cerebral-flow index must not be equated
-    with syncope.
-  modeling_implications: Keep CO2 effects out of the executable cerebral-flow claim; declare the omission.
+  limitations: End-tidal CO2 is an approximate, biased surrogate of arterial PCO2 (including under orthostasis);
+    no CO2 state or ventilation dynamics exist; a lower cerebral-flow index must not be equated with syncope.
+  modeling_implications: Apply CO2 effects only through the declared per-segment end-tidal-CO2 input with the
+    bounded clip; never infer hypocapnia from posture.
   implementation_links:
-  - MEC-CBF-CO2-OMISSION
-  validation_links: []
+  - MEC-CBF-CO2
+  validation_links:
+  - VAL-PHYS-CBF-CO2
   confidence_detail: moderate as a constraining finding
 - id: CLM-CV-VOLUME-REGULATION
   statement: Blood volume is regulated over longer horizons by renal, endocrine and fluid-shift processes;

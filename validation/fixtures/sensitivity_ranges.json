@@ -1,7 +1,9 @@
 {
-  "schema_version": "1.1",
-  "label": "Deterministic central differences for the revised shared physiology; research scenarios, not clinical targets.",
+  "schema_version": "1.2",
+  "label": "Deterministic central differences for the Stage 1.1 shared physiology; research scenarios, not clinical targets.",
   "scientific_status": "research demonstration; not clinically validated",
+  "model_version": "0.3.0",
+  "change_rationale": "Regenerated after the reviewed Stage 1.1 structural change from normalized posture and gravity offsets to explicit tilt angles and hydrostatic heights, dual-site baroreceptor sensing, and five conserved volumes. Values were not tuned to obtain physiological criterion passes.",
   "method": {
     "kind": "deterministic one-at-a-time central finite differences",
     "no_stochastic_cohort": true,
@@ -15,20 +17,21 @@
   "assumptions": [
     "One parameter is perturbed at a time; interactions are explored separately in deterministic grids.",
     "The hEDS lower-limb compliance increase is a modeling hypothesis, not a measured value.",
-    "Derivative magnitudes are local and operating-point dependent; blood-volume perturbations intentionally leave the calibrated supine operating point."
+    "Derivative magnitudes are local and operating-point dependent; blood-volume perturbations intentionally leave the calibrated supine operating point.",
+    "Hydrostatic-height derivatives are per cm; the central-difference step is 1/0.7356 cm, equivalent to 1 mmHg at 90 degrees."
   ],
   "parameters": {
-    "lower_limb_gravity_pressure_offset": {
+    "lower_limb_hydrostatic_height_cm": {
       "mechanism": "MEC-VASC-POOLING",
-      "nominal": 8.0,
-      "step": 1.0,
+      "nominal": 10.87547580206634,
+      "step": 1.3594344752582925,
       "sampled_values": [
-        7.0,
-        8.0,
-        9.0
+        9.516041326808047,
+        10.87547580206634,
+        12.234910277324634
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.7507759088930186,
-      "d_mean_arterial_pressure_final_mmHg": -0.22444906738694925
+      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.3227287213747213,
+      "d_mean_arterial_pressure_final_mmHg": -0.0759296926646014
     },
     "splanchnic_resistance_sympathetic_gain": {
       "mechanism": "MEC-VASC-CONSTRICTION",
@@ -39,8 +42,8 @@
         0.8,
         0.9
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": -3.8568960529261176,
-      "d_mean_arterial_pressure_final_mmHg": 1.149525537546765
+      "d_orthostatic_heart_rate_sustained_rise_bpm": -1.4575311439236316,
+      "d_mean_arterial_pressure_final_mmHg": 0.3426731994439791
     },
     "blood_volume_factor": {
       "mechanism": "MEC-VOL-HYPOVOLEMIA",
@@ -51,8 +54,8 @@
         1.0,
         1.02
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": -24.193815109538974,
-      "d_mean_arterial_pressure_final_mmHg": 10.905007248379661
+      "d_orthostatic_heart_rate_sustained_rise_bpm": -15.054135980647843,
+      "d_mean_arterial_pressure_final_mmHg": 6.532739762052842
     },
     "lower_limb_venous_compliance": {
       "mechanism": "MEC-VASC-COMPLIANCE",
@@ -63,8 +66,8 @@
         50.0,
         55.0
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.0896248131708532,
-      "d_mean_arterial_pressure_final_mmHg": -0.026675258795521017,
+      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.05588539561852599,
+      "d_mean_arterial_pressure_final_mmHg": -0.013137160182708385,
       "heds_assumption": {
         "healthy_value": 50.0,
         "assumed_heds_value": 58.333333333333336,
@@ -72,8 +75,8 @@
           50.0,
           58.333333333333336
         ],
-        "orthostatic_heart_rate_sustained_rise_bpm_at_50": 11.446936834429977,
-        "orthostatic_heart_rate_sustained_rise_bpm_at_58_333": 12.191408353496328,
+        "orthostatic_heart_rate_sustained_rise_bpm_at_50": 7.722920700873132,
+        "orthostatic_heart_rate_sustained_rise_bpm_at_58_333": 8.187287051007587,
         "note": "The hEDS value is the migrated 140*(50/120) hypothesis, not a measured coefficient."
       }
     }

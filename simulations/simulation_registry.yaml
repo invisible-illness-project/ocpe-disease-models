@@ -4,12 +4,22 @@ protocols:
   - {id: resting-baseline, config: simulations/baseline/resting-baseline.yaml}
   - {id: head-up-tilt, config: simulations/orthostatic/head-up-tilt.yaml}
   - {id: tilt-recovery, config: simulations/orthostatic/tilt-recovery.yaml}
+  - {id: passive-tilt-30, config: simulations/orthostatic/passive-tilt-30.yaml}
+  - {id: passive-tilt-45, config: simulations/orthostatic/passive-tilt-45.yaml}
+  - {id: passive-tilt-60, config: simulations/orthostatic/passive-tilt-60.yaml}
+  - {id: passive-tilt-70, config: simulations/orthostatic/passive-tilt-70.yaml}
+  - {id: active-standing, config: simulations/orthostatic/active-standing.yaml}
   - {id: inactive-standing, config: simulations/orthostatic/inactive-standing.yaml}
   - {id: light-rhythmic-activity, config: simulations/orthostatic/light-rhythmic-activity.yaml}
   - {id: walking, config: simulations/orthostatic/walking.yaml}
   - {id: sustained-contraction, config: simulations/orthostatic/sustained-contraction.yaml}
   - {id: single-exertion-recovery, config: simulations/recovery/single-exertion-recovery.yaml}
   - {id: repeated-exertion-recovery, config: simulations/exertion/repeated-exertion-recovery.yaml}
+  - {id: pressure-reduction, config: simulations/cerebral/pressure-reduction.yaml}
+  - {id: co2-reduction, config: simulations/cerebral/co2-reduction.yaml}
+  - {id: combined-pressure-co2-reduction, config: simulations/cerebral/combined-pressure-co2-reduction.yaml}
+  - {id: co2-recovery-persistent-pressure-reduction, config: simulations/cerebral/co2-recovery-persistent-pressure-reduction.yaml}
+  - {id: pressure-recovery-persistent-hypocapnia, config: simulations/cerebral/pressure-recovery-persistent-hypocapnia.yaml}
 simulations:
   - id: SIM-HEALTHY-BASELINE
     name: Healthy resting baseline
@@ -107,3 +117,39 @@ simulations:
     validation: [VAL-UNCERTAINTY]
     outputs: [validation/sensitivity/uncertainty_grid.json, validation/sensitivity/uncertainty_grid.csv, validation/sensitivity/sensitivity-report.md]
     scientific_status: Scenario ranges without assigned probabilities; not population uncertainty quantification or clinical validation.
+  - id: SIM-ORTHO-GRADED-TILT
+    name: Graded passive head-up tilt angle series
+    config: phenotypes/healthy/healthy-reference.yaml + simulations/orthostatic/passive-tilt-30.yaml + simulations/orthostatic/passive-tilt-45.yaml + simulations/orthostatic/passive-tilt-60.yaml + simulations/orthostatic/passive-tilt-70.yaml
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.3.0
+    mechanisms: [MEC-ORTHO-HYDROSTATIC, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX, MEC-CV-VOLUME]
+    validation: [VAL-PHYS-TILT-ANGLE, VAL-PHYS-GRADED-TILT]
+    outputs: [validation/stage1-1/scientific-comparison-matrix.json, validation/stage1-1/scientific-comparison-matrix.md]
+    scientific_status: Research scenario comparison; all eight REF-ZAIDI-2000 healthy cardiac-output/stroke-volume anchor comparisons MISS the preserved published ranges and are retained without recalibration; not clinical validation.
+  - id: SIM-ORTHO-ACTIVE-STANDING
+    name: Active versus passive standing geometry comparison
+    config: phenotypes/healthy/healthy-reference.yaml + simulations/orthostatic/active-standing.yaml + simulations/orthostatic/tilt-recovery.yaml
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.3.0
+    mechanisms: [MEC-ORTHO-HYDROSTATIC, MEC-MUSCLE-PUMP, MEC-SUSTAINED-CONTRACTION, MEC-AUT-BAROREFLEX]
+    validation: [VAL-PHYS-TILT-ANGLE, VAL-PHYS-TILT, VAL-PHYS-RECOVERY]
+    outputs: [validation/stage1-1/scientific-comparison-matrix.json, validation/stage1-1/scientific-comparison-matrix.md]
+    scientific_status: Research scenario comparison; not clinical validation.
+  - id: SIM-CBF-CO2
+    name: Cerebral pressure/CO2 isolation and recovery protocols
+    config: phenotypes/healthy/healthy-reference.yaml + simulations/cerebral/pressure-reduction.yaml + simulations/cerebral/co2-reduction.yaml + simulations/cerebral/combined-pressure-co2-reduction.yaml + simulations/cerebral/co2-recovery-persistent-pressure-reduction.yaml + simulations/cerebral/pressure-recovery-persistent-hypocapnia.yaml
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.3.0
+    mechanisms: [MEC-CBF-CO2, MEC-CBF-AUTOREG, MEC-CV-VOLUME]
+    validation: [VAL-PHYS-CBF-CO2]
+    outputs: [validation/stage1-1/scientific-comparison-matrix.json, validation/stage1-1/scientific-comparison-matrix.md]
+    scientific_status: Research scenario comparison of the bounded end-tidal-CO2 factor (isolated 30 mmHg hypocapnia factor 0.7047; pressure/CO2 dissociation preserved); not clinical validation.

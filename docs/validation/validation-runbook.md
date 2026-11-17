@@ -28,7 +28,7 @@ python scripts/audit_traceability.py --root . --strict --deterministic \
 ocpe validate ocpe/packages/disease-models --strict
 ```
 
-Expected release conditions: Ruff exits zero; pytest has no failure/error; the traceability audit has zero errors and warnings; OCPE reports zero errors and warnings. An import/install failure is not an empty validation result.
+Expected release conditions: Ruff exits zero; pytest has no failure/error; the traceability audit has zero errors and warnings; OCPE reports zero errors and warnings. An import/install failure is not an empty validation result. A strict expected failure can leave pytest green while preserving an unresolved scientific assertion failure; it is not a physiological or release-validation pass.
 
 Run focused software/regression checks without treating the count as scientific validation:
 
@@ -46,7 +46,7 @@ pytest -q -m phenotype
 pytest -q -m empirical
 ```
 
-Every command must collect tests. Pytest exit code 5 (`no tests ran`) is a validation failure. Investigate failed numerical tolerances or scenario criteria; do not weaken a criterion after seeing an inconvenient result without a documented scientific review.
+Every command must collect tests. Pytest exit code 5 (`no tests ran`) is a validation failure. Investigate failed numerical tolerances or scenario criteria; do not weaken a criterion after seeing an inconvenient result without a documented scientific review. Stage 1.1 retains narrow strict xfails for the five unchanged POTS/Long-COVID-autonomic sustained-HR criterion misses; these are executable expected failures and remain `FAIL` in the scientific matrix and release assessment.
 
 ## 4. Demonstrations and observation exchange
 
@@ -67,11 +67,12 @@ python scripts/run_sensitivity.py
 pytest -q -m sensitivity_uncertainty
 ```
 
-Review `validation/sensitivity/sensitivity-report.md` and full JSON/CSV rows. In particular, inspect MAP-below-70-mmHg hEDS grid cases. Do not delete failed combinations or describe the grid as a patient distribution. There is no stochastic sampling; seed metadata does not substitute for probabilistic analysis.
+Review `validation/sensitivity/sensitivity-report.md` and full JSON/CSV rows. Stage 1.1 exports 59 local scenarios, 27 deterministic grid scenarios, and three chronotropic-split scenarios, including CO2-reactivity/clipping and CO2-reactivity × cerebral-outflow coverage. Inspect any MAP-below-70-mmHg hEDS grid cases and retain historical failures separately. Do not delete failed combinations or describe a grid as a patient distribution. There is no stochastic sampling; seed metadata does not substitute for probabilistic analysis.
 
 ## 6. Full seven-layer report
 
 ```bash
+python scripts/run_stage1_1_validation.py
 python scripts/run_validation.py
 ```
 
@@ -81,13 +82,15 @@ To rerun without recomputing sensitivity artifacts:
 python scripts/run_validation.py --no-analysis
 ```
 
+A successful command exit is not expected while unresolved strict scientific xfails remain; inspect the separate per-layer execution and scientific statuses rather than discarding the report.
+
 For one layer, use a repeated explicit selector, for example:
 
 ```bash
 python scripts/run_validation.py --layer mathematical --layer scientific_traceability
 ```
 
-Read `validation/reports/validation-report.md`, JSON, and individual logs. `PASS` applies only to the declared computational checks. A partial-layer run is not a full release validation.
+Read `validation/stage1-1/scientific-comparison-matrix.md`, `validation/reports/validation-report.md`, JSON, and individual logs. `PASS` applies only to the declared computational checks with no strict expected failure. The seven-layer runner deliberately marks a layer `FAIL` when pytest reports an xfail, even if its process exits zero; this keeps the unchanged POTS/Long-COVID-autonomic criterion misses visible in the overall release verdict. A partial-layer run is not a full release validation.
 
 ## 7. Regression updates
 

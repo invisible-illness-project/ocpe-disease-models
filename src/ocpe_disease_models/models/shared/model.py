@@ -1,19 +1,20 @@
 """Executable, beat-averaged physiological models.
 
 The cardiovascular equations conserve stressed blood volume across arterial,
-central-venous, splanchnic-venous and lower-limb-venous compartments. Distinct
-vagal, cardiac-sympathetic and vascular-sympathetic states control effectors.
-Rhythmic muscle activity transfers lower-limb venous volume without creating
-blood. The PEM equations are an explicitly phenomenological exertion/delay/
-recovery approximation, not a claim that the cellular cause of PEM is known.
-Time is seconds, volumes are mL, pressures are mmHg, and flows are mL/s unless
-stated otherwise.
+central-venous, splanchnic-venous, lower-limb-venous and other-systemic-venous
+compartments. Distinct vagal, cardiac-sympathetic and vascular-sympathetic
+states control effectors. Rhythmic muscle activity transfers lower-limb venous
+volume without creating blood. The PEM equations are an explicitly
+phenomenological exertion/delay/recovery approximation, not a claim that the
+cellular cause of PEM is known. Time is seconds, volumes are mL, pressures are
+mmHg, and flows are mL/s unless stated otherwise.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import math
 import platform
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass, fields
@@ -31,6 +32,7 @@ STATE_NAMES = (
     "central_venous_volume",
     "splanchnic_venous_volume",
     "lower_limb_venous_volume",
+    "other_systemic_venous_volume",
     "cardiac_sympathetic_state",
     "vascular_sympathetic_state",
     "vagal_state",
@@ -39,6 +41,26 @@ STATE_NAMES = (
     "pem_severity",
     "cerebral_flow_index",
 )
+
+# Indices into the state vector, kept consistent with STATE_NAMES.
+_ARTERIAL_VOLUME = STATE_NAMES.index("arterial_volume")
+_CENTRAL_VENOUS_VOLUME = STATE_NAMES.index("central_venous_volume")
+_SPLANCHNIC_VENOUS_VOLUME = STATE_NAMES.index("splanchnic_venous_volume")
+_LOWER_LIMB_VENOUS_VOLUME = STATE_NAMES.index("lower_limb_venous_volume")
+_OTHER_SYSTEMIC_VENOUS_VOLUME = STATE_NAMES.index("other_systemic_venous_volume")
+_CARDIAC_SYMPATHETIC_STATE = STATE_NAMES.index("cardiac_sympathetic_state")
+_VASCULAR_SYMPATHETIC_STATE = STATE_NAMES.index("vascular_sympathetic_state")
+_VAGAL_STATE = STATE_NAMES.index("vagal_state")
+_EXERTIONAL_LOAD = STATE_NAMES.index("exertional_load")
+_DELAYED_STRESS = STATE_NAMES.index("delayed_stress")
+_PEM_SEVERITY = STATE_NAMES.index("pem_severity")
+_CEREBRAL_FLOW_INDEX = STATE_NAMES.index("cerebral_flow_index")
+_VOLUME_STATE_COUNT = 5
+
+# Mercury-column conversion: 1 cm H2O-equivalent blood column per cm of height.
+HYDROSTATIC_MMHG_PER_CM = 0.7356
+
+_BAROREFLEX_WEIGHT_TOLERANCE = 1e-6
 
 
 @dataclass(frozen=True)
@@ -54,20 +76,26 @@ class ModelParameters:
     central_venous_compliance: float = 140.0
     splanchnic_venous_compliance: float = 70.0
     lower_limb_venous_compliance: float = 50.0
-    splanchnic_arterial_resistance: float = 2.204081632653061
-    lower_limb_arterial_resistance: float = 2.204081632653061
-    splanchnic_venous_resistance: float = 0.12244897959183673
-    lower_limb_venous_resistance: float = 0.12244897959183673
+    other_systemic_venous_compliance: float = 50.0
+    splanchnic_arterial_resistance: float = 4.408163265306122
+    lower_limb_arterial_resistance: float = 4.408163265306122
+    other_systemic_arterial_resistance: float = 2.204081632653061
+    splanchnic_venous_resistance: float = 0.24489795918367346
+    lower_limb_venous_resistance: float = 0.24489795918367346
+    other_systemic_venous_resistance: float = 0.12244897959183673
     splanchnic_resistance_sympathetic_gain: float = 0.8
     lower_limb_resistance_sympathetic_gain: float = 0.8
-    splanchnic_gravity_pressure_offset: float = 4.0
-    lower_limb_gravity_pressure_offset: float = 8.0
+    other_systemic_resistance_sympathetic_gain: float = 0.8
+    splanchnic_hydrostatic_height_cm: float = 5.43773790103317
+    lower_limb_hydrostatic_height_cm: float = 10.87547580206634
+    other_systemic_hydrostatic_height_cm: float = 0.0
 
-    # Initial stressed volumes/pressures; all four volumes conserve their sum.
+    # Initial stressed volumes/pressures; all five volumes conserve their sum.
     arterial_volume_initial: float = 150.0
     central_venous_volume_initial: float = 700.0
     splanchnic_venous_pressure_initial: float = 10.0
     lower_limb_venous_pressure_initial: float = 10.0
+    other_systemic_venous_pressure_initial: float = 10.0
     blood_volume_factor: float = 1.0
 
     # Cardiac and differentiated baroreflex operating point.
@@ -77,8 +105,14 @@ class ModelParameters:
     heart_rate_rest: float = 70.0
     heart_rate_cardiac_sympathetic_gain: float = 20.0
     heart_rate_vagal_gain: float = 20.0
-    baroreflex_pressure_setpoint: float = 100.0
-    baroreflex_pressure_scale: float = 2.0
+    aortic_baroreflex_pressure_setpoint: float = 100.0
+    carotid_baroreflex_pressure_setpoint: float = 100.0
+    aortic_baroreflex_pressure_scale: float = 2.0
+    carotid_baroreflex_pressure_scale: float = 2.0
+    aortic_baroreflex_weight: float = 0.25
+    carotid_baroreflex_weight: float = 0.75
+    aortic_baroreceptor_height_cm: float = 0.0
+    carotid_baroreceptor_height_cm: float = 25.0
     cardiac_sympathetic_time_constant: float = 6.0
     vascular_sympathetic_time_constant: float = 10.0
     vagal_time_constant: float = 1.0
@@ -93,12 +127,16 @@ class ModelParameters:
     sustained_contraction_resistance_gain: float = 3.0
 
     # Cerebral perfusion-pressure approximation (dimensionless flow index).
-    head_hydrostatic_pressure_offset: float = 20.0
+    brain_hydrostatic_height_cm: float = 27.0
+    cerebral_outflow_pressure_mmHg: float = 5.0
     cerebral_reference_perfusion_pressure: float = 95.0
     cerebral_autoregulation_residual_slope: float = 0.2
     cerebral_orthostatic_impairment: float = 0.0
     cerebral_decline_time_constant: float = 5.0
     cerebral_recovery_time_constant: float = 12.0
+    end_tidal_co2_reference_mmHg: float = 40.0
+    cerebral_co2_reactivity_per_mmHg: float = 0.035
+    cerebral_co2_extrapolation_limit_mmHg: float = 15.0
 
     # Oxygen use and exertional capacity (dimensionless fractions).
     baseline_metabolic_capacity: float = 1.0
@@ -131,27 +169,78 @@ class ModelParameters:
 
 @dataclass(frozen=True)
 class ProtocolSegment:
-    """A constant-input segment of a simulation protocol."""
+    """A constant-input segment of a simulation protocol.
+
+    Posture is specified either by the legacy ``upright`` fraction (mapped to
+    a tilt angle through ``arcsin(upright)``, so 1.0 is 90 degrees) or by an
+    explicit ``tilt_angle_deg`` in [0, 90]; specifying both is an error.
+    During ``transition_duration`` the posture angle is linearly interpolated
+    from the previous segment's angle; all other inputs remain piecewise
+    constant. ``end_tidal_co2_mmHg=None`` selects the model reference value.
+    """
 
     start: float
     end: float
-    upright: float = 0.0
+    upright: float | None = None
+    tilt_angle_deg: float | None = None
+    end_tidal_co2_mmHg: float | None = None
+    transition_duration: float = 0.0
     exertion: float = 0.0
     rhythmic_muscle_activity: float = 0.0
     sustained_muscle_contraction: float = 0.0
     label: str = "segment"
 
+    def resolved_tilt_angle_deg(self) -> float:
+        """Resolve the segment's steady posture angle in degrees."""
+        if self.tilt_angle_deg is not None:
+            return self.tilt_angle_deg
+        if self.upright is not None:
+            return math.degrees(math.asin(self.upright))
+        return 0.0
+
+    def resolved_end_tidal_co2(self, reference_mmHg: float) -> float:
+        """Resolve end-tidal CO2, falling back to the model reference."""
+        if self.end_tidal_co2_mmHg is None:
+            return reference_mmHg
+        return self.end_tidal_co2_mmHg
+
     def validate(self) -> None:
         if self.start < 0 or self.end <= self.start:
             raise ValueError(f"Invalid segment bounds: {self}")
+        if self.upright is not None and self.tilt_angle_deg is not None:
+            raise ValueError(
+                "Specify only one of upright or tilt_angle_deg, not both"
+            )
+        if self.upright is not None and not 0 <= self.upright <= 1:
+            raise ValueError("upright must be normalized to [0, 1]")
+        if self.tilt_angle_deg is not None and not 0 <= self.tilt_angle_deg <= 90:
+            raise ValueError("tilt_angle_deg must be in [0, 90]")
+        if not 0 <= self.transition_duration <= self.end - self.start:
+            raise ValueError(
+                "transition_duration must be nonnegative and no longer than the segment"
+            )
+        if self.end_tidal_co2_mmHg is not None and self.end_tidal_co2_mmHg <= 0:
+            raise ValueError("end_tidal_co2_mmHg must be positive when provided")
         inputs = (
-            self.upright,
             self.exertion,
             self.rhythmic_muscle_activity,
             self.sustained_muscle_contraction,
         )
         if any(not 0 <= value <= 1 for value in inputs):
             raise ValueError("Protocol inputs must be normalized to [0, 1]")
+
+
+@dataclass(frozen=True)
+class _ResolvedInputs:
+    """Protocol inputs resolved at one time point."""
+
+    tilt_angle_deg: float
+    tilt_radians: float
+    upright: float  # Vertical sine of the tilt angle.
+    end_tidal_co2_mmHg: float
+    exertion: float
+    rhythmic_muscle_activity: float
+    sustained_muscle_contraction: float
 
 
 @dataclass
@@ -176,7 +265,7 @@ class SimulationResult:
         return float(getattr(np, statistic)(values))
 
     def summary(self) -> dict[str, Any]:
-        upright_segments = [s for s in self.protocol if s.upright > 0]
+        upright_segments = [s for s in self.protocol if s.resolved_tilt_angle_deg() > 0]
         result: dict[str, Any] = {
             "phenotype_id": self.phenotype_id,
             "duration_s": float(self.time[-1]),
@@ -187,9 +276,20 @@ class SimulationResult:
             "functional_capacity_final": float(self.outputs["functional_capacity"][-1]),
         }
         if upright_segments:
-            start = upright_segments[0].start
-            upright_end = min(float(self.time[-1]), upright_segments[0].end)
-            baseline_end = max(0.0, start - 1.0)
+            first_upright = upright_segments[0]
+            first_index = next(
+                index for index, segment in enumerate(self.protocol) if segment is first_upright
+            )
+            start = first_upright.start
+            upright_end = first_upright.end
+            # Active standing and sustained quiet standing are distinct input
+            # segments but one continuous orthostatic bout.
+            for segment in self.protocol[first_index + 1 :]:
+                if segment.resolved_tilt_angle_deg() <= 0:
+                    break
+                upright_end = segment.end
+            upright_end = min(float(self.time[-1]), upright_end)
+            baseline_end = max(0.0, start - 2.0)
             baseline = self.metric("heart_rate", 0.0, baseline_end)
             standing = self.metric(
                 "heart_rate", start, min(start + 300.0, upright_end), "max"
@@ -243,20 +343,26 @@ class ComputationalPatient:
             "central_venous_compliance",
             "splanchnic_venous_compliance",
             "lower_limb_venous_compliance",
+            "other_systemic_venous_compliance",
             "splanchnic_arterial_resistance",
             "lower_limb_arterial_resistance",
+            "other_systemic_arterial_resistance",
             "splanchnic_venous_resistance",
             "lower_limb_venous_resistance",
+            "other_systemic_venous_resistance",
             "arterial_volume_initial",
             "central_venous_volume_initial",
             "splanchnic_venous_pressure_initial",
             "lower_limb_venous_pressure_initial",
+            "other_systemic_venous_pressure_initial",
             "blood_volume_factor",
             "stroke_volume_max",
             "stroke_volume_half_volume",
             "heart_rate_rest",
-            "baroreflex_pressure_setpoint",
-            "baroreflex_pressure_scale",
+            "aortic_baroreflex_pressure_setpoint",
+            "carotid_baroreflex_pressure_setpoint",
+            "aortic_baroreflex_pressure_scale",
+            "carotid_baroreflex_pressure_scale",
             "cardiac_sympathetic_time_constant",
             "vascular_sympathetic_time_constant",
             "vagal_time_constant",
@@ -265,6 +371,8 @@ class ComputationalPatient:
             "cerebral_reference_perfusion_pressure",
             "cerebral_decline_time_constant",
             "cerebral_recovery_time_constant",
+            "end_tidal_co2_reference_mmHg",
+            "cerebral_co2_extrapolation_limit_mmHg",
             "baseline_metabolic_capacity",
             "exertional_load_time_constant",
             "delayed_stress_time_constant",
@@ -277,8 +385,17 @@ class ComputationalPatient:
         nonnegative_names = (
             "splanchnic_resistance_sympathetic_gain",
             "lower_limb_resistance_sympathetic_gain",
-            "splanchnic_gravity_pressure_offset",
-            "lower_limb_gravity_pressure_offset",
+            "other_systemic_resistance_sympathetic_gain",
+            "splanchnic_hydrostatic_height_cm",
+            "lower_limb_hydrostatic_height_cm",
+            "other_systemic_hydrostatic_height_cm",
+            "aortic_baroreflex_weight",
+            "carotid_baroreflex_weight",
+            "aortic_baroreceptor_height_cm",
+            "carotid_baroreceptor_height_cm",
+            "brain_hydrostatic_height_cm",
+            "cerebral_outflow_pressure_mmHg",
+            "cerebral_co2_reactivity_per_mmHg",
             "contractility_sympathetic_gain",
             "heart_rate_cardiac_sympathetic_gain",
             "heart_rate_vagal_gain",
@@ -286,7 +403,6 @@ class ComputationalPatient:
             "muscle_pump_stroke_volume",
             "muscle_pump_effectiveness",
             "sustained_contraction_resistance_gain",
-            "head_hydrostatic_pressure_offset",
             "pem_response_gain",
         )
         for name in nonnegative_names:
@@ -295,9 +411,15 @@ class ComputationalPatient:
         for name in (
             "splanchnic_resistance_sympathetic_gain",
             "lower_limb_resistance_sympathetic_gain",
+            "other_systemic_resistance_sympathetic_gain",
         ):
             if getattr(p, name) >= 2:
                 raise ValueError(f"{name} must be below 2 to keep resistance positive")
+        weight_sum = p.aortic_baroreflex_weight + p.carotid_baroreflex_weight
+        if abs(weight_sum - 1.0) > _BAROREFLEX_WEIGHT_TOLERANCE:
+            raise ValueError(
+                "aortic_baroreflex_weight and carotid_baroreflex_weight must sum to 1"
+            )
         for name in (
             "oxygen_extraction_fraction",
             "functional_capacity_reference_extraction",
@@ -312,10 +434,17 @@ class ComputationalPatient:
         ):
             if not 0 <= getattr(p, name) <= 1:
                 raise ValueError(f"{name} must be in [0, 1]")
-        if not 0 < p.cerebral_autoregulation_residual_slope <= 1:
-            raise ValueError("cerebral_autoregulation_residual_slope must be in (0, 1]")
+        if not 0 < p.cerebral_autoregulation_residual_slope < 1:
+            raise ValueError("cerebral_autoregulation_residual_slope must be in (0, 1)")
         if not 0 <= p.pem_trigger_threshold < 1:
             raise ValueError("pem_trigger_threshold must be in [0, 1)")
+
+    def _cerebral_pressure_target(self, cerebral_perfusion_pressure: float) -> float:
+        """Bounded autoregulation pressure curve shared by init and dynamics."""
+        p = self.parameters
+        ratio = cerebral_perfusion_pressure / p.cerebral_reference_perfusion_pressure
+        slope = p.cerebral_autoregulation_residual_slope
+        return ratio / (slope + (1.0 - slope) * ratio)
 
     def initial_state(self) -> np.ndarray:
         p = self.parameters
@@ -324,49 +453,60 @@ class ComputationalPatient:
         central = p.central_venous_volume_initial * factor
         splanchnic = p.splanchnic_venous_pressure_initial * p.splanchnic_venous_compliance * factor
         lower_limb = p.lower_limb_venous_pressure_initial * p.lower_limb_venous_compliance * factor
+        other = p.other_systemic_venous_pressure_initial * p.other_systemic_venous_compliance * factor
         arterial_pressure = arterial / p.arterial_compliance
-        central_pressure = central / p.central_venous_compliance
-        cerebral_ratio = max(0.0, arterial_pressure - central_pressure) / (
-            p.cerebral_reference_perfusion_pressure
+        # Supine posture and reference CO2: the hydrostatic term is zero and
+        # the CO2 factor is one, so the initial index matches the steady state.
+        cerebral_perfusion_pressure = max(
+            0.0, arterial_pressure - p.cerebral_outflow_pressure_mmHg
         )
-        slope = p.cerebral_autoregulation_residual_slope
-        cerebral_initial = cerebral_ratio / (slope + (1.0 - slope) * cerebral_ratio)
-        return np.array(
-            [
-                arterial,
-                central,
-                splanchnic,
-                lower_limb,
-                0.5,
-                0.5,
-                0.5,
-                0.0,
-                0.0,
-                0.0,
-                cerebral_initial,
-            ],
-            dtype=float,
-        )
+        cerebral_initial = self._cerebral_pressure_target(cerebral_perfusion_pressure)
+        state = np.zeros(len(STATE_NAMES), dtype=float)
+        state[_ARTERIAL_VOLUME] = arterial
+        state[_CENTRAL_VENOUS_VOLUME] = central
+        state[_SPLANCHNIC_VENOUS_VOLUME] = splanchnic
+        state[_LOWER_LIMB_VENOUS_VOLUME] = lower_limb
+        state[_OTHER_SYSTEMIC_VENOUS_VOLUME] = other
+        state[_CARDIAC_SYMPATHETIC_STATE] = 0.5
+        state[_VASCULAR_SYMPATHETIC_STATE] = 0.5
+        state[_VAGAL_STATE] = 0.5
+        state[_CEREBRAL_FLOW_INDEX] = cerebral_initial
+        return state
 
     @staticmethod
-    def _inputs(t: float, protocol: Sequence[ProtocolSegment]) -> tuple[float, float, float, float]:
+    def _inputs(
+        t: float,
+        protocol: Sequence[ProtocolSegment],
+        end_tidal_co2_reference_mmHg: float,
+    ) -> _ResolvedInputs:
+        previous_angle_deg = 0.0
         for segment in protocol:
-            if segment.start <= t < segment.end:
-                return (
-                    segment.upright,
-                    segment.exertion,
-                    segment.rhythmic_muscle_activity,
-                    segment.sustained_muscle_contraction,
+            in_segment = segment.start <= t < segment.end
+            at_final_end = segment is protocol[-1] and t == segment.end
+            if in_segment or at_final_end:
+                angle_deg = segment.resolved_tilt_angle_deg()
+                transition_end = segment.start + segment.transition_duration
+                if segment.transition_duration > 0 and t < transition_end:
+                    fraction = (t - segment.start) / segment.transition_duration
+                    angle_deg = previous_angle_deg + (angle_deg - previous_angle_deg) * fraction
+                tilt_radians = math.radians(angle_deg)
+                return _ResolvedInputs(
+                    tilt_angle_deg=angle_deg,
+                    tilt_radians=tilt_radians,
+                    upright=math.sin(tilt_radians),
+                    end_tidal_co2_mmHg=segment.resolved_end_tidal_co2(
+                        end_tidal_co2_reference_mmHg
+                    ),
+                    exertion=segment.exertion,
+                    rhythmic_muscle_activity=segment.rhythmic_muscle_activity,
+                    sustained_muscle_contraction=segment.sustained_muscle_contraction,
                 )
-        if t == protocol[-1].end:
-            last = protocol[-1]
-            return (
-                last.upright,
-                last.exertion,
-                last.rhythmic_muscle_activity,
-                last.sustained_muscle_contraction,
-            )
+            previous_angle_deg = segment.resolved_tilt_angle_deg()
         raise ValueError(f"Time {t} is outside the protocol")
+
+    @staticmethod
+    def _hydrostatic_pressure(height_cm: float, sin_tilt: float) -> float:
+        return HYDROSTATIC_MMHG_PER_CM * height_cm * sin_tilt
 
     def _derived(
         self, t: float, y: np.ndarray, protocol: Sequence[ProtocolSegment]
@@ -374,13 +514,22 @@ class ComputationalPatient:
         p = self.parameters
         if not np.all(np.isfinite(y)):
             raise FloatingPointError("Non-finite state passed to physiological equations")
-        va, vc, vs, vl, cardiac_sym, vascular_sym, vagal, _, _, pem, _ = y
-        upright, exertion, rhythmic, sustained = self._inputs(t, protocol)
+        va = y[_ARTERIAL_VOLUME]
+        vc = y[_CENTRAL_VENOUS_VOLUME]
+        vs = y[_SPLANCHNIC_VENOUS_VOLUME]
+        vl = y[_LOWER_LIMB_VENOUS_VOLUME]
+        vo = y[_OTHER_SYSTEMIC_VENOUS_VOLUME]
+        cardiac_sym = y[_CARDIAC_SYMPATHETIC_STATE]
+        vascular_sym = y[_VASCULAR_SYMPATHETIC_STATE]
+        vagal = y[_VAGAL_STATE]
+        pem = min(1.0, y[_PEM_SEVERITY])
+        inputs = self._inputs(t, protocol, p.end_tidal_co2_reference_mmHg)
+        sin_tilt = inputs.upright
         pa = va / p.arterial_compliance
         pc = vc / p.central_venous_compliance
         ps = vs / p.splanchnic_venous_compliance
         pl = vl / p.lower_limb_venous_compliance
-        pem = min(1.0, pem)
+        po = vo / p.other_systemic_venous_compliance
         capacity = max(0.05, p.baseline_metabolic_capacity * (1.0 - p.pem_capacity_penalty * pem))
         splanchnic_arterial_resistance = p.splanchnic_arterial_resistance * (
             1.0 + p.splanchnic_resistance_sympathetic_gain * (vascular_sym - 0.5)
@@ -388,10 +537,13 @@ class ComputationalPatient:
         lower_limb_arterial_resistance = (
             p.lower_limb_arterial_resistance
             * (1.0 + p.lower_limb_resistance_sympathetic_gain * (vascular_sym - 0.5))
-            * (1.0 - p.exercise_resistance_reduction * exertion)
+            * (1.0 - p.exercise_resistance_reduction * inputs.exertion)
+        )
+        other_systemic_arterial_resistance = p.other_systemic_arterial_resistance * (
+            1.0 + p.other_systemic_resistance_sympathetic_gain * (vascular_sym - 0.5)
         )
         lower_limb_venous_resistance = p.lower_limb_venous_resistance * (
-            1.0 + p.sustained_contraction_resistance_gain * sustained
+            1.0 + p.sustained_contraction_resistance_gain * inputs.sustained_muscle_contraction
         )
         contractility = max(0.2, 1.0 + p.contractility_sympathetic_gain * (cardiac_sym - 0.5))
         stroke_volume = (
@@ -401,56 +553,129 @@ class ComputationalPatient:
             p.heart_rate_rest
             + p.heart_rate_cardiac_sympathetic_gain * (cardiac_sym - 0.5)
             + p.heart_rate_vagal_gain * (0.5 - vagal)
-            + p.exercise_heart_rate_gain * exertion * capacity,
+            + p.exercise_heart_rate_gain * inputs.exertion * capacity,
             30.0,
             220.0,
         )
         cardiac_output = heart_rate / 60.0 * stroke_volume
         splanchnic_arterial_flow = max(0.0, (pa - ps) / splanchnic_arterial_resistance)
         lower_limb_arterial_flow = max(0.0, (pa - pl) / lower_limb_arterial_resistance)
+        other_systemic_arterial_flow = max(
+            0.0, (pa - po) / other_systemic_arterial_resistance
+        )
         splanchnic_venous_return = max(
             0.0,
-            (ps - pc - p.splanchnic_gravity_pressure_offset * upright)
+            (
+                ps
+                - pc
+                - self._hydrostatic_pressure(p.splanchnic_hydrostatic_height_cm, sin_tilt)
+            )
             / p.splanchnic_venous_resistance,
         )
         muscle_pump_flow = (
             p.muscle_pump_frequency
             * p.muscle_pump_stroke_volume
             * p.muscle_pump_effectiveness
-            * rhythmic
+            * inputs.rhythmic_muscle_activity
             * vl
             / (vl + p.muscle_pump_half_volume)
         )
         lower_limb_venous_return = (
             max(
                 0.0,
-                (pl - pc - p.lower_limb_gravity_pressure_offset * upright)
+                (
+                    pl
+                    - pc
+                    - self._hydrostatic_pressure(p.lower_limb_hydrostatic_height_cm, sin_tilt)
+                )
                 / lower_limb_venous_resistance,
             )
             + muscle_pump_flow
         )
-        head_pressure = max(0.0, pa - p.head_hydrostatic_pressure_offset * upright)
-        cerebral_perfusion_pressure = max(0.0, head_pressure - pc)
-        cerebral_ratio = cerebral_perfusion_pressure / p.cerebral_reference_perfusion_pressure
-        slope = p.cerebral_autoregulation_residual_slope
-        cerebral_pressure_target = cerebral_ratio / (slope + (1.0 - slope) * cerebral_ratio)
-        cerebral_target = cerebral_pressure_target * max(
-            0.0, 1.0 - p.cerebral_orthostatic_impairment * upright
+        other_systemic_venous_return = max(
+            0.0,
+            (
+                po
+                - pc
+                - self._hydrostatic_pressure(p.other_systemic_hydrostatic_height_cm, sin_tilt)
+            )
+            / p.other_systemic_venous_resistance,
+        )
+        aortic_baroreceptor_pressure = max(
+            0.0, pa - self._hydrostatic_pressure(p.aortic_baroreceptor_height_cm, sin_tilt)
+        )
+        carotid_sinus_pressure = max(
+            0.0, pa - self._hydrostatic_pressure(p.carotid_baroreceptor_height_cm, sin_tilt)
+        )
+        aortic_error = (
+            p.aortic_baroreflex_pressure_setpoint - aortic_baroreceptor_pressure
+        ) / p.aortic_baroreflex_pressure_scale
+        carotid_error = (
+            p.carotid_baroreflex_pressure_setpoint - carotid_sinus_pressure
+        ) / p.carotid_baroreflex_pressure_scale
+        integrated_baroreflex_input = (
+            p.aortic_baroreflex_weight * aortic_error
+            + p.carotid_baroreflex_weight * carotid_error
+        )
+        baroreflex_target = 1.0 / (
+            1.0 + math.exp(-float(np.clip(integrated_baroreflex_input, -40.0, 40.0)))
+        )
+        brain_arterial_pressure = max(
+            0.0, pa - self._hydrostatic_pressure(p.brain_hydrostatic_height_cm, sin_tilt)
+        )
+        # Fixed effective downstream pressure approximation: explicitly NOT
+        # thoracic central venous pressure or a separately resolved ICP.
+        cerebral_outflow_pressure = p.cerebral_outflow_pressure_mmHg
+        cerebral_perfusion_pressure = max(
+            0.0, brain_arterial_pressure - cerebral_outflow_pressure
+        )
+        cerebral_pressure_target = self._cerebral_pressure_target(
+            cerebral_perfusion_pressure
+        )
+        co2_deviation = float(
+            np.clip(
+                inputs.end_tidal_co2_mmHg - p.end_tidal_co2_reference_mmHg,
+                -p.cerebral_co2_extrapolation_limit_mmHg,
+                p.cerebral_co2_extrapolation_limit_mmHg,
+            )
+        )
+        cerebral_co2_factor = math.exp(p.cerebral_co2_reactivity_per_mmHg * co2_deviation)
+        cerebral_impairment_factor = max(
+            0.0, 1.0 - p.cerebral_orthostatic_impairment * sin_tilt
+        )
+        cerebral_target = (
+            cerebral_pressure_target * cerebral_co2_factor * cerebral_impairment_factor
         )
         extraction = np.clip(
             p.oxygen_extraction_fraction * (1.0 - p.pem_extraction_penalty * pem), 0.0, 0.99
         )
-        systemic_flow = splanchnic_arterial_flow + lower_limb_arterial_flow
+        systemic_flow = (
+            splanchnic_arterial_flow + lower_limb_arterial_flow + other_systemic_arterial_flow
+        )
         parallel_resistance = 1.0 / (
-            1.0 / splanchnic_arterial_resistance + 1.0 / lower_limb_arterial_resistance
+            1.0 / splanchnic_arterial_resistance
+            + 1.0 / lower_limb_arterial_resistance
+            + 1.0 / other_systemic_arterial_resistance
         )
         return {
             "arterial_pressure": pa,
             "central_venous_pressure": pc,
             "splanchnic_venous_pressure": ps,
             "lower_limb_venous_pressure": pl,
-            "baroreflex_pressure": head_pressure,
+            "other_systemic_venous_pressure": po,
+            "heart_level_mean_arterial_pressure": pa,
+            "aortic_baroreceptor_pressure": aortic_baroreceptor_pressure,
+            "carotid_sinus_pressure": carotid_sinus_pressure,
+            "brain_arterial_pressure": brain_arterial_pressure,
+            "integrated_baroreflex_input": integrated_baroreflex_input,
+            "baroreflex_target": baroreflex_target,
+            "cerebral_outflow_pressure": cerebral_outflow_pressure,
             "cerebral_perfusion_pressure": cerebral_perfusion_pressure,
+            "end_tidal_co2_mmHg": inputs.end_tidal_co2_mmHg,
+            "cerebral_co2_factor": cerebral_co2_factor,
+            "cerebral_impairment_factor": cerebral_impairment_factor,
+            "tilt_angle_deg": inputs.tilt_angle_deg,
+            "upright": sin_tilt,
             "heart_rate": float(heart_rate),
             "stroke_volume": stroke_volume,
             "cardiac_output": cardiac_output,
@@ -459,13 +684,18 @@ class ComputationalPatient:
             "systemic_flow": systemic_flow,
             "splanchnic_arterial_flow": splanchnic_arterial_flow,
             "lower_limb_arterial_flow": lower_limb_arterial_flow,
+            "other_systemic_arterial_flow": other_systemic_arterial_flow,
             "splanchnic_venous_return": splanchnic_venous_return,
             "lower_limb_venous_return": lower_limb_venous_return,
+            "other_systemic_venous_return": other_systemic_venous_return,
             "muscle_pump_flow": muscle_pump_flow,
-            "venous_return": splanchnic_venous_return + lower_limb_venous_return,
+            "venous_return": splanchnic_venous_return
+            + lower_limb_venous_return
+            + other_systemic_venous_return,
             "systemic_resistance_effective": parallel_resistance,
             "splanchnic_arterial_resistance_effective": splanchnic_arterial_resistance,
             "lower_limb_arterial_resistance_effective": lower_limb_arterial_resistance,
+            "other_systemic_arterial_resistance_effective": other_systemic_arterial_resistance,
             "lower_limb_venous_resistance_effective": lower_limb_venous_resistance,
             "cerebral_pressure_target": cerebral_pressure_target,
             "cerebral_flow_target": cerebral_target,
@@ -480,13 +710,15 @@ class ComputationalPatient:
         """Governing equations EQ-CV-001 through EQ-RCV-004."""
         p = self.parameters
         d = self._derived(t, y, protocol)
-        _, _, _, _, cardiac_sym, vascular_sym, vagal, load, delayed, pem, cerebral = y
-        _, exertion, _, _ = self._inputs(t, protocol)
-        pressure_error = (
-            p.baroreflex_pressure_setpoint - d["baroreflex_pressure"]
-        ) / p.baroreflex_pressure_scale
-        pressure_error = float(np.clip(pressure_error, -40.0, 40.0))
-        baroreflex_target = 1.0 / (1.0 + np.exp(-pressure_error))
+        cardiac_sym = y[_CARDIAC_SYMPATHETIC_STATE]
+        vascular_sym = y[_VASCULAR_SYMPATHETIC_STATE]
+        vagal = y[_VAGAL_STATE]
+        load = y[_EXERTIONAL_LOAD]
+        delayed = y[_DELAYED_STRESS]
+        pem = y[_PEM_SEVERITY]
+        cerebral = y[_CEREBRAL_FLOW_INDEX]
+        inputs = self._inputs(t, protocol, p.end_tidal_co2_reference_mmHg)
+        baroreflex_target = d["baroreflex_target"]
         d_cardiac_sympathetic = (
             baroreflex_target - cardiac_sym
         ) / p.cardiac_sympathetic_time_constant
@@ -495,14 +727,15 @@ class ComputationalPatient:
         ) / p.vascular_sympathetic_time_constant
         d_vagal = (1.0 - baroreflex_target - vagal) / p.vagal_time_constant
 
-        # Volume conservation: all four volume derivatives telescope exactly.
+        # Volume conservation: all five volume derivatives telescope exactly.
         d_arterial = d["cardiac_output"] - d["systemic_flow"]
         d_central = d["venous_return"] - d["cardiac_output"]
         d_splanchnic = d["splanchnic_arterial_flow"] - d["splanchnic_venous_return"]
         d_lower_limb = d["lower_limb_arterial_flow"] - d["lower_limb_venous_return"]
+        d_other = d["other_systemic_arterial_flow"] - d["other_systemic_venous_return"]
 
         # Phenomenological PEM cascade with asymmetric onset/recovery.
-        load_target = exertion / d["metabolic_capacity"]
+        load_target = inputs.exertion / d["metabolic_capacity"]
         d_load = (load_target - load) / p.exertional_load_time_constant
         d_delayed = (load - delayed) / p.delayed_stress_time_constant
         pem_target = p.pem_response_gain * max(
@@ -518,21 +751,29 @@ class ComputationalPatient:
             else p.cerebral_recovery_time_constant
         )
         d_cerebral = (d["cerebral_flow_target"] - cerebral) / tau_cerebral
-        return np.array(
-            [
-                d_arterial,
-                d_central,
-                d_splanchnic,
-                d_lower_limb,
-                d_cardiac_sympathetic,
-                d_vascular_sympathetic,
-                d_vagal,
-                d_load,
-                d_delayed,
-                d_pem,
-                d_cerebral,
-            ]
+        derivative = np.zeros(len(STATE_NAMES), dtype=float)
+        derivative[_ARTERIAL_VOLUME] = d_arterial
+        derivative[_CENTRAL_VENOUS_VOLUME] = d_central
+        derivative[_SPLANCHNIC_VENOUS_VOLUME] = d_splanchnic
+        derivative[_LOWER_LIMB_VENOUS_VOLUME] = d_lower_limb
+        derivative[_OTHER_SYSTEMIC_VENOUS_VOLUME] = d_other
+        derivative[_CARDIAC_SYMPATHETIC_STATE] = d_cardiac_sympathetic
+        derivative[_VASCULAR_SYMPATHETIC_STATE] = d_vascular_sympathetic
+        derivative[_VAGAL_STATE] = d_vagal
+        derivative[_EXERTIONAL_LOAD] = d_load
+        derivative[_DELAYED_STRESS] = d_delayed
+        derivative[_PEM_SEVERITY] = d_pem
+        derivative[_CEREBRAL_FLOW_INDEX] = d_cerebral
+        return derivative
+
+    def _cerebral_flow_index_upper_bound(self) -> float:
+        """Upper bound from the pressure asymptote times the CO2 bound."""
+        p = self.parameters
+        pressure_asymptote = 1.0 / (1.0 - p.cerebral_autoregulation_residual_slope)
+        co2_bound = math.exp(
+            p.cerebral_co2_reactivity_per_mmHg * p.cerebral_co2_extrapolation_limit_mmHg
         )
+        return pressure_asymptote * co2_bound
 
     def simulate(
         self,
@@ -547,10 +788,16 @@ class ComputationalPatient:
             raise ValueError("At least one protocol segment is required")
         for segment in protocol:
             segment.validate()
-        if any(b.start < a.end for a, b in zip(protocol, protocol[1:], strict=False)):
-            raise ValueError("Protocol segments must be ordered and non-overlapping")
+        if any(b.start != a.end for a, b in zip(protocol, protocol[1:], strict=False)):
+            raise ValueError("Protocol segments must be ordered, contiguous, and non-overlapping")
         if protocol[0].start != 0:
             raise ValueError("Protocol must start at t=0")
+        if not math.isfinite(sample_interval) or sample_interval <= 0:
+            raise ValueError("sample_interval must be positive and finite")
+        if not math.isfinite(max_step) or max_step <= 0:
+            raise ValueError("max_step must be positive and finite")
+        if not 0 < rtol < 1 or not 0 < atol:
+            raise ValueError("rtol must be in (0, 1) and atol must be positive")
         duration = protocol[-1].end
         t_eval = np.arange(0.0, duration + sample_interval * 0.5, sample_interval)
         if t_eval[-1] > duration:
@@ -572,11 +819,14 @@ class ComputationalPatient:
             raise RuntimeError(f"Simulation failed: {solution.message}")
         if not np.all(np.isfinite(solution.y)):
             raise RuntimeError("Simulation produced non-finite states")
-        if np.min(solution.y[:4]) < -1e-6:
+        if np.min(solution.y[:_VOLUME_STATE_COUNT]) < -1e-6:
             raise RuntimeError("Simulation produced a negative stressed-blood-volume state")
-        if np.min(solution.y[4:7]) < -1e-8 or np.max(solution.y[4:7]) > 1.0 + 1e-8:
+        autonomic = solution.y[_CARDIAC_SYMPATHETIC_STATE : _VAGAL_STATE + 1]
+        if np.min(autonomic) < -1e-8 or np.max(autonomic) > 1.0 + 1e-8:
             raise RuntimeError("Simulation produced an autonomic state outside [0, 1]")
-        if np.min(solution.y[10]) < -1e-8 or np.max(solution.y[10]) > 1.25 + 1e-8:
+        cerebral_upper_bound = self._cerebral_flow_index_upper_bound()
+        cerebral = solution.y[_CEREBRAL_FLOW_INDEX]
+        if np.min(cerebral) < -1e-8 or np.max(cerebral) > cerebral_upper_bound + 1e-8:
             raise RuntimeError(
                 "Simulation produced a cerebral-flow index outside its declared bounds"
             )
@@ -585,25 +835,41 @@ class ComputationalPatient:
         ]
         output_names = [
             "heart_rate",
+            "arterial_pressure",
             "mean_arterial_pressure",
+            "heart_level_mean_arterial_pressure",
             "central_venous_pressure",
             "splanchnic_venous_pressure",
             "lower_limb_venous_pressure",
-            "baroreflex_pressure",
+            "other_systemic_venous_pressure",
+            "aortic_baroreceptor_pressure",
+            "carotid_sinus_pressure",
+            "brain_arterial_pressure",
+            "integrated_baroreflex_input",
+            "baroreflex_target",
+            "cerebral_outflow_pressure",
             "cerebral_perfusion_pressure",
+            "end_tidal_co2_mmHg",
+            "cerebral_co2_factor",
+            "cerebral_impairment_factor",
+            "tilt_angle_deg",
+            "upright",
             "stroke_volume",
             "cardiac_output",
             "cardiac_output_l_min",
             "systemic_flow",
             "splanchnic_arterial_flow",
             "lower_limb_arterial_flow",
+            "other_systemic_arterial_flow",
             "splanchnic_venous_return",
             "lower_limb_venous_return",
+            "other_systemic_venous_return",
             "muscle_pump_flow",
             "venous_return",
             "systemic_resistance_effective",
             "splanchnic_arterial_resistance_effective",
             "lower_limb_arterial_resistance_effective",
+            "other_systemic_arterial_resistance_effective",
             "lower_limb_venous_resistance_effective",
             "metabolic_capacity",
             "oxygen_extraction",
@@ -612,18 +878,21 @@ class ComputationalPatient:
             "cerebral_flow_target",
         ]
         outputs = {name: np.array([d[name] for d in derived]) for name in output_names}
-        outputs["cerebral_flow_index"] = solution.y[10].copy()
-        outputs["pem_severity"] = solution.y[9].copy()
-        outputs["exertional_load"] = solution.y[7].copy()
-        outputs["delayed_stress"] = solution.y[8].copy()
-        outputs["cardiac_sympathetic_state"] = solution.y[4].copy()
-        outputs["vascular_sympathetic_state"] = solution.y[5].copy()
-        outputs["vagal_state"] = solution.y[6].copy()
-        outputs["sympathetic_state"] = 0.5 * (solution.y[4] + solution.y[5])
-        outputs["arterial_volume"] = solution.y[0].copy()
-        outputs["central_venous_volume"] = solution.y[1].copy()
-        outputs["splanchnic_venous_volume"] = solution.y[2].copy()
-        outputs["lower_limb_venous_volume"] = solution.y[3].copy()
+        outputs["cerebral_flow_index"] = solution.y[_CEREBRAL_FLOW_INDEX].copy()
+        outputs["pem_severity"] = solution.y[_PEM_SEVERITY].copy()
+        outputs["exertional_load"] = solution.y[_EXERTIONAL_LOAD].copy()
+        outputs["delayed_stress"] = solution.y[_DELAYED_STRESS].copy()
+        outputs["cardiac_sympathetic_state"] = solution.y[_CARDIAC_SYMPATHETIC_STATE].copy()
+        outputs["vascular_sympathetic_state"] = solution.y[_VASCULAR_SYMPATHETIC_STATE].copy()
+        outputs["vagal_state"] = solution.y[_VAGAL_STATE].copy()
+        outputs["sympathetic_state"] = 0.5 * (
+            solution.y[_CARDIAC_SYMPATHETIC_STATE] + solution.y[_VASCULAR_SYMPATHETIC_STATE]
+        )
+        outputs["arterial_volume"] = solution.y[_ARTERIAL_VOLUME].copy()
+        outputs["central_venous_volume"] = solution.y[_CENTRAL_VENOUS_VOLUME].copy()
+        outputs["splanchnic_venous_volume"] = solution.y[_SPLANCHNIC_VENOUS_VOLUME].copy()
+        outputs["lower_limb_venous_volume"] = solution.y[_LOWER_LIMB_VENOUS_VOLUME].copy()
+        outputs["other_systemic_venous_volume"] = solution.y[_OTHER_SYSTEMIC_VENOUS_VOLUME].copy()
         protocol_payload = [asdict(s) for s in protocol]
         config_hash = hashlib.sha256(
             json.dumps(
@@ -633,7 +902,7 @@ class ComputationalPatient:
         ).hexdigest()
         metadata = {
             "model": "ocpe:disease-models/shared-physiology",
-            "model_version": "0.2.0",
+            "model_version": "0.3.0",
             "phenotype_id": self.phenotype_id,
             "provenance": self.provenance,
             "configuration_sha256": config_hash,

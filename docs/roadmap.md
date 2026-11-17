@@ -7,8 +7,40 @@ clinically validated, and no planned work changes that.
 
 ## Current state (snapshot)
 
-- All seven validation layers have executable tests and independent
-  commit-bound PASS records in `validation/reports/validation-report.json`.
+- **Stage 1.1 (model version 0.3.0) release validation is executed.** The shared model now
+  has twelve states and five conserved stressed-volume compartments (adding
+  a residual other-systemic venous path with a 25/25/50 baseline flow
+  partition and 2550 mL healthy total stressed volume), separate
+  aortic/carotid baroreceptor sensors with an integrated weighted
+  baroreflex, explicit `tilt_angle_deg` posture geometry, a declared
+  segment ETCO2 input, and a fixed 5 mmHg effective cerebral outflow
+  pressure. New protocol YAMLs cover graded passive tilt (30/45/60/70),
+  active standing with sustained quiet standing, tilt-back recovery, and
+  cerebral CO2 isolation. Design, decisions, validation matrix, and
+  readiness are documented in `docs/stage1-1/`. **The deterministic 0.3.0
+  scientific scenario comparison matrix has been executed**
+  (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`):
+  healthy 70-degree sustained CO −3.105%, SV −12.733%, HR rise +7.723 bpm,
+  end-CFI reduction 1.645%; all eight Zaidi CO/SV comparisons MISS their
+  preserved ranges; all four POTS phenotypes and Long-COVID-autonomic FAIL
+  the unchanged ≥30 bpm sustained-HR criterion; ME/CFS CFI reduction
+  22.913% remains within the unchanged 15–35% band; the cerebral
+  pressure/CO2 isolation experiments confirm pathway separability. Version
+  synchronization is complete (`pyproject.toml`, `CITATION.cff`,
+  `__init__.py` read 0.3.0). **Release validation is executed at frozen
+  tested commit `a6d7619e277fc05081de3c852189b549d714b8b5`**: full suite
+  323 passed, 1 skipped (upstream OCPE checkout unavailable; strict
+  installed-engine OCPE validation separately passes 0 errors/0 warnings),
+  6 xfailed, 2 warnings in 344.19s; all seven layer execution statuses are
+  PASS; the disease-phenotype layer carries six strict expected failures,
+  so its scientific status and the **overall seven-layer scientific status
+  are FAIL**. Strict traceability passes 0/0/0 and strict OCPE validation
+  0/0 on the synchronized 0.3.0 registries.
+- The Stage 1 (0.2.0) record below is preserved history, superseded by the
+  0.3.0 record above:
+  all seven validation layers passed with executable tests and independent
+  commit-bound PASS records documented in `docs/stage1/final-validation-report.md`
+  and preserved in Git history.
   The full suite passed **287 tests** with two intended soft-anchor warnings at
   source/configuration commit `fb13cb21aa811da9babff6b271f006b8c79ec30f` (counted once per parametrized case;
   dual-marked tests make per-layer counts sum higher), and no required marker
@@ -17,10 +49,13 @@ clinically validated, and no planned work changes that.
 - Strict scientific traceability and strict OCPE package validation complete
   with zero errors and zero warnings.
 - Six curated demonstrations run and are pinned in
-  `simulations/simulation_registry.yaml`. The Stage 1 four-compartment
+  `simulations/simulation_registry.yaml` (19 protocols, 11 simulation
+  records at 0.3.0); the six demonstration scripts regenerated 16 persisted
+  0.3.0 runs. The Stage 1 four-compartment
   eleven-state revision (`docs/stage1/revised-physiological-architecture.md`)
-  is implemented as model version 0.2.0. Deterministic sensitivity exports
-  cover **42 local, 18 grid, and 3 chronotropic-split scenarios**; no
+  is historical model version 0.2.0. Deterministic sensitivity exports
+  cover **59 local, 27 grid, and 3 chronotropic-split scenarios** at 0.3.0
+  (the Stage 1 record of 42 local, 18 grid, 3 split is preserved history); no
   scenario in the current hEDS grid ends below the 70 mmHg MAP screening
   threshold, while the pre-revision below-70-mmHg failures remain preserved
   as historical results under `validation/baseline/stage0/` and in the
@@ -32,24 +67,35 @@ clinically validated, and no planned work changes that.
 
 ## Near-term
 
-1. **Obtain independent empirical benchmarks** with no calibration overlap,
+1. **Resolve the preserved 0.3.0 scientific failures.** The Stage 1.1
+   release validation cycle itself is complete (executed at commit
+   `a6d7619e277fc05081de3c852189b549d714b8b5`; see
+   `docs/stage1-1/validation-matrix.md` and
+   `docs/stage1-1/readiness-assessment.md`); what remains is the science.
+   The executed negative results (eight Zaidi CO/SV MISSes, five
+   sustained-HR criterion FAILs, persistent healthy CO/SV and CFI misses,
+   and the disclosed ~111.332 mmHg healthy 70-degree upright-end MAP
+   fidelity limitation) are carried forward unchanged. Resolving the POTS
+   sustained-HR criterion failure requires reviewed scientific work, not
+   threshold widening or gain tuning.
+2. **Obtain independent empirical benchmarks** with no calibration overlap,
    explicit construct mapping, and prospective acceptance metrics before any
    integrated disease model is assigned M4.
-2. **Resolve or reject the assumed hEDS venous-compliance mechanism** using
+3. **Resolve or reject the assumed hEDS venous-compliance mechanism** using
    defensible vascular evidence and structural analysis. The current
    compliance × gravity grid contains no below-70-mmHg MAP regimes, but the
    compliance magnitude remains an unmeasured assumption and the
    pre-revision grid failures (minimum approximately 37.84 mmHg) are
    preserved as historical results; neither the historical failures nor the
    current clean grid justifies raising the scenario above M2.
-3. **Curate empirical source artifacts and permissions** for any new data in
+4. **Curate empirical source artifacts and permissions** for any new data in
    `validation/fixtures/`, per `docs/scientific-change-management.md`.
-4. **Improve distribution portability** so required phenotype, protocol,
+5. **Improve distribution portability** so required phenotype, protocol,
    registry, and OCPE package data are available without an implicit source
    checkout, while preserving exact hashes and provenance.
-5. **Verify remote CI on Python 3.11 and 3.12** and preserve the reports as
+6. **Verify remote CI on Python 3.11 and 3.12** and preserve the reports as
    commit-specific records; never silence an empty or failed layer.
-6. **Deepen structural validation** of PEM kinetics, orthostatic recovery,
+7. **Deepen structural validation** of PEM kinetics, orthostatic recovery,
    comorbidity composition, and cross-disease heterogeneity before expanding
    the parameter space. This includes the retained healthy early-CO miss, the
    near-zero healthy end-tilt CFI response despite the approximately 7% control
@@ -93,11 +139,20 @@ resolution.
   current revised grid has no such failures. The assumed lower-limb
   venous-compliance mechanism is nevertheless hypothesis-sensitive and
   remains M2.
-- **Healthy orthostatic response.** Early CO reduction remains approximately
-  5.64% against a broad 10–30% soft anchor, and end-tilt CFI reduction remains
-  approximately 0.003% against the reported 7% control finding and broad 3–11%
-  disclosure band. Both warnings are unresolved structural limitations; the
-  ME/CFS scenario-band assertion was not weakened to accommodate them.
+- **Healthy orthostatic response.** The Stage 1 (0.2.0) record—early CO
+  reduction ~5.64% against a broad 10–30% soft anchor and end-tilt CFI
+  reduction ~0.003% against the reported 7% control finding and broad 3–11%
+  disclosure band—remains preserved. The executed 0.3.0 scenario matrix
+  re-measured both: sustained CO −3.105% with all eight Zaidi CO/SV
+  comparisons MISS, and end-tilt CFI reduction 1.645%, still below the
+  unchanged 3–11% band. Both misses are unresolved structural limitations;
+  the ME/CFS scenario-band assertion was not weakened to accommodate them
+  (0.3.0 ME/CFS reduction 22.913%, within the unchanged 15–35% band).
+- **POTS sustained-HR criterion (new 0.3.0 negative result).** All four
+  POTS phenotypes and Long-COVID-autonomic FAIL the unchanged ≥30 bpm
+  sustained-rise criterion (17.428–19.659 bpm) that the 0.2.0 calibrated
+  scenarios met; preserved as a negative result pending reviewed scientific
+  resolution.
 - **Empirical anchor curation.** Which additional published group-level values
   enter `validation/fixtures/`, and under what licenses/permissions, is
   undecided. Existing anchors are literature-derived plausibility checks, not

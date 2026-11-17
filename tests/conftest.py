@@ -37,8 +37,12 @@ from ocpe_disease_models.models.shared import (  # noqa: E402
     ComputationalPatient,
     ModelParameters,
 )
+from ocpe_disease_models.models.shared.model import STATE_NAMES  # noqa: E402
 
 SOLVER_KEYS = ("sample_interval", "max_step", "rtol", "atol", "seed")
+
+# Conserved stressed-volume compartments: arterial through other-systemic venous.
+VOLUME_STATE_COUNT = STATE_NAMES.index("other_systemic_venous_volume") + 1
 
 # Tilt protocol timing (simulations/orthostatic/head-up-tilt.yaml).
 TILT_START = 120.0
@@ -56,7 +60,7 @@ def run_phenotype(phenotype_id: str, protocol_id: str, **solver_overrides):
 
 def stressed_volume_drift(result) -> float:
     """Maximum absolute drift of total stressed volume (mL) from its initial value."""
-    total = result.states[:4].sum(axis=0)
+    total = result.states[:VOLUME_STATE_COUNT].sum(axis=0)
     return float(np.abs(total - total[0]).max())
 
 

@@ -60,3 +60,6 @@ def test_supine_cardiac_output_and_venous_return_identities(phenotype_id):
     assert derived["lower_limb_arterial_flow"] == pytest.approx(
         derived["lower_limb_venous_return"], rel=1e-10
     )
+    assert derived["other_systemic_arterial_flow"] == pytest.approx(
+        derived["other_systemic_venous_return"], rel=1e-10
+    )

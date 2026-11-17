@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0",
-  "model_version": "0.2.0",
-  "repository_commit": "fb13cb21aa811da9babff6b271f006b8c79ec30f",
+  "model_version": "0.3.0",
+  "repository_commit": "a6d7619e277fc05081de3c852189b549d714b8b5",
   "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
   "python_version": "3.12.12",
   "clinical_status": "Research software and scenario validation only; no clinical validity or diagnostic accuracy is established.",
-  "required_tests_policy": "A missing layer, empty pytest selection, failed audit, or warning in strict traceability is a failure, not a skip.",
-  "overall_status": "PASS",
+  "required_tests_policy": "A missing layer, empty pytest selection, failed audit, or warning in strict traceability is a failure, not a skip. Strict expected failures remain scientific failures even when pytest exits successfully.",
+  "overall_status": "FAIL",
   "layers": [
     {
       "layer": "software",
       "marker": "software or regression",
       "command": [
-        "/usr/local/bin/python",
+        "/usr/local/bin/python3",
         "-m",
         "pytest",
         "-q",
@@ -20,15 +20,18 @@
         "software or regression"
       ],
       "exit_code": 0,
+      "execution_status": "PASS",
       "status": "PASS",
-      "pytest_summary": "122 passed, 165 deselected in 143.47s (0:02:23)",
+      "contains_strict_expected_failures": false,
+      "status_reason": null,
+      "pytest_summary": "127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18)",
       "log": "validation/reports/software.log"
     },
     {
       "layer": "mathematical",
       "marker": "mathematical",
       "command": [
-        "/usr/local/bin/python",
+        "/usr/local/bin/python3",
         "-m",
         "pytest",
         "-q",
@@ -36,15 +39,18 @@
         "mathematical"
       ],
       "exit_code": 0,
+      "execution_status": "PASS",
       "status": "PASS",
-      "pytest_summary": "44 passed, 243 deselected in 7.23s",
+      "contains_strict_expected_failures": false,
+      "status_reason": null,
+      "pytest_summary": "45 passed, 285 deselected in 9.33s",
       "log": "validation/reports/mathematical.log"
     },
     {
       "layer": "physiological",
       "marker": "physiological",
       "command": [
-        "/usr/local/bin/python",
+        "/usr/local/bin/python3",
         "-m",
         "pytest",
         "-q",
@@ -52,15 +58,18 @@
         "physiological"
       ],
       "exit_code": 0,
+      "execution_status": "PASS",
       "status": "PASS",
-      "pytest_summary": "29 passed, 258 deselected, 1 warning in 3.84s",
+      "contains_strict_expected_failures": false,
+      "status_reason": null,
+      "pytest_summary": "64 passed, 266 deselected, 1 warning in 8.15s",
       "log": "validation/reports/physiological.log"
     },
     {
       "layer": "disease_phenotype",
       "marker": "phenotype",
       "command": [
-        "/usr/local/bin/python",
+        "/usr/local/bin/python3",
         "-m",
         "pytest",
         "-q",
@@ -68,15 +77,18 @@
         "phenotype"
       ],
       "exit_code": 0,
-      "status": "PASS",
-      "pytest_summary": "35 passed, 252 deselected in 139.67s (0:02:19)",
+      "execution_status": "PASS",
+      "status": "FAIL",
+      "contains_strict_expected_failures": true,
+      "status_reason": "Strict expected failures preserve unresolved scientific criterion misses.",
+      "pytest_summary": "29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06)",
       "log": "validation/reports/disease_phenotype.log"
     },
     {
       "layer": "empirical",
       "marker": "empirical",
       "command": [
-        "/usr/local/bin/python",
+        "/usr/local/bin/python3",
         "-m",
         "pytest",
         "-q",
@@ -84,15 +96,18 @@
         "empirical"
       ],
       "exit_code": 0,
+      "execution_status": "PASS",
       "status": "PASS",
-      "pytest_summary": "9 passed, 278 deselected, 1 warning in 72.56s (0:01:12)",
+      "contains_strict_expected_failures": false,
+      "status_reason": null,
+      "pytest_summary": "10 passed, 320 deselected, 1 warning in 96.46s (0:01:36)",
       "log": "validation/reports/empirical.log"
     },
     {
       "layer": "sensitivity_uncertainty",
       "marker": "sensitivity_uncertainty",
       "command": [
-        "/usr/local/bin/python",
+        "/usr/local/bin/python3",
         "-m",
         "pytest",
         "-q",
@@ -100,15 +115,18 @@
         "sensitivity_uncertainty"
       ],
       "exit_code": 0,
+      "execution_status": "PASS",
       "status": "PASS",
-      "pytest_summary": "13 passed, 274 deselected in 90.85s (0:01:30)",
+      "contains_strict_expected_failures": false,
+      "status_reason": null,
+      "pytest_summary": "13 passed, 317 deselected in 124.91s (0:02:04)",
       "log": "validation/reports/sensitivity_uncertainty.log"
     },
     {
       "layer": "scientific_traceability",
       "marker": "scientific_traceability",
       "command": [
-        "/usr/local/bin/python",
+        "/usr/local/bin/python3",
         "-m",
         "pytest",
         "-q",
@@ -116,8 +134,11 @@
         "scientific_traceability"
       ],
       "exit_code": 0,
+      "execution_status": "PASS",
       "status": "PASS",
-      "pytest_summary": "40 passed, 247 deselected in 3.40s",
+      "contains_strict_expected_failures": false,
+      "status_reason": null,
+      "pytest_summary": "40 passed, 290 deselected in 4.16s",
       "log": "validation/reports/scientific_traceability.log",
       "audit": {
         "errors": 0,

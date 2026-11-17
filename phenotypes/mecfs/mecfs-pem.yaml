@@ -4,8 +4,8 @@ diseases: [ME/CFS]
 mechanisms: [MEC-RCV-PEM, MEC-MET-CAPACITY, MEC-CBF-AUTOREG]
 evidence_claims: [CLM-ME-PEM-KINETICS, CLM-ME-CPET, CLM-ME-CBF, CLM-ME-PRELOAD]
 parameter_overrides:
-  splanchnic_gravity_pressure_offset: 4.5
-  lower_limb_gravity_pressure_offset: 9.0
+  splanchnic_hydrostatic_height_cm: 6.117455138662316
+  lower_limb_hydrostatic_height_cm: 12.234910277324632
   cerebral_orthostatic_impairment: 0.23
   cerebral_recovery_time_constant: 240.0
   baseline_metabolic_capacity: 0.85

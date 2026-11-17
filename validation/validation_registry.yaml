@@ -30,7 +30,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-SW-SERIALIZATION
   name: Serialization and numerical failure behavior
   layer: software
@@ -53,7 +53,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-SW-OCPE
   name: Strict OCPE package and observation interoperability
   layer: software
@@ -76,16 +76,16 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-MATH-CONSERVATION
   name: Stressed-volume conservation
   layer: mathematical
   mechanisms:
   - MEC-CV-VOLUME
-  expected_behavior: The sum of arterial, central-venous, splanchnic-venous and lower-limb-venous stressed volumes
-    remains invariant, including rhythmic walking and sustained contraction.
-  acceptance_criteria: Maximum absolute four-volume drift is below 1e-6 mL over baseline, orthostatic, walking and
-    sustained-contraction runs; all four instantaneous RHS volume derivatives telescope within floating-point tolerance.
+  expected_behavior: The sum of arterial, central-venous, splanchnic-venous, lower-limb-venous and residual
+    other-systemic stressed volumes remains invariant, including rhythmic walking and sustained contraction.
+  acceptance_criteria: Maximum absolute five-volume drift is below 1e-6 mL over baseline, orthostatic, walking and
+    sustained-contraction runs; all five instantaneous RHS volume derivatives telescope within floating-point tolerance.
   justification: The compartment equations imply exact conservation; drift would reveal an implementation or solver
     error.
   test_path: tests/mathematical/test_conservation.py
@@ -110,6 +110,10 @@ validation_tests:
   - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
   - PAR-SPLANCHNIC-VENOUS-PRESSURE-INITIAL
   - PAR-LOWER-LIMB-VENOUS-PRESSURE-INITIAL
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
+  - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-PRESSURE-INITIAL
   validation_result:
     status: PASS
     execution_date: '2026-11-17'
@@ -120,7 +124,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-MATH-EQUILIBRIUM
   name: All-phenotype supine fixed points and flow identities
   layer: mathematical
@@ -166,8 +170,17 @@ validation_tests:
   - PAR-HEART-RATE-REST
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-WEIGHT
+  - PAR-CAROTID-BAROREFLEX-WEIGHT
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
+  - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-PRESSURE-INITIAL
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   validation_result:
@@ -180,7 +193,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-MATH-CONVERGENCE
   name: Solver convergence and bounded states
   layer: mathematical
@@ -219,8 +232,10 @@ validation_tests:
   - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
   - PAR-SPLANCHNIC-VENOUS-PRESSURE-INITIAL
   - PAR-LOWER-LIMB-VENOUS-PRESSURE-INITIAL
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
   - PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
   - PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT
   - PAR-VAGAL-TIME-CONSTANT
@@ -237,7 +252,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-PHYS-BASELINE
   name: Healthy resting operating point
   layer: physiological
@@ -276,14 +291,20 @@ validation_tests:
   - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
   - PAR-SPLANCHNIC-VENOUS-PRESSURE-INITIAL
   - PAR-LOWER-LIMB-VENOUS-PRESSURE-INITIAL
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
   - PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
   - PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT
   - PAR-VAGAL-TIME-CONSTANT
   - PAR-HEART-RATE-REST
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
+  - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-PRESSURE-INITIAL
   validation_result:
     status: PASS
     execution_date: '2026-11-17'
@@ -294,7 +315,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-PHYS-SHARED
   name: Regional muscle, autonomic and cerebral shared mechanisms
   layer: physiological
@@ -344,7 +365,8 @@ validation_tests:
   - PAR-HEART-RATE-VAGAL-GAIN
   - PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN
   - PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN
-  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   validation_result:
@@ -357,7 +379,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-PHYS-TILT
   name: Orthostatic directionality and compensation
   layer: physiological
@@ -389,14 +411,21 @@ validation_tests:
   - EQ-VASC-001
   - EQ-CV-002
   parameter_ids:
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
+  - PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BARORECEPTOR-HEIGHT
+  - PAR-CAROTID-BARORECEPTOR-HEIGHT
   - PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
   - PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT
   - PAR-VAGAL-TIME-CONSTANT
@@ -417,7 +446,95 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+- id: VAL-PHYS-TILT-ANGLE
+  name: Explicit tilt-angle hydrostatic geometry
+  layer: physiological
+  mechanisms:
+  - MEC-ORTHO-HYDROSTATIC
+  - MEC-VASC-POOLING
+  - MEC-AUT-BAROREFLEX
+  expected_behavior: An explicit tilt angle in [0, 90] degrees drives every hydrostatic correction as lumped
+    height times sin(angle) times 0.7356 mmHg/cm; the legacy normalized upright input migrates as
+    angle = arcsin(upright); during a transition only the angle is linearly interpolated while all other
+    inputs stay piecewise constant; aortic, carotid and brain heights act at separate sites.
+  acceptance_criteria: All hydrostatic corrections are exactly zero at 0 degrees and scale with sin(angle);
+    the aortic/carotid baroreflex weights sum to 1 within 1e-6; legacy upright 0/1 reproduces 0/90 degrees;
+    invalid angles fail explicitly; five-volume conservation holds at every angle.
+  justification: Verifies the Stage 1.1 hydrostatic geometry contract independently of disease thresholds.
+  test_path: tests/physiological/test_tilt_protocols.py
+  evidence_claims:
+  - CLM-ORTHO-HYDROSTATIC
+  - CLM-AUT-DUAL-SENSOR
+  - CLM-POTS-BAROREFLEX
+  equation_ids:
+  - EQ-ORT-002
+  - EQ-ORT-001
+  - EQ-AUT-001
+  parameter_ids:
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
+  - PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT
+  - PAR-AORTIC-BARORECEPTOR-HEIGHT
+  - PAR-CAROTID-BARORECEPTOR-HEIGHT
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  - PAR-AORTIC-BAROREFLEX-WEIGHT
+  - PAR-CAROTID-BAROREFLEX-WEIGHT
+  validation_result:
+    status: PASS
+    execution_date: '2026-11-17'
+    report: validation/reports/physiological.log
+    scope: Declared hydrostatic geometry, legacy-angle migration, angle-only transition, separate sensing-site,
+      and five-volume conservation checks passed at the tested source commit; deterministic scenario outcomes
+      remain separately reported in validation/stage1-1/scientific-comparison-matrix.json; not clinical validation
+  execution_environment:
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+- id: VAL-PHYS-GRADED-TILT
+  name: Graded-tilt empirical plausibility comparison
+  layer: empirical
+  mechanisms:
+  - MEC-ORTHO-HYDROSTATIC
+  - MEC-VASC-POOLING
+  expected_behavior: Graded passive head-up tilt produces angle-dependent cardiac-output and stroke-volume
+    reductions comparable in direction to the published healthy group ranges.
+  acceptance_criteria: Healthy 60-70 degree cardiac-output and stroke-volume changes are compared against
+    the published group ranges (-20 to -17 percent cardiac output, -34 to -28 percent stroke volume at 2-5
+    minutes); out-of-band results are reported as misses and preserved, never recalibrated.
+  justification: Provides a protocol-specific group-level plausibility comparison, not a fitted target or
+    external validation.
+  test_path: tests/physiological/test_tilt_protocols.py
+  evidence_claims:
+  - CLM-ORTHO-GRADED-TILT
+  - CLM-ORTHO-HYDROSTATIC
+  equation_ids:
+  - EQ-ORT-001
+  - EQ-ORT-002
+  - EQ-CV-002
+  - EQ-CV-003
+  parameter_ids:
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
+  - PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT
+  - PAR-SPLANCHNIC-VENOUS-RESISTANCE
+  - PAR-LOWER-LIMB-VENOUS-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
+  validation_result:
+    status: FAIL
+    execution_date: '2026-11-17'
+    report: validation/stage1-1/scientific-comparison-matrix.json
+    scope: '0.3.0 comparison against REF-ZAIDI-2000 anchors: all eight healthy cardiac-output and
+      stroke-volume comparisons MISS the preserved published ranges (model about -2.6 to -3.1 percent CO
+      and -11.4 to -12.7 percent SV versus -20 to -17 percent and -34 to -28 percent published). The misses
+      are retained without recalibration or range widening; not clinical validation.'
+  execution_environment:
+    python_requirement: '>=3.11'
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-PHYS-RECOVERY
   name: Post-tilt cerebral recovery
   layer: physiological
@@ -437,7 +554,8 @@ validation_tests:
   parameter_ids:
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
-  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
   - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
   - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
   - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
@@ -451,7 +569,52 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+- id: VAL-PHYS-CBF-CO2
+  name: Bounded end-tidal-CO2 cerebral regulation
+  layer: physiological
+  mechanisms:
+  - MEC-CBF-CO2
+  - MEC-CBF-AUTOREG
+  expected_behavior: A declared per-segment end-tidal-CO2 input modulates the cerebral-flow target through a
+    bounded exponential factor (0.035/mmHg about the 40 mmHg reference, clipped at +/-15 mmHg); pressure and
+    CO2 effects compose multiplicatively; segments omitting ETCO2 stay at the reference; tilt alone never
+    changes ETCO2 (no posture-inferred hypocapnia).
+  acceptance_criteria: Isolated hypocapnia (30 mmHg) yields factor exp(-0.35) ~ 0.7047; isolated pressure
+    reduction keeps the CO2 factor exactly 1.0; combined reductions dissociate the two contributions; recovery
+    protocols expose the declared persistent-hypocapnia behavior; extreme inputs hit the clip without
+    non-finite outputs; five-volume drift stays at solver tolerance.
+  justification: Binds the Stage 1.1 implementation of the formerly declared CO2 omission to explicit
+    scenario checks rather than hiding it in an autoregulation gain.
+  test_path: tests/physiological/test_cerebral_regulation.py
+  evidence_claims:
+  - CLM-CBF-CO2
+  - CLM-CBF-OUTFLOW
+  - CLM-CBF-CPP
+  equation_ids:
+  - EQ-CBF-001
+  - EQ-CBF-002
+  - EQ-CBF-003
+  parameter_ids:
+  - PAR-END-TIDAL-CO2-REFERENCE
+  - PAR-CEREBRAL-CO2-REACTIVITY
+  - PAR-CEREBRAL-CO2-EXTRAPOLATION-LIMIT
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  validation_result:
+    status: PASS
+    execution_date: '2026-11-17'
+    report: validation/reports/physiological.log
+    scope: Declared bounded CO2 factor, pressure/CO2 dissociation, reference-input default, clipping, recovery,
+      CFI-bound, and five-volume conservation checks passed at the tested source commit; the five cerebral
+      isolation protocols remain separately reported in validation/stage1-1/scientific-comparison-matrix.json;
+      not clinical validation
+  execution_environment:
+    python_requirement: '>=3.11'
+    executed_python: 3.12.12
+    solver: DOP853 where applicable
+    dependency_versions: validation/reproducibility.json
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-POTS-NEUROPATHIC
   name: Neuropathic POTS scenario
   layer: disease_phenotype
@@ -482,8 +645,8 @@ validation_tests:
   - EQ-AUT-002
   - EQ-AUT-003
   parameter_ids:
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
@@ -492,8 +655,10 @@ validation_tests:
   - PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN
   - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
   - PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
   - PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT
   - PAR-VAGAL-TIME-CONSTANT
@@ -501,16 +666,19 @@ validation_tests:
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
   validation_result:
-    status: PASS
+    status: FAIL
     execution_date: '2026-11-17'
-    report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
+    report: validation/stage1-1/scientific-comparison-matrix.json
+    scope: 'Historical 0.2.0 PASS at the tested source commit is superseded by the 0.3.0 preserved-criterion
+      comparison: sustained orthostatic HR rise is 17.43 bpm (final MAP 111.1 mmHg), below the preserved
+      >=30 bpm scenario criterion. The failure is retained without gain recalibration or threshold changes;
+      not clinical validation or diagnostic accuracy.'
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-POTS-HYPER
   name: Hyperadrenergic POTS scenario
   layer: disease_phenotype
@@ -536,24 +704,28 @@ validation_tests:
   parameter_ids:
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
-  - PAR-BAROREFLEX-PRESSURE-SCALE
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
   validation_result:
-    status: PASS
+    status: FAIL
     execution_date: '2026-11-17'
-    report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
+    report: validation/stage1-1/scientific-comparison-matrix.json
+    scope: 'Historical 0.2.0 PASS at the tested source commit is superseded by the 0.3.0 preserved-criterion
+      comparison: sustained orthostatic HR rise is 19.66 bpm (final MAP 112.1 mmHg), below the preserved
+      >=30 bpm scenario criterion. The failure is retained without gain recalibration or threshold changes;
+      not clinical validation or diagnostic accuracy.'
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-POTS-HYPO
   name: Hypovolemic POTS scenario
   layer: disease_phenotype
@@ -576,23 +748,26 @@ validation_tests:
   - EQ-ORT-001
   parameter_ids:
   - PAR-BLOOD-VOLUME-FACTOR
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
   validation_result:
-    status: PASS
+    status: FAIL
     execution_date: '2026-11-17'
-    report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
+    report: validation/stage1-1/scientific-comparison-matrix.json
+    scope: 'Historical 0.2.0 PASS at the tested source commit is superseded by the 0.3.0 preserved-criterion
+      comparison: sustained orthostatic HR rise is 19.4 bpm (final MAP 100.9 mmHg), below the preserved
+      >=30 bpm scenario criterion. The failure is retained without gain recalibration or threshold changes;
+      not clinical validation or diagnostic accuracy.'
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-POTS-MIXED
   name: Explicit mixed POTS composition
   layer: disease_phenotype
@@ -624,8 +799,8 @@ validation_tests:
   - EQ-AUT-003
   parameter_ids:
   - PAR-BLOOD-VOLUME-FACTOR
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
@@ -636,18 +811,22 @@ validation_tests:
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
   validation_result:
-    status: PASS
+    status: FAIL
     execution_date: '2026-11-17'
-    report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
+    report: validation/stage1-1/scientific-comparison-matrix.json
+    scope: 'Historical 0.2.0 PASS at the tested source commit is superseded by the 0.3.0 preserved-criterion
+      comparison: sustained orthostatic HR rise is 19.22 bpm (final MAP 106.5 mmHg), below the preserved
+      >=30 bpm scenario criterion. The failure is retained without gain recalibration or threshold changes;
+      not clinical validation or diagnostic accuracy.'
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-EDS-DIRECTION
   name: Exploratory hEDS vascular-mechanics scenario
   layer: disease_phenotype
@@ -655,7 +834,7 @@ validation_tests:
   - MEC-VASC-COMPLIANCE
   - MEC-VASC-POOLING
   expected_behavior: An assumed lower-limb venous-compliance increase alters orthostatic pooling and compensation
-    while preserving four-volume conservation.
+    while preserving five-volume conservation.
   acceptance_criteria: The scenario is labeled exploratory and hEDS-specific; HR rise exceeds healthy; results remain
     finite and MAP stays above 70 mmHg; sensitivity includes the healthy compliance value.
   justification: Tests the consequences of a hypothesis, not the truth or magnitude of venous hypercompliance.
@@ -672,8 +851,8 @@ validation_tests:
   parameter_ids:
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   validation_result:
@@ -686,7 +865,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-ME-PEM
   name: Delayed PEM onset and prolonged recovery
   layer: disease_phenotype
@@ -728,7 +907,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-ME-CPET
   name: Reduced subsequent exertional capacity
   layer: empirical
@@ -775,7 +954,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-ME-CBF
   name: ME/CFS cerebral-flow group-level comparison
   layer: empirical
@@ -798,7 +977,8 @@ validation_tests:
   parameter_ids:
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
-  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
   - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
   - PAR-CEREBRAL-DECLINE-TIME-CONSTANT
   - PAR-CEREBRAL-RECOVERY-TIME-CONSTANT
@@ -812,7 +992,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-LC-AUTONOMIC
   name: Long COVID autonomic subgroup
   layer: disease_phenotype
@@ -842,31 +1022,36 @@ validation_tests:
   - EQ-ORT-001
   - EQ-CV-003
   parameter_ids:
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
   - PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
   - PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT
   - PAR-VAGAL-TIME-CONSTANT
   - PAR-HEART-RATE-REST
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
   validation_result:
-    status: PASS
+    status: FAIL
     execution_date: '2026-11-17'
-    report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
+    report: validation/stage1-1/scientific-comparison-matrix.json
+    scope: 'Historical 0.2.0 PASS at the tested source commit is superseded by the 0.3.0 preserved-criterion
+      comparison: sustained orthostatic HR rise is 18.93 bpm (final MAP 111.4 mmHg), below the preserved
+      >=30 bpm scenario criterion. The failure is retained without gain recalibration or threshold changes;
+      not clinical validation or diagnostic accuracy.'
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-LC-EXTRACTION
   name: Long COVID exertional/extraction subgroup
   layer: disease_phenotype
@@ -905,7 +1090,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-EMPIRICAL-ANCHORS
   name: Empirical anchor coverage and provenance
   layer: empirical
@@ -933,7 +1118,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-SENSITIVITY
   name: Deterministic local sensitivity analysis
   layer: sensitivity_uncertainty
@@ -946,9 +1131,9 @@ validation_tests:
   - MEC-MUSCLE-PUMP
   - MEC-SUSTAINED-CONTRACTION
   - MEC-CBF-AUTOREG
-  expected_behavior: Regional compliance, resistance, gravity, autonomic-lag, cerebral-autoregulation and protocol-specific
-    muscle parameters change traceably under declared deterministic perturbations; chronotropic splitting is evaluated
-    at fixed total gain.
+  expected_behavior: Regional compliance, resistance, hydrostatic-height, autonomic-lag, cerebral-autoregulation,
+    cerebral CO2-reactivity/clip and protocol-specific muscle parameters change traceably under declared deterministic
+    perturbations; chronotropic splitting is evaluated at fixed total gain.
   acceptance_criteria: Selected derivatives are finite and bit-identical on repeated execution; all declared shared
     assumptions are covered; hEDS sensitivity includes healthy and increased lower-limb compliance; cardiac-sympathetic
     fractions 0, 0.5 and 1 preserve total gain and produce distinct configuration hashes; no stochastic cohort is
@@ -983,8 +1168,8 @@ validation_tests:
   - EQ-MP-002
   - EQ-CBF-001
   parameter_ids:
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
@@ -994,8 +1179,10 @@ validation_tests:
   - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
   - PAR-BLOOD-VOLUME-FACTOR
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
   - PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
   - PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT
   - PAR-VAGAL-TIME-CONSTANT
@@ -1007,6 +1194,10 @@ validation_tests:
   - PAR-MUSCLE-PUMP-EFFECTIVENESS
   - PAR-MUSCLE-PUMP-HALF-VOLUME
   - PAR-SUSTAINED-CONTRACTION-RESISTANCE-GAIN
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
+  - PAR-END-TIDAL-CO2-REFERENCE
+  - PAR-CEREBRAL-CO2-REACTIVITY
+  - PAR-CEREBRAL-CO2-EXTRAPOLATION-LIMIT
   validation_result:
     status: PASS
     execution_date: '2026-11-17'
@@ -1017,12 +1208,12 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-UNCERTAINTY
   name: Assumption uncertainty propagation
   layer: sensitivity_uncertainty
-  expected_behavior: A small deterministic parameter grid reports output ranges and scenario ranking stability without
-    implying population probabilities.
+  expected_behavior: A small deterministic parameter grid (including the cerebral CO2-reactivity/outflow-pressure
+    grid) reports output ranges and scenario ranking stability without implying population probabilities.
   acceptance_criteria: Minimum/maximum peak and sustained HR rise, MAP, PEM peak and capacity outputs are reported
     with configuration hashes; the no-PEM zero-gain bound is retained; every sampled point is explicitly a deterministic
     scenario, not a patient.
@@ -1050,8 +1241,8 @@ validation_tests:
   - EQ-RCV-004
   - EQ-MET-001
   parameter_ids:
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
@@ -1068,6 +1259,8 @@ validation_tests:
   - PAR-PEM-RESPONSE-GAIN
   - PAR-BASELINE-METABOLIC-CAPACITY
   - PAR-PEM-CAPACITY-PENALTY
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
+  - PAR-CEREBRAL-CO2-REACTIVITY
   validation_result:
     status: PASS
     execution_date: '2026-11-17'
@@ -1078,7 +1271,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
   mechanisms:
   - MEC-VASC-POOLING
   - MEC-VASC-CONSTRICTION
@@ -1107,7 +1300,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-REGRESSION
   name: Approved scientific regression fixtures
   layer: software
@@ -1130,7 +1323,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 - id: VAL-SCOPE-FUTURE
   name: Unimplemented mechanism scope guard
   layer: scientific_traceability
@@ -1160,16 +1353,20 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
 execution_summary:
-  repository_commit: fb13cb21aa811da9babff6b271f006b8c79ec30f
+  repository_commit: a6d7619e277fc05081de3c852189b549d714b8b5
   ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-  full_suite: 287 passed, 2 warnings in 250.94s (0:04:10)
+  full_suite: 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s (0:05:44)
   seven_layer_report: validation/reports/validation-report.json
-  seven_layer_status: PASS
-  validation_records: 26 PASS, 0 FAIL, 0 PENDING
+  seven_layer_status: FAIL (overall scientific verdict; every layer execution_status is PASS; disease_phenotype
+    remains FAIL because six strict expected failures preserve five unresolved sustained-HR criterion misses)
+  validation_records: 23 PASS, 6 FAIL, 0 PENDING (the five POTS/LC sustained-HR criterion records and the
+    graded-tilt anchor record FAIL at the unchanged 0.3.0 criteria per the scientific comparison matrix; all
+    FAIL/MISS outcomes are retained without gain recalibration or threshold changes)
   traceability_report: validation/traceability/audit/traceability_report.json
-  strict_ocpe: 0 errors, 0 warnings (declarative/executable consistency checks passed 2026-11-17)
+  strict_ocpe: 0 errors, 0 warnings (disease-models@0.3.0; declarative/executable consistency checks passed
+    2026-11-17; one optional upstream-checkout adapter test skipped)
   lint: PASS (Ruff)
   clinical_status: No clinical validity, diagnostic accuracy, treatment efficacy, or patient-specific calibration
     established

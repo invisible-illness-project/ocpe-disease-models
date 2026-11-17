@@ -179,22 +179,23 @@ entities:
     kind: derived_metric
     label: Cerebral perfusion pressure
     definition: >
-      Reduced-order brain-level perfusion-pressure proxy: head-level arterial
-      pressure after the orthostatic heart-to-head correction, minus central
-      venous back pressure, floored at zero. Intracranial pressure is not
+      Reduced-order brain-level perfusion-pressure proxy: brain-level arterial
+      pressure after the orthostatic heart-to-brain hydrostatic correction
+      (lumped brain height times sin(tilt angle)), minus a fixed effective
+      cerebral outflow pressure, floored at zero. Intracranial pressure is not
       separately modeled.
     dimension: pressure
     canonical_unit: mm[Hg]
     derived_from:
       - ocpe:disease-models/mean-arterial-pressure
-      - ocpe:disease-models/central-venous-blood-volume
     computation:
       method: >
-        CPP = max(0, MAP - DeltaP_head * upright - P_cv), with central venous
-        pressure P_cv = V_cv / C_cv. DeltaP_head is a declared model parameter,
-        not an angle-specific patient measurement.
-      formula: "CPP = \\max(0, MAP - \\Delta P_{head}u - P_{cv})"
-      input_requirements: Simultaneous mean arterial pressure, central venous stressed volume and compliance, upright input, and head hydrostatic-pressure parameter.
+        CPP = max(0, MAP - 0.7356 * h_brain * sin(theta) - P_out), with the
+        lumped brain height h_brain and the fixed effective outflow pressure
+        P_out declared model parameters, not angle-specific patient
+        measurements; the tilt angle theta is an explicit protocol input.
+      formula: "CPP = \\max(0, MAP - 0.7356\\,h_{brain}\\sin\\theta - P_{out})"
+      input_requirements: Simultaneous mean arterial pressure, tilt angle, brain hydrostatic height, and fixed cerebral outflow pressure parameters.
     aliases:
       - value: CPP
         type: abbreviation
@@ -215,9 +216,11 @@ entities:
     computation:
       method: >
         With r = CPP / CPP_ref, the pressure target is
-        r / (s_ar + (1 - s_ar) * r). The dynamic CFI state approaches this
-        target, multiplied by max(0, 1 - beta * upright), using separate decline
-        and recovery time constants. No CO2-dependent mechanism is represented.
+        r / (s_ar + (1 - s_ar) * r). The dynamic CFI state approaches the
+        target CFI_pressure * exp(k_co2 * clip(ETCO2 - ETCO2_ref, -D_co2, D_co2))
+        * max(0, 1 - beta * sin(theta)), using separate decline and recovery
+        time constants; the per-segment end-tidal-CO2 input enters as a bounded
+        exponential factor and no PaCO2 state is represented.
       formula: "CFI_{pressure} = \\frac{r}{s_{ar} + (1-s_{ar})r},\\quad r = \\frac{CPP}{CPP_{ref}}"
       input_requirements: Cerebral perfusion pressure, reference CPP, residual autoregulation slope, upright input, exploratory impairment multiplier, and dynamic state.
     aliases:

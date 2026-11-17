@@ -1,10 +1,10 @@
 id: healthy-reference
 label: Healthy reference operating point
 diseases: []
-mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-CBF-AUTOREG]
-evidence_claims: [CLM-CV-HEMODYNAMICS, CLM-POTS-CRITERIA]
+mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-CBF-AUTOREG, MEC-CBF-CO2]
+evidence_claims: [CLM-CV-HEMODYNAMICS, CLM-POTS-CRITERIA, CLM-CBF-CO2]
 parameter_overrides: {}
 maturity: M3
 classification: mechanistic_approximation
 limitations:
-  - Beat-averaged four-compartment approximation; no pulsatile waveform or patient-specific identification.
+  - Beat-averaged five-compartment approximation; no pulsatile waveform or patient-specific identification.

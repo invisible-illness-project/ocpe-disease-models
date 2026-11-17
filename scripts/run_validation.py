@@ -34,12 +34,23 @@ def _run_layer(layer: str, marker: str, report_dir: Path) -> dict[str, object]:
     (report_dir / f"{layer}.log").write_text(log, encoding="utf-8")
     summary = next((line for line in reversed(log.splitlines()) if "passed" in line or "failed" in line or "no tests ran" in line), "no pytest summary")
     # Exit code 5 (no tests collected) is deliberately a failure, not a skip.
+    # A strict xfail keeps the executable suite reproducible, but the unchanged
+    # scientific assertion still failed and must not become a validation pass.
+    expected_failures = "xfailed" in log
+    execution_passed = completed.returncode == 0
     return {
         "layer": layer,
         "marker": marker,
         "command": command,
         "exit_code": completed.returncode,
-        "status": "PASS" if completed.returncode == 0 else "FAIL",
+        "execution_status": "PASS" if execution_passed else "FAIL",
+        "status": "PASS" if execution_passed and not expected_failures else "FAIL",
+        "contains_strict_expected_failures": expected_failures,
+        "status_reason": (
+            "Strict expected failures preserve unresolved scientific criterion misses."
+            if expected_failures
+            else None
+        ),
         "pytest_summary": summary,
         "log": str((report_dir / f"{layer}.log").relative_to(ROOT)),
     }
@@ -92,7 +103,7 @@ def main() -> int:
         "ocpe_commit": OCPE_COMMIT,
         "python_version": platform.python_version(),
         "clinical_status": "Research software and scenario validation only; no clinical validity or diagnostic accuracy is established.",
-        "required_tests_policy": "A missing layer, empty pytest selection, failed audit, or warning in strict traceability is a failure, not a skip.",
+        "required_tests_policy": "A missing layer, empty pytest selection, failed audit, or warning in strict traceability is a failure, not a skip. Strict expected failures remain scientific failures even when pytest exits successfully.",
         "overall_status": "PASS" if overall else "FAIL",
         "layers": results,
     }

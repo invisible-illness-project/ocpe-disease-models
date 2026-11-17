@@ -40,7 +40,24 @@ pytestmark = pytest.mark.software
 # they are also exchanged quantities with registered OCPE semantics.
 OUTPUT_ROLE_STATES = {"pem_severity", "cerebral_flow_index"}
 
-PROTOCOL_INPUT_FIELDS = {"upright", "exertion", "rhythmic_muscle_activity", "sustained_muscle_contraction"}
+PROTOCOL_INPUT_FIELDS = {
+    "upright",
+    "tilt_angle_deg",
+    "end_tidal_co2_mmHg",
+    "transition_duration",
+    "exertion",
+    "rhythmic_muscle_activity",
+    "sustained_muscle_contraction",
+}
+
+# Inputs whose physical domain is exactly enforced by ProtocolSegment.validate.
+EXACT_INPUT_RANGES = {
+    "upright": (0.0, 1.0),
+    "tilt_angle_deg": (0.0, 90.0),
+    "exertion": (0.0, 1.0),
+    "rhythmic_muscle_activity": (0.0, 1.0),
+    "sustained_muscle_contraction": (0.0, 1.0),
+}
 
 
 @pytest.fixture(scope="module")
@@ -107,7 +124,7 @@ def test_executable_accepts_declared_nominal_values():
 def test_every_executable_state_declared(symbols, equations):
     declared = _bound(symbols, "x-executable-state")
     assert set(declared) == set(STATE_NAMES)
-    assert len(STATE_NAMES) == 11
+    assert len(STATE_NAMES) == 12
     for name, sym in declared.items():
         expected_role = "output" if name in OUTPUT_ROLE_STATES else "state"
         assert sym["role"] == expected_role, (
@@ -138,11 +155,27 @@ def test_protocol_inputs_declared(symbols):
     assert set(declared) == PROTOCOL_INPUT_FIELDS
     segment_fields = {f.name for f in fields(ProtocolSegment)}
     assert PROTOCOL_INPUT_FIELDS <= segment_fields
-    for sym in declared.values():
+    for name, sym in declared.items():
         assert sym["role"] == "input"
         rng = sym.get("value_range") or {}
-        # ProtocolSegment.validate enforces normalized [0, 1] inputs.
-        assert rng.get("min") == 0.0 and rng.get("max") == 1.0
+        if name in EXACT_INPUT_RANGES:
+            # The declared range must equal the exact executable domain.
+            lo, hi = EXACT_INPUT_RANGES[name]
+            assert rng.get("min") == lo and rng.get("max") == hi, (
+                f"{name}: declared range {rng} != executable domain [{lo}, {hi}]"
+            )
+        elif name == "transition_duration":
+            # Nonnegative; bounded above only by the enclosing segment duration.
+            assert rng.get("min") == 0.0
+            assert rng.get("max") is None
+        elif name == "end_tidal_co2_mmHg":
+            # The executable domain is (0, inf) with no finite bound, so the
+            # declared range must be finite and strictly inside it.
+            assert rng.get("min") is not None and rng["min"] > 0.0
+            assert rng.get("max") is not None and np.isfinite(rng["max"])
+            assert rng["min"] < rng["max"]
+        else:  # pragma: no cover - guarded by the PROTOCOL_INPUT_FIELDS check
+            raise AssertionError(f"unhandled declared input {name!r}")
 
 
 # -------------------------------------------------------------------- outputs

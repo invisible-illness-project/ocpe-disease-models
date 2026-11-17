@@ -4,8 +4,8 @@ diseases: [hEDS, ME/CFS]
 mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-RCV-PEM, MEC-MET-CAPACITY]
 evidence_claims: [CLM-EDS-OI, CLM-ME-PEM-KINETICS]
 parameter_overrides:
-  splanchnic_gravity_pressure_offset: 4.5
-  lower_limb_gravity_pressure_offset: 9.0
+  splanchnic_hydrostatic_height_cm: 6.117455138662316
+  lower_limb_hydrostatic_height_cm: 12.234910277324632
   lower_limb_venous_compliance: 58.333333333333336
   splanchnic_resistance_sympathetic_gain: 0.7
   lower_limb_resistance_sympathetic_gain: 0.7

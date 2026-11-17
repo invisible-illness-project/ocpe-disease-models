@@ -48,7 +48,7 @@ EXPECTED_OUTPUT_QUANTITIES = EXPECTED_QUANTITIES | {
     "ocpe:disease-models/sympathetic-activation",
 }
 
-# Role-"state" symbols of the 11-state executable model; the remaining two
+# Role-"state" symbols of the 12-state executable model; the remaining two
 # dynamic states (PEM severity, cerebral flow index) are declared with role
 # "output" because they are also exchanged quantities.
 EXPECTED_STATE_SYMBOLS = {
@@ -56,6 +56,7 @@ EXPECTED_STATE_SYMBOLS = {
     "V_cv",
     "V_sv",
     "V_lv",
+    "V_ov",
     "S_c",
     "S_v",
     "S_vag",
@@ -159,7 +160,7 @@ def test_model_structure():
     # Every model output accounts for a registered quantity.
     assert set(outputs.values()) <= EXPECTED_OUTPUT_QUANTITIES
     # One differential equation per dynamic state of the executable model:
-    # the nine role-"state" symbols plus PEM and CFI (role "output").
+    # the ten role-"state" symbols plus PEM and CFI (role "output").
     differential = [eq for eq in model.data["equations"] if eq.get("form") == "differential"]
     diff_outputs = {out for eq in differential for out in eq["outputs"]}
     assert diff_outputs == EXPECTED_STATE_SYMBOLS | {"PEM", "CFI"}

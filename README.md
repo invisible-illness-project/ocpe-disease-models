@@ -6,7 +6,7 @@ Literature-grounded, executable research models of POTS, hEDS-associated orthost
 
 ## What is implemented
 
-- A beat-averaged, volume-conserving cardiovascular and autonomic model (Stage 1 revision, eleven states) with four conservative stressed-volume compartments (arterial, central venous, splanchnic venous, lower-limb venous), differentiated vagal, cardiac-sympathetic, and vascular-sympathetic effector states, an explicit rhythmic skeletal-muscle pump, an independent sustained-contraction venous impediment, preload-dependent stroke volume, and a cerebral-perfusion-pressure-based normalized cerebral-flow index (CPP/CFI).
+- A beat-averaged, volume-conserving cardiovascular and autonomic model (Stage 1.1, twelve states) with five conservative stressed-volume compartments (arterial, central venous, splanchnic venous, lower-limb venous, and one aggregated residual systemic venous bed), differentiated vagal, cardiac-sympathetic, and vascular-sympathetic effector states, an explicit rhythmic skeletal-muscle pump, an independent sustained-contraction venous impediment, preload-dependent stroke volume, separate aortic/carotid baroreceptor and brain-level pressures, explicit tilt-angle and end-tidal-CO2 protocol inputs, bounded CO2-dependent cerebral regulation, and a normalized cerebral-flow index (CFI).
 - POTS neuropathic, hyperadrenergic, hypovolemic, and explicitly mixed configurations.
 - An exploratory hEDS lower-limb venous-compliance scenario (migrated from the original aggregated peripheral-compliance scenario); it does not generalize to other EDS subtypes or treat arterial elasticity as venous compliance.
 - A phenomenological ME/CFS exertion → delayed stress → PEM → reduced subsequent capacity cascade with asymmetric recovery.
@@ -49,6 +49,7 @@ pytest -q
 python scripts/audit_traceability.py --root . --strict
 ocpe validate ocpe/packages/disease-models --strict
 python scripts/run_sensitivity.py
+python scripts/run_stage1_1_validation.py
 python scripts/run_validation.py
 ```
 
@@ -80,7 +81,9 @@ The Stage 1 design and review record lives under `docs/stage1/`:
 
 - `docs/stage1/baseline-scientific-report.md` — audit of the original three-compartment implementation (Stage 0, preserved as history).
 - `docs/stage1/literature-and-evidence-matrix.md` — evidence-to-mechanism decisions for the revision.
-- `docs/stage1/revised-physiological-architecture.md` — the reviewed four-compartment eleven-state architecture, migration formulas, per-phenotype fixed-point derivation, and calibration record implemented in the current code.
+- `docs/stage1/revised-physiological-architecture.md` — the reviewed four-compartment eleven-state Stage 1 architecture and calibration record, preserved as history.
+
+The current Stage 1.1 architecture, scientific decisions, validation matrix, and readiness assessment live under `docs/stage1-1/`; its generated time-resolved scientific comparison is under `validation/stage1-1/`.
 
 ## Scope
 

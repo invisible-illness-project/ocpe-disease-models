@@ -1,5 +1,17 @@
 # Changelog — ocpe:disease-models
 
+## 0.3.0
+
+- Added the Stage 1.1 twelve-state declaration with a fifth conserved
+  other-systemic venous volume and a three-way systemic flow partition.
+- Separated aortic and carotid baroreceptor pressures from brain arterial
+  pressure; declared their distinct hydrostatic heights and integrated reflex.
+- Added explicit tilt-angle, transition-duration and segment end-tidal-CO2
+  inputs, plus bounded CO2-dependent cerebral vascular regulation.
+- Declared the fixed effective cerebral outflow-pressure approximation without
+  treating it as thoracic central venous pressure or resolved intracranial
+  pressure.
+
 ## 0.2.0
 
 - Replaced the legacy three-compartment declaration with the 11-state shared

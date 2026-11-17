@@ -3,6 +3,6 @@ title: Upright walking with metabolic exertion and rhythmic muscle pump
 scientific_note: A normalized low-to-moderate walking approximation combining exertion and rhythmic activity; not a gait or energy-expenditure model.
 solver: {sample_interval: 1.0, max_step: 1.0, rtol: 1.0e-7, atol: 1.0e-8}
 segments:
-  - {start: 0, end: 120, upright: 0.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.0, label: supine}
-  - {start: 120, end: 600, upright: 1.0, exertion: 0.35, rhythmic_muscle_activity: 0.8, sustained_muscle_contraction: 0.0, label: walking}
-  - {start: 600, end: 1200, upright: 0.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.0, label: supine-recovery}
+  - {start: 0, end: 120, tilt_angle_deg: 0.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.0, label: supine}
+  - {start: 120, end: 600, tilt_angle_deg: 90.0, transition_duration: 3.0, exertion: 0.35, rhythmic_muscle_activity: 0.8, sustained_muscle_contraction: 0.0, end_tidal_co2_mmHg: 40.0, label: walking}
+  - {start: 600, end: 1200, tilt_angle_deg: 0.0, transition_duration: 3.0, exertion: 0.0, rhythmic_muscle_activity: 0.0, sustained_muscle_contraction: 0.0, end_tidal_co2_mmHg: 40.0, label: supine-recovery}

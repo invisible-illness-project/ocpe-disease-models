@@ -1,21 +1,2 @@
-$ python -m pytest -q -m scientific_traceability
 ........................................                                 [100%]
-40 passed, 247 deselected in 3.60s
-$ python scripts/audit_traceability.py --root . --strict
-traceability audit: PASS (0 errors, 0 warnings, 0 infos)
-  JSON report:     /mnt/agents/output/ocpe-disease-models/validation/traceability/audit/traceability_report.json
-  Markdown report: /mnt/agents/output/ocpe-disease-models/validation/traceability/audit/traceability_report.md
-$ python -m ocpe validate ocpe/packages/disease-models --strict
-
-OK: 0 error(s), 0 warning(s) across disease-models@0.2.0
-Note: structural validation only; it does not establish scientific validity.
-$ python -m ruff check .
-All checks passed!
-$ git diff --check
-$ parse structured release records and verify preserved baseline
-validation/baseline/stage0/regression_fixtures.json f3a6a8e3e36f994fd302a54575c35db793ac85f8754b95cf4d69a748fe5b5491 matches original Git blob
-validation/baseline/stage0/validation-report.original.json 252fb1da115bb7592416fe9c66cb23e634b03785c12607437e3aed2dcdfc0809 matches original Git blob
-Source/configuration paths match tested commit: PASS
-Structured JSON files parsed: 49
-Validation registry: 26 PASS, 0 FAIL, 0 PENDING
-Record integrity: PASS
+40 passed, 290 deselected in 3.83s

@@ -185,24 +185,68 @@ parameters:
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: assumed_computational_operating_point
+- id: PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
+  name: other systemic venous compliance
+  symbol: other_systemic_venous_compliance
+  model_field: other_systemic_venous_compliance
+  healthy_reference_value: 50.0
+  value: 50.0
+  units: mL/mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-STRESSED-VOLUME
+  - CLM-CV-VENOUS-RETURN
+  estimation_method: Explicit computational operating-point choice for the residual other-systemic bed;
+    not estimated from an individual patient.
+  supported_range:
+    min: 35.0
+    max: 70.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-001
+    validation:
+    - VAL-MATH-CONSERVATION
+    - VAL-SENSITIVITY
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.other_systemic_venous_compliance in the Stage 1.1 (0.3.0)
+    five-compartment revision for the residual other-systemic bed; defaults and all YAML overrides are
+    audited against this record.
+  references:
+  - REF-MAGDER-2016
+  - REF-SMITH-1994
+  - REF-ROTHE-1983
+  description: Executable other-systemic venous compliance used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
+  nominal_value: 50.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
 - id: PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   name: splanchnic arterial resistance
   symbol: splanchnic_arterial_resistance
   model_field: splanchnic_arterial_resistance
-  healthy_reference_value: 2.204081632653061
-  value: 2.204081632653061
+  healthy_reference_value: 4.408163265306122
+  value: 4.408163265306122
   units: mmHg s/mL
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-CV-HEMODYNAMICS
   - CLM-ORTHO-SPLANCHNIC
-  estimation_method: Operating-point derivation from the healthy supine equilibrium (equal regional flow
-    split of the 81.6667 mL/s cardiac output across the arterial-venous and venous driving gradients);
-    not a patient measurement.
+  estimation_method: Operating-point derivation from the healthy supine equilibrium (25% splanchnic share
+    of the 81.6667 mL/s cardiac output across the arterial-venous driving gradient under the Stage 1.1
+    25/25/50 baseline flow partition); not a patient measurement.
   supported_range:
-    min: 1.8
-    max: 2.6
+    min: 3.6
+    max: 5.2
     status: computational sensitivity/scenario range; not a population reference interval
   uncertainty:
     qualitative: high for absolute patient-level value; direction and units are separately reviewed
@@ -220,24 +264,25 @@ parameters:
     - VAL-SENSITIVITY
   phenotype_values:
     pots-hyperadrenergic:
-      value: 2.1578421578421576
+      value: 4.315684315684315
       config: phenotypes/pots/pots-hyperadrenergic.yaml
     pots-hypovolemic:
-      value: 2.08065306122449
+      value: 4.16130612244898
       config: phenotypes/pots/pots-hypovolemic.yaml
     pots-mixed:
-      value: 2.1423673469387756
+      value: 4.284734693877551
       config: phenotypes/pots/pots-mixed.yaml
   provenance: Introduced with ModelParameters.splanchnic_arterial_resistance in the Stage 1 revised shared
-    model (four conservative stressed-volume compartments, distinct autonomic states, muscle pump, CPP/CFI
-    proxy); defaults and all YAML overrides are audited against this record.
+    model; the Stage 1.1 (0.3.0) five-compartment revision doubled the default and every explicit YAML override
+    (the new other-systemic bed takes the former value) to realize the 25/25/50 baseline flow partition at
+    unchanged total conductance. Defaults and all YAML overrides are audited against this record.
   references:
   - REF-ROWELL-1972
   - REF-HELDT-2002
   - REF-GEDDES-2022
   description: Executable splanchnic arterial resistance used by the shared reduced-order model; see linked
     equations and phenotype overrides.
-  nominal_value: 2.204081632653061
+  nominal_value: 4.408163265306122
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: derived_from_model_operating_point
@@ -245,20 +290,20 @@ parameters:
   name: lower limb arterial resistance
   symbol: lower_limb_arterial_resistance
   model_field: lower_limb_arterial_resistance
-  healthy_reference_value: 2.204081632653061
-  value: 2.204081632653061
+  healthy_reference_value: 4.408163265306122
+  value: 4.408163265306122
   units: mmHg s/mL
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-CV-HEMODYNAMICS
   - CLM-ORTHO-LOWER-LIMB
-  estimation_method: Operating-point derivation from the healthy supine equilibrium (equal regional flow
-    split of the 81.6667 mL/s cardiac output across the arterial-venous and venous driving gradients);
-    not a patient measurement.
+  estimation_method: Operating-point derivation from the healthy supine equilibrium (25% lower-limb share
+    of the 81.6667 mL/s cardiac output across the arterial-venous driving gradient under the Stage 1.1
+    25/25/50 baseline flow partition); not a patient measurement.
   supported_range:
-    min: 1.8
-    max: 2.6
+    min: 3.6
+    max: 5.2
     status: computational sensitivity/scenario range; not a population reference interval
   uncertainty:
     qualitative: high for absolute patient-level value; direction and units are separately reviewed
@@ -276,6 +321,63 @@ parameters:
     - VAL-SENSITIVITY
   phenotype_values:
     pots-hyperadrenergic:
+      value: 4.315684315684315
+      config: phenotypes/pots/pots-hyperadrenergic.yaml
+    pots-hypovolemic:
+      value: 4.16130612244898
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 4.284734693877551
+      config: phenotypes/pots/pots-mixed.yaml
+  provenance: Introduced with ModelParameters.lower_limb_arterial_resistance in the Stage 1 revised shared
+    model; the Stage 1.1 (0.3.0) five-compartment revision doubled the default and every explicit YAML override
+    (the new other-systemic bed takes the former value) to realize the 25/25/50 baseline flow partition at
+    unchanged total conductance. Defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-SMITH-1994
+  - REF-HELDT-2002
+  - REF-GEDDES-2022
+  description: Executable lower limb arterial resistance used by the shared reduced-order model; see linked
+    equations and phenotype overrides.
+  nominal_value: 4.408163265306122
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: derived_from_model_operating_point
+- id: PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
+  name: other systemic arterial resistance
+  symbol: other_systemic_arterial_resistance
+  model_field: other_systemic_arterial_resistance
+  healthy_reference_value: 2.204081632653061
+  value: 2.204081632653061
+  units: mmHg s/mL
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-HEMODYNAMICS
+  - CLM-CV-VENOUS-RETURN
+  estimation_method: Operating-point derivation from the healthy supine equilibrium (50% other-systemic share
+    of the 81.6667 mL/s cardiac output across the arterial-venous driving gradient under the Stage 1.1
+    25/25/50 baseline flow partition); equals the Stage 1 regional arterial resistance value; not a patient
+    measurement.
+  supported_range:
+    min: 1.8
+    max: 2.6
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-002
+    - EQ-VASC-001
+    validation:
+    - VAL-PHYS-BASELINE
+    - VAL-SENSITIVITY
+  phenotype_values:
+    pots-hyperadrenergic:
       value: 2.1578421578421576
       config: phenotypes/pots/pots-hyperadrenergic.yaml
     pots-hypovolemic:
@@ -284,15 +386,17 @@ parameters:
     pots-mixed:
       value: 2.1423673469387756
       config: phenotypes/pots/pots-mixed.yaml
-  provenance: Introduced with ModelParameters.lower_limb_arterial_resistance in the Stage 1 revised shared
-    model (four conservative stressed-volume compartments, distinct autonomic states, muscle pump, CPP/CFI
-    proxy); defaults and all YAML overrides are audited against this record.
+  provenance: Introduced with ModelParameters.other_systemic_arterial_resistance in the Stage 1.1 (0.3.0)
+    five-compartment revision; the residual other-systemic bed inherits the former Stage 1 regional arterial
+    resistance values while the splanchnic and lower-limb values are doubled, realizing the 25/25/50 baseline
+    flow partition at unchanged total conductance. Defaults and all YAML overrides are audited against this
+    record.
   references:
-  - REF-SMITH-1994
+  - REF-ROWELL-1972
   - REF-HELDT-2002
   - REF-GEDDES-2022
-  description: Executable lower limb arterial resistance used by the shared reduced-order model; see linked
-    equations and phenotype overrides.
+  description: Executable other-systemic arterial resistance used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
   nominal_value: 2.204081632653061
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
@@ -301,20 +405,20 @@ parameters:
   name: splanchnic venous resistance
   symbol: splanchnic_venous_resistance
   model_field: splanchnic_venous_resistance
-  healthy_reference_value: 0.12244897959183673
-  value: 0.12244897959183673
+  healthy_reference_value: 0.24489795918367346
+  value: 0.24489795918367346
   units: mmHg s/mL
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-CV-VENOUS-RETURN
   - CLM-ORTHO-SPLANCHNIC
-  estimation_method: Operating-point derivation from the healthy supine equilibrium (equal regional flow
-    split of the 81.6667 mL/s cardiac output across the arterial-venous and venous driving gradients);
-    not a patient measurement.
+  estimation_method: Operating-point derivation from the healthy supine equilibrium (25% splanchnic share
+    of the 81.6667 mL/s cardiac output across the venous driving gradient under the Stage 1.1 25/25/50
+    baseline flow partition); not a patient measurement.
   supported_range:
-    min: 0.08
-    max: 0.17
+    min: 0.16
+    max: 0.34
     status: computational sensitivity/scenario range; not a population reference interval
   uncertainty:
     qualitative: high for absolute patient-level value; direction and units are separately reviewed
@@ -330,24 +434,25 @@ parameters:
     - VAL-POTS-NEUROPATHIC
   phenotype_values:
     pots-hyperadrenergic:
-      value: 0.11988011988011989
+      value: 0.23976023976023977
       config: phenotypes/pots/pots-hyperadrenergic.yaml
     pots-hypovolemic:
-      value: 0.11559183673469388
+      value: 0.23118367346938776
       config: phenotypes/pots/pots-hypovolemic.yaml
     pots-mixed:
-      value: 0.11902040816326531
+      value: 0.23804081632653062
       config: phenotypes/pots/pots-mixed.yaml
   provenance: Introduced with ModelParameters.splanchnic_venous_resistance in the Stage 1 revised shared
-    model (four conservative stressed-volume compartments, distinct autonomic states, muscle pump, CPP/CFI
-    proxy); defaults and all YAML overrides are audited against this record.
+    model; the Stage 1.1 (0.3.0) five-compartment revision doubled the default and every explicit YAML override
+    (the new other-systemic bed takes the former value) to realize the 25/25/50 baseline flow partition at
+    unchanged total conductance. Defaults and all YAML overrides are audited against this record.
   references:
   - REF-PERSICHINI-2022
   - REF-MAGDER-2016
   - REF-GUYTON-1955
   description: Executable splanchnic venous resistance used by the shared reduced-order model; see linked
     equations and phenotype overrides.
-  nominal_value: 0.12244897959183673
+  nominal_value: 0.24489795918367346
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: derived_from_model_operating_point
@@ -355,20 +460,20 @@ parameters:
   name: lower limb venous resistance
   symbol: lower_limb_venous_resistance
   model_field: lower_limb_venous_resistance
-  healthy_reference_value: 0.12244897959183673
-  value: 0.12244897959183673
+  healthy_reference_value: 0.24489795918367346
+  value: 0.24489795918367346
   units: mmHg s/mL
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-CV-VENOUS-RETURN
   - CLM-ORTHO-LOWER-LIMB
-  estimation_method: Operating-point derivation from the healthy supine equilibrium (equal regional flow
-    split of the 81.6667 mL/s cardiac output across the arterial-venous and venous driving gradients);
-    not a patient measurement.
+  estimation_method: Operating-point derivation from the healthy supine equilibrium (25% lower-limb share
+    of the 81.6667 mL/s cardiac output across the venous driving gradient under the Stage 1.1 25/25/50
+    baseline flow partition); not a patient measurement.
   supported_range:
-    min: 0.08
-    max: 0.17
+    min: 0.16
+    max: 0.34
     status: computational sensitivity/scenario range; not a population reference interval
   uncertainty:
     qualitative: high for absolute patient-level value; direction and units are separately reviewed
@@ -385,6 +490,61 @@ parameters:
     - VAL-POTS-NEUROPATHIC
   phenotype_values:
     pots-hyperadrenergic:
+      value: 0.23976023976023977
+      config: phenotypes/pots/pots-hyperadrenergic.yaml
+    pots-hypovolemic:
+      value: 0.23118367346938776
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 0.23804081632653062
+      config: phenotypes/pots/pots-mixed.yaml
+  provenance: Introduced with ModelParameters.lower_limb_venous_resistance in the Stage 1 revised shared
+    model; the Stage 1.1 (0.3.0) five-compartment revision doubled the default and every explicit YAML override
+    (the new other-systemic bed takes the former value) to realize the 25/25/50 baseline flow partition at
+    unchanged total conductance. Defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-PERSICHINI-2022
+  - REF-VANHEUSDEN-2006
+  - REF-GUYTON-1955
+  description: Executable lower limb venous resistance used by the shared reduced-order model; see linked
+    equations and phenotype overrides.
+  nominal_value: 0.24489795918367346
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: derived_from_model_operating_point
+- id: PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
+  name: other systemic venous resistance
+  symbol: other_systemic_venous_resistance
+  model_field: other_systemic_venous_resistance
+  healthy_reference_value: 0.12244897959183673
+  value: 0.12244897959183673
+  units: mmHg s/mL
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-VENOUS-RETURN
+  - CLM-CV-HEMODYNAMICS
+  estimation_method: Operating-point derivation from the healthy supine equilibrium (50% other-systemic share
+    of the 81.6667 mL/s cardiac output across the venous driving gradient under the Stage 1.1 25/25/50
+    baseline flow partition); equals the Stage 1 regional venous resistance value; not a patient measurement.
+  supported_range:
+    min: 0.08
+    max: 0.17
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-ORT-001
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-SENSITIVITY
+  phenotype_values:
+    pots-hyperadrenergic:
       value: 0.11988011988011989
       config: phenotypes/pots/pots-hyperadrenergic.yaml
     pots-hypovolemic:
@@ -393,14 +553,16 @@ parameters:
     pots-mixed:
       value: 0.11902040816326531
       config: phenotypes/pots/pots-mixed.yaml
-  provenance: Introduced with ModelParameters.lower_limb_venous_resistance in the Stage 1 revised shared
-    model (four conservative stressed-volume compartments, distinct autonomic states, muscle pump, CPP/CFI
-    proxy); defaults and all YAML overrides are audited against this record.
+  provenance: Introduced with ModelParameters.other_systemic_venous_resistance in the Stage 1.1 (0.3.0)
+    five-compartment revision; the residual other-systemic bed inherits the former Stage 1 regional venous
+    resistance values while the splanchnic and lower-limb values are doubled, realizing the 25/25/50 baseline
+    flow partition at unchanged total conductance. Defaults and all YAML overrides are audited against this
+    record.
   references:
   - REF-PERSICHINI-2022
-  - REF-VANHEUSDEN-2006
+  - REF-MAGDER-2016
   - REF-GUYTON-1955
-  description: Executable lower limb venous resistance used by the shared reduced-order model; see linked
+  description: Executable other-systemic venous resistance used by the shared reduced-order model; see linked
     equations and phenotype overrides.
   nominal_value: 0.12244897959183673
   population: No individual patient population; computational healthy reference with phenotype-specific
@@ -538,23 +700,69 @@ parameters:
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: calibrated_or_assumed_requires_validation
-- id: PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  name: splanchnic gravity pressure offset
-  symbol: splanchnic_gravity_pressure_offset
-  model_field: splanchnic_gravity_pressure_offset
-  healthy_reference_value: 4.0
-  value: 4.0
-  units: mmHg
+- id: PAR-OTHER-SYSTEMIC-RESISTANCE-SYMPATHETIC-GAIN
+  name: other systemic resistance sympathetic gain
+  symbol: other_systemic_resistance_sympathetic_gain
+  model_field: other_systemic_resistance_sympathetic_gain
+  healthy_reference_value: 0.8
+  value: 0.8
+  units: dimensionless
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-PHENOTYPES
+  - CLM-AUT-SYMPATHETIC-PATHWAYS
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations;
+    not a fitted patient measurement.
+  supported_range:
+    min: 0.4
+    max: 1.2
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-VASC-001
+    validation:
+    - VAL-POTS-NEUROPATHIC
+    - VAL-SENSITIVITY
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.other_systemic_resistance_sympathetic_gain in the Stage 1.1
+    (0.3.0) five-compartment revision for the residual other-systemic bed; defaults and all YAML overrides
+    are audited against this record.
+  references:
+  - REF-LOW-2009
+  - REF-JACOB-2000
+  - REF-FAGIUS-1985
+  description: Executable other-systemic resistance sympathetic gain used by the shared reduced-order model;
+    see linked equations and phenotype overrides.
+  nominal_value: 0.8
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  name: splanchnic hydrostatic height
+  symbol: splanchnic_hydrostatic_height_cm
+  model_field: splanchnic_hydrostatic_height_cm
+  healthy_reference_value: 5.43773790103317
+  value: 5.43773790103317
+  units: cm
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-ORTHO-SPLANCHNIC
+  - CLM-ORTHO-HYDROSTATIC
   - CLM-POTS-POOLING
-  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations;
-    not a fitted patient measurement.
+  estimation_method: Stage 1.1 migration of the Stage 1 fixed 4.0 mmHg splanchnic gravity offset (height =
+    offset / 0.7356 mmHg/cm) into a lumped heart-to-bed height scaled by sin(tilt angle); the height is lumped
+    regional geometry, not a measured hydrostatic column.
   supported_range:
-    min: 3.0
-    max: 6.0
+    min: 4.078303425774877
+    max: 8.156606851549755
     status: computational sensitivity/scenario range; not a population reference interval
   uncertainty:
     qualitative: high for absolute patient-level value; direction and units are separately reviewed
@@ -565,63 +773,70 @@ parameters:
   dependencies:
     equations:
     - EQ-ORT-001
+    - EQ-ORT-002
     validation:
     - VAL-PHYS-TILT
+    - VAL-PHYS-TILT-ANGLE
+    - VAL-PHYS-GRADED-TILT
   phenotype_values:
     eds-heds-mecfs-comorbid:
-      value: 4.5
+      value: 6.117455138662316
       config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
     eds-heds-vascular:
-      value: 4.5
+      value: 6.117455138662316
       config: phenotypes/eds/eds-heds-vascular.yaml
     long-covid-autonomic:
-      value: 5.5
+      value: 7.4768896139206085
       config: phenotypes/long_covid/long-covid-autonomic.yaml
     mecfs-pem:
-      value: 4.5
+      value: 6.117455138662316
       config: phenotypes/mecfs/mecfs-pem.yaml
     pots-hyperadrenergic:
-      value: 5.0
+      value: 6.797172376291463
       config: phenotypes/pots/pots-hyperadrenergic.yaml
     pots-hypovolemic:
-      value: 5.0
+      value: 6.797172376291463
       config: phenotypes/pots/pots-hypovolemic.yaml
     pots-mixed:
-      value: 5.0
+      value: 6.797172376291463
       config: phenotypes/pots/pots-mixed.yaml
     pots-neuropathic:
-      value: 5.0
+      value: 6.797172376291463
       config: phenotypes/pots/pots-neuropathic.yaml
-  provenance: Introduced with ModelParameters.splanchnic_gravity_pressure_offset in the Stage 1 revised
-    shared model (four conservative stressed-volume compartments, distinct autonomic states, muscle pump,
-    CPP/CFI proxy); defaults and all YAML overrides are audited against this record.
+  provenance: Introduced with ModelParameters.splanchnic_hydrostatic_height_cm in the Stage 1.1 (0.3.0)
+    revision, replacing the deleted fixed-offset ModelParameters.splanchnic_gravity_pressure_offset; phenotype
+    YAML overrides were migrated with full-precision division by 0.7356. Defaults and all YAML overrides are
+    audited against this record.
   references:
   - REF-TANEJA-2007
   - REF-STEWART-2004
   - REF-TANI-2000
-  description: Executable splanchnic gravity pressure offset used by the shared reduced-order model; see
-    linked equations and phenotype overrides.
-  nominal_value: 4.0
+  - REF-HARMS-2021
+  description: Executable splanchnic hydrostatic height used by the shared reduced-order model; see linked
+    equations and phenotype overrides.
+  nominal_value: 5.43773790103317
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: calibrated_or_assumed_requires_validation
-- id: PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
-  name: lower limb gravity pressure offset
-  symbol: lower_limb_gravity_pressure_offset
-  model_field: lower_limb_gravity_pressure_offset
-  healthy_reference_value: 8.0
-  value: 8.0
-  units: mmHg
+- id: PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
+  name: lower limb hydrostatic height
+  symbol: lower_limb_hydrostatic_height_cm
+  model_field: lower_limb_hydrostatic_height_cm
+  healthy_reference_value: 10.87547580206634
+  value: 10.87547580206634
+  units: cm
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-ORTHO-LOWER-LIMB
+  - CLM-ORTHO-HYDROSTATIC
   - CLM-POTS-POOLING
-  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations;
-    not a fitted patient measurement.
+  estimation_method: Stage 1.1 migration of the Stage 1 fixed 8.0 mmHg lower-limb gravity offset (height =
+    offset / 0.7356 mmHg/cm) into a lumped heart-to-bed height scaled by sin(tilt angle); the height is lumped
+    regional geometry, not a measured hydrostatic column.
   supported_range:
-    min: 6.0
-    max: 12.0
+    min: 8.156606851549755
+    max: 16.31321370309951
     status: computational sensitivity/scenario range; not a population reference interval
   uncertainty:
     qualitative: high for absolute patient-level value; direction and units are separately reviewed
@@ -632,47 +847,95 @@ parameters:
   dependencies:
     equations:
     - EQ-ORT-001
+    - EQ-ORT-002
     validation:
     - VAL-PHYS-TILT
-    - VAL-POTS-NEUROPATHIC
+    - VAL-PHYS-TILT-ANGLE
+    - VAL-PHYS-GRADED-TILT
   phenotype_values:
     eds-heds-mecfs-comorbid:
-      value: 9.0
+      value: 12.234910277324632
       config: phenotypes/eds/eds-heds-mecfs-comorbid.yaml
     eds-heds-vascular:
-      value: 9.0
+      value: 12.234910277324632
       config: phenotypes/eds/eds-heds-vascular.yaml
     long-covid-autonomic:
-      value: 11.0
+      value: 14.953779227841217
       config: phenotypes/long_covid/long-covid-autonomic.yaml
     mecfs-pem:
-      value: 9.0
+      value: 12.234910277324632
       config: phenotypes/mecfs/mecfs-pem.yaml
     pots-hyperadrenergic:
-      value: 10.0
+      value: 13.594344752582925
       config: phenotypes/pots/pots-hyperadrenergic.yaml
     pots-hypovolemic:
-      value: 10.0
+      value: 13.594344752582925
       config: phenotypes/pots/pots-hypovolemic.yaml
     pots-mixed:
-      value: 10.0
+      value: 13.594344752582925
       config: phenotypes/pots/pots-mixed.yaml
     pots-neuropathic:
-      value: 10.0
+      value: 13.594344752582925
       config: phenotypes/pots/pots-neuropathic.yaml
-  provenance: Introduced with ModelParameters.lower_limb_gravity_pressure_offset in the Stage 1 revised
-    shared model (four conservative stressed-volume compartments, distinct autonomic states, muscle pump,
-    CPP/CFI proxy); defaults and all YAML overrides are audited against this record.
+  provenance: Introduced with ModelParameters.lower_limb_hydrostatic_height_cm in the Stage 1.1 (0.3.0)
+    revision, replacing the deleted fixed-offset ModelParameters.lower_limb_gravity_pressure_offset; phenotype
+    YAML overrides were migrated with full-precision division by 0.7356. Defaults and all YAML overrides are
+    audited against this record.
   references:
   - REF-SMITH-1994
   - REF-VANHEUSDEN-2006
   - REF-HELDT-2002
-  description: Executable lower limb gravity pressure offset used by the shared reduced-order model; see
-    linked equations and phenotype overrides.
-  nominal_value: 8.0
+  - REF-HARMS-2021
+  description: Executable lower limb hydrostatic height used by the shared reduced-order model; see linked
+    equations and phenotype overrides.
+  nominal_value: 10.87547580206634
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: calibrated_or_assumed_requires_validation
+- id: PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT
+  name: other systemic hydrostatic height
+  symbol: other_systemic_hydrostatic_height_cm
+  model_field: other_systemic_hydrostatic_height_cm
+  healthy_reference_value: 0.0
+  value: 0.0
+  units: cm
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-ORTHO-HYDROSTATIC
+  - CLM-CV-VENOUS-RETURN
+  estimation_method: Explicit computational operating-point choice (the residual other-systemic bed is lumped
+    at heart level, so its orthostatic hydrostatic correction is zero); not estimated from an individual
+    patient.
+  supported_range:
+    min: 0.0
+    max: 4.078303425774877
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-ORT-001
+    - EQ-ORT-002
+    validation:
+    - VAL-PHYS-TILT
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.other_systemic_hydrostatic_height_cm in the Stage 1.1 (0.3.0)
+    five-compartment revision; defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-HARMS-2021
+  - REF-HELDT-2002
+  - REF-PERSICHINI-2022
+  description: Executable other-systemic hydrostatic height used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
+  nominal_value: 0.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
 - id: PAR-ARTERIAL-VOLUME-INITIAL
   name: arterial volume initial
   symbol: arterial_volume_initial
@@ -835,6 +1098,49 @@ parameters:
   - REF-PERSICHINI-2022
   - REF-SMITH-1994
   description: Executable lower limb venous pressure initial used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
+  nominal_value: 10.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-OTHER-SYSTEMIC-VENOUS-PRESSURE-INITIAL
+  name: other systemic venous pressure initial
+  symbol: other_systemic_venous_pressure_initial
+  model_field: other_systemic_venous_pressure_initial
+  healthy_reference_value: 10.0
+  value: 10.0
+  units: mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CV-STRESSED-VOLUME
+  - CLM-CV-VENOUS-RETURN
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 8.0
+    max: 12.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CV-001
+    validation:
+    - VAL-PHYS-BASELINE
+    - VAL-MATH-EQUILIBRIUM
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.other_systemic_venous_pressure_initial in the Stage 1.1 (0.3.0)
+    five-compartment revision; with the 50.0 mL/mmHg other-systemic compliance it sets the residual-bed
+    nominal stressed volume of 500 mL. Defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-MAGDER-2016
+  - REF-PERSICHINI-2022
+  - REF-SMITH-1994
+  description: Executable other-systemic venous pressure initial used by the shared reduced-order model; see
     linked equations and phenotype overrides.
   nominal_value: 10.0
   population: No individual patient population; computational healthy reference with phenotype-specific
@@ -1217,10 +1523,10 @@ parameters:
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: calibrated_or_assumed_requires_validation
-- id: PAR-BAROREFLEX-PRESSURE-SETPOINT
-  name: baroreflex pressure setpoint
-  symbol: baroreflex_pressure_setpoint
-  model_field: baroreflex_pressure_setpoint
+- id: PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  name: aortic baroreflex pressure setpoint
+  symbol: aortic_baroreflex_pressure_setpoint
+  model_field: aortic_baroreflex_pressure_setpoint
   healthy_reference_value: 100.0
   value: 100.0
   units: mmHg
@@ -1228,7 +1534,7 @@ parameters:
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-POTS-BAROREFLEX
-  - CLM-CBF-CPP
+  - CLM-AUT-DUAL-SENSOR
   estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
   supported_range:
     min: 90.0
@@ -1245,7 +1551,7 @@ parameters:
     - EQ-AUT-001
     validation:
     - VAL-PHYS-TILT
-    - VAL-ME-CBF
+    - VAL-MATH-EQUILIBRIUM
   phenotype_values:
     pots-hypovolemic:
       value: 92.0
@@ -1253,22 +1559,74 @@ parameters:
     pots-mixed:
       value: 96.0
       config: phenotypes/pots/pots-mixed.yaml
-  provenance: Retained as ModelParameters.baroreflex_pressure_setpoint through the Stage 1 four-compartment
-    revision of the shared model; defaults and all YAML overrides are audited against this record.
+  provenance: Introduced with ModelParameters.aortic_baroreflex_pressure_setpoint in the Stage 1.1 (0.3.0)
+    dual-sensor baroreflex revision; Stage 1 baroreflex_pressure_setpoint phenotype overrides were duplicated
+    onto both aortic and carotid pathways with unchanged values. Defaults and all YAML overrides are audited
+    against this record.
   references:
   - REF-GEDDES-2022
   - REF-MUENTER-2005
   - REF-LOW-2009
-  description: Executable baroreflex pressure setpoint used by the shared reduced-order model; see linked
-    equations and phenotype overrides.
+  description: Executable aortic baroreflex pressure setpoint used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
   nominal_value: 100.0
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: assumed_computational_operating_point
-- id: PAR-BAROREFLEX-PRESSURE-SCALE
-  name: baroreflex pressure scale
-  symbol: baroreflex_pressure_scale
-  model_field: baroreflex_pressure_scale
+- id: PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  name: carotid baroreflex pressure setpoint
+  symbol: carotid_baroreflex_pressure_setpoint
+  model_field: carotid_baroreflex_pressure_setpoint
+  healthy_reference_value: 100.0
+  value: 100.0
+  units: mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-AUT-DUAL-SENSOR
+  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  supported_range:
+    min: 90.0
+    max: 105.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-001
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-MATH-EQUILIBRIUM
+  phenotype_values:
+    pots-hypovolemic:
+      value: 92.0
+      config: phenotypes/pots/pots-hypovolemic.yaml
+    pots-mixed:
+      value: 96.0
+      config: phenotypes/pots/pots-mixed.yaml
+  provenance: Introduced with ModelParameters.carotid_baroreflex_pressure_setpoint in the Stage 1.1 (0.3.0)
+    dual-sensor baroreflex revision; Stage 1 baroreflex_pressure_setpoint phenotype overrides were duplicated
+    onto both aortic and carotid pathways with unchanged values. Defaults and all YAML overrides are audited
+    against this record.
+  references:
+  - REF-GEDDES-2022
+  - REF-MUENTER-2005
+  - REF-LOW-2009
+  description: Executable carotid baroreflex pressure setpoint used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
+  nominal_value: 100.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  name: aortic baroreflex pressure scale
+  symbol: aortic_baroreflex_pressure_scale
+  model_field: aortic_baroreflex_pressure_scale
   healthy_reference_value: 2.0
   value: 2.0
   units: mmHg
@@ -1276,6 +1634,7 @@ parameters:
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-POTS-BAROREFLEX
+  - CLM-AUT-DUAL-SENSOR
   estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations;
     not a fitted patient measurement.
   supported_range:
@@ -1307,18 +1666,250 @@ parameters:
     pots-mixed:
       value: 3.0
       config: phenotypes/pots/pots-mixed.yaml
-  provenance: Retained as ModelParameters.baroreflex_pressure_scale through the Stage 1 four-compartment
-    revision of the shared model; defaults and all YAML overrides are audited against this record.
+  provenance: Introduced with ModelParameters.aortic_baroreflex_pressure_scale in the Stage 1.1 (0.3.0)
+    dual-sensor baroreflex revision; Stage 1 baroreflex_pressure_scale phenotype overrides were duplicated
+    onto both aortic and carotid pathways with unchanged values. Defaults and all YAML overrides are audited
+    against this record.
   references:
   - REF-GEDDES-2022
   - REF-MUENTER-2005
   - REF-HAMMER-2005
-  description: Executable baroreflex pressure scale used by the shared reduced-order model; see linked
+  description: Executable aortic baroreflex pressure scale used by the shared reduced-order model; see linked
     equations and phenotype overrides.
   nominal_value: 2.0
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: calibrated_or_assumed_requires_validation
+- id: PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
+  name: carotid baroreflex pressure scale
+  symbol: carotid_baroreflex_pressure_scale
+  model_field: carotid_baroreflex_pressure_scale
+  healthy_reference_value: 2.0
+  value: 2.0
+  units: mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-POTS-BAROREFLEX
+  - CLM-AUT-DUAL-SENSOR
+  estimation_method: Scenario calibration constrained by cited group-level direction or temporal observations;
+    not a fitted patient measurement.
+  supported_range:
+    min: 1.5
+    max: 3.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-001
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-POTS-HYPER
+  phenotype_values:
+    pots-hyperadrenergic:
+      value: 1.5
+      config: phenotypes/pots/pots-hyperadrenergic.yaml
+    pots-hypovolemic:
+      value: 6.0
+      config: phenotypes/pots/pots-hypovolemic.yaml
+      range_exception: Intentional scenario calibration above the declared local sensitivity/scenario
+        range; retained for the demonstrated hypovolemic operating point. This is not a patient measurement
+        or evidence that the range should be widened, and independent calibration remains required.
+    pots-mixed:
+      value: 3.0
+      config: phenotypes/pots/pots-mixed.yaml
+  provenance: Introduced with ModelParameters.carotid_baroreflex_pressure_scale in the Stage 1.1 (0.3.0)
+    dual-sensor baroreflex revision; Stage 1 baroreflex_pressure_scale phenotype overrides were duplicated
+    onto both aortic and carotid pathways with unchanged values. Defaults and all YAML overrides are audited
+    against this record.
+  references:
+  - REF-GEDDES-2022
+  - REF-MUENTER-2005
+  - REF-HAMMER-2005
+  description: Executable carotid baroreflex pressure scale used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
+  nominal_value: 2.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: calibrated_or_assumed_requires_validation
+- id: PAR-AORTIC-BAROREFLEX-WEIGHT
+  name: aortic baroreflex weight
+  symbol: aortic_baroreflex_weight
+  model_field: aortic_baroreflex_weight
+  healthy_reference_value: 0.25
+  value: 0.25
+  units: dimensionless
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-AUT-DUAL-SENSOR
+  estimation_method: Explicit computational operating-point choice; the aortic/carotid integration weights
+    sum to 1 (validated within 1e-6) and are not measurements of relative afferent contributions.
+  supported_range:
+    min: 0.0
+    max: 1.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-001
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-MATH-EQUILIBRIUM
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.aortic_baroreflex_weight in the Stage 1.1 (0.3.0) dual-sensor
+    baroreflex revision; defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-DEBOER-1987
+  - REF-GEDDES-2022
+  - REF-MUENTER-2005
+  description: Executable aortic baroreflex integration weight used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
+  nominal_value: 0.25
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CAROTID-BAROREFLEX-WEIGHT
+  name: carotid baroreflex weight
+  symbol: carotid_baroreflex_weight
+  model_field: carotid_baroreflex_weight
+  healthy_reference_value: 0.75
+  value: 0.75
+  units: dimensionless
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-AUT-DUAL-SENSOR
+  estimation_method: Explicit computational operating-point choice; the aortic/carotid integration weights
+    sum to 1 (validated within 1e-6) and are not measurements of relative afferent contributions.
+  supported_range:
+    min: 0.0
+    max: 1.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-001
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-MATH-EQUILIBRIUM
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.carotid_baroreflex_weight in the Stage 1.1 (0.3.0) dual-sensor
+    baroreflex revision; defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-DEBOER-1987
+  - REF-GEDDES-2022
+  - REF-MUENTER-2005
+  description: Executable carotid baroreflex integration weight used by the shared reduced-order model; see
+    linked equations and phenotype overrides.
+  nominal_value: 0.75
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-AORTIC-BARORECEPTOR-HEIGHT
+  name: aortic baroreceptor height
+  symbol: aortic_baroreceptor_height_cm
+  model_field: aortic_baroreceptor_height_cm
+  healthy_reference_value: 0.0
+  value: 0.0
+  units: cm
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-AUT-DUAL-SENSOR
+  - CLM-ORTHO-HYDROSTATIC
+  estimation_method: Explicit computational operating-point choice (aortic baroreceptors lumped at heart
+    level, so their orthostatic hydrostatic correction is zero); not estimated from an individual patient.
+  supported_range:
+    min: 0.0
+    max: 5.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-001
+    - EQ-ORT-002
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-PHYS-TILT-ANGLE
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.aortic_baroreceptor_height_cm in the Stage 1.1 (0.3.0)
+    dual-sensor baroreflex revision; defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-HARMS-2021
+  - REF-DEBOER-1987
+  - REF-MUENTER-2005
+  description: Executable aortic baroreceptor height used by the shared reduced-order model; see linked
+    equations and phenotype overrides.
+  nominal_value: 0.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CAROTID-BARORECEPTOR-HEIGHT
+  name: carotid baroreceptor height
+  symbol: carotid_baroreceptor_height_cm
+  model_field: carotid_baroreceptor_height_cm
+  healthy_reference_value: 25.0
+  value: 25.0
+  units: cm
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-AUT-DUAL-SENSOR
+  - CLM-ORTHO-HYDROSTATIC
+  estimation_method: Explicit computational operating-point choice consistent with the published ~25-30 cm
+    heart-to-brain hydrostatic gradient; the carotid sinus (25 cm) and brain (27 cm) heights are deliberately
+    distinct lumped parameters, not measured hydrostatic columns.
+  supported_range:
+    min: 20.0
+    max: 30.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-AUT-001
+    - EQ-ORT-002
+    validation:
+    - VAL-PHYS-TILT
+    - VAL-PHYS-TILT-ANGLE
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.carotid_baroreceptor_height_cm in the Stage 1.1 (0.3.0)
+    dual-sensor baroreflex revision; defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-HARMS-2021
+  - REF-DEBOER-1987
+  - REF-MUENTER-2005
+  description: Executable carotid baroreceptor height used by the shared reduced-order model; see linked
+    equations and phenotype overrides.
+  nominal_value: 25.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
 - id: PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
   name: cardiac sympathetic time constant
   symbol: cardiac_sympathetic_time_constant
@@ -1742,22 +2333,24 @@ parameters:
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: calibrated_or_assumed_requires_validation
-- id: PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
-  name: head hydrostatic pressure offset
-  symbol: head_hydrostatic_pressure_offset
-  model_field: head_hydrostatic_pressure_offset
-  healthy_reference_value: 20.0
-  value: 20.0
-  units: mmHg
+- id: PAR-BRAIN-HYDROSTATIC-HEIGHT
+  name: brain hydrostatic height
+  symbol: brain_hydrostatic_height_cm
+  model_field: brain_hydrostatic_height_cm
+  healthy_reference_value: 27.0
+  value: 27.0
+  units: cm
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-CBF-CPP
-  - CLM-POTS-BAROREFLEX
-  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  - CLM-ORTHO-HYDROSTATIC
+  estimation_method: Explicit computational operating-point choice consistent with the published ~25-30 cm
+    heart-to-brain hydrostatic gradient (27 cm corresponds to ~19.9 mmHg at 90 degrees); Stage 1.1 migration
+    of the Stage 1 fixed 20 mmHg head hydrostatic pressure offset. Not a measured hydrostatic column.
   supported_range:
-    min: 15.0
-    max: 25.0
+    min: 20.390429338553755
+    max: 33.98404889758959
     status: computational sensitivity/scenario range; not a population reference interval
   uncertainty:
     qualitative: high for absolute patient-level value; direction and units are separately reviewed
@@ -1767,22 +2360,71 @@ parameters:
     current_status: research demonstration only; no patient-specific calibration performed
   dependencies:
     equations:
-    - EQ-AUT-001
     - EQ-CBF-001
+    - EQ-ORT-002
     validation:
     - VAL-ME-CBF
     - VAL-PHYS-TILT
+    - VAL-PHYS-TILT-ANGLE
   phenotype_values: {}
-  provenance: Introduced with ModelParameters.head_hydrostatic_pressure_offset in the Stage 1 revised
-    shared model (four conservative stressed-volume compartments, distinct autonomic states, muscle pump,
-    CPP/CFI proxy); defaults and all YAML overrides are audited against this record.
+  provenance: Introduced with ModelParameters.brain_hydrostatic_height_cm in the Stage 1.1 (0.3.0) revision,
+    replacing the deleted fixed-offset ModelParameters.head_hydrostatic_pressure_offset; the brain height feeds
+    only the cerebral perfusion path and is deliberately distinct from the carotid sensor height. Defaults and
+    all YAML overrides are audited against this record.
   references:
+  - REF-HARMS-2021
   - REF-LEVINE-1994
   - REF-WILLIE-2014
   - REF-OLUFSEN-2005
-  description: Executable head hydrostatic pressure offset used by the shared reduced-order model; see
-    linked equations and phenotype overrides.
-  nominal_value: 20.0
+  description: Executable brain hydrostatic height used by the shared reduced-order model; see linked equations
+    and phenotype overrides.
+  nominal_value: 27.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-CEREBRAL-OUTFLOW-PRESSURE
+  name: cerebral outflow pressure
+  symbol: cerebral_outflow_pressure_mmHg
+  model_field: cerebral_outflow_pressure_mmHg
+  healthy_reference_value: 5.0
+  value: 5.0
+  units: mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CBF-CPP
+  - CLM-CBF-OUTFLOW
+  estimation_method: Explicit computational operating-point choice; a fixed effective downstream pressure that
+    is neither thoracic central venous pressure nor a separately resolved intracranial pressure.
+  supported_range:
+    min: 2.5
+    max: 7.5
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; direction and units are separately reviewed
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CBF-001
+    validation:
+    - VAL-ME-CBF
+    - VAL-PHYS-RECOVERY
+    - VAL-SENSITIVITY
+    - VAL-UNCERTAINTY
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.cerebral_outflow_pressure_mmHg in the Stage 1.1 (0.3.0) revision,
+    replacing the Stage 1 subtraction of the central-venous compartment pressure from brain-level pressure;
+    defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-GISOLF-2004
+  - REF-LEVINE-1994
+  - REF-WILLIE-2014
+  description: Executable fixed effective cerebral outflow pressure used by the shared reduced-order model;
+    see linked equations and phenotype overrides.
+  nominal_value: 5.0
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: assumed_computational_operating_point
@@ -2005,6 +2647,136 @@ parameters:
   description: Executable cerebral recovery time constant used by the shared reduced-order model; see
     linked equations and phenotype overrides.
   nominal_value: 12.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: assumed_computational_operating_point
+- id: PAR-END-TIDAL-CO2-REFERENCE
+  name: end tidal co2 reference
+  symbol: end_tidal_co2_reference_mmHg
+  model_field: end_tidal_co2_reference_mmHg
+  healthy_reference_value: 40.0
+  value: 40.0
+  units: mmHg
+  source: Healthy reference computational configuration anchored to the published ~40 mmHg resting end-tidal
+    CO2 operating point; group-level scenario anchor, not a patient measurement.
+  evidence_claims:
+  - CLM-CBF-CO2
+  estimation_method: Group-level operating-point anchor from published end-tidal CO2 physiology; protocol
+    segments that omit end_tidal_co2_mmHg resolve to this reference value.
+  supported_range:
+    min: 35.0
+    max: 45.0
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: moderate for the group-level operating point; end-tidal CO2 is an approximate, biased
+      surrogate of arterial PCO2
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CBF-003
+    validation:
+    - VAL-PHYS-CBF-CO2
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.end_tidal_co2_reference_mmHg in the Stage 1.1 (0.3.0) revision
+    implementing the declared Stage 1 CO2 omission as a bounded exponential end-tidal-CO2 factor; defaults and
+    all YAML overrides are audited against this record.
+  references:
+  - REF-IMMINK-2006
+  - REF-BATTISTI-2011
+  - REF-WILLIE-2014
+  description: Executable end-tidal CO2 reference used by the shared reduced-order model; see linked equations
+    and phenotype overrides.
+  nominal_value: 40.0
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: derived_from_published_group_measurements
+- id: PAR-CEREBRAL-CO2-REACTIVITY
+  name: cerebral co2 reactivity
+  symbol: cerebral_co2_reactivity_per_mmHg
+  model_field: cerebral_co2_reactivity_per_mmHg
+  healthy_reference_value: 0.035
+  value: 0.035
+  units: 1/mmHg
+  source: Healthy reference computational configuration anchored to published cerebral vasomotor CO2-reactivity
+    magnitudes; group-level scenario anchor, not a patient measurement.
+  evidence_claims:
+  - CLM-CBF-CO2
+  estimation_method: Group-level magnitude anchor (~0.035/mmHg exponential reactivity) consistent with
+    published cerebrovascular CO2-reactivity ranges; anchors scenarios, not patients.
+  supported_range:
+    min: 0.025
+    max: 0.045
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: moderate for direction, high for patient-level magnitude
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CBF-003
+    validation:
+    - VAL-PHYS-CBF-CO2
+    - VAL-SENSITIVITY
+    - VAL-UNCERTAINTY
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.cerebral_co2_reactivity_per_mmHg in the Stage 1.1 (0.3.0)
+    revision implementing the declared Stage 1 CO2 omission; defaults and all YAML overrides are audited
+    against this record.
+  references:
+  - REF-BATTISTI-2011
+  - REF-IMMINK-2006
+  - REF-WILLIE-2014
+  description: Executable cerebral CO2 reactivity used by the shared reduced-order model; see linked equations
+    and phenotype overrides.
+  nominal_value: 0.035
+  population: No individual patient population; computational healthy reference with phenotype-specific
+    scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
+  value_class: derived_from_published_group_measurements
+- id: PAR-CEREBRAL-CO2-EXTRAPOLATION-LIMIT
+  name: cerebral co2 extrapolation limit
+  symbol: cerebral_co2_extrapolation_limit_mmHg
+  model_field: cerebral_co2_extrapolation_limit_mmHg
+  healthy_reference_value: 15.0
+  value: 15.0
+  units: mmHg
+  source: Healthy reference computational configuration; cited references provide structural, directional,
+    or group-level context, not a direct measurement of this nominal value.
+  evidence_claims:
+  - CLM-CBF-CO2
+  estimation_method: Explicit computational bound on extrapolation of the exponential CO2-reactivity factor
+    outside the evidence-supported range (the ETCO2 deviation from the reference is clipped to +/-15 mmHg);
+    not a patient measurement.
+  supported_range:
+    min: 7.5
+    max: 22.5
+    status: computational sensitivity/scenario range; not a population reference interval
+  uncertainty:
+    qualitative: high for absolute patient-level value; the bound is a modeling guard, not physiology
+    sensitivity_required: true
+  calibration:
+    required_for_patient_use: true
+    current_status: research demonstration only; no patient-specific calibration performed
+  dependencies:
+    equations:
+    - EQ-CBF-003
+    validation:
+    - VAL-PHYS-CBF-CO2
+    - VAL-SENSITIVITY
+  phenotype_values: {}
+  provenance: Introduced with ModelParameters.cerebral_co2_extrapolation_limit_mmHg in the Stage 1.1 (0.3.0)
+    revision implementing the declared Stage 1 CO2 omission; the clip also enters the declared cerebral-flow-index
+    upper bound used by the runtime guards. Defaults and all YAML overrides are audited against this record.
+  references:
+  - REF-BATTISTI-2011
+  - REF-IMMINK-2006
+  description: Executable cerebral CO2 extrapolation limit used by the shared reduced-order model; see linked
+    equations and phenotype overrides.
+  nominal_value: 15.0
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: assumed_computational_operating_point

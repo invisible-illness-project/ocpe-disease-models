@@ -1,0 +1,7 @@
+id: pressure-reduction
+title: Pressure reduction without CO2 change
+scientific_note: Passive 70 degree tilt isolates hydrostatic pressure reduction while ETCO2 remains at 40 mmHg.
+solver: {sample_interval: 1.0, max_step: 1.0, rtol: 1.0e-7, atol: 1.0e-8}
+segments:
+  - {start: 0, end: 120, tilt_angle_deg: 0.0, end_tidal_co2_mmHg: 40.0, label: supine-reference}
+  - {start: 120, end: 600, tilt_angle_deg: 70.0, transition_duration: 30.0, end_tidal_co2_mmHg: 40.0, label: pressure-reduction}

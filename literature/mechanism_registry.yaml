@@ -1,10 +1,11 @@
 schema_version: '1.0'
 mechanisms:
 - id: MEC-CV-VOLUME
-  name: Conservative four-compartment hemodynamics
-  description: Arterial, central-venous, splanchnic-venous and lower-limb-venous stressed volumes exchange
-    through cardiac output, regional arterial flows and regional venous returns; the four volume derivatives
-    telescope exactly.
+  name: Conservative five-compartment hemodynamics
+  description: Arterial, central-venous, splanchnic-venous, lower-limb-venous and residual other-systemic
+    venous stressed volumes exchange through cardiac output, regional arterial flows and regional venous
+    returns; the five volume derivatives telescope exactly. The Stage 1.1 residual bed realizes a 25/25/50
+    splanchnic/lower-limb/other baseline flow partition at unchanged total conductance.
   diseases:
   - shared
   claims:
@@ -21,14 +22,18 @@ mechanisms:
   - PAR-CENTRAL-VENOUS-COMPLIANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
   - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
   - PAR-ARTERIAL-VOLUME-INITIAL
   - PAR-CENTRAL-VENOUS-VOLUME-INITIAL
   - PAR-SPLANCHNIC-VENOUS-PRESSURE-INITIAL
   - PAR-LOWER-LIMB-VENOUS-PRESSURE-INITIAL
+  - PAR-OTHER-SYSTEMIC-VENOUS-PRESSURE-INITIAL
   - PAR-BLOOD-VOLUME-FACTOR
   - PAR-STROKE-VOLUME-MAX
   - PAR-STROKE-VOLUME-HALF-VOLUME
@@ -39,7 +44,7 @@ mechanisms:
   - VAL-PHYS-BASELINE
   confidence: moderate
   limitations: Beat-averaged, linear compliances, nonnegative clipped flows, no pulsatile heart, no unstressed-volume
-    state and no independent patient identification.
+    state, one lumped residual other-systemic bed and no independent patient identification.
   equations:
   - EQ-CV-001
   - EQ-CV-002
@@ -47,10 +52,12 @@ mechanisms:
   - EQ-CV-004
   - EQ-CV-005
 - id: MEC-AUT-BAROREFLEX
-  name: Sigmoidal baroreflex with distinct autonomic effector states
-  description: A bounded head-level pressure-error target drives separate first-order cardiac-sympathetic,
+  name: Dual-sensor weighted baroreflex with distinct autonomic effector states
+  description: Separate aortic-arch and carotid-sinus pressure sensors, each hydrostatically corrected at its
+    own height by the shared sine-angle geometry, feed an integrated weighted pressure-error sigmoid target
+    (weights validated to sum to 1); the target drives separate first-order cardiac-sympathetic,
     vascular-sympathetic and vagal states with distinct lags; the vagal target is the complement of the
-    baroreflex target.
+    baroreflex target. Brain-level pressure is not a baroreflex sensor.
   diseases:
   - shared
   - POTS
@@ -65,37 +72,46 @@ mechanisms:
   - CLM-AUT-VAGAL-FAST
   - CLM-AUT-SYMPATHETIC-PATHWAYS
   - CLM-AUT-DELAYS
+  - CLM-AUT-DUAL-SENSOR
   classification: mechanistic_approximation
   maturity: M3
   status: implemented
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient.rhs
   parameters:
-  - PAR-BAROREFLEX-PRESSURE-SETPOINT
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SETPOINT
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-WEIGHT
+  - PAR-CAROTID-BAROREFLEX-WEIGHT
+  - PAR-AORTIC-BARORECEPTOR-HEIGHT
+  - PAR-CAROTID-BARORECEPTOR-HEIGHT
   - PAR-CARDIAC-SYMPATHETIC-TIME-CONSTANT
   - PAR-VASCULAR-SYMPATHETIC-TIME-CONSTANT
   - PAR-VAGAL-TIME-CONSTANT
   - PAR-HEART-RATE-REST
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
-  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
   - PAR-EXERCISE-HEART-RATE-GAIN
   tests:
   - VAL-PHYS-TILT
+  - VAL-PHYS-TILT-ANGLE
   - VAL-POTS-NEUROPATHIC
   - VAL-LC-AUTONOMIC
   - VAL-MATH-CONVERGENCE
   confidence: moderate
   limitations: First-order lags approximate distributed neural and neuroeffector dynamics; no MSNA state,
-    afferent-lesion distinction, pure delays or 0.1 Hz resonance representation.
+    afferent-lesion distinction, pure delays or 0.1 Hz resonance representation; the 0.25/0.75 integration
+    weights are computational assumptions, not measurements of relative afferent contributions.
   equations:
   - EQ-AUT-001
   - EQ-AUT-002
   - EQ-AUT-003
 - id: MEC-VASC-POOLING
   name: Regional orthostatic venous-return opposition and pooling
-  description: Upright posture adds regional gravity offsets that oppose splanchnic and lower-limb venous
-    return and redistribute conserved stressed volume across the four compartments.
+  description: Upright posture adds hydrostatic sine-angle pressure opposition (lumped regional heights
+    times sin(tilt angle)) to splanchnic, lower-limb and residual other-systemic venous return and
+    redistributes conserved stressed volume across the five compartments.
   diseases:
   - POTS
   - hEDS
@@ -107,31 +123,73 @@ mechanisms:
   - CLM-ORTHO-SPLANCHNIC
   - CLM-ORTHO-LOWER-LIMB
   - CLM-ORTHO-TILT-LBNP
+  - CLM-ORTHO-GRADED-TILT
   classification: phenomenological_mechanistic_hybrid
   maturity: M3
   status: implemented
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient._derived
   parameters:
-  - PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET
-  - PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
+  - PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
   tests:
   - VAL-PHYS-TILT
+  - VAL-PHYS-TILT-ANGLE
+  - VAL-PHYS-GRADED-TILT
   - VAL-POTS-NEUROPATHIC
   - VAL-EDS-DIRECTION
   confidence: moderate for direction, low for magnitude
-  limitations: Normalized gravity offsets are not angle-specific hydrostatic solutions or measured regional
+  limitations: Lumped regional heights times sin(tilt angle) are not measured hydrostatic columns or regional
     pooling fluxes; lower body negative pressure and tilt are not interchangeable stressors.
   equations:
   - EQ-ORT-001
+  - EQ-ORT-002
   - EQ-CV-003
+- id: MEC-ORTHO-HYDROSTATIC
+  name: Hydrostatic sine-angle posture geometry
+  description: A single resolved tilt angle in [0, 90] degrees (legacy normalized upright input migrates as
+    theta = arcsin(u)) drives all hydrostatic corrections as 0.7356 mmHg/cm times lumped height times
+    sin(angle); during a transition only the angle is linearly interpolated while all other inputs stay
+    piecewise constant. The geometry is shared by the regional venous returns, the aortic and carotid
+    baroreceptor pressures, and the brain-level arterial pressure.
+  diseases:
+  - shared
+  - POTS
+  - hEDS
+  - ME/CFS
+  - Long COVID
+  claims:
+  - CLM-ORTHO-HYDROSTATIC
+  - CLM-ORTHO-GRADED-TILT
+  classification: mechanistic_approximation
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient
+  parameters:
+  - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
+  - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
+  - PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT
+  - PAR-AORTIC-BARORECEPTOR-HEIGHT
+  - PAR-CAROTID-BARORECEPTOR-HEIGHT
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  tests:
+  - VAL-PHYS-TILT-ANGLE
+  - VAL-PHYS-GRADED-TILT
+  confidence: moderate for the sine-angle structure, low for the lumped heights
+  limitations: Lumped heights are regional geometry, not measured hydrostatic columns; angles beyond [0, 90]
+    degrees and inverted postures are out of scope; no venous-valve or column-collapse dynamics.
+  equations:
+  - EQ-ORT-002
 - id: MEC-VASC-CONSTRICTION
   name: Vascular-sympathetic regional resistance modulation
-  description: The vascular-sympathetic state modulates splanchnic and lower-limb arterial resistances
-    separately; neuropathic POTS reduces both regional gains.
+  description: The vascular-sympathetic state modulates splanchnic, lower-limb and residual other-systemic
+    arterial resistances separately; neuropathic POTS reduces both regional gains.
   diseases:
   - POTS
   claims:
@@ -145,8 +203,10 @@ mechanisms:
   parameters:
   - PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN
   - PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-OTHER-SYSTEMIC-RESISTANCE-SYMPATHETIC-GAIN
   - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
+  - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
   - PAR-EXERCISE-RESISTANCE-REDUCTION
   tests:
   - VAL-POTS-NEUROPATHIC
@@ -175,7 +235,8 @@ mechanisms:
   parameters:
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
-  - PAR-BAROREFLEX-PRESSURE-SCALE
+  - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
+  - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
   tests:
   - VAL-POTS-HYPER
   confidence: moderate for direction, low for gain
@@ -185,7 +246,7 @@ mechanisms:
   - EQ-AUT-003
 - id: MEC-VOL-HYPOVOLEMIA
   name: Reduced initial stressed blood volume
-  description: A blood-volume factor scales all four initial stressed compartments while preserving subsequent
+  description: A blood-volume factor scales all five initial stressed compartments while preserving subsequent
     conservation and the supine operating point.
   diseases:
   - POTS
@@ -285,9 +346,10 @@ mechanisms:
   - EQ-MP-002
 - id: MEC-CBF-AUTOREG
   name: Cerebral perfusion-pressure proxy with bounded dynamic autoregulation
-  description: Brain-level cerebral perfusion pressure (arterial pressure minus the orthostatic heart-to-brain
-    offset and central venous back pressure) drives a bounded autoregulation curve and a dynamic normalized
-    cerebral-flow index with asymmetric decline and recovery.
+  description: Brain-level cerebral perfusion pressure (arterial pressure minus the hydrostatic sine-angle
+    brain-height correction and a fixed 5 mmHg effective cerebral outflow pressure that is neither thoracic
+    central venous pressure nor a resolved intracranial pressure) drives a bounded autoregulation curve and
+    a dynamic normalized cerebral-flow index with asymmetric decline and recovery.
   diseases:
   - shared
   - ME/CFS
@@ -295,13 +357,15 @@ mechanisms:
   claims:
   - CLM-ME-CBF
   - CLM-CBF-CPP
+  - CLM-CBF-OUTFLOW
   - CLM-CBF-AUTOREG-DYNAMIC
   classification: phenomenological
   maturity: M3
   status: implemented
   implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient.rhs
   parameters:
-  - PAR-HEAD-HYDROSTATIC-PRESSURE-OFFSET
+  - PAR-BRAIN-HYDROSTATIC-HEIGHT
+  - PAR-CEREBRAL-OUTFLOW-PRESSURE
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   - PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
@@ -310,12 +374,15 @@ mechanisms:
   tests:
   - VAL-ME-CBF
   - VAL-PHYS-RECOVERY
+  - VAL-PHYS-CBF-CO2
   confidence: low-moderate
-  limitations: Normalized index; no CO2 input, no intracranial pressure, no vascular territories and no
-    direct Doppler observation model.
+  limitations: Normalized index; no intracranial-pressure state, no posture-dependent venous-outflow pathway,
+    no vascular territories and no direct Doppler observation model; the fixed effective outflow pressure is
+    a reduced-order approximation of the posture- and CVP-dependent cerebral venous outflow pathway.
   equations:
   - EQ-CBF-001
   - EQ-CBF-002
+  - EQ-CBF-003
 - id: MEC-MET-CAPACITY
   name: Dynamic exertional capacity
   description: Baseline metabolic capacity is reduced by PEM and normalizes functional capacity and exertional
@@ -401,10 +468,14 @@ mechanisms:
   - EQ-RCV-002
   - EQ-RCV-003
   - EQ-RCV-004
-- id: MEC-CBF-CO2-OMISSION
-  name: Carbon-dioxide cerebral vasomotor regulation (declared omission)
-  description: CO2 materially regulates cerebral blood flow but the model has no CO2 input; cerebral-flow-index
-    changes must not be attributed to hyperventilation.
+- id: MEC-CBF-CO2
+  name: Bounded end-tidal-CO2 cerebral vasomotor factor
+  description: 'Stage 1 declared this pathway a deliberate omission (the former CO2-omission mechanism
+    entry, removed from the registry): CO2 materially regulates cerebral blood flow but the model then had
+    no CO2 input. Stage 1.1 implements it as an explicit per-segment end-tidal-CO2 input acting on the
+    cerebral-flow target through a bounded exponential reactivity factor (0.035/mmHg, clipped to +/-15 mmHg
+    about the 40 mmHg reference). Deliberate consequences: no posture-inferred hypocapnia (tilt never changes
+    ETCO2), and the declared end-tidal value is consumed directly with no ETCO2-to-PaCO2 correction.'
   diseases:
   - shared
   - POTS
@@ -412,16 +483,23 @@ mechanisms:
   - Long COVID
   claims:
   - CLM-CBF-CO2
-  classification: exploratory
-  maturity: M0
-  status: hypothesis
-  exploratory: true
-  implementation: literature/cross_disease/mechanism-map.md
-  parameters: []
-  tests: []
-  confidence: low for current computational specification
-  limitations: No CO2 state, ventilatory input or hypocapnia mechanism is defensible from the current
-    registry evidence.
+  classification: phenomenological_mechanistic_hybrid
+  maturity: M3
+  status: implemented
+  implementation: src/ocpe_disease_models/models/shared/model.py::ComputationalPatient.rhs
+  parameters:
+  - PAR-END-TIDAL-CO2-REFERENCE
+  - PAR-CEREBRAL-CO2-REACTIVITY
+  - PAR-CEREBRAL-CO2-EXTRAPOLATION-LIMIT
+  tests:
+  - VAL-PHYS-CBF-CO2
+  - VAL-SENSITIVITY
+  confidence: moderate for direction, low for patient-level magnitude
+  limitations: End-tidal CO2 is an approximate, biased surrogate of arterial PCO2 (including under orthostasis);
+    no CO2 state, ventilation dynamics, or hypocapnic hyperpnea feedback is modeled; the clip is a modeling
+    guard, not physiology.
+  equations:
+  - EQ-CBF-003
 - id: MEC-VOL-REGULATION
   name: Renal and endocrine blood-volume regulation
   description: Longer-horizon renal, endocrine and fluid-shift volume regulation is established physiology

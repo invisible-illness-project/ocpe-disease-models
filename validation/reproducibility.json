@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "execution_date": "2026-11-17",
-  "repository_commit": "fb13cb21aa811da9babff6b271f006b8c79ec30f",
+  "repository_commit": "a6d7619e277fc05081de3c852189b549d714b8b5",
   "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
   "upstream_ocpe_modified": false,
-  "model_version": "0.2.0",
+  "model_version": "0.3.0",
   "environment": {
     "python": "3.12.12",
     "platform": "Linux-6.18.44-x86_64-with-glibc2.36",
@@ -22,74 +22,99 @@
   },
   "commands": [
     "python -m ruff check .",
-    "python scripts/audit_traceability.py --root . --strict",
+    "python scripts/audit_traceability.py --root . --strict --deterministic --out-dir validation/traceability/audit",
     "python -m ocpe validate ocpe/packages/disease-models --strict",
+    "python scripts/run_stage1_1_validation.py",
     "python scripts/run_examples.py",
     "python scripts/run_sensitivity.py",
     "python -m pytest -q",
-    "python scripts/run_validation.py --no-analysis"
+    "python scripts/run_validation.py --no-analysis",
+    "python -m pytest -q -m scientific_traceability"
   ],
   "results": {
-    "full_suite": "287 passed, 2 warnings in 250.94s (0:04:10)",
-    "overall_status": "PASS",
-    "seven_layer_status": "PASS",
+    "full_suite": "323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s (0:05:44)",
+    "test_execution_status": "PASS",
+    "overall_status": "FAIL",
+    "seven_layer_execution_status": "PASS",
+    "seven_layer_status": "FAIL",
     "seven_layers": [
       {
         "layer": "software",
+        "execution_status": "PASS",
         "status": "PASS",
-        "pytest_summary": "122 passed, 165 deselected in 143.47s (0:02:23)"
+        "contains_strict_expected_failures": false,
+        "pytest_summary": "127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18)"
       },
       {
         "layer": "mathematical",
+        "execution_status": "PASS",
         "status": "PASS",
-        "pytest_summary": "44 passed, 243 deselected in 7.23s"
+        "contains_strict_expected_failures": false,
+        "pytest_summary": "45 passed, 285 deselected in 9.33s"
       },
       {
         "layer": "physiological",
+        "execution_status": "PASS",
         "status": "PASS",
-        "pytest_summary": "29 passed, 258 deselected, 1 warning in 3.84s"
+        "contains_strict_expected_failures": false,
+        "pytest_summary": "64 passed, 266 deselected, 1 warning in 8.15s"
       },
       {
         "layer": "disease_phenotype",
-        "status": "PASS",
-        "pytest_summary": "35 passed, 252 deselected in 139.67s (0:02:19)"
+        "execution_status": "PASS",
+        "status": "FAIL",
+        "contains_strict_expected_failures": true,
+        "pytest_summary": "29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06)"
       },
       {
         "layer": "empirical",
+        "execution_status": "PASS",
         "status": "PASS",
-        "pytest_summary": "9 passed, 278 deselected, 1 warning in 72.56s (0:01:12)"
+        "contains_strict_expected_failures": false,
+        "pytest_summary": "10 passed, 320 deselected, 1 warning in 96.46s (0:01:36)"
       },
       {
         "layer": "sensitivity_uncertainty",
+        "execution_status": "PASS",
         "status": "PASS",
-        "pytest_summary": "13 passed, 274 deselected in 90.85s (0:01:30)"
+        "contains_strict_expected_failures": false,
+        "pytest_summary": "13 passed, 317 deselected in 124.91s (0:02:04)"
       },
       {
         "layer": "scientific_traceability",
+        "execution_status": "PASS",
         "status": "PASS",
-        "pytest_summary": "40 passed, 247 deselected in 3.40s"
+        "contains_strict_expected_failures": false,
+        "pytest_summary": "40 passed, 290 deselected in 4.16s"
       }
     ],
-    "validation_registry": "26 PASS, 0 FAIL, 0 PENDING",
-    "record_integrity": "PASS; post-record scientific-traceability selection: 40 passed, 247 deselected in 3.60s",
+    "validation_registry": "23 PASS, 6 FAIL, 0 PENDING",
+    "record_integrity": "PASS; post-record scientific-traceability selection: 40 passed, 290 deselected in 3.83s",
     "source_configuration_diff_from_tested_commit": [],
     "strict_traceability": "0 errors, 0 warnings, 0 infos",
-    "strict_ocpe": "0 errors, 0 warnings",
+    "strict_ocpe": "0 errors, 0 warnings across disease-models@0.3.0",
     "ruff": "PASS",
     "demonstration_scripts": 6,
     "persisted_demonstration_runs": 16,
-    "local_sensitivity_scenarios": 42,
-    "uncertainty_grid_scenarios": 18,
+    "local_sensitivity_scenarios": 59,
+    "uncertainty_grid_scenarios": 27,
     "chronotropic_split_scenarios": 3,
+    "scientific_comparison_matrix": {
+      "status": "EXECUTED",
+      "zaidi_co_sv_comparisons": "8 MISS",
+      "sustained_hr_criterion_failures": 5,
+      "policy": "No gain recalibration, threshold widening, synthetic cohort, or posture-inferred hypocapnia"
+    },
+    "optional_skip": "1 skipped: tests/unit/test_ocpe_adapter.py:74 (upstream checkout unavailable); strict installed-engine disease-models OCPE validation passed separately",
     "intended_warning_count": 2,
-    "healthy_early_co_soft_anchor": "WARNING: approximately 5.64% reduction versus broad 10-30% plausibility band",
-    "healthy_cfi_soft_anchor": "WARNING: approximately 0.003% end-tilt reduction versus broad 3-11% disclosure band around the reported 7% control finding"
+    "healthy_early_co_soft_anchor": "WARNING: 0.35% early reduction versus the unchanged 10-30% plausibility band",
+    "healthy_cfi_soft_anchor": "WARNING: 1.645% end-tilt reduction versus the unchanged 3-11% disclosure band around the reported 7% control finding"
   },
   "demonstrations": [
     {
       "example": "cross_disease_comparison",
       "phenotype_id": "eds-heds-vascular",
-      "configuration_sha256": "9862cfdc893380e996d74907c9c45c7eaab8917f4409a2a03efa25b43aeae5dd",
+      "configuration_sha256": "7ba1612282a0e560f7682c405255d62673a1cb3437f757cbb8032d9695c52e55",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -102,38 +127,38 @@
         "phenotype_id": "eds-heds-vascular",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 89.61651349219741,
-        "mean_arterial_pressure_final_mmHg": 116.87178599356112,
+        "heart_rate_final_bpm": 82.44786041490933,
+        "mean_arterial_pressure_final_mmHg": 111.1945091664896,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 91.43610970960133,
-        "orthostatic_heart_rate_rise_bpm": 21.436109709601325,
-        "orthostatic_heart_rate_sustained_rise_bpm": 19.616513492197356
+        "heart_rate_upright_peak_bpm": 82.46060032099854,
+        "orthostatic_heart_rate_rise_bpm": 12.460600320998537,
+        "orthostatic_heart_rate_sustained_rise_bpm": 12.447860414913436
       },
       "artifacts": {
         "result.json": {
           "path": "examples/cross_disease_comparison/output/eds-heds-vascular/result.json",
-          "sha256": "135b290f5c1d18908843976eff635435f958048d6462ac202a88ec518438678e"
+          "sha256": "2845ae18aa701bae4e06a3e3b0115242ee15226e35dca9774765178178796a87"
         },
         "observations.json": {
           "path": "examples/cross_disease_comparison/output/eds-heds-vascular/observations.json",
-          "sha256": "42888f49a4c30d9b73f12cd294b2efd1f950a90949295f3ea7a76823538c3376"
+          "sha256": "982b7f48aaefb8f03f889fdc8f802f683a45e6da445bf45368228f6d7ba52f10"
         },
         "trace.npz": {
           "path": "examples/cross_disease_comparison/output/eds-heds-vascular/trace.npz",
-          "sha256": "6933a46f59324ec8efc08126d6c15f7f1a447cfa4962406f7ce8b070880f143a"
+          "sha256": "2091b15ae6d2bf5dd911031fd552f7cf956c58e5c4a30794ac001a11fcff274f"
         },
         "figure.png": {
           "path": "examples/cross_disease_comparison/output/figure.png",
-          "sha256": "c66868d9a15034b9a7c54a6626e67d070ef6d00f789033daf6f635668592e162"
+          "sha256": "6dc0c395e34f5bb14b24ded349592715321e32d26d47523c2ebb94d3b84cd247"
         }
       }
     },
     {
       "example": "cross_disease_comparison",
       "phenotype_id": "healthy-reference",
-      "configuration_sha256": "91e5c2e822f51812bc2c91e5c63d733ac9e496b4506512b8959aad0679887778",
+      "configuration_sha256": "2eef21d43c778c191137ffbd3b5ffd2ff5d7e12dac7d8f7b7fdd2a8715ab669e",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -146,38 +171,38 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 81.44693683442998,
-        "mean_arterial_pressure_final_mmHg": 117.39597580662887,
+        "heart_rate_final_bpm": 77.72292070087273,
+        "mean_arterial_pressure_final_mmHg": 111.33165951054737,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 82.81000762608596,
-        "orthostatic_heart_rate_rise_bpm": 12.810007626085962,
-        "orthostatic_heart_rate_sustained_rise_bpm": 11.446936834429977
+        "heart_rate_upright_peak_bpm": 77.74753748514372,
+        "orthostatic_heart_rate_rise_bpm": 7.747537485143724,
+        "orthostatic_heart_rate_sustained_rise_bpm": 7.722920700873132
       },
       "artifacts": {
         "result.json": {
           "path": "examples/cross_disease_comparison/output/healthy-reference/result.json",
-          "sha256": "5ccda2cd05c7232607c8751ceed8564ecc15b31f0da270ba81b10679a085bc46"
+          "sha256": "925ee5b5f93aff49cc96c72e3a11e21649fdc490ca3b42770d318367c26fc5ea"
         },
         "observations.json": {
           "path": "examples/cross_disease_comparison/output/healthy-reference/observations.json",
-          "sha256": "67393f0be2e1eaebb1e185d5adaf9e714b713675de656db121bc0e558be7d739"
+          "sha256": "d218dc5fbab80dc174f4e03481094eb9c3961fc0ab62c1e30f159a3aecc7c774"
         },
         "trace.npz": {
           "path": "examples/cross_disease_comparison/output/healthy-reference/trace.npz",
-          "sha256": "8fc5d4c04fbf69e334f0266bb3522448b11d79c6192bb7cee211b13b30d88f1f"
+          "sha256": "0f69bbbc0ed3fe054e7355015d08c8464b34057f4e886c1bf3ae58f38f081ea1"
         },
         "figure.png": {
           "path": "examples/cross_disease_comparison/output/figure.png",
-          "sha256": "c66868d9a15034b9a7c54a6626e67d070ef6d00f789033daf6f635668592e162"
+          "sha256": "6dc0c395e34f5bb14b24ded349592715321e32d26d47523c2ebb94d3b84cd247"
         }
       }
     },
     {
       "example": "cross_disease_comparison",
       "phenotype_id": "long-covid-autonomic",
-      "configuration_sha256": "aa8d7fe401d9fc72b8eae939a3de6e2aa9fd52e7fdc925682bc678cc7da4b0ef",
+      "configuration_sha256": "07613c31996b43ed15598d5ad40c2b5431dbed4085a12faef79b25f31ea5907e",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -190,38 +215,38 @@
         "phenotype_id": "long-covid-autonomic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.14145589419122,
-        "mean_arterial_pressure_final_mmHg": 117.08154415760917,
+        "heart_rate_final_bpm": 88.93067444480633,
+        "mean_arterial_pressure_final_mmHg": 111.3669499413163,
         "pem_peak": 0.0,
         "functional_capacity_final": 0.85,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 104.647954888675,
-        "orthostatic_heart_rate_rise_bpm": 34.647954888675,
-        "orthostatic_heart_rate_sustained_rise_bpm": 31.141455894190784
+        "heart_rate_upright_peak_bpm": 88.9664792415974,
+        "orthostatic_heart_rate_rise_bpm": 18.966479241597398,
+        "orthostatic_heart_rate_sustained_rise_bpm": 18.930674444805533
       },
       "artifacts": {
         "result.json": {
           "path": "examples/cross_disease_comparison/output/long-covid-autonomic/result.json",
-          "sha256": "239fd7e1c8051c619ccbd0c0de65cdbe0427f48631db53187d12c2763452a306"
+          "sha256": "415e1daead6be873129d6bfd39c1f579091800328b225f333c8f1d4bd3e2fa4d"
         },
         "observations.json": {
           "path": "examples/cross_disease_comparison/output/long-covid-autonomic/observations.json",
-          "sha256": "7b976c62e058223f1f6563760048437df3f48bc2d63b83bc48907cc4e324c63e"
+          "sha256": "156d56aec78c716b46450f2e19e70c0a42ccb5a8252a32f3547739d7e43ae054"
         },
         "trace.npz": {
           "path": "examples/cross_disease_comparison/output/long-covid-autonomic/trace.npz",
-          "sha256": "79911eb4d2b29fda103332eb30c9f52532d5189a068511774e485b9a22da6550"
+          "sha256": "245acfedaaf898516a3e83e98f98b3844582e3ff1ec7a019a5a7d25a0b0e3350"
         },
         "figure.png": {
           "path": "examples/cross_disease_comparison/output/figure.png",
-          "sha256": "c66868d9a15034b9a7c54a6626e67d070ef6d00f789033daf6f635668592e162"
+          "sha256": "6dc0c395e34f5bb14b24ded349592715321e32d26d47523c2ebb94d3b84cd247"
         }
       }
     },
     {
       "example": "cross_disease_comparison",
       "phenotype_id": "mecfs-pem",
-      "configuration_sha256": "5c44eb0e06940ffb67c897b4bc2174d03e75f343c1489c74beca1af814afacf4",
+      "configuration_sha256": "715b2f680e2004cdab74c07e875a44dc6a66b7baa33c0b3a731aaf1a4fd71784",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -234,38 +259,38 @@
         "phenotype_id": "mecfs-pem",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 85.09054095983132,
-        "mean_arterial_pressure_final_mmHg": 117.20469867876987,
+        "heart_rate_final_bpm": 79.96405751869422,
+        "mean_arterial_pressure_final_mmHg": 111.27295626118138,
         "pem_peak": 0.0,
         "functional_capacity_final": 0.8064102564102564,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 86.81245564694954,
-        "orthostatic_heart_rate_rise_bpm": 16.812455646949545,
-        "orthostatic_heart_rate_sustained_rise_bpm": 15.090540959831344
+        "heart_rate_upright_peak_bpm": 79.99117904107246,
+        "orthostatic_heart_rate_rise_bpm": 9.991179041072456,
+        "orthostatic_heart_rate_sustained_rise_bpm": 9.96405751869466
       },
       "artifacts": {
         "result.json": {
           "path": "examples/cross_disease_comparison/output/mecfs-pem/result.json",
-          "sha256": "3af87aaaa8a85f85994315fec6260652213edf82db7b20c1d6118f930617bd25"
+          "sha256": "6d737a0cf9fd2711f59a47e6996e31674270b86a7ea74ae3b2a473affcb0c861"
         },
         "observations.json": {
           "path": "examples/cross_disease_comparison/output/mecfs-pem/observations.json",
-          "sha256": "3bef0b2259b6abfe70ed0d7282158646c640318f367ec96a0cf9e624b019c6b3"
+          "sha256": "f63ae5a93cca0cfdb9df77c37716ddd468ea30b053da983d34b58643d79a788e"
         },
         "trace.npz": {
           "path": "examples/cross_disease_comparison/output/mecfs-pem/trace.npz",
-          "sha256": "eb1ea6f757045d66fabac1f839a9db3fbce5ee94aee8c1e04ec15b71d545f00e"
+          "sha256": "d9829f5be379df3120a79474bee06563098b05d23fc17b349153b58e0fc2ead1"
         },
         "figure.png": {
           "path": "examples/cross_disease_comparison/output/figure.png",
-          "sha256": "c66868d9a15034b9a7c54a6626e67d070ef6d00f789033daf6f635668592e162"
+          "sha256": "6dc0c395e34f5bb14b24ded349592715321e32d26d47523c2ebb94d3b84cd247"
         }
       }
     },
     {
       "example": "cross_disease_comparison",
       "phenotype_id": "pots-neuropathic",
-      "configuration_sha256": "7196960414a99cc184e33277f15a7bf6bd4e4fcc84d4f913ab3ba0179115db17",
+      "configuration_sha256": "e51faea45294e43ac60cc542136213f169b8777bb7f77cee913806180773ef30",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -278,38 +303,38 @@
         "phenotype_id": "pots-neuropathic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.62989216713933,
-        "mean_arterial_pressure_final_mmHg": 115.7063085849298,
+        "heart_rate_final_bpm": 87.42812143838977,
+        "mean_arterial_pressure_final_mmHg": 111.0930519045171,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 103.22565167237525,
-        "orthostatic_heart_rate_rise_bpm": 33.22565167237525,
-        "orthostatic_heart_rate_sustained_rise_bpm": 31.629892167139346
+        "heart_rate_upright_peak_bpm": 87.43270706442695,
+        "orthostatic_heart_rate_rise_bpm": 17.43270706442695,
+        "orthostatic_heart_rate_sustained_rise_bpm": 17.42812143839049
       },
       "artifacts": {
         "result.json": {
           "path": "examples/cross_disease_comparison/output/pots-neuropathic/result.json",
-          "sha256": "9ffc93fb7cbf1e070a4d3cea594f11e932e61d8f8439597bec795dc43399905a"
+          "sha256": "56fb2efee5f24a12af859795e6a673336375e2e29cd5754d57bf341c34317e46"
         },
         "observations.json": {
           "path": "examples/cross_disease_comparison/output/pots-neuropathic/observations.json",
-          "sha256": "a417201d46e33864ddd1cb9e94a11595de65eea740ba1a6fb36e8a8d1d803f0b"
+          "sha256": "c592fa37fb3c0121c2a35f154695094e2601e4f4ce41ee53dc8cd1cbabbbff7f"
         },
         "trace.npz": {
           "path": "examples/cross_disease_comparison/output/pots-neuropathic/trace.npz",
-          "sha256": "42558c161f3e44dd617a02d828bc5ce4d564a6fa3678ba2ef940597499622268"
+          "sha256": "343a1b08b7eefcc916dfe2bd6cb631b79fe132ad012f447dcbb4a7dff8d226c7"
         },
         "figure.png": {
           "path": "examples/cross_disease_comparison/output/figure.png",
-          "sha256": "c66868d9a15034b9a7c54a6626e67d070ef6d00f789033daf6f635668592e162"
+          "sha256": "6dc0c395e34f5bb14b24ded349592715321e32d26d47523c2ebb94d3b84cd247"
         }
       }
     },
     {
       "example": "eds_vascular_mechanics",
       "phenotype_id": "eds-heds-vascular",
-      "configuration_sha256": "9862cfdc893380e996d74907c9c45c7eaab8917f4409a2a03efa25b43aeae5dd",
+      "configuration_sha256": "7ba1612282a0e560f7682c405255d62673a1cb3437f757cbb8032d9695c52e55",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -322,38 +347,38 @@
         "phenotype_id": "eds-heds-vascular",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 89.61651349219741,
-        "mean_arterial_pressure_final_mmHg": 116.87178599356112,
+        "heart_rate_final_bpm": 82.44786041490933,
+        "mean_arterial_pressure_final_mmHg": 111.1945091664896,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 91.43610970960133,
-        "orthostatic_heart_rate_rise_bpm": 21.436109709601325,
-        "orthostatic_heart_rate_sustained_rise_bpm": 19.616513492197356
+        "heart_rate_upright_peak_bpm": 82.46060032099854,
+        "orthostatic_heart_rate_rise_bpm": 12.460600320998537,
+        "orthostatic_heart_rate_sustained_rise_bpm": 12.447860414913436
       },
       "artifacts": {
         "result.json": {
           "path": "examples/eds_vascular_mechanics/output/eds-heds-vascular/result.json",
-          "sha256": "135b290f5c1d18908843976eff635435f958048d6462ac202a88ec518438678e"
+          "sha256": "2845ae18aa701bae4e06a3e3b0115242ee15226e35dca9774765178178796a87"
         },
         "observations.json": {
           "path": "examples/eds_vascular_mechanics/output/eds-heds-vascular/observations.json",
-          "sha256": "42888f49a4c30d9b73f12cd294b2efd1f950a90949295f3ea7a76823538c3376"
+          "sha256": "982b7f48aaefb8f03f889fdc8f802f683a45e6da445bf45368228f6d7ba52f10"
         },
         "trace.npz": {
           "path": "examples/eds_vascular_mechanics/output/eds-heds-vascular/trace.npz",
-          "sha256": "6933a46f59324ec8efc08126d6c15f7f1a447cfa4962406f7ce8b070880f143a"
+          "sha256": "2091b15ae6d2bf5dd911031fd552f7cf956c58e5c4a30794ac001a11fcff274f"
         },
         "figure.png": {
           "path": "examples/eds_vascular_mechanics/output/figure.png",
-          "sha256": "a8b803294fa477ec24f34720012f48dea99bf36e26e6e90ba98e5816c890fcab"
+          "sha256": "f28e58a1201c0260b1f6c4a2f452143578535bfb5131ceb12fbc57455fa05b8b"
         }
       }
     },
     {
       "example": "eds_vascular_mechanics",
       "phenotype_id": "healthy-reference",
-      "configuration_sha256": "91e5c2e822f51812bc2c91e5c63d733ac9e496b4506512b8959aad0679887778",
+      "configuration_sha256": "2eef21d43c778c191137ffbd3b5ffd2ff5d7e12dac7d8f7b7fdd2a8715ab669e",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -366,38 +391,38 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 81.44693683442998,
-        "mean_arterial_pressure_final_mmHg": 117.39597580662887,
+        "heart_rate_final_bpm": 77.72292070087273,
+        "mean_arterial_pressure_final_mmHg": 111.33165951054737,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 82.81000762608596,
-        "orthostatic_heart_rate_rise_bpm": 12.810007626085962,
-        "orthostatic_heart_rate_sustained_rise_bpm": 11.446936834429977
+        "heart_rate_upright_peak_bpm": 77.74753748514372,
+        "orthostatic_heart_rate_rise_bpm": 7.747537485143724,
+        "orthostatic_heart_rate_sustained_rise_bpm": 7.722920700873132
       },
       "artifacts": {
         "result.json": {
           "path": "examples/eds_vascular_mechanics/output/healthy-reference/result.json",
-          "sha256": "5ccda2cd05c7232607c8751ceed8564ecc15b31f0da270ba81b10679a085bc46"
+          "sha256": "925ee5b5f93aff49cc96c72e3a11e21649fdc490ca3b42770d318367c26fc5ea"
         },
         "observations.json": {
           "path": "examples/eds_vascular_mechanics/output/healthy-reference/observations.json",
-          "sha256": "67393f0be2e1eaebb1e185d5adaf9e714b713675de656db121bc0e558be7d739"
+          "sha256": "d218dc5fbab80dc174f4e03481094eb9c3961fc0ab62c1e30f159a3aecc7c774"
         },
         "trace.npz": {
           "path": "examples/eds_vascular_mechanics/output/healthy-reference/trace.npz",
-          "sha256": "8fc5d4c04fbf69e334f0266bb3522448b11d79c6192bb7cee211b13b30d88f1f"
+          "sha256": "0f69bbbc0ed3fe054e7355015d08c8464b34057f4e886c1bf3ae58f38f081ea1"
         },
         "figure.png": {
           "path": "examples/eds_vascular_mechanics/output/figure.png",
-          "sha256": "a8b803294fa477ec24f34720012f48dea99bf36e26e6e90ba98e5816c890fcab"
+          "sha256": "f28e58a1201c0260b1f6c4a2f452143578535bfb5131ceb12fbc57455fa05b8b"
         }
       }
     },
     {
       "example": "healthy_baseline",
       "phenotype_id": "healthy-reference",
-      "configuration_sha256": "f58f9f3eac5c78e2ed773034c81b9a0b30cbbfc5e873d318fd2b69a258012352",
+      "configuration_sha256": "582afc4c4751db0b68519942756e2a0c53717df54ab2c573603342157ae69fa7",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -418,7 +443,7 @@
       "artifacts": {
         "result.json": {
           "path": "examples/healthy_baseline/output/result.json",
-          "sha256": "f3d581dd284ee5000a47dcce3ad27de8fa2e5d43d1666f44a09d7cd3772e6ba6"
+          "sha256": "b5072e8fb6c40d8ddf5f59c10d1c8a5e387ff9f8d8ccb5552bcced70163f3533"
         },
         "observations.json": {
           "path": "examples/healthy_baseline/output/observations.json",
@@ -426,7 +451,7 @@
         },
         "trace.npz": {
           "path": "examples/healthy_baseline/output/trace.npz",
-          "sha256": "316d3cd9984c6ea24e32177637d2bfa5b82d5e99723a5ce2ab17a8b5fd9cbce6"
+          "sha256": "4be276a647b27e901e5b1fb0d628a78c54016b2daebe7e5b1f67edf0264c3730"
         },
         "figure.png": {
           "path": "examples/healthy_baseline/output/figure.png",
@@ -437,7 +462,7 @@
     {
       "example": "long_covid_autonomic_phenotype",
       "phenotype_id": "healthy-reference",
-      "configuration_sha256": "91e5c2e822f51812bc2c91e5c63d733ac9e496b4506512b8959aad0679887778",
+      "configuration_sha256": "2eef21d43c778c191137ffbd3b5ffd2ff5d7e12dac7d8f7b7fdd2a8715ab669e",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -450,38 +475,38 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 81.44693683442998,
-        "mean_arterial_pressure_final_mmHg": 117.39597580662887,
+        "heart_rate_final_bpm": 77.72292070087273,
+        "mean_arterial_pressure_final_mmHg": 111.33165951054737,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 82.81000762608596,
-        "orthostatic_heart_rate_rise_bpm": 12.810007626085962,
-        "orthostatic_heart_rate_sustained_rise_bpm": 11.446936834429977
+        "heart_rate_upright_peak_bpm": 77.74753748514372,
+        "orthostatic_heart_rate_rise_bpm": 7.747537485143724,
+        "orthostatic_heart_rate_sustained_rise_bpm": 7.722920700873132
       },
       "artifacts": {
         "result.json": {
           "path": "examples/long_covid_autonomic_phenotype/output/healthy-reference/result.json",
-          "sha256": "5ccda2cd05c7232607c8751ceed8564ecc15b31f0da270ba81b10679a085bc46"
+          "sha256": "925ee5b5f93aff49cc96c72e3a11e21649fdc490ca3b42770d318367c26fc5ea"
         },
         "observations.json": {
           "path": "examples/long_covid_autonomic_phenotype/output/healthy-reference/observations.json",
-          "sha256": "67393f0be2e1eaebb1e185d5adaf9e714b713675de656db121bc0e558be7d739"
+          "sha256": "d218dc5fbab80dc174f4e03481094eb9c3961fc0ab62c1e30f159a3aecc7c774"
         },
         "trace.npz": {
           "path": "examples/long_covid_autonomic_phenotype/output/healthy-reference/trace.npz",
-          "sha256": "8fc5d4c04fbf69e334f0266bb3522448b11d79c6192bb7cee211b13b30d88f1f"
+          "sha256": "0f69bbbc0ed3fe054e7355015d08c8464b34057f4e886c1bf3ae58f38f081ea1"
         },
         "figure.png": {
           "path": "examples/long_covid_autonomic_phenotype/output/figure.png",
-          "sha256": "7b9fe8120930a264b95876bb2b32a66b6eb721953e02aa9be96c353f92077abc"
+          "sha256": "bee8a7a25dab2907bc9dea94ad7f0f9249c867d4f54b8f78b17eebc6561bb0ce"
         }
       }
     },
     {
       "example": "long_covid_autonomic_phenotype",
       "phenotype_id": "long-covid-autonomic",
-      "configuration_sha256": "aa8d7fe401d9fc72b8eae939a3de6e2aa9fd52e7fdc925682bc678cc7da4b0ef",
+      "configuration_sha256": "07613c31996b43ed15598d5ad40c2b5431dbed4085a12faef79b25f31ea5907e",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -494,38 +519,38 @@
         "phenotype_id": "long-covid-autonomic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.14145589419122,
-        "mean_arterial_pressure_final_mmHg": 117.08154415760917,
+        "heart_rate_final_bpm": 88.93067444480633,
+        "mean_arterial_pressure_final_mmHg": 111.3669499413163,
         "pem_peak": 0.0,
         "functional_capacity_final": 0.85,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 104.647954888675,
-        "orthostatic_heart_rate_rise_bpm": 34.647954888675,
-        "orthostatic_heart_rate_sustained_rise_bpm": 31.141455894190784
+        "heart_rate_upright_peak_bpm": 88.9664792415974,
+        "orthostatic_heart_rate_rise_bpm": 18.966479241597398,
+        "orthostatic_heart_rate_sustained_rise_bpm": 18.930674444805533
       },
       "artifacts": {
         "result.json": {
           "path": "examples/long_covid_autonomic_phenotype/output/long-covid-autonomic/result.json",
-          "sha256": "239fd7e1c8051c619ccbd0c0de65cdbe0427f48631db53187d12c2763452a306"
+          "sha256": "415e1daead6be873129d6bfd39c1f579091800328b225f333c8f1d4bd3e2fa4d"
         },
         "observations.json": {
           "path": "examples/long_covid_autonomic_phenotype/output/long-covid-autonomic/observations.json",
-          "sha256": "7b976c62e058223f1f6563760048437df3f48bc2d63b83bc48907cc4e324c63e"
+          "sha256": "156d56aec78c716b46450f2e19e70c0a42ccb5a8252a32f3547739d7e43ae054"
         },
         "trace.npz": {
           "path": "examples/long_covid_autonomic_phenotype/output/long-covid-autonomic/trace.npz",
-          "sha256": "79911eb4d2b29fda103332eb30c9f52532d5189a068511774e485b9a22da6550"
+          "sha256": "245acfedaaf898516a3e83e98f98b3844582e3ff1ec7a019a5a7d25a0b0e3350"
         },
         "figure.png": {
           "path": "examples/long_covid_autonomic_phenotype/output/figure.png",
-          "sha256": "7b9fe8120930a264b95876bb2b32a66b6eb721953e02aa9be96c353f92077abc"
+          "sha256": "bee8a7a25dab2907bc9dea94ad7f0f9249c867d4f54b8f78b17eebc6561bb0ce"
         }
       }
     },
     {
       "example": "mecfs_post_exertional_recovery",
       "phenotype_id": "healthy-reference",
-      "configuration_sha256": "2b75a6b7a33beb1f8d34004d5773aed093fea6b89762e385f77661f33dfea46f",
+      "configuration_sha256": "c2f59056ab6f61e7783c8ceb09a11a27efeeb81f883b1f441e259710293d5a15",
       "solver": {
         "method": "DOP853",
         "sample_interval": 600.0,
@@ -538,23 +563,23 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 604800.0,
         "samples": 1009,
-        "heart_rate_final_bpm": 69.99999996889184,
-        "mean_arterial_pressure_final_mmHg": 100.00000000761707,
+        "heart_rate_final_bpm": 70.00000004535335,
+        "mean_arterial_pressure_final_mmHg": 99.9999998414146,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0
       },
       "artifacts": {
         "result.json": {
           "path": "examples/mecfs_post_exertional_recovery/output/healthy-reference/result.json",
-          "sha256": "7610260269af5cd16e4b8d09196ba83baca2067bd5a4f64985174df0e1a8ff45"
+          "sha256": "8251900418d9499db936e7b49417425d2b75c82eb0c26b0e20ab1faf0b57ff0c"
         },
         "observations.json": {
           "path": "examples/mecfs_post_exertional_recovery/output/healthy-reference/observations.json",
-          "sha256": "c5ad5541bc1ed583cb209b9bcfebe9556482b2f4bae3fca2015ca00fac1a2000"
+          "sha256": "7fe600763202740215ade69993f720890b39ebf8fb9e003ebb96f2db449d447e"
         },
         "trace.npz": {
           "path": "examples/mecfs_post_exertional_recovery/output/healthy-reference/trace.npz",
-          "sha256": "6a54bcdb471c57e7752cf9a100f4791f6feb4bd9a667589b93aaf7eb3b021fdf"
+          "sha256": "4652bed44bd09192ae0f47df5a175c733a18f134a3e37ffcda9b64b21997f738"
         },
         "figure.png": {
           "path": "examples/mecfs_post_exertional_recovery/output/figure.png",
@@ -565,7 +590,7 @@
     {
       "example": "mecfs_post_exertional_recovery",
       "phenotype_id": "mecfs-pem",
-      "configuration_sha256": "1cd3695527049ed14458b98ead8abca4763d4450244b4751f4213f8e6778667c",
+      "configuration_sha256": "2127fb99ad6b8ec1b273e7629d1f061feaf14419fe7bfd77b0d56f77cfeb8fc9",
       "solver": {
         "method": "DOP853",
         "sample_interval": 600.0,
@@ -578,23 +603,23 @@
         "phenotype_id": "mecfs-pem",
         "duration_s": 604800.0,
         "samples": 1009,
-        "heart_rate_final_bpm": 69.9999966761107,
-        "mean_arterial_pressure_final_mmHg": 99.99999667999684,
-        "pem_peak": 0.17523434368611493,
-        "functional_capacity_final": 0.7980790360006718
+        "heart_rate_final_bpm": 70.0000010121417,
+        "mean_arterial_pressure_final_mmHg": 99.99999926832811,
+        "pem_peak": 0.1752343429345128,
+        "functional_capacity_final": 0.7980790360366129
       },
       "artifacts": {
         "result.json": {
           "path": "examples/mecfs_post_exertional_recovery/output/mecfs-pem/result.json",
-          "sha256": "6e284fbdf0864d553df1913ba49f3e37379258f556dfca7ac167ca08004c0332"
+          "sha256": "ac80cbcb2f53ba5b28c99f713b2ba0142b47a6580b1d673111208ac4264b4f19"
         },
         "observations.json": {
           "path": "examples/mecfs_post_exertional_recovery/output/mecfs-pem/observations.json",
-          "sha256": "221a8f01d1dca0e69143645849f9e151e2d0fb6e5ccb6b063ca5a88a6f0db399"
+          "sha256": "80a20bd68f4298a671bdd8dfee4c99c556759c821283908593af5c797e4d236b"
         },
         "trace.npz": {
           "path": "examples/mecfs_post_exertional_recovery/output/mecfs-pem/trace.npz",
-          "sha256": "62e7f78103747db1d3ea111c968bffc3cd305ca3bb28483c43b7f131871f9be4"
+          "sha256": "810a696ddd518e4250818f5e5b312bf9790f442a723ef3794a3cc30f78a8f08b"
         },
         "figure.png": {
           "path": "examples/mecfs_post_exertional_recovery/output/figure.png",
@@ -605,7 +630,7 @@
     {
       "example": "pots_orthostatic_response",
       "phenotype_id": "healthy-reference",
-      "configuration_sha256": "91e5c2e822f51812bc2c91e5c63d733ac9e496b4506512b8959aad0679887778",
+      "configuration_sha256": "2eef21d43c778c191137ffbd3b5ffd2ff5d7e12dac7d8f7b7fdd2a8715ab669e",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -618,38 +643,38 @@
         "phenotype_id": "healthy-reference",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 81.44693683442998,
-        "mean_arterial_pressure_final_mmHg": 117.39597580662887,
+        "heart_rate_final_bpm": 77.72292070087273,
+        "mean_arterial_pressure_final_mmHg": 111.33165951054737,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 82.81000762608596,
-        "orthostatic_heart_rate_rise_bpm": 12.810007626085962,
-        "orthostatic_heart_rate_sustained_rise_bpm": 11.446936834429977
+        "heart_rate_upright_peak_bpm": 77.74753748514372,
+        "orthostatic_heart_rate_rise_bpm": 7.747537485143724,
+        "orthostatic_heart_rate_sustained_rise_bpm": 7.722920700873132
       },
       "artifacts": {
         "result.json": {
           "path": "examples/pots_orthostatic_response/output/healthy-reference/result.json",
-          "sha256": "5ccda2cd05c7232607c8751ceed8564ecc15b31f0da270ba81b10679a085bc46"
+          "sha256": "925ee5b5f93aff49cc96c72e3a11e21649fdc490ca3b42770d318367c26fc5ea"
         },
         "observations.json": {
           "path": "examples/pots_orthostatic_response/output/healthy-reference/observations.json",
-          "sha256": "67393f0be2e1eaebb1e185d5adaf9e714b713675de656db121bc0e558be7d739"
+          "sha256": "d218dc5fbab80dc174f4e03481094eb9c3961fc0ab62c1e30f159a3aecc7c774"
         },
         "trace.npz": {
           "path": "examples/pots_orthostatic_response/output/healthy-reference/trace.npz",
-          "sha256": "8fc5d4c04fbf69e334f0266bb3522448b11d79c6192bb7cee211b13b30d88f1f"
+          "sha256": "0f69bbbc0ed3fe054e7355015d08c8464b34057f4e886c1bf3ae58f38f081ea1"
         },
         "figure.png": {
           "path": "examples/pots_orthostatic_response/output/figure.png",
-          "sha256": "da09251df04bb0d4ea776be9c9e12149f5297345c6cc240dea52b2cf09fe4ad1"
+          "sha256": "5b40c2760bacc0b096e691b7d261a87a978b104be0ae2fb9e8039c96e6723660"
         }
       }
     },
     {
       "example": "pots_orthostatic_response",
       "phenotype_id": "pots-hyperadrenergic",
-      "configuration_sha256": "9fb55ff73e6bf11413d18025a1f80968e1ba1e0e8ccc84e22e2a26c539563cc3",
+      "configuration_sha256": "339e1b0ce697b20aefa44dac50297dc13403d44ec6edae258bd613d6647148b3",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -662,38 +687,38 @@
         "phenotype_id": "pots-hyperadrenergic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.87845440819548,
-        "mean_arterial_pressure_final_mmHg": 118.6056381963049,
+        "heart_rate_final_bpm": 91.15945245782216,
+        "mean_arterial_pressure_final_mmHg": 112.0948988242302,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 71.5,
-        "heart_rate_upright_peak_bpm": 105.18049459427104,
-        "orthostatic_heart_rate_rise_bpm": 33.68049459427104,
-        "orthostatic_heart_rate_sustained_rise_bpm": 30.37845440819568
+        "heart_rate_upright_peak_bpm": 91.20536557113473,
+        "orthostatic_heart_rate_rise_bpm": 19.705365571134735,
+        "orthostatic_heart_rate_sustained_rise_bpm": 19.65945245782548
       },
       "artifacts": {
         "result.json": {
           "path": "examples/pots_orthostatic_response/output/pots-hyperadrenergic/result.json",
-          "sha256": "83b33727963e9334a71f5467e19d74851bf1b7e264313876c62e692ecefd79a6"
+          "sha256": "c632f09f0fcfe4cedb714f9fdc7c8feecddfbab618b68e2ba784f449147faf5c"
         },
         "observations.json": {
           "path": "examples/pots_orthostatic_response/output/pots-hyperadrenergic/observations.json",
-          "sha256": "e9eb6ed75f3f5d2cc1634453ddd6093b58d11e6af8c912c362c1b4d510b1f4c7"
+          "sha256": "51ba77a4548967745803bb1eb6fe300c08f5a617219f9b837ef8012472e6b9da"
         },
         "trace.npz": {
           "path": "examples/pots_orthostatic_response/output/pots-hyperadrenergic/trace.npz",
-          "sha256": "b14128dae8812ded7e5ff35afe28af0f6801ebf00b8e6c96ec89415df40a79d2"
+          "sha256": "8674eb1cb410a6e329a516ec61237c69f8e00e5c7ed063eae1b0afea9a181de2"
         },
         "figure.png": {
           "path": "examples/pots_orthostatic_response/output/figure.png",
-          "sha256": "da09251df04bb0d4ea776be9c9e12149f5297345c6cc240dea52b2cf09fe4ad1"
+          "sha256": "5b40c2760bacc0b096e691b7d261a87a978b104be0ae2fb9e8039c96e6723660"
         }
       }
     },
     {
       "example": "pots_orthostatic_response",
       "phenotype_id": "pots-hypovolemic",
-      "configuration_sha256": "1c11159def8f31250747e40fc0f317f8a30ce0caa51a35ad0b3aad19d82fac19",
+      "configuration_sha256": "503092300bf61844811d0cfb4aac3f4aca6b032393b3a303f71db17fe9916204",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -706,38 +731,38 @@
         "phenotype_id": "pots-hypovolemic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 100.6604222028603,
-        "mean_arterial_pressure_final_mmHg": 105.23089888065368,
+        "heart_rate_final_bpm": 89.39894026699844,
+        "mean_arterial_pressure_final_mmHg": 100.93656535217566,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 103.53397544027538,
-        "orthostatic_heart_rate_rise_bpm": 33.533975440275384,
-        "orthostatic_heart_rate_sustained_rise_bpm": 30.66042220286029
+        "heart_rate_upright_peak_bpm": 89.45684918046365,
+        "orthostatic_heart_rate_rise_bpm": 19.45684918046365,
+        "orthostatic_heart_rate_sustained_rise_bpm": 19.39894026699878
       },
       "artifacts": {
         "result.json": {
           "path": "examples/pots_orthostatic_response/output/pots-hypovolemic/result.json",
-          "sha256": "c1666bc614da8b95d3aaf014fc0e03ecd0645bff37616cb97d1051843c3a5d94"
+          "sha256": "a24ee2ea6c1fe6fb674ca21cd38d4d2c23ad784cab6dab45d43e372277ebc2df"
         },
         "observations.json": {
           "path": "examples/pots_orthostatic_response/output/pots-hypovolemic/observations.json",
-          "sha256": "22f1b5809ddeabf5cbcdd9a7404d460b164a84013bde0ac0aa07ab3d9e8fff53"
+          "sha256": "9f930fe5c8ef4bf29de8aba44b1c7ce00358445a057df900d6987fba97b5969c"
         },
         "trace.npz": {
           "path": "examples/pots_orthostatic_response/output/pots-hypovolemic/trace.npz",
-          "sha256": "cc0895c1f85a2716930296343e48394698777dc887a961b735ab59cf72775ade"
+          "sha256": "4411d5fd299ecff65d721fbc7ea71c8497ebe10653f2cecfb0f88e6670cc8d9a"
         },
         "figure.png": {
           "path": "examples/pots_orthostatic_response/output/figure.png",
-          "sha256": "da09251df04bb0d4ea776be9c9e12149f5297345c6cc240dea52b2cf09fe4ad1"
+          "sha256": "5b40c2760bacc0b096e691b7d261a87a978b104be0ae2fb9e8039c96e6723660"
         }
       }
     },
     {
       "example": "pots_orthostatic_response",
       "phenotype_id": "pots-neuropathic",
-      "configuration_sha256": "7196960414a99cc184e33277f15a7bf6bd4e4fcc84d4f913ab3ba0179115db17",
+      "configuration_sha256": "e51faea45294e43ac60cc542136213f169b8777bb7f77cee913806180773ef30",
       "solver": {
         "method": "DOP853",
         "sample_interval": 2.0,
@@ -750,77 +775,93 @@
         "phenotype_id": "pots-neuropathic",
         "duration_s": 600.0,
         "samples": 301,
-        "heart_rate_final_bpm": 101.62989216713933,
-        "mean_arterial_pressure_final_mmHg": 115.7063085849298,
+        "heart_rate_final_bpm": 87.42812143838977,
+        "mean_arterial_pressure_final_mmHg": 111.0930519045171,
         "pem_peak": 0.0,
         "functional_capacity_final": 1.0,
         "heart_rate_baseline_bpm": 70.0,
-        "heart_rate_upright_peak_bpm": 103.22565167237525,
-        "orthostatic_heart_rate_rise_bpm": 33.22565167237525,
-        "orthostatic_heart_rate_sustained_rise_bpm": 31.629892167139346
+        "heart_rate_upright_peak_bpm": 87.43270706442695,
+        "orthostatic_heart_rate_rise_bpm": 17.43270706442695,
+        "orthostatic_heart_rate_sustained_rise_bpm": 17.42812143839049
       },
       "artifacts": {
         "result.json": {
           "path": "examples/pots_orthostatic_response/output/pots-neuropathic/result.json",
-          "sha256": "9ffc93fb7cbf1e070a4d3cea594f11e932e61d8f8439597bec795dc43399905a"
+          "sha256": "56fb2efee5f24a12af859795e6a673336375e2e29cd5754d57bf341c34317e46"
         },
         "observations.json": {
           "path": "examples/pots_orthostatic_response/output/pots-neuropathic/observations.json",
-          "sha256": "a417201d46e33864ddd1cb9e94a11595de65eea740ba1a6fb36e8a8d1d803f0b"
+          "sha256": "c592fa37fb3c0121c2a35f154695094e2601e4f4ce41ee53dc8cd1cbabbbff7f"
         },
         "trace.npz": {
           "path": "examples/pots_orthostatic_response/output/pots-neuropathic/trace.npz",
-          "sha256": "42558c161f3e44dd617a02d828bc5ce4d564a6fa3678ba2ef940597499622268"
+          "sha256": "343a1b08b7eefcc916dfe2bd6cb631b79fe132ad012f447dcbb4a7dff8d226c7"
         },
         "figure.png": {
           "path": "examples/pots_orthostatic_response/output/figure.png",
-          "sha256": "da09251df04bb0d4ea776be9c9e12149f5297345c6cc240dea52b2cf09fe4ad1"
+          "sha256": "5b40c2760bacc0b096e691b7d261a87a978b104be0ae2fb9e8039c96e6723660"
         }
       }
     }
   ],
   "artifact_hashes": {
-    "validation/validation_registry.yaml": "ce7d976d7ccc5d088ece53c7fb0ff863da1252a61309c37dea32192cf818ac01",
-    "validation/reports/static-checks.log": "fc49dc6183a43b24b6afb653a6d44c4cc95e3fcfad76774ed36637bb4485774b",
-    "validation/reports/examples.log": "d6eac6959d6c808ad5a59b7ac9bd796ccedffa799594c93f5ac56e8f249b00e7",
-    "validation/reports/sensitivity-analysis.log": "37014c678e942d35d1b25e295bfb01340aa900e6841c6d5e4dbcf68f553857ed",
-    "validation/reports/full-suite.log": "4732efb7d6b34f37b92fbe1c64144962eef2d95accc8db1244dacf45f8768d1c",
-    "validation/reports/seven-layer-runner.log": "ddf7b63e0f2747c4d6b078ebce85121b308609044563534f716ab8115c1c2619",
-    "validation/reports/validation-report.json": "4e2a5782e39b2fd8290ec1c75b307d698a070bc11dbe9005951ae56a68993a88",
-    "validation/reports/validation-report.md": "dddf462447963cb7a51929015bc582b1381c6f102295bc3e38aef4b31347cfb8",
-    "validation/reports/software.log": "eb3818fe0075179220779491fdd05038a6fbb39648e2feb65f74cf9c759e19e4",
-    "validation/reports/mathematical.log": "43034180ca2fa7fc574e9897ffa26e36305752a29f5bde0ff08f2766f5d6274f",
-    "validation/reports/physiological.log": "2ddb6ef0d408e8343d3d412bba9a20c380baf053d1bd5f077d92dbdebfe9fa9b",
-    "validation/reports/disease_phenotype.log": "1e14b9f123003a087341d689f3824bed3fbd488d0f67a1a0efbe5a787c71d6d7",
-    "validation/reports/empirical.log": "57fe25e1b79bcea045125bbf25639dbe38ede9bd25d6afb652155cead9dd5b8c",
-    "validation/reports/sensitivity_uncertainty.log": "28cd61cb6f242a5134b925180d24945e0343d943b8c0ee9a0e625cd6319555cd",
-    "validation/reports/scientific_traceability.log": "ae2ed874e12cfb2422239b4d8bd520d6a97ad3feffd0d6c06acb348f43646ec7",
-    "validation/reports/record-integrity.log": "598a5c5cd7d96bce859f7a33980b307bec0b02b17fea0130fe31aa67c11bde92",
-    "validation/traceability/audit/traceability_report.json": "694390687f3ce7dd41b839442a349fa490585cc184a285c2df548874289eff5d",
-    "validation/traceability/audit/traceability_report.md": "aff8d166aa93e7b000238f8418bbf0c3b66211bf4b0d94760a0bb8ea71b6161f",
+    "validation/validation_registry.yaml": "d897d1fc685e8ece6e01847fe3911b1a1a29b04081e1703c1c97f47ec8507f99",
+    "validation/reports/static-checks.log": "281743a6d8625954db05911451c8e6704878a9d995a6c7d725b2856b73168ada",
+    "validation/reports/examples.log": "c64e3b2364caa35645884ebbab2ba2aa2338f7d845ff39cade2ff9f47101adf3",
+    "validation/reports/sensitivity-analysis.log": "ccbcee257874a08e4927cd5f1b48234db4156b083b73fca4d2c99b3cbb2639d8",
+    "validation/reports/full-suite.log": "8525d059196f8c5140aff26611c0dbdf80f8dc13c92c046e5d3251735d98c2a7",
+    "validation/reports/seven-layer-runner.log": "edfa1133453e864def9d045bd27ef6df0563c30883095d8de28a74ec7ab34293",
+    "validation/reports/validation-report.json": "682e8982dd7d4925ad0f4efacbc5da1c264fcf20049fde634230453f83e51187",
+    "validation/reports/validation-report.md": "42db37c41e7381f3564b3ea8be2e2abece2c0951868a57c730273050b02858e5",
+    "validation/reports/software.log": "0a6fc8dc4147f3b82f5f5b800a7e0a3b1fa4c5d3345cf2078e942d394413bf68",
+    "validation/reports/mathematical.log": "ce6656e6d633825b84b305c60881d3ab5778cf83cb6392f9fa7395862dcdc190",
+    "validation/reports/physiological.log": "dd3f99465d1eb2a9333314b2e24b567496dd9e8d4de421aeed70655bc1ec6810",
+    "validation/reports/disease_phenotype.log": "33baa742eab1276bb81c5c54f79b12ffb5093148344c07c7177a7e45807b1011",
+    "validation/reports/empirical.log": "7951fc4cfe7e4270f915af906dafdeb29fdd5abf97bd2cf9a3baf6cd8c7c0bb8",
+    "validation/reports/sensitivity_uncertainty.log": "1d146de5e0788695c786a4e81df8387881ce30eff84b08933a0c29a1459286d6",
+    "validation/reports/scientific_traceability.log": "9d6ac2f729b15c7fc77bf6d0d7662640f51a54d4e51fdc63b861f723d4f90734",
+    "validation/reports/record-integrity.log": "507d9e90c88caa163dc6566f6215fb645c6d3db3d14ef8f3af68b7f5217f6943",
+    "validation/traceability/audit/traceability_report.json": "0d9040a1ee40992aca40489ea803a9f603f8455f9b60960b28f4b2f380c83067",
+    "validation/traceability/audit/traceability_report.md": "d4fc8c4bb59e42868e91905cccb1faaa306c1b5e6cf73c79eaf2fac4ae290f47",
+    "validation/fixtures/regression_fixtures.json": "314f653d0af68586bd6b138f14f274534d429d447e64b325629663665db240ce",
+    "validation/fixtures/sensitivity_ranges.json": "93bd6c9f50508cb0606d2b66e3720b3a3c2945e627108c2f368dcb6d73707ae9",
+    "validation/stage1-1/scientific-comparison-matrix.json": "f9912bf2de02939ad5b0ae222257a9e223df141ce126f1d4ee704ed3529288d9",
+    "validation/stage1-1/scientific-comparison-matrix.md": "d959d704035ae48a72c35bc062fe9109b4673d2f1d2cf53d697db29ea4cf80ea",
     "validation/baseline/stage0/regression_fixtures.json": "f3a6a8e3e36f994fd302a54575c35db793ac85f8754b95cf4d69a748fe5b5491",
     "validation/baseline/stage0/validation-report.original.json": "252fb1da115bb7592416fe9c66cb23e634b03785c12607437e3aed2dcdfc0809",
     "docs/stage1/final-validation-report.md": "836d677792b370c78bbfefaadfc6002bea17d22207e93ce3698c73c147f516e6",
     "docs/stage1/parameter-provenance-and-uncertainty.md": "81bd1e3ae88ae0f1f9e9e5da7e19914d36c65c736be2d31dae704213c0a6c523",
-    "docs/technical-handoff.md": "ed918920d66a861644e845c38dd906e2cd7a4ae32954e7ec54aac5764c47deee",
-    "docs/roadmap.md": "5e5310673673252092780bdfeff2ed290e67641b0cf8e277de194985ec0d59c7",
-    "validation/sensitivity/chronotropic_split.csv": "6d3dadccbe38c349bd1de0c402be8606ac7ae470a0ac962530840d60de9671f3",
-    "validation/sensitivity/chronotropic_split.json": "a53b5cbfcf7592bde65843ffe0970cb0d5c38742e1879201b8360e2d81393176",
-    "validation/sensitivity/figure.png": "a1fd656176ccaeb03054f9670b0a55b9ee1b28649878a1aa66e577236b274962",
-    "validation/sensitivity/local_sensitivity.csv": "3aa3e73f5cbc1c89aa5e91cbdf75f8b0845715262a860883ceb4b93f6ab922c6",
-    "validation/sensitivity/local_sensitivity.json": "9509b2d13af09290becf3e80c9e9e7ea1455bb35a1b1982f323007d4f549179d",
-    "validation/sensitivity/sensitivity-report.md": "5687312e075408567992791f85c461f32c5462c0af1833ba29a3e662d9cd07fa",
-    "validation/sensitivity/uncertainty_grid.csv": "34417be58167eb4a2b0fccd0f4c312c0ee6ce9993d41ef82dd5e3707bd5da88f",
-    "validation/sensitivity/uncertainty_grid.json": "1e2f11415bb49461ae5730a2ab84d9ed619f0f3838365e637fef64da136876af"
+    "docs/stage1-1/architecture-design-record.md": "da796c6b45e74d3c4388a8163a0bccba7cbd360fba3b95be06ef722595ab4c23",
+    "docs/stage1-1/scientific-decision-log.md": "a91eb505140a188de43a4d3534dcd1ef3308043de28cb3b31ca9c2fccce840c9",
+    "docs/stage1-1/validation-matrix.md": "dd5f1ba686cbbbd2907c361b1abeb4167f688d7e817e226dd072967bc0f6687e",
+    "docs/stage1-1/readiness-assessment.md": "114bfb5a516ce019291a36ab7cdb654d3e65748c9078b805f60205b6248db4dd",
+    "docs/architecture.md": "c0ccf9bed18e45f1c41ebbb870176d9a3eb9fa9be8594b43999bf7195c893460",
+    "docs/methodology.md": "5147356d64669cd930399decaae5138b6ea78a38443c36df735cb038bf9871e3",
+    "docs/limitations.md": "c3385a81262de34bee531bc775849217646f27390e37ba098a5ce3be074b522c",
+    "docs/technical-handoff.md": "49dcffe0b443b40877c3427aaa7bf1ef04f7c5a666e6ddd3fcaaa8919d16a977",
+    "docs/roadmap.md": "b9bf7527edf02805f0b497f237a7b2e2a067fc7a6d3947e00f665e24b8db1780",
+    "validation/sensitivity/chronotropic_split.csv": "ea4d4a6e16be6f246d6914da1b317e714b8b428dbfba45831992271cd737e5d8",
+    "validation/sensitivity/chronotropic_split.json": "eccf64ac49ac279114b181ba402cdd4f2e3d1286591b909e44b0e76f7009b3bc",
+    "validation/sensitivity/figure.png": "24f915bde4bc762d48b05f299e009c8d9c08e34e1710d80534a4c172dd4226a1",
+    "validation/sensitivity/local_sensitivity.csv": "1ce73d715ae7f240e7293b9fdff91d0a1de7ffaac11aaa912e2b48acd5b0bc2c",
+    "validation/sensitivity/local_sensitivity.json": "78f33900040ff4f758065354023f15730830b086b2417742dcd65cc937de1770",
+    "validation/sensitivity/run-stage1-1.log": "ccbcee257874a08e4927cd5f1b48234db4156b083b73fca4d2c99b3cbb2639d8",
+    "validation/sensitivity/sensitivity-report.md": "f7307e170fbbbef289c9a6b97b7fa71392a8ce9dd238dd1a089cb63eaf6c8458",
+    "validation/sensitivity/uncertainty_grid.csv": "173c10c8ea44eb3c0dd82d82e9a902e764d575824ec09886f307b764fce06013",
+    "validation/sensitivity/uncertainty_grid.json": "b49a0b62b53ba13d720b89af15f9edf5c87bd430d9aa0eff395f89d4249f9322"
   },
-  "reproducibility_interpretation": "This executed manifest binds curated reports, demonstrations, sensitivity outputs, and documentation to the tested source/configuration commit, pinned OCPE commit, solver settings, and dependency environment. Artifact hashes support exact record verification; they do not establish physiological or clinical validity. The manifest itself and the subsequent validation-record commit are not self-hashed.",
+  "reproducibility_interpretation": "This executed manifest binds curated reports, demonstrations, sensitivity outputs, the Stage 1.1 scientific comparison matrix, and documentation to the tested source/configuration commit, pinned OCPE commit, solver settings, and dependency environment. Artifact hashes support exact record verification; they do not establish physiological or clinical validity. Test execution passed, while the overall seven-layer scientific verdict is FAIL because unresolved strict phenotype criterion failures are preserved. The manifest itself and the subsequent validation-record commit are not self-hashed.",
   "seed_interpretation": "Seed 0 is recorded where applicable; simulations and scenario grids are deterministic and contain no synthetic patients or stochastic cohort.",
   "limitations": [
     "Source checkout or OCPE_DM_ROOT is required for configuration and registry discovery.",
     "Trailing numerical digits may vary across platforms and dependency builds.",
-    "Healthy early-CO and healthy control-side CFI soft-anchor misses remain disclosed.",
+    "All eight Zaidi 60/70-degree 2/5-minute CO/SV comparisons MISS their predeclared published group ranges.",
+    "All four POTS phenotypes and Long-COVID-autonomic FAIL the unchanged sustained-HR-rise scenario criterion; six strict xfails preserve these five criterion misses.",
+    "Healthy early-CO and control-side CFI soft-anchor misses remain disclosed, and the healthy 70-degree upright-end MAP of approximately 111.332 mmHg remains a fidelity limitation.",
     "The ME/CFS PEM scenario crosses 0.05 approximately 5.7 hours after the day-1 bout ends, earlier than the 12-48-hour daily-activity onset window but within reported post-CPET onset within 24 hours.",
-    "No independent clinical validation, wearable sensor/error model, Stage 2 dataset, or Stage 3 predictor is provided."
+    "One optional upstream-checkout adapter test is skipped; strict installed-engine OCPE package validation and declarative/executable consistency tests pass separately.",
+    "No independent clinical validation, wearable sensor/error model, Stage 2 dataset, Stage 3 predictor, or verified remote CI matrix result is provided."
   ],
-  "commit_binding_policy": "repository_commit and last_validated_commit identify the final tested source/configuration commit. The subsequent release-record commit adds executed reports, regenerated curated outputs, this manifest, registry results, and handoff documentation; it is not represented as a source revision tested before it existed. Any later source or configuration change requires a new validation cycle."
+  "commit_binding_policy": "repository_commit and last_validated_commit identify the final tested source/configuration commit. The subsequent release-record commit adds executed reports, regenerated curated outputs, this manifest, registry results, and handoff documentation; it is not represented as a source revision tested before it existed. Any later source or configuration change requires a new validation cycle.",
+  "last_validated_commit": "a6d7619e277fc05081de3c852189b549d714b8b5"
 }

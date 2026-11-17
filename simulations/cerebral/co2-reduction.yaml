@@ -1,0 +1,7 @@
+id: co2-reduction
+title: CO2 reduction without posture-driven pressure change
+scientific_note: Supine ETCO2 step from 40 to 30 mmHg; pressure geometry remains unchanged.
+solver: {sample_interval: 1.0, max_step: 1.0, rtol: 1.0e-7, atol: 1.0e-8}
+segments:
+  - {start: 0, end: 120, tilt_angle_deg: 0.0, end_tidal_co2_mmHg: 40.0, label: supine-reference}
+  - {start: 120, end: 600, tilt_angle_deg: 0.0, end_tidal_co2_mmHg: 30.0, label: isolated-hypocapnia}

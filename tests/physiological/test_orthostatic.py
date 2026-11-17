@@ -21,6 +21,8 @@ for _p in (str(TESTS_DIR), str(SRC)):
 
 from conftest import orthostatic_metrics, stressed_volume_drift  # noqa: E402
 
+from ocpe_disease_models.models.shared.model import STATE_NAMES  # noqa: E402
+
 pytestmark = pytest.mark.physiological
 
 
@@ -62,9 +64,15 @@ def test_early_co_and_caudal_pooling_soft_anchors_are_explicit(healthy_tilt_resu
     baseline_co = result.outputs["cardiac_output"][supine].mean()
     early_co = result.outputs["cardiac_output"][early].min()
     reduction_percent = 100.0 * (baseline_co - early_co) / baseline_co
-    initial_regional = result.states[:4, supine].mean(axis=1)
-    late_regional = result.states[:4, late].mean(axis=1)
-    caudal_accumulation = float((late_regional - initial_regional)[2:].sum())
+    # Caudal pooling is the accumulation in the two gravitational venous beds
+    # (splanchnic and lower-limb); the heart-level residual bed is excluded.
+    caudal = slice(
+        STATE_NAMES.index("splanchnic_venous_volume"),
+        STATE_NAMES.index("lower_limb_venous_volume") + 1,
+    )
+    initial_regional = result.states[caudal][:, supine].mean(axis=1)
+    late_regional = result.states[caudal][:, late].mean(axis=1)
+    caudal_accumulation = float((late_regional - initial_regional).sum())
     assert 0.0 <= reduction_percent <= 50.0
     assert 0.0 <= caudal_accumulation <= 1200.0
     if not 10.0 <= reduction_percent <= 30.0:

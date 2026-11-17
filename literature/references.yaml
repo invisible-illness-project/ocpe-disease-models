@@ -995,9 +995,10 @@ references:
     - cerebral blood-flow velocity
     - end-tidal carbon dioxide
     - orthostatic symptoms
-    relevant_findings: Hypocapnia accompanies cerebral hypoperfusion in orthostatic intolerance, evidencing
-      the CO2 dependence that this model deliberately omits.
-    limitations: Selected orthostatic-intolerance cohort; TCD velocity is not volumetric flow.
+    relevant_findings: Hypocapnia accompanies cerebral hypoperfusion in orthostatic intolerance, supporting
+      explicit CO2 dependence without licensing posture-only inference of hypocapnia.
+    limitations: Selected orthostatic-intolerance cohort; TCD velocity is not volumetric flow. The pre-Stage-1.1
+      model deliberately omitted CO2; Stage 1.1 instead requires a declared end-tidal-CO2 input.
     diseases:
     - shared
     - POTS
@@ -1062,8 +1063,8 @@ references:
     - orthostatic tolerance
     relevant_findings: Hypocapnia amplifies cerebral hypoperfusion while tolerance can be buffered by oxygen
       extraction; a lower cerebral-flow index must not be equated with syncope.
-    limitations: Controlled laboratory protocol; CO2 effects cannot be inferred from this model's pressure-only
-      index.
+    limitations: Controlled laboratory protocol; CO2 effects cannot be inferred from posture alone, and a lower
+      cerebral-flow index must not be equated with syncope.
     diseases:
     - shared
   - id: REF-HELDT-2002
@@ -1130,5 +1131,149 @@ references:
       compartment dynamics rather than instantaneous volume reassignment.
     limitations: Lung-volume dynamics remain outside this revision; no unique pooling time constant per
       person or posture.
+    diseases:
+    - shared
+  - id: REF-HARMS-2021
+    title: 'Systemic and cerebral circulatory adjustment within the first 60 s after active standing: An integrative physiological view'
+    authors:
+    - Mark P. M. Harms
+    - Ciaran Finucane
+    - Laura Perez-Denia
+    - Stephen P. Juraschek
+    - Veera K. van Wijnen
+    - Lewis A. Lipsitz
+    - Johannes J. van Lieshout
+    - Wouter Wieling
+    year: 2021
+    journal: Autonomic Neuroscience
+    volume: '231'
+    pages: '102756'
+    doi: 10.1016/j.autneu.2020.102756
+    pmid: '33385733'
+    url: https://pubmed.ncbi.nlm.nih.gov/33385733/
+    study_type: Integrative human physiology review
+    measured_variables:
+    - active-standing cardiovascular time course
+    - cerebral perfusion
+    - heart-to-brain hydrostatic gradient
+    relevant_findings: Active standing produces a distinct early transient; the adult brain at eye level is typically
+      25-30 cm above the heart, lowering brain-level mean arterial pressure by about 20 mmHg. End-tidal CO2 is
+      useful but is not an exact arterial CO2 substitute during posture change.
+    limitations: Narrative synthesis of heterogeneous experiments; supports protocol structure and geometry ranges,
+      not unique receptor weights, regional heights, or patient-specific parameters.
+    diseases:
+    - shared
+  - id: REF-IMMINK-2006
+    title: The postural reduction in middle cerebral artery blood velocity is not explained by PaCO2
+    authors:
+    - R. V. Immink
+    - N. H. Secher
+    - C. M. Roos
+    - F. Pott
+    - P. L. Madsen
+    - J. J. van Lieshout
+    year: 2006
+    journal: European Journal of Applied Physiology
+    volume: '96'
+    issue: '5'
+    pages: 609-614
+    doi: 10.1007/s00421-006-0136-6
+    url: https://doi.org/10.1007/s00421-006-0136-6
+    study_type: Controlled human orthostatic physiology study
+    measured_variables:
+    - middle cerebral artery blood velocity
+    - arterial carbon dioxide tension
+    - end-tidal carbon dioxide
+    relevant_findings: Supports approximately 3.5% middle cerebral artery velocity change per mmHg PaCO2 near
+      normocapnia and shows that postural cerebral-velocity reduction is not explained by PaCO2 alone; end-tidal
+      and arterial CO2 changes can diverge during standing.
+    limitations: Doppler velocity is not volumetric cerebral blood flow; the slope cannot be transferred without
+      approximation to an end-tidal-CO2-driven normalized flow index.
+    diseases:
+    - shared
+  - id: REF-BATTISTI-2011
+    title: The cerebrovascular response to carbon dioxide in humans
+    authors:
+    - A. Battisti-Charbonney
+    - J. Fisher
+    - J. Duffin
+    year: 2011
+    journal: Journal of Physiology
+    volume: '589'
+    issue: '12'
+    pages: 3039-3048
+    doi: 10.1113/jphysiol.2011.206052
+    pmid: '21521758'
+    pmcid: PMC3139085
+    url: https://pubmed.ncbi.nlm.nih.gov/21521758/
+    study_type: Controlled human isoxic rebreathing study
+    measured_variables:
+    - middle cerebral artery blood velocity
+    - end-tidal carbon dioxide
+    - mean arterial pressure
+    relevant_findings: The cerebrovascular CO2 response is bounded and sigmoidal, with hypocapnic and hypercapnic
+      plateaus; CO2 vascular reactivity and pressure-related flow changes must be distinguished.
+    limitations: The model's exponential local factor and +/-15 mmHg clipping are computational approximations,
+      not a fitted reproduction of this study's sigmoid or a patient-specific reactivity estimate.
+    diseases:
+    - shared
+  - id: REF-GISOLF-2004
+    title: Human cerebral venous outflow pathway depends on posture and central venous pressure
+    authors:
+    - J. Gisolf
+    - J. J. van Lieshout
+    - K. van Heusden
+    - F. Pott
+    - W. J. Stok
+    - J. M. Karemaker
+    year: 2004
+    journal: Journal of Physiology
+    volume: '560'
+    issue: '1'
+    pages: 317-327
+    doi: 10.1113/jphysiol.2004.070409
+    url: https://doi.org/10.1113/jphysiol.2004.070409
+    study_type: Controlled human cerebral venous physiology study
+    measured_variables:
+    - cerebral venous outflow pathway
+    - internal jugular vein cross-sectional area
+    - central venous pressure
+    relevant_findings: Cerebral venous outflow pathways and jugular collapse depend on posture and central venous
+      pressure, precluding simple substitution of thoracic central venous pressure for effective cerebral downstream
+      pressure in every posture.
+    limitations: Does not identify a universal fixed effective outflow pressure; the model's 5 mmHg value remains
+      an explicit reduced-order approximation without separately resolved intracranial pressure.
+    diseases:
+    - shared
+  - id: REF-ZAIDI-2000
+    title: Haemodynamic effects of increasing angle of head up tilt
+    authors:
+    - A. Zaidi
+    - D. Benitez
+    - P. A. Gaydecki
+    - A. Vohra
+    - A. P. Fitzpatrick
+    year: 2000
+    journal: Heart
+    volume: '83'
+    issue: '3'
+    pages: 342-347
+    doi: 10.1136/heart.83.3.342
+    pmid: '10648492'
+    pmcid: PMC1729297
+    url: https://pubmed.ncbi.nlm.nih.gov/10648492/
+    study_type: Random-order graded head-up tilt physiology study
+    population: 20 healthy adults
+    sample_size: 20
+    measured_variables:
+    - cardiac output
+    - stroke volume
+    - heart rate
+    - blood pressure
+    relevant_findings: At two and five minutes, tilt reduced cardiac output by 17-20% and stroke volume by 28-34%;
+      45 degrees had smaller effects than steeper angles, with no significant additional cardiac-output reduction
+      from 60 to 90 degrees.
+    limitations: Small healthy cohort, impedance-derived flow estimates, and five-minute observations; these are
+      protocol-specific group anchors rather than universal thresholds or patient-level validation.
     diseases:
     - shared
