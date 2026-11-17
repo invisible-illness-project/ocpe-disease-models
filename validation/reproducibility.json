@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "execution_date": "2026-11-17",
-  "repository_commit": "a6d7619e277fc05081de3c852189b549d714b8b5",
+  "repository_commit": "942713ef720ad0e801e71bf9bc78405cd844a739",
   "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
   "upstream_ocpe_modified": false,
   "model_version": "0.3.0",
@@ -32,7 +32,7 @@
     "python -m pytest -q -m scientific_traceability"
   ],
   "results": {
-    "full_suite": "323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s (0:05:44)",
+    "full_suite": "327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s (0:05:41)",
     "test_execution_status": "PASS",
     "overall_status": "FAIL",
     "seven_layer_execution_status": "PASS",
@@ -43,53 +43,53 @@
         "execution_status": "PASS",
         "status": "PASS",
         "contains_strict_expected_failures": false,
-        "pytest_summary": "127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18)"
+        "pytest_summary": "131 passed, 1 skipped, 202 deselected in 193.81s (0:03:13)"
       },
       {
         "layer": "mathematical",
         "execution_status": "PASS",
         "status": "PASS",
         "contains_strict_expected_failures": false,
-        "pytest_summary": "45 passed, 285 deselected in 9.33s"
+        "pytest_summary": "45 passed, 289 deselected in 9.79s"
       },
       {
         "layer": "physiological",
         "execution_status": "PASS",
         "status": "PASS",
         "contains_strict_expected_failures": false,
-        "pytest_summary": "64 passed, 266 deselected, 1 warning in 8.15s"
+        "pytest_summary": "64 passed, 270 deselected, 1 warning in 8.23s"
       },
       {
         "layer": "disease_phenotype",
         "execution_status": "PASS",
         "status": "FAIL",
         "contains_strict_expected_failures": true,
-        "pytest_summary": "29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06)"
+        "pytest_summary": "29 passed, 299 deselected, 6 xfailed in 186.28s (0:03:06)"
       },
       {
         "layer": "empirical",
         "execution_status": "PASS",
         "status": "PASS",
         "contains_strict_expected_failures": false,
-        "pytest_summary": "10 passed, 320 deselected, 1 warning in 96.46s (0:01:36)"
+        "pytest_summary": "10 passed, 324 deselected, 1 warning in 96.97s (0:01:36)"
       },
       {
         "layer": "sensitivity_uncertainty",
         "execution_status": "PASS",
         "status": "PASS",
         "contains_strict_expected_failures": false,
-        "pytest_summary": "13 passed, 317 deselected in 124.91s (0:02:04)"
+        "pytest_summary": "13 passed, 321 deselected in 125.21s (0:02:05)"
       },
       {
         "layer": "scientific_traceability",
         "execution_status": "PASS",
         "status": "PASS",
         "contains_strict_expected_failures": false,
-        "pytest_summary": "40 passed, 290 deselected in 4.16s"
+        "pytest_summary": "40 passed, 294 deselected in 3.67s"
       }
     ],
     "validation_registry": "23 PASS, 6 FAIL, 0 PENDING",
-    "record_integrity": "PASS; post-record scientific-traceability selection: 40 passed, 290 deselected in 3.83s",
+    "record_integrity": "PASS; post-record scientific-traceability selection: 40 passed, 294 deselected in 3.44s",
     "source_configuration_diff_from_tested_commit": [],
     "strict_traceability": "0 errors, 0 warnings, 0 infos",
     "strict_ocpe": "0 errors, 0 warnings across disease-models@0.3.0",
@@ -805,22 +805,22 @@
     }
   ],
   "artifact_hashes": {
-    "validation/validation_registry.yaml": "d897d1fc685e8ece6e01847fe3911b1a1a29b04081e1703c1c97f47ec8507f99",
+    "validation/validation_registry.yaml": "737e3475d31e242f190fa13bfbab47ec6e9fb824f36f9d66321066ce855f97a4",
     "validation/reports/static-checks.log": "281743a6d8625954db05911451c8e6704878a9d995a6c7d725b2856b73168ada",
     "validation/reports/examples.log": "c64e3b2364caa35645884ebbab2ba2aa2338f7d845ff39cade2ff9f47101adf3",
     "validation/reports/sensitivity-analysis.log": "ccbcee257874a08e4927cd5f1b48234db4156b083b73fca4d2c99b3cbb2639d8",
-    "validation/reports/full-suite.log": "8525d059196f8c5140aff26611c0dbdf80f8dc13c92c046e5d3251735d98c2a7",
-    "validation/reports/seven-layer-runner.log": "edfa1133453e864def9d045bd27ef6df0563c30883095d8de28a74ec7ab34293",
-    "validation/reports/validation-report.json": "682e8982dd7d4925ad0f4efacbc5da1c264fcf20049fde634230453f83e51187",
-    "validation/reports/validation-report.md": "42db37c41e7381f3564b3ea8be2e2abece2c0951868a57c730273050b02858e5",
-    "validation/reports/software.log": "0a6fc8dc4147f3b82f5f5b800a7e0a3b1fa4c5d3345cf2078e942d394413bf68",
-    "validation/reports/mathematical.log": "ce6656e6d633825b84b305c60881d3ab5778cf83cb6392f9fa7395862dcdc190",
-    "validation/reports/physiological.log": "dd3f99465d1eb2a9333314b2e24b567496dd9e8d4de421aeed70655bc1ec6810",
-    "validation/reports/disease_phenotype.log": "33baa742eab1276bb81c5c54f79b12ffb5093148344c07c7177a7e45807b1011",
-    "validation/reports/empirical.log": "7951fc4cfe7e4270f915af906dafdeb29fdd5abf97bd2cf9a3baf6cd8c7c0bb8",
-    "validation/reports/sensitivity_uncertainty.log": "1d146de5e0788695c786a4e81df8387881ce30eff84b08933a0c29a1459286d6",
-    "validation/reports/scientific_traceability.log": "9d6ac2f729b15c7fc77bf6d0d7662640f51a54d4e51fdc63b861f723d4f90734",
-    "validation/reports/record-integrity.log": "507d9e90c88caa163dc6566f6215fb645c6d3db3d14ef8f3af68b7f5217f6943",
+    "validation/reports/full-suite.log": "90ea7d4868a795eeeb2b5d398dd71a7115e45a9847c3a0526e638eba915b420d",
+    "validation/reports/seven-layer-runner.log": "2e391acd61cf737591361e12f1013873e9cc3387b1ae18e881e8ec30798321c9",
+    "validation/reports/validation-report.json": "62ec9fb83b1a1bcf73e6fb843699f685d85b499054a6d4b77fdf738c2487838b",
+    "validation/reports/validation-report.md": "64ad999c0169828e9680e63ca2698a8de889c0e39eda7f060105df03a8b0c82f",
+    "validation/reports/software.log": "cf70f3160c5540774fac56ed6e9bead5c82514147a898aa6fb0a8fada3122d3b",
+    "validation/reports/mathematical.log": "28eb73c2accc3c9582dcc36137718123985e50461f5e33b44ee82e89739f9733",
+    "validation/reports/physiological.log": "8986712646b9cde2e8ef509c476367fed781a23fd5528f51b6e0910e44178d3c",
+    "validation/reports/disease_phenotype.log": "74e8cf09d573da590b59d4ed5e37d66c9cba21e333510ee3ef0622ac6e8da6de",
+    "validation/reports/empirical.log": "f253f1a05e4f1ed1b25350880ffab2a1533a3bc332dedaeea97f2c345ea1544f",
+    "validation/reports/sensitivity_uncertainty.log": "c0eaedcbbb446e95d6107fe4adfcd138432bd3d148766c975f09799736f17003",
+    "validation/reports/scientific_traceability.log": "0ccc269627984695da9b9378ed06498af5e442ff002e0e99c5c7335efec6f75a",
+    "validation/reports/record-integrity.log": "d0dcadd5d23096dabcc70c88ffbc0dd75bab40e6996fcc1e9338a16d60ffcd34",
     "validation/traceability/audit/traceability_report.json": "0d9040a1ee40992aca40489ea803a9f603f8455f9b60960b28f4b2f380c83067",
     "validation/traceability/audit/traceability_report.md": "d4fc8c4bb59e42868e91905cccb1faaa306c1b5e6cf73c79eaf2fac4ae290f47",
     "validation/fixtures/regression_fixtures.json": "314f653d0af68586bd6b138f14f274534d429d447e64b325629663665db240ce",
@@ -831,15 +831,15 @@
     "validation/baseline/stage0/validation-report.original.json": "252fb1da115bb7592416fe9c66cb23e634b03785c12607437e3aed2dcdfc0809",
     "docs/stage1/final-validation-report.md": "836d677792b370c78bbfefaadfc6002bea17d22207e93ce3698c73c147f516e6",
     "docs/stage1/parameter-provenance-and-uncertainty.md": "81bd1e3ae88ae0f1f9e9e5da7e19914d36c65c736be2d31dae704213c0a6c523",
-    "docs/stage1-1/architecture-design-record.md": "da796c6b45e74d3c4388a8163a0bccba7cbd360fba3b95be06ef722595ab4c23",
-    "docs/stage1-1/scientific-decision-log.md": "a91eb505140a188de43a4d3534dcd1ef3308043de28cb3b31ca9c2fccce840c9",
-    "docs/stage1-1/validation-matrix.md": "dd5f1ba686cbbbd2907c361b1abeb4167f688d7e817e226dd072967bc0f6687e",
-    "docs/stage1-1/readiness-assessment.md": "114bfb5a516ce019291a36ab7cdb654d3e65748c9078b805f60205b6248db4dd",
-    "docs/architecture.md": "c0ccf9bed18e45f1c41ebbb870176d9a3eb9fa9be8594b43999bf7195c893460",
-    "docs/methodology.md": "5147356d64669cd930399decaae5138b6ea78a38443c36df735cb038bf9871e3",
-    "docs/limitations.md": "c3385a81262de34bee531bc775849217646f27390e37ba098a5ce3be074b522c",
-    "docs/technical-handoff.md": "49dcffe0b443b40877c3427aaa7bf1ef04f7c5a666e6ddd3fcaaa8919d16a977",
-    "docs/roadmap.md": "b9bf7527edf02805f0b497f237a7b2e2a067fc7a6d3947e00f665e24b8db1780",
+    "docs/stage1-1/architecture-design-record.md": "6e9e5db03a33374f7579afa867a1065f18d9745af9c5fd15beb35548dc12b240",
+    "docs/stage1-1/scientific-decision-log.md": "e2b7f179e8838e5aac6ead176ca7829cdbebd3d782702443d8c36a69e1d51205",
+    "docs/stage1-1/validation-matrix.md": "7cfb77fd78536837739bb1870d03b73e2a7c5d39eff51647c52d6175b5f3b34b",
+    "docs/stage1-1/readiness-assessment.md": "6a1c579419bfd2fd0f14e0fab5cc3a2dfcbaba04a3cc83aea9864fc60a85d5d0",
+    "docs/architecture.md": "3d335680852bb1784aceb91f9a2f36a5cbff25aebd228458633a52698b022a86",
+    "docs/methodology.md": "f898cf62791d3f345107abb8a62dd2a54b6485f76228595738a4711f9da98534",
+    "docs/limitations.md": "4620b1369e4e0c6187533891a627015174aa32f3a0ccd628fa9aaa7ac8dccf83",
+    "docs/technical-handoff.md": "1a81d38b7f1803e16f4b8df6939366670a2ea4034735683bf0298c7f0d351661",
+    "docs/roadmap.md": "0ce839fd9119bb89158c9b360972baf8c79d36cb97c2bc0f780d035c52981e4a",
     "validation/sensitivity/chronotropic_split.csv": "ea4d4a6e16be6f246d6914da1b317e714b8b428dbfba45831992271cd737e5d8",
     "validation/sensitivity/chronotropic_split.json": "eccf64ac49ac279114b181ba402cdd4f2e3d1286591b909e44b0e76f7009b3bc",
     "validation/sensitivity/figure.png": "24f915bde4bc762d48b05f299e009c8d9c08e34e1710d80534a4c172dd4226a1",
@@ -863,5 +863,5 @@
     "No independent clinical validation, wearable sensor/error model, Stage 2 dataset, Stage 3 predictor, or verified remote CI matrix result is provided."
   ],
   "commit_binding_policy": "repository_commit and last_validated_commit identify the final tested source/configuration commit. The subsequent release-record commit adds executed reports, regenerated curated outputs, this manifest, registry results, and handoff documentation; it is not represented as a source revision tested before it existed. Any later source or configuration change requires a new validation cycle.",
-  "last_validated_commit": "a6d7619e277fc05081de3c852189b549d714b8b5"
+  "last_validated_commit": "942713ef720ad0e801e71bf9bc78405cd844a739"
 }

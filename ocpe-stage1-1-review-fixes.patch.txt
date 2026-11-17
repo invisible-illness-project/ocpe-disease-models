@@ -1,0 +1,1047 @@
+diff --git a/docs/architecture.md b/docs/architecture.md
+index 9a98baafb068c0a404e32d6ab270a33ccf5b4dd1..dc162334b9edf8b69603e87a0e8e84f078ffba59 100644
+--- a/docs/architecture.md
++++ b/docs/architecture.md
+@@ -38,7 +38,7 @@ Layer 5: explicit observation mapping ──► strict OCPE observation records
+ Small validation traces + provenance + independently reported validation
+ ```
+ 
+-1. **Core physiology (Stage 1.1 revision, model version 0.3.0).** Five conserved stressed-volume compartments (arterial, central venous, splanchnic venous, lower-limb venous, and one residual other-systemic venous compartment) with a 25/25/50 baseline flow partition and 2550 mL healthy total stressed volume; regional resistance-driven flows; preload/contractility stroke volume; separate aortic and carotid baroreceptor sensors feeding one integrated weighted baroreflex; explicit `tilt_angle_deg` posture geometry with sin-scaled hydrostatic heights; a declared per-segment end-tidal CO2 input acting on the cerebral target; and three differentiated autonomic effector states. The Stage 1.1 design record, decision log, validation matrix, and readiness assessment are in `docs/stage1-1/`; the Stage 1 design gate and migration record are in `docs/stage1/revised-physiological-architecture.md`; the audited original architecture is preserved in `docs/stage1/baseline-scientific-report.md`. A deterministic 0.3.0 scientific scenario comparison matrix has been executed (`validation/stage1-1/scientific-comparison-matrix.md`), including preserved negative results (eight Zaidi CO/SV MISSes; five sustained-HR criterion FAILs); release validation (full test suite, strict traceability, strict OCPE package validation, fixtures) is executed at tested commit `a6d7619e277fc05081de3c852189b549d714b8b5` — full suite 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s, with all seven layer execution statuses PASS and the overall seven-layer scientific status **FAIL** from the six preserved strict phenotype xfails. Validation-suite results quoted for Stage 1 remain bound to the 0.2.0 tested commit as history.
++1. **Core physiology (Stage 1.1 revision, model version 0.3.0).** Five conserved stressed-volume compartments (arterial, central venous, splanchnic venous, lower-limb venous, and one residual other-systemic venous compartment) with a 25/25/50 baseline flow partition and 2550 mL healthy total stressed volume; regional resistance-driven flows; preload/contractility stroke volume; separate aortic and carotid baroreceptor sensors feeding one integrated weighted baroreflex; explicit `tilt_angle_deg` posture geometry with sin-scaled hydrostatic heights; a declared per-segment end-tidal CO2 input acting on the cerebral target; and three differentiated autonomic effector states. The Stage 1.1 design record, decision log, validation matrix, and readiness assessment are in `docs/stage1-1/`; the Stage 1 design gate and migration record are in `docs/stage1/revised-physiological-architecture.md`; the audited original architecture is preserved in `docs/stage1/baseline-scientific-report.md`. A deterministic 0.3.0 scientific scenario comparison matrix has been executed (`validation/stage1-1/scientific-comparison-matrix.md`), including preserved negative results (eight Zaidi CO/SV MISSes; five sustained-HR criterion FAILs); release validation (full test suite, strict traceability, strict OCPE package validation, fixtures) is executed at tested commit `942713ef720ad0e801e71bf9bc78405cd844a739` — full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s, with all seven layer execution statuses PASS and the overall seven-layer scientific status **FAIL** from the six preserved strict phenotype xfails. Validation-suite results quoted for Stage 1 remain bound to the 0.2.0 tested commit as history.
+ 2. **Disease mechanisms.** Parameterized reductions in volume or vascular compensation, altered chronotropic feedback, exploratory venous compliance, cerebral impairment, oxygen extraction, and PEM recovery.
+ 3. **Phenotypes.** YAML records combine coherent mechanisms, evidence links, parameter overrides, maturity, and limitations. Conflicting ad hoc composition raises an error; it never depends on override order.
+ 4. **Stress and recovery.** Declared posture (explicit tilt angle, or the legacy normalized upright fraction via `arcsin` migration), exertion, rhythmic-muscle-activity, sustained-contraction, and end-tidal CO2 inputs drive ordinary differential equations; the rhythmic and sustained muscle inputs are independent of metabolic exertion and of each other, and ETCO2 is independent of posture. PEM uses an explicit delayed-state approximation rather than an immediate fatigue multiplier.
+@@ -110,7 +110,7 @@ Each `SimulationResult` stores arrays plus parameters, protocol, configuration S
+ 
+ ## Validation architecture
+ 
+-Seven validation layers are separate from the five modeling layers. Software, mathematical, physiological, disease-phenotype, empirical, sensitivity/uncertainty, and scientific-traceability results cannot substitute for each other. Registry IDs connect tests to mechanisms and outputs; `scripts/run_validation.py` fails on an empty required test selection. Maturity M0–M4 is assigned per mechanism/phenotype, not inferred from suite success. Under the Stage 1 (0.2.0) record, the mathematical layer tested the exact supine fixed point of every one of the ten registered configurations and exact four-volume conservation including walking and sustained-contraction protocols; the disease-phenotype layer applied the **sustained** orthostatic criterion (mean HR over the final 120 s of the upright window minus the supine baseline), with the peak first-300-s rise reported separately as a secondary metric. The Stage 1.1 (0.3.0) execution is complete at tested commit `a6d7619e277fc05081de3c852189b549d714b8b5`: the mathematical layer demonstrates exact **five-volume** conservation and twelve-state fixed points across the graded-tilt, active-standing, tilt-back, and cerebral CO2 protocol families (45 passed), using the predefined reporting windows in `docs/stage1-1/validation-matrix.md`; all seven layer execution statuses are PASS, while the disease-phenotype layer's six strict expected failures keep the overall seven-layer scientific status **FAIL**. The deterministic scientific scenario matrix reports its results—including preserved misses and criterion failures—in `validation/stage1-1/`.
++Seven validation layers are separate from the five modeling layers. Software, mathematical, physiological, disease-phenotype, empirical, sensitivity/uncertainty, and scientific-traceability results cannot substitute for each other. Registry IDs connect tests to mechanisms and outputs; `scripts/run_validation.py` fails on an empty required test selection. Maturity M0–M4 is assigned per mechanism/phenotype, not inferred from suite success. Under the Stage 1 (0.2.0) record, the mathematical layer tested the exact supine fixed point of every one of the ten registered configurations and exact four-volume conservation including walking and sustained-contraction protocols; the disease-phenotype layer applied the **sustained** orthostatic criterion (mean HR over the final 120 s of the upright window minus the supine baseline), with the peak first-300-s rise reported separately as a secondary metric. The Stage 1.1 (0.3.0) execution is complete at tested commit `942713ef720ad0e801e71bf9bc78405cd844a739`: the mathematical layer demonstrates exact **five-volume** conservation and twelve-state fixed points across the graded-tilt, active-standing, tilt-back, and cerebral CO2 protocol families (45 passed), using the predefined reporting windows in `docs/stage1-1/validation-matrix.md`; all seven layer execution statuses are PASS, while the disease-phenotype layer's six strict expected failures keep the overall seven-layer scientific status **FAIL**. The deterministic scientific scenario matrix reports its results—including preserved misses and criterion failures—in `validation/stage1-1/`.
+ 
+ ## Source-layout and packaging limits
+ 
+diff --git a/docs/limitations.md b/docs/limitations.md
+index 08d80605ae8251d3c710841bb8e766982ab416f4..33bca5bbcdcfeb2cdceecc219242f407841d849d 100644
+--- a/docs/limitations.md
++++ b/docs/limitations.md
+@@ -2,7 +2,7 @@
+ 
+ This file is part of the model interface. Removing or downplaying these limitations changes the scientific meaning of the outputs.
+ 
+-The current implementation is the Stage 1.1 revision (model version 0.3.0, five stressed-volume compartments, twelve states); see `docs/stage1-1/` for the design record, decision log, validation matrix, and readiness assessment. A deterministic 0.3.0 scientific scenario comparison matrix has been executed (`validation/stage1-1/scientific-comparison-matrix.md`); its results, including negative ones, are reflected below. Release validation (full test suite, strict traceability, strict OCPE package validation, fixtures) is executed at tested commit `a6d7619e277fc05081de3c852189b549d714b8b5` — 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s; all seven layer execution statuses PASS; the overall seven-layer scientific status is **FAIL** from the preserved strict phenotype xfails. Values attributed to Stage 1 (0.2.0) are preserved history.
++The current implementation is the Stage 1.1 revision (model version 0.3.0, five stressed-volume compartments, twelve states); see `docs/stage1-1/` for the design record, decision log, validation matrix, and readiness assessment. A deterministic 0.3.0 scientific scenario comparison matrix has been executed (`validation/stage1-1/scientific-comparison-matrix.md`); its results, including negative ones, are reflected below. Release validation (full test suite, strict traceability, strict OCPE package validation, fixtures) is executed at tested commit `942713ef720ad0e801e71bf9bc78405cd844a739` — 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s; all seven layer execution statuses PASS; the overall seven-layer scientific status is **FAIL** from the preserved strict phenotype xfails. Values attributed to Stage 1 (0.2.0) are preserved history.
+ 
+ ## Model structure
+ 
+@@ -60,7 +60,7 @@ The current implementation is the Stage 1.1 revision (model version 0.3.0, five
+ ## Validation and sensitivity
+ 
+ - Seven layers measure different properties. A pass in one does not compensate for a failure in another, and none establishes clinical validity.
+-- The Stage 1.1 (0.3.0) scientific scenario comparison matrix and the full release validation cycle (full test suite, strict traceability audit, strict OCPE package validation, regression-fixture regeneration, sensitivity export, demonstrations) have been executed at tested commit `a6d7619e277fc05081de3c852189b549d714b8b5`; the results (including the Zaidi CO/SV MISSes and the POTS sustained-HR criterion FAILs) are reported in `docs/stage1-1/validation-matrix.md` and `validation/reports/validation-report.json`. The overall seven-layer scientific status is FAIL because the six strict phenotype xfails are preserved scientific failures; no negative result is converted into a pass, and execution does not resolve the scientific misses listed above.
++- The Stage 1.1 (0.3.0) scientific scenario comparison matrix and the full release validation cycle (full test suite, strict traceability audit, strict OCPE package validation, regression-fixture regeneration, sensitivity export, demonstrations) have been executed at tested commit `942713ef720ad0e801e71bf9bc78405cd844a739`; the results (including the Zaidi CO/SV MISSes and the POTS sustained-HR criterion FAILs) are reported in `docs/stage1-1/validation-matrix.md` and `validation/reports/validation-report.json`. The overall seven-layer scientific status is FAIL because the six strict phenotype xfails are preserved scientific failures; no negative result is converted into a pass, and execution does not resolve the scientific misses listed above.
+ - Regression fixtures protect reviewed numerical behavior, not scientific truth. Updating them requires an explained scientific change.
+ - Sensitivity is local/deterministic and does not establish global identifiability. Two-parameter grids do not quantify structural uncertainty, parameter correlations, or population variability.
+ - Reports must retain failed tests and nonphysiological scenarios. Missing required tests, references, fixtures, or empty pytest selections are failures.
+diff --git a/docs/methodology.md b/docs/methodology.md
+index a3943b47b37c50916a7f0201420f2f7f68c1858c..d03bb2b11e9373f7a5d8929bc336c67415fbc14d 100644
+--- a/docs/methodology.md
++++ b/docs/methodology.md
+@@ -1,6 +1,6 @@
+ # Scientific and numerical methodology
+ 
+-This document describes the current Stage 1.1 five-compartment, twelve-state implementation (model version 0.3.0). The Stage 1.1 design record, decision log, validation matrix (including predefined reporting windows and unchanged empirical anchors), and readiness assessment are in `docs/stage1-1/`. The Stage 1 design record, migration formulas, and per-phenotype fixed-point derivation for the superseded 0.2.0 revision are in `docs/stage1/revised-physiological-architecture.md`; the supporting evidence decisions are in `docs/stage1/literature-and-evidence-matrix.md`; the audited original three-compartment implementation is preserved unchanged in `docs/stage1/baseline-scientific-report.md` and `validation/baseline/stage0/`. **Stage 1.1 status:** the deterministic scientific scenario comparison matrix has been executed for 0.3.0 (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`), and release validation (full test suite, strict traceability 0/0/0, strict OCPE package validation 0/0, regression fixtures, sensitivity exports, demonstrations) has been executed at frozen tested commit `a6d7619e277fc05081de3c852189b549d714b8b5` — full suite 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s, with all seven layer execution statuses PASS and the overall seven-layer scientific status **FAIL** from the six preserved strict phenotype xfails. Every numerical validation-suite result quoted below and attributed to Stage 1 is the Stage 1 record bound to the 0.2.0 tested commit, not a 0.3.0 result.
++This document describes the current Stage 1.1 five-compartment, twelve-state implementation (model version 0.3.0). The Stage 1.1 design record, decision log, validation matrix (including predefined reporting windows and unchanged empirical anchors), and readiness assessment are in `docs/stage1-1/`. The Stage 1 design record, migration formulas, and per-phenotype fixed-point derivation for the superseded 0.2.0 revision are in `docs/stage1/revised-physiological-architecture.md`; the supporting evidence decisions are in `docs/stage1/literature-and-evidence-matrix.md`; the audited original three-compartment implementation is preserved unchanged in `docs/stage1/baseline-scientific-report.md` and `validation/baseline/stage0/`. **Stage 1.1 status:** the deterministic scientific scenario comparison matrix has been executed for 0.3.0 (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`), and release validation (full test suite, strict traceability 0/0/0, strict OCPE package validation 0/0, regression fixtures, sensitivity exports, demonstrations) has been executed at frozen tested commit `942713ef720ad0e801e71bf9bc78405cd844a739` — full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s, with all seven layer execution statuses PASS and the overall seven-layer scientific status **FAIL** from the six preserved strict phenotype xfails. Every numerical validation-suite result quoted below and attributed to Stage 1 is the Stage 1 record bound to the 0.2.0 tested commit, not a 0.3.0 result.
+ 
+ ## Evidence-to-model workflow
+ 
+@@ -58,7 +58,7 @@ DOP853 integrates the twelve-state ODE system. Protocol YAML records output inte
+ - convergence under tighter tolerances and smaller steps;
+ - stable resting behavior and meaningful response directionality.
+ 
+-The 0.3.0 mathematical layer executed these checks (45 passed, 285 deselected in 9.33s); the Stage 1 record covered the equivalent four-volume, eleven-state properties. Numerical convergence verifies approximation to the implemented equations. It says nothing about whether those equations represent a patient.
++The 0.3.0 mathematical layer executed these checks (45 passed, 289 deselected in 9.79s); the Stage 1 record covered the equivalent four-volume, eleven-state properties. Numerical convergence verifies approximation to the implemented equations. It says nothing about whether those equations represent a patient.
+ 
+ ## Empirical comparisons
+ 
+diff --git a/docs/roadmap.md b/docs/roadmap.md
+index d3c0a59c4432cd677fa72b8a9d4b532b9f76160d..debc84286093f54d63d49ac456094a5805f51935 100644
+--- a/docs/roadmap.md
++++ b/docs/roadmap.md
+@@ -28,10 +28,10 @@ clinically validated, and no planned work changes that.
+   pressure/CO2 isolation experiments confirm pathway separability. Version
+   synchronization is complete (`pyproject.toml`, `CITATION.cff`,
+   `__init__.py` read 0.3.0). **Release validation is executed at frozen
+-  tested commit `a6d7619e277fc05081de3c852189b549d714b8b5`**: full suite
+-  323 passed, 1 skipped (upstream OCPE checkout unavailable; strict
++  tested commit `942713ef720ad0e801e71bf9bc78405cd844a739`**: full suite
++  327 passed, 1 skipped (upstream OCPE checkout unavailable; strict
+   installed-engine OCPE validation separately passes 0 errors/0 warnings),
+-  6 xfailed, 2 warnings in 344.19s; all seven layer execution statuses are
++  6 xfailed, 2 warnings in 341.60s; all seven layer execution statuses are
+   PASS; the disease-phenotype layer carries six strict expected failures,
+   so its scientific status and the **overall seven-layer scientific status
+   are FAIL**. Strict traceability passes 0/0/0 and strict OCPE validation
+@@ -69,7 +69,7 @@ clinically validated, and no planned work changes that.
+ 
+ 1. **Resolve the preserved 0.3.0 scientific failures.** The Stage 1.1
+    release validation cycle itself is complete (executed at commit
+-   `a6d7619e277fc05081de3c852189b549d714b8b5`; see
++   `942713ef720ad0e801e71bf9bc78405cd844a739`; see
+    `docs/stage1-1/validation-matrix.md` and
+    `docs/stage1-1/readiness-assessment.md`); what remains is the science.
+    The executed negative results (eight Zaidi CO/SV MISSes, five
+diff --git a/docs/stage1-1/architecture-design-record.md b/docs/stage1-1/architecture-design-record.md
+index e50a7bd48fb41c038c0616a9c250dec7a4da67b9..32482d1bded5f0703580b16bcc3feb73f609d216 100644
+--- a/docs/stage1-1/architecture-design-record.md
++++ b/docs/stage1-1/architecture-design-record.md
+@@ -2,7 +2,7 @@
+ 
+ - Model CURIE: `ocpe:disease-models/shared-physiology`
+ - Model version: **0.3.0** (Stage 1.1 revision of the Stage 1 model, version 0.2.0)
+-- Status: **design record; implementation present in source; deterministic scientific scenario matrix executed** (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`); **release validation executed** at frozen tested source commit `a6d7619e277fc05081de3c852189b549d714b8b5` (full suite 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s; all seven layer execution statuses PASS; overall seven-layer scientific status **FAIL** from the six preserved strict phenotype xfails; strict traceability 0 errors/0 warnings/0 infos; strict OCPE package validation 0 errors/0 warnings)
++- Status: **design record; implementation present in source; deterministic scientific scenario matrix executed** (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`); **release validation executed** at frozen tested source commit `942713ef720ad0e801e71bf9bc78405cd844a739` (full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s; all seven layer execution statuses PASS; overall seven-layer scientific status **FAIL** from the six preserved strict phenotype xfails; strict traceability 0 errors/0 warnings/0 infos; strict OCPE package validation 0 errors/0 warnings)
+ 
+ This document records the Stage 1.1 architecture. It does not replace the
+ Stage 1 design gate (`docs/stage1/revised-physiological-architecture.md`) or
+@@ -10,7 +10,7 @@ the audited Stage 0 baseline (`docs/stage1/baseline-scientific-report.md`),
+ which remain unchanged history. Numerical results quoted from Stage 1 are
+ bound to the 0.2.0 tested commit. Executed 0.3.0 scenario results—including
+ the negative ones—are recorded in `validation-matrix.md` §§4–6; the executed
+-0.3.0 release validation record (commit `a6d7619`, overall scientific status
++0.3.0 release validation record (commit `942713e`, overall scientific status
+ FAIL from the preserved strict phenotype xfails) is summarized in
+ `readiness-assessment.md` and `validation-matrix.md`.
+ 
+diff --git a/docs/stage1-1/readiness-assessment.md b/docs/stage1-1/readiness-assessment.md
+index 45c78923e54b2dec72138a768745cd18b0bcdc69..9f3724d26575d26ad37a4ed7714812ca1b755753 100644
+--- a/docs/stage1-1/readiness-assessment.md
++++ b/docs/stage1-1/readiness-assessment.md
+@@ -5,13 +5,13 @@
+ - Assessment basis: the 0.3.0 **scientific scenario comparison matrix has
+   been executed** (`validation/stage1-1/scientific-comparison-matrix.md` /
+   `.json`), and the **Stage 1.1 release validation cycle is complete** at
+-  frozen tested source commit `a6d7619e277fc05081de3c852189b549d714b8b5`:
+-  the full suite ran **323 passed, 1 skipped
++  frozen tested source commit `942713ef720ad0e801e71bf9bc78405cd844a739`:
++  the full suite ran **327 passed, 1 skipped
+   (`tests/unit/test_ocpe_adapter.py:74`, upstream OCPE checkout unavailable;
+   strict installed-engine OCPE validation separately passes with 0
+-  errors/0 warnings), 6 xfailed, 2 warnings in 344.19s**; the seven-layer
++  errors/0 warnings), 6 xfailed, 2 warnings in 341.60s**; the seven-layer
+   report is `validation/reports/validation-report.json` / `.md`
+-  (`model_version: 0.3.0`, `repository_commit: a6d7619`); strict
++  (`model_version: 0.3.0`, `repository_commit: 942713e`); strict
+   disease-models OCPE validation passes with 0 errors/0 warnings and the
+   strict traceability audit passes with 0 errors/0 warnings/0 infos. All
+   seven layer **execution** statuses are PASS; the disease-phenotype layer
+@@ -31,7 +31,7 @@ predictor. **Stage 2 has not begun. Stage 3 is excluded.**
+ | Is the 0.3.0 architecture recorded and reviewable? | Yes — `architecture-design-record.md`, `scientific-decision-log.md` |
+ | Is the 0.3.0 implementation executable? | Yes — the deterministic scientific scenario matrix executed with recorded configuration SHA-256 and solver metadata per run |
+ | Do 0.3.0 scientific scenario results exist? | **Yes** — graded-tilt, standing, cerebral CO2 isolation, empirical CO/SV comparisons, and phenotype sustained-HR outcomes; reported in `validation-matrix.md` §§4–6 including all negative outcomes |
+-| Are 0.3.0 results validated in the release sense? | **Yes, executed — with an overall scientific FAIL.** The full suite (323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s), the seven-layer runner, the strict traceability audit (0/0/0), and strict OCPE package validation (0/0) all executed at tested commit `a6d7619`; per-layer execution status is PASS in all seven layers, while the disease-phenotype layer's six strict expected failures keep its scientific status and the overall seven-layer status FAIL. The Stage 1 287-test record remains bound to the 0.2.0 tested commit as history |
++| Are 0.3.0 results validated in the release sense? | **Yes, executed — with an overall scientific FAIL.** The full suite (327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s), the seven-layer runner, the strict traceability audit (0/0/0), and strict OCPE package validation (0/0) all executed at tested commit `942713e`; per-layer execution status is PASS in all seven layers, while the disease-phenotype layer's six strict expected failures keep its scientific status and the overall seven-layer status FAIL. The Stage 1 287-test record remains bound to the 0.2.0 tested commit as history |
+ | Are Stage 1 misses resolved? | **No.** The healthy CO/SV miss persists (sustained CO −3.105% at 70 degrees; all eight Zaidi comparisons MISS); the healthy CFI miss persists but narrowed (1.645% vs the unchanged 3–11% band); **new negative result**: all four POTS phenotypes and Long-COVID-autonomic FAIL the unchanged ≥30 bpm sustained-HR criterion |
+ | Is the repository ready for Stage 2 execution? | **No.** Stage 1 readiness for reviewed Stage 2 *planning* carried over; Stage 1.1 does not change any Stage 2 prerequisite |
+ 
+@@ -39,17 +39,17 @@ predictor. **Stage 2 has not begun. Stage 3 is excluded.**
+ 
+ | Component | State | Readiness |
+ |---|---|---|
+-| Five-volume conservation structure | Implemented in source | **Verified** — mathematical layer executed: 45 passed, 285 deselected in 9.33s (five-volume telescoping, fixed points of all ten configurations) |
++| Five-volume conservation structure | Implemented in source | **Verified** — mathematical layer executed: 45 passed, 289 deselected in 9.79s (five-volume telescoping, fixed points of all ten configurations) |
+ | 25/25/50 baseline flow partition, 2550 mL total stressed volume | Implemented in defaults and three POTS phenotype YAMLs | Scenario matrix baselines consistent (healthy baseline CO 81.667 mL/s, MAP 100 mmHg); fixed-point verification executed in the mathematical layer |
+ | Hydrostatic heights (0.7356 mmHg/cm × sin θ) | Implemented; legacy offsets migrated exactly | **Executed in scenario matrix**: graded HR rise 3.626/5.417/6.954/7.723 bpm and end-CFI reduction 0.819/1.192/1.497/1.645% across 30/45/60/70 degrees |
+-| Explicit `tilt_angle_deg` + arcsin legacy migration + linear angle-only transitions | Implemented; mutual-exclusion and range validation present | **Executed** (`head-up-tilt` and `passive-tilt-70` yield equivalent reported metrics under their declared solver sample grids); software layer executed: 127 passed, 1 skipped |
++| Explicit `tilt_angle_deg` + arcsin legacy migration + linear angle-only transitions | Implemented; mutual-exclusion and range validation present | **Executed** (`head-up-tilt` and `passive-tilt-70` yield equivalent reported metrics under their declared solver sample grids); software layer executed: 131 passed, 1 skipped |
+ | New protocols (passive-tilt-30/45/60/70, active-standing with sustained quiet standing, tilt-back recovery, five cerebral CO2 protocols) | YAMLs present; executed in the scenario matrix | **Registered and executed** — 19 protocols and 11 simulation records in the synchronized simulation registry; six demonstrations regenerated 16 persisted 0.3.0 runs; layer test coverage executed |
+ | Dual aortic/carotid sensors, integrated weighted baroreflex (0.25/0.75, sum-to-1 enforced) | Implemented; brain pressure (27 cm) kept distinct | Executed in scenario matrix; **all POTS/Long-COVID-autonomic phenotypes FAIL the unchanged ≥30 bpm sustained-HR criterion** (17.428–19.659 bpm) — preserved negative result |
+ | Segment ETCO2 input (reference 40 mmHg; exp(0.035 × clip(Δ, ±15))) | Implemented; no posture-inferred hypocapnia; ETCO2 ≠ PaCO2 by declaration | **Executed**: pressure-only pressure target 0.98355 / CO2 factor 1; CO2-only (ETCO2 30) pressure target 1 / CO2 factor 0.70469; combined CFI 0.69310; persistent-hypocapnia and persistent-pressure-reduction recovery experiments remain separated |
+ | Fixed effective cerebral outflow pressure (5 mmHg; neither thoracic CVP nor resolved ICP) | Implemented | Executed; healthy end-CFI reduction 1.645% remains below the unchanged 3–11% disclosure band (Stage 1 miss persists, narrowed) |
+ | Registry/declarative-package synchronization to 0.3.0 names and counts | **Complete** | Strict traceability audit passes 0 errors/0 warnings/0 infos on the synchronized registries (69 references/BibTeX entries, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records — 23 PASS / 6 FAIL / 0 PENDING, 19 protocols, 11 simulation records); strict disease-models OCPE validation passes 0 errors/0 warnings |
+ | Package version strings | **Done** — `pyproject.toml`, `CITATION.cff`, and `src/ocpe_disease_models/__init__.py` read 0.3.0, matching run metadata `model_version: 0.3.0` | Complete |
+-| Sensitivity export | Local CO2-reactivity and CO2-clip scenarios and a CO2-reactivity × cerebral-outflow grid added | **Complete** — 59 local, 27 grid, and 3 chronotropic-split scenarios regenerated; 13 sensitivity tests passed (317 deselected in 124.91s) |
++| Sensitivity export | Local CO2-reactivity and CO2-clip scenarios and a CO2-reactivity × cerebral-outflow grid added | **Complete** — 59 local, 27 grid, and 3 chronotropic-split scenarios regenerated; 13 sensitivity tests passed (321 deselected in 125.21s) |
+ | Regression fixtures | Regenerated with a Stage 1.1 structural-change record and unchanged tolerances | **Complete** — 19 regression tests passed; negative POTS outcomes remain recorded as failures |
+ 
+ ## 3. Carried-over readiness position (Stage 1, unchanged)
+@@ -111,8 +111,8 @@ waveform, sensor, or cohort capability.
+    operational, not executional.** The full test suite, strict
+    traceability audit, strict OCPE package validation, regression-fixture
+    regeneration, sensitivity export, demonstrations, and seven-layer
+-   report have all been executed for 0.3.0 at tested commit `a6d7619`
+-   (full suite 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s;
++   report have all been executed for 0.3.0 at tested commit `942713e`
++   (full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s;
+    overall seven-layer scientific status **FAIL** from the preserved
+    strict phenotype xfails). The executed negative results (8 Zaidi
+    MISSes, 5 sustained-HR criterion FAILs, persistent healthy CO/SV and
+@@ -122,7 +122,7 @@ waveform, sensor, or cohort capability.
+ 
+ ## 5. Conditions to advance readiness
+ 
+-Release-cycle conditions **met** at tested commit `a6d7619`:
++Release-cycle conditions **met** at tested commit `942713e`:
+ 
+ 1. Registries and the declarative OCPE package are synchronized to 0.3.0
+    (parameters, equations, states, protocols, simulations) and the strict
+@@ -134,7 +134,7 @@ Release-cycle conditions **met** at tested commit `a6d7619`:
+ 3. The sensitivity regeneration is complete and reviewed (59 local, 27
+    grid, 3 chronotropic-split scenarios; 13 sensitivity tests passed).
+ 4. The full seven-layer validation suite executed on the recorded
+-   source/configuration commit `a6d7619`, including the new protocol
++   source/configuration commit `942713e`, including the new protocol
+    families, and carried the executed negative results (8 Zaidi MISSes, 5
+    sustained-HR criterion FAILs, persistent healthy CO/SV and CFI misses)
+    into the release report unchanged against their unchanged bands. All
+diff --git a/docs/stage1-1/scientific-decision-log.md b/docs/stage1-1/scientific-decision-log.md
+index 3bd95b1c52f41e15a1ceef5fc77d1e42fa220a5e..0051b85e3b5531103812bfbc83de16fb4b3b3383 100644
+--- a/docs/stage1-1/scientific-decision-log.md
++++ b/docs/stage1-1/scientific-decision-log.md
+@@ -6,8 +6,8 @@ scenario comparison matrix has been executed for 0.3.0
+ (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`), and the
+ release validation cycle (test suite, traceability, OCPE package validation,
+ fixtures, sensitivity, demonstrations) has been executed at frozen tested
+-commit `a6d7619e277fc05081de3c852189b549d714b8b5` — full suite 323 passed,
+-1 skipped, 6 xfailed, 2 warnings in 344.19s; all seven layer execution
++commit `942713ef720ad0e801e71bf9bc78405cd844a739` — full suite 327 passed,
++1 skipped, 6 xfailed, 2 warnings in 341.60s; all seven layer execution
+ statuses PASS; overall seven-layer scientific status FAIL from the preserved
+ strict phenotype xfails (see `validation-matrix.md`).
+ 
+@@ -155,3 +155,23 @@ strict phenotype xfails (see `validation-matrix.md`).
+ - **Decision.** Stage 1.1 adds no synthetic data generation, no TSFM or
+   machine-learning component, and no Stage 2/Stage 3 capability.
+ - **Status.** Standing; reaffirmed in `readiness-assessment.md`.
++
++## D1.1-10 — Independent-review corrections and scientific disposition
++
++- **Decision.** Require declared ETCO₂ values to be finite and positive, with
++  regression cases for NaN, positive and negative infinity, zero, and negative
++  values. Correct the technical handoff's opening summary so the current
++  five-compartment Stage 1.1 architecture is not described as the historical
++  four-compartment Stage 1 architecture.
++- **Rationale.** Non-finite ETCO₂ inputs can contaminate the cerebral CO₂
++  calculation and are not valid declared observations. Current architecture
++  and historical release records must remain unambiguous.
++- **Scientific disposition.** The independent review does not establish
++  scientific acceptance. The POTS sustained-HR failures, healthy CO/SV
++  discrepancies, uncertain baroreflex weighting and pressor response, and
++  pressure-versus-CO₂ cerebral-response balance remain unresolved. Focused
++  scientific remediation requires separately scoped Stage 1.2 work; Stage 2
++  remains held. No equation, parameter, calibration, validation threshold,
++  or scientific verdict is changed by these software/documentation fixes.
++- **Status.** Corrections implemented; scientific limitations and negative
++  results preserved without recalibration or threshold changes.
+diff --git a/docs/stage1-1/validation-matrix.md b/docs/stage1-1/validation-matrix.md
+index 00c7bf87bb4e26ab84f7d0b240a321f3e28f6f69..d988a526807c7801d74d583f8a65dfc46c4f3f24 100644
+--- a/docs/stage1-1/validation-matrix.md
++++ b/docs/stage1-1/validation-matrix.md
+@@ -17,12 +17,12 @@ This matrix maps the seven-layer validation architecture onto the Stage 1.1
+    runner, the strict scientific-traceability audit, strict OCPE package
+    validation, regression-fixture regeneration, sensitivity exports, and
+    demonstration regeneration have all been executed for 0.3.0 at frozen
+-   tested source commit `a6d7619e277fc05081de3c852189b549d714b8b5`
++   tested source commit `942713ef720ad0e801e71bf9bc78405cd844a739`
+    (`validation/reports/validation-report.json` / `.md`,
+-   `model_version: 0.3.0`). Full suite: **323 passed, 1 skipped
++   `model_version: 0.3.0`). Full suite: **327 passed, 1 skipped
+    (`tests/unit/test_ocpe_adapter.py:74`, upstream OCPE checkout
+    unavailable; strict installed-engine OCPE validation separately passes
+-   with 0 errors/0 warnings), 6 xfailed, 2 warnings in 344.19s**. Every
++   with 0 errors/0 warnings), 6 xfailed, 2 warnings in 341.60s**. Every
+    layer's execution status is PASS; the disease-phenotype layer contains
+    six strict expected failures, so its scientific status is FAIL and the
+    **overall seven-layer scientific status is FAIL** — the strict xfails
+@@ -36,13 +36,13 @@ This matrix maps the seven-layer validation architecture onto the Stage 1.1
+ 
+ | Layer | Stage 1 (0.2.0, historical) | Stage 1.1 (0.3.0) status | Stage 1.1-specific requirements |
+ |---|---|---|---|
+-| Software | 122 passed | **Executed — 127 passed, 1 skipped (upstream OCPE checkout unavailable; strict installed-engine OCPE validation passes separately, 0 errors/0 warnings), 202 deselected in 198.15s; execution PASS** | Reject segments specifying both `upright` and `tilt_angle_deg`; reject angle outside [0, 90]; reject nonpositive declared ETCO2; reject baroreflex weights not summing to 1 (1e-6); unknown-parameter rejection still covers renamed keys |
+-| Mathematical | 44 passed | **Executed — 45 passed, 285 deselected in 9.33s; execution PASS** | Exact **five-volume** telescoping (`dVa+dVc+dVs+dVl+dVo = 0`) and tight simulated drift across all protocol families including active standing, graded tilt, tilt-back, and sustained contraction; exact supine fixed point for **all** registered configurations under 0.3.0 parameters; CFI bounds including the CO2-term upper bound `exp(0.035 × 15)` |
+-| Physiological | 29 passed, 1 warning | **Executed — 64 passed, 266 deselected, 1 preserved early-CO soft-anchor warning (0.35% vs the 10–30% band) in 8.15s; execution PASS** (scenario matrix executed separately, below) | Orthostatic directionality at each graded angle; monotonic posture dose–response across 30/45/60/70 degrees (directional, not fitted); isolated-pressure vs isolated-CO2 vs combined cerebral protocols separate the two effects; pressure recovery with persistent hypocapnia does not restore CFI |
+-| Disease phenotype | 35 passed | **Executed — 29 passed, 295 deselected, 6 strict xfailed in 186.51s; execution PASS, scientific status FAIL for the unchanged sustained-HR criterion misses** | All ten configurations re-derived to exact supine fixed points after resistance re-partition and baroreflex split; POTS sustained-HR-rise scenario criterion re-evaluated with dual-sensor baroreflex |
+-| Empirical (scientific scenario comparisons) | 9 passed, 1 warning | **Executed — 10 passed, 320 deselected, 1 preserved healthy-CFI warning (1.645% vs the 3–11% band) in 96.46s; execution PASS** — see sections 4–6; includes 8 Zaidi CO/SV MISSes and 5 sustained-HR criterion FAILs | Anchors in section 4 evaluated unchanged; Stage 1 misses (section 5) re-measured; negative results reported, not tuned |
+-| Sensitivity/uncertainty | 13 passed | **Executed — 13 passed, 317 deselected in 124.91s; execution PASS; 59 local, 27 grid, 3 split scenarios regenerated** | Local CO2-reactivity and CO2-clip scenarios and a CO2-reactivity × cerebral-outflow-pressure grid are included; heights, sensor heights, and other-systemic resistances are also covered. These deterministic scenarios do not establish global identifiability |
+-| Scientific traceability | 40 passed | **Executed — 40 passed, 290 deselected in 4.16s; execution PASS; strict audit 0 errors/0 warnings/0 infos on the synchronized 0.3.0 registries** | Equation, parameter, mechanism, protocol, simulation, and validation registries are synchronized to the 0.3.0 names/counts (69 references, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records, 19 protocols, 11 simulation records) |
++| Software | 122 passed | **Executed — 131 passed, 1 skipped (upstream OCPE checkout unavailable; strict installed-engine OCPE validation passes separately, 0 errors/0 warnings), 202 deselected in 193.81s; execution PASS** | Reject segments specifying both `upright` and `tilt_angle_deg`; reject angle outside [0, 90]; reject non-finite or nonpositive declared ETCO2; reject baroreflex weights not summing to 1 (1e-6); unknown-parameter rejection still covers renamed keys |
++| Mathematical | 44 passed | **Executed — 45 passed, 289 deselected in 9.79s; execution PASS** | Exact **five-volume** telescoping (`dVa+dVc+dVs+dVl+dVo = 0`) and tight simulated drift across all protocol families including active standing, graded tilt, tilt-back, and sustained contraction; exact supine fixed point for **all** registered configurations under 0.3.0 parameters; CFI bounds including the CO2-term upper bound `exp(0.035 × 15)` |
++| Physiological | 29 passed, 1 warning | **Executed — 64 passed, 270 deselected, 1 preserved early-CO soft-anchor warning (0.35% vs the 10–30% band) in 8.23s; execution PASS** (scenario matrix executed separately, below) | Orthostatic directionality at each graded angle; monotonic posture dose–response across 30/45/60/70 degrees (directional, not fitted); isolated-pressure vs isolated-CO2 vs combined cerebral protocols separate the two effects; pressure recovery with persistent hypocapnia does not restore CFI |
++| Disease phenotype | 35 passed | **Executed — 29 passed, 299 deselected, 6 strict xfailed in 186.28s; execution PASS, scientific status FAIL for the unchanged sustained-HR criterion misses** | All ten configurations re-derived to exact supine fixed points after resistance re-partition and baroreflex split; POTS sustained-HR-rise scenario criterion re-evaluated with dual-sensor baroreflex |
++| Empirical (scientific scenario comparisons) | 9 passed, 1 warning | **Executed — 10 passed, 324 deselected, 1 preserved healthy-CFI warning (1.645% vs the 3–11% band) in 96.97s; execution PASS** — see sections 4–6; includes 8 Zaidi CO/SV MISSes and 5 sustained-HR criterion FAILs | Anchors in section 4 evaluated unchanged; Stage 1 misses (section 5) re-measured; negative results reported, not tuned |
++| Sensitivity/uncertainty | 13 passed | **Executed — 13 passed, 321 deselected in 125.21s; execution PASS; 59 local, 27 grid, 3 split scenarios regenerated** | Local CO2-reactivity and CO2-clip scenarios and a CO2-reactivity × cerebral-outflow-pressure grid are included; heights, sensor heights, and other-systemic resistances are also covered. These deterministic scenarios do not establish global identifiability |
++| Scientific traceability | 40 passed | **Executed — 40 passed, 294 deselected in 3.67s; execution PASS; strict audit 0 errors/0 warnings/0 infos on the synchronized 0.3.0 registries** | Equation, parameter, mechanism, protocol, simulation, and validation registries are synchronized to the 0.3.0 names/counts (69 references, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records, 19 protocols, 11 simulation records) |
+ 
+ ## 2. New invariants introduced by 0.3.0
+ 
+@@ -162,8 +162,8 @@ fixtures were regenerated through the scientific change-management process
+ (19 regression tests passed, 0.2.0 fixtures preserved in Git history and
+ Stage 0 originals unchanged); (iv)
+ the full seven-layer pytest suite ran on the recorded source/configuration
+-commit `a6d7619e277fc05081de3c852189b549d714b8b5` (full suite 323 passed,
+-1 skipped, 6 xfailed, 2 warnings in 344.19s; strict disease-models OCPE
++commit `942713ef720ad0e801e71bf9bc78405cd844a739` (full suite 327 passed,
++1 skipped, 6 xfailed, 2 warnings in 341.60s; strict disease-models OCPE
+ validation 0 errors/0 warnings); and (v) the negative results in sections
+ 4–6 (8 Zaidi MISSes, 5 sustained-HR criterion FAILs, persistent healthy
+ CO/SV and CFI misses) are carried into the release report unchanged. Every
+diff --git a/docs/technical-handoff.md b/docs/technical-handoff.md
+index 1d1b671044c94c54b972a90b87f8e3d28a71eee4..371be02e30710369f36b8611b4f304cc9b8ec4e4 100644
+--- a/docs/technical-handoff.md
++++ b/docs/technical-handoff.md
+@@ -4,7 +4,7 @@
+ - Target branch: `research/initial-disease-modeling-framework`
+ - Model/package version: 0.3.0 (Stage 1.1; **release validation executed** at the tested commit below — overall seven-layer scientific status **FAIL** from six preserved strict phenotype xfails; the Stage 1 0.2.0 record remains as labeled history)
+ - Model CURIE: `ocpe:disease-models/shared-physiology`
+-- Validated source/configuration commit (0.3.0): `a6d7619e277fc05081de3c852189b549d714b8b5`, recorded in `validation/reports/validation-report.json` and `validation/reproducibility.json`; the Stage 1 (0.2.0) commit-bound record at `fb13cb21aa811da9babff6b271f006b8c79ec30f` is preserved in the Stage 1 documents and Git history
++- Validated source/configuration commit (0.3.0): `942713ef720ad0e801e71bf9bc78405cd844a739`, recorded in `validation/reports/validation-report.json` and `validation/reproducibility.json`; the Stage 1 (0.2.0) commit-bound record at `fb13cb21aa811da9babff6b271f006b8c79ec30f` is preserved in the Stage 1 documents and Git history
+ - Pinned OCPE commit: `3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d`
+ - Original baseline commit: `47923223d4cf2e8a9c6a1ae8cff485b9d4327dc9`
+ 
+@@ -30,10 +30,10 @@ This is computational research software, not a clinically validated model, diagn
+ > within the unchanged 15–35% band; cerebral pressure/CO2 isolation
+ > experiments confirm pathway separability. **Release validation for 0.3.0
+ > is executed** at frozen tested commit
+-> `a6d7619e277fc05081de3c852189b549d714b8b5`: full suite 323 passed, 1
++> `942713ef720ad0e801e71bf9bc78405cd844a739`: full suite 327 passed, 1
+ > skipped (upstream OCPE checkout unavailable; strict installed-engine OCPE
+ > validation separately passes with 0 errors/0 warnings), 6 xfailed,
+-> 2 warnings in 344.19s; all seven layer execution statuses PASS; the
++> 2 warnings in 341.60s; all seven layer execution statuses PASS; the
+ > disease-phenotype layer's six strict expected failures keep its
+ > scientific status and the overall seven-layer scientific status **FAIL**;
+ > strict traceability passes 0/0/0 and strict OCPE package validation 0/0.
+@@ -45,13 +45,15 @@ This is computational research software, not a clinically validated model, diagn
+ 
+ ## A. Executive summary
+ 
+-Stage 1 replaces the aggregated cardiovascular/autonomic foundation with a conservative four-compartment regional model, differentiated autonomic pathways, explicit rhythmic muscle-pump and sustained-contraction mechanics, and a cerebral-perfusion-pressure-based normalized flow index. The existing phenomenological exertion/PEM cascade is retained, with its contradictory scenario timing corrected and its recovery protocol extended.
++Stage 1.1 (0.3.0) retains Stage 1's differentiated autonomic pathways, explicit rhythmic muscle-pump and sustained-contraction mechanics, and phenomenological exertion/PEM cascade. Its current cardiovascular architecture conserves stressed volume across five regional compartments, including the residual other-systemic venous compartment. Explicit tilt geometry drives separate aortic, carotid, and brain-level pressures; the cerebral pathway separately represents pressure-mediated regulation and bounded regulation by declared end-tidal CO₂.
+ 
+-All ten phenotype configurations begin at complete supine fixed points. Four-volume conservation holds analytically and in integrated tests. POTS and Long COVID autonomic scenarios are evaluated using sustained final-120-second-upright HR rise rather than peak-only responses. Original fixtures and negative results remain archived.
++All ten phenotype configurations begin at complete supine fixed points. Five-volume conservation holds analytically and in integrated tests. POTS and Long COVID autonomic scenarios are evaluated using sustained final-120-second-upright HR rise rather than peak-only responses. All four POTS configurations and the Long-COVID-autonomic configuration currently miss the unchanged ≥30 bpm criterion; these failures, the healthy CO/SV discrepancies, and the other unresolved scientific limitations are preserved below rather than tuned away.
+ 
+-The Stage 1.1 (0.3.0) commit-bound validation position at tested source/configuration commit `a6d7619e277fc05081de3c852189b549d714b8b5` is:
++The superseded Stage 1 (0.2.0) architecture used four compartments and four-volume conservation. Its original fixtures, validation records, and negative results remain archived as explicitly labeled history.
+ 
+-- **323 tests passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s** in the complete suite; the skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable in the test environment), and strict installed-engine OCPE validation separately passes with zero errors and zero warnings;
++The Stage 1.1 (0.3.0) commit-bound validation position at tested source/configuration commit `942713ef720ad0e801e71bf9bc78405cd844a739` is:
++
++- **323 tests passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s** in the complete suite; the skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable in the test environment), and strict installed-engine OCPE validation separately passes with zero errors and zero warnings;
+ - all seven independently selected validation layers executed with per-layer execution status PASS; the disease-phenotype layer contains six strict expected failures, so its scientific status and the overall seven-layer scientific status are **FAIL** (`validation/reports/validation-report.json` / `.md`);
+ - the two warnings are the preserved soft-anchor misses: healthy early-CO reduction 0.35% vs the 10–30% band (physiological layer) and healthy end-tilt CFI reduction 1.645% vs the 3–11% band (empirical layer);
+ - strict traceability passed with zero errors, warnings, and infos on the synchronized 0.3.0 registries;
+@@ -90,7 +92,7 @@ Detailed records are:
+ - `docs/stage1/final-validation-report.md`
+ - `docs/stage1-1/architecture-design-record.md` (Stage 1.1)
+ - `docs/stage1-1/scientific-decision-log.md` (Stage 1.1)
+-- `docs/stage1-1/validation-matrix.md` (Stage 1.1; executed at commit `a6d7619`, overall scientific status FAIL)
++- `docs/stage1-1/validation-matrix.md` (Stage 1.1; executed at commit `942713e`, overall scientific status FAIL)
+ - `docs/stage1-1/readiness-assessment.md` (Stage 1.1)
+ 
+ ## C. Implemented architecture
+@@ -138,17 +140,17 @@ The simulation registry contains 19 protocols and 11 curated simulation records
+ 
+ ## E. Validation results
+ 
+-**Stage 1.1 (0.3.0) executed record, bound to tested commit `a6d7619e277fc05081de3c852189b549d714b8b5`** (`validation/reports/validation-report.json` / `.md`; full suite 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s):
++**Stage 1.1 (0.3.0) executed record, bound to tested commit `942713ef720ad0e801e71bf9bc78405cd844a739`** (`validation/reports/validation-report.json` / `.md`; full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s):
+ 
+ | Layer | Execution status | Scientific status | Result | Scope |
+ |---|---|---|---|---|
+-| Software | PASS | PASS | 127 passed, 1 skipped, 202 deselected in 198.15s | Configuration, serialization, failure handling, OCPE mapping, declarative/executable consistency, and regression (19 regression tests). The skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable); strict installed-engine OCPE validation passes separately with 0 errors/0 warnings |
+-| Mathematical | PASS | PASS | 45 passed, 285 deselected in 9.33s | Five-volume conservation, ten fixed points, identities, bounds, and convergence |
+-| Physiological | PASS | PASS | 64 passed, 266 deselected, 1 warning in 8.15s | Orthostasis, recovery, autonomic separation, muscle mechanics, CPP/CFI, and soft anchors; the warning is the preserved healthy early-CO miss (0.35% vs the 10–30% band) |
+-| Disease phenotype | PASS | **FAIL** | 29 passed, 295 deselected, 6 xfailed in 186.51s | POTS, hEDS, ME/CFS, and Long COVID configurations; six strict expected failures preserve five unchanged ≥30 bpm sustained-HR criterion misses (all four POTS phenotypes and Long-COVID-autonomic); the graded-tilt empirical anchor miss is reported separately |
+-| Empirical | PASS | PASS | 10 passed, 320 deselected, 1 warning in 96.46s | Heterogeneous group-level plausibility comparisons; the warning is the preserved healthy-CFI miss (1.645% vs the 3–11% band); the eight Zaidi CO/SV MISSes are recorded in the scientific comparison matrix |
+-| Sensitivity/uncertainty | PASS | PASS | 13 passed, 317 deselected in 124.91s | Regional, muscle, autonomic, cerebral, CO2, grid, and split analyses (59 local, 27 grid, 3 split scenarios) |
+-| Scientific traceability | PASS | PASS | 40 passed, 290 deselected in 4.16s | Registry integrity, scientific chains, scope guards, and bibliography synchronization; strict audit 0 errors/0 warnings/0 infos |
++| Software | PASS | PASS | 131 passed, 1 skipped, 202 deselected in 193.81s | Configuration, serialization, failure handling, OCPE mapping, declarative/executable consistency, and regression (19 regression tests). The skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable); strict installed-engine OCPE validation passes separately with 0 errors/0 warnings |
++| Mathematical | PASS | PASS | 45 passed, 289 deselected in 9.79s | Five-volume conservation, ten fixed points, identities, bounds, and convergence |
++| Physiological | PASS | PASS | 64 passed, 270 deselected, 1 warning in 8.23s | Orthostasis, recovery, autonomic separation, muscle mechanics, CPP/CFI, and soft anchors; the warning is the preserved healthy early-CO miss (0.35% vs the 10–30% band) |
++| Disease phenotype | PASS | **FAIL** | 29 passed, 299 deselected, 6 xfailed in 186.28s | POTS, hEDS, ME/CFS, and Long COVID configurations; six strict expected failures preserve five unchanged ≥30 bpm sustained-HR criterion misses (all four POTS phenotypes and Long-COVID-autonomic); the graded-tilt empirical anchor miss is reported separately |
++| Empirical | PASS | PASS | 10 passed, 324 deselected, 1 warning in 96.97s | Heterogeneous group-level plausibility comparisons; the warning is the preserved healthy-CFI miss (1.645% vs the 3–11% band); the eight Zaidi CO/SV MISSes are recorded in the scientific comparison matrix |
++| Sensitivity/uncertainty | PASS | PASS | 13 passed, 321 deselected in 125.21s | Regional, muscle, autonomic, cerebral, CO2, grid, and split analyses (59 local, 27 grid, 3 split scenarios) |
++| Scientific traceability | PASS | PASS | 40 passed, 294 deselected in 3.67s | Registry integrity, scientific chains, scope guards, and bibliography synchronization; strict audit 0 errors/0 warnings/0 infos |
+ 
+ **Overall seven-layer scientific status: FAIL** — the six strict phenotype xfails are preserved scientific failures, not passes; per-layer execution PASS does not convert them.
+ 
+diff --git a/src/ocpe_disease_models/models/shared/model.py b/src/ocpe_disease_models/models/shared/model.py
+index c05211f0b5aa5ec6a9e9ec182c9642854be736a9..1fe517267a290692140236cd504cd57ffb434472 100644
+--- a/src/ocpe_disease_models/models/shared/model.py
++++ b/src/ocpe_disease_models/models/shared/model.py
+@@ -219,8 +219,13 @@ class ProtocolSegment:
+             raise ValueError(
+                 "transition_duration must be nonnegative and no longer than the segment"
+             )
+-        if self.end_tidal_co2_mmHg is not None and self.end_tidal_co2_mmHg <= 0:
+-            raise ValueError("end_tidal_co2_mmHg must be positive when provided")
++        if self.end_tidal_co2_mmHg is not None and (
++            not math.isfinite(self.end_tidal_co2_mmHg)
++            or self.end_tidal_co2_mmHg <= 0
++        ):
++            raise ValueError(
++                "end_tidal_co2_mmHg must be finite and positive when provided"
++            )
+         inputs = (
+             self.exertion,
+             self.rhythmic_muscle_activity,
+diff --git a/tests/unit/test_serialization.py b/tests/unit/test_serialization.py
+index 3cb11ce62b6785587107f763a6edd8bfec7045ba..7184cbc72c980034b83b1fa2027a8e37a274a669 100644
+--- a/tests/unit/test_serialization.py
++++ b/tests/unit/test_serialization.py
+@@ -222,7 +222,12 @@ def test_invalid_parameter_domains_raise_explicit_errors(override, match):
+         [ProtocolSegment(start=0.0, end=10.0, tilt_angle_deg=-5.0)],
+         [ProtocolSegment(start=0.0, end=10.0, transition_duration=-1.0)],
+         [ProtocolSegment(start=0.0, end=10.0, transition_duration=20.0)],  # exceeds segment
+-        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=0.0)],  # must be positive
++        # ETCO₂ must be finite and positive when declared.
++        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=0.0)],
++        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=-1.0)],
++        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=float("nan"))],
++        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=float("inf"))],
++        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=float("-inf"))],
+     ],
+ )
+ def test_invalid_protocols_fail_explicitly(protocol):
+diff --git a/validation/reports/disease_phenotype.log b/validation/reports/disease_phenotype.log
+index d4cc9e57911015c4b98691eb9083928527736e45..2603d1b905ccf0b7a4a950308b33320003c00531 100644
+--- a/validation/reports/disease_phenotype.log
++++ b/validation/reports/disease_phenotype.log
+@@ -1,2 +1,2 @@
+ .....x....x......xxx.............x.                                      [100%]
+-29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06)
++29 passed, 299 deselected, 6 xfailed in 186.28s (0:03:06)
+diff --git a/validation/reports/empirical.log b/validation/reports/empirical.log
+index 669f107262289eead9f75baf864735395d33d8e6..646b6cc1d276ddf11dd3f6a8b43b2abf91f4b935 100644
+--- a/validation/reports/empirical.log
++++ b/validation/reports/empirical.log
+@@ -5,4 +5,4 @@ tests/empirical/test_group_anchors.py::test_mecfs_cerebral_flow_reduction_within
+     result = testfunction(**testargs)
+ 
+ -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+-10 passed, 320 deselected, 1 warning in 96.46s (0:01:36)
++10 passed, 324 deselected, 1 warning in 96.97s (0:01:36)
+diff --git a/validation/reports/full-suite.log b/validation/reports/full-suite.log
+index 7ea93dce434e4100ec833eeee8cac123ff132a28..a4d88d4a1717baa5b2c8e68cf1bcb7815fb7955d 100644
+--- a/validation/reports/full-suite.log
++++ b/validation/reports/full-suite.log
+@@ -1,8 +1,8 @@
+ .............................................................x....x..... [ 21%]
+ .xxx.............x...................................................... [ 43%]
+-........................................................................ [ 65%]
+-......................................s................................. [ 87%]
+-..........................................                               [100%]
++........................................................................ [ 64%]
++......................................s................................. [ 86%]
++..............................................                           [100%]
+ =============================== warnings summary ===============================
+ tests/empirical/test_group_anchors.py::test_mecfs_cerebral_flow_reduction_within_anchor_band
+   /home/kimi/.local/lib/python3.12/site-packages/_pytest/python.py:187: UserWarning: Healthy end-tilt cerebral-flow-index reduction 1.645% is outside the broad (3.0, 11.0)% soft plausibility band around the reported 7% control reduction; this control-side miss is retained as a structural limitation, not tuned away.
+@@ -13,4 +13,4 @@ tests/physiological/test_orthostatic.py::test_early_co_and_caudal_pooling_soft_a
+     warnings.warn(
+ 
+ -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+-323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s (0:05:44)
++327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s (0:05:41)
+diff --git a/validation/reports/mathematical.log b/validation/reports/mathematical.log
+index 1d52f79167627e065c1ccaab1b720a1e3c5a829b..ab24e46ace312643edbd2e554a42d41c9f5848ea 100644
+--- a/validation/reports/mathematical.log
++++ b/validation/reports/mathematical.log
+@@ -1,2 +1,2 @@
+ .............................................                            [100%]
+-45 passed, 285 deselected in 9.33s
++45 passed, 289 deselected in 9.79s
+diff --git a/validation/reports/physiological.log b/validation/reports/physiological.log
+index dc196e6aa7dbe2a0b32fc7e11fff7fefeacf41af..7d565dbf09340a984eca204c81e1e4d1661a2076 100644
+--- a/validation/reports/physiological.log
++++ b/validation/reports/physiological.log
+@@ -5,4 +5,4 @@ tests/physiological/test_orthostatic.py::test_early_co_and_caudal_pooling_soft_a
+     warnings.warn(
+ 
+ -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+-64 passed, 266 deselected, 1 warning in 8.15s
++64 passed, 270 deselected, 1 warning in 8.23s
+diff --git a/validation/reports/record-integrity.log b/validation/reports/record-integrity.log
+index e3aae4828556f85b26f7723b1a7a6f292bcc00ca..3b2ec0e21ec55fb262a659f9eefe83742f2506a6 100644
+--- a/validation/reports/record-integrity.log
++++ b/validation/reports/record-integrity.log
+@@ -1,2 +1,2 @@
+ ........................................                                 [100%]
+-40 passed, 290 deselected in 3.83s
++40 passed, 294 deselected in 3.44s
+diff --git a/validation/reports/scientific_traceability.log b/validation/reports/scientific_traceability.log
+index 07b0c0749f4bec12ec6beae21c0a618c4a103222..c3dff80f4c7369e5be98f6a8bdd99176876a5089 100644
+--- a/validation/reports/scientific_traceability.log
++++ b/validation/reports/scientific_traceability.log
+@@ -1,2 +1,2 @@
+ ........................................                                 [100%]
+-40 passed, 290 deselected in 4.16s
++40 passed, 294 deselected in 3.67s
+diff --git a/validation/reports/sensitivity_uncertainty.log b/validation/reports/sensitivity_uncertainty.log
+index c7e3a1fa4bb53a393903af433d44b9c961fc8afe..cedc54fce45de1e201b156e9cfde4080a545c516 100644
+--- a/validation/reports/sensitivity_uncertainty.log
++++ b/validation/reports/sensitivity_uncertainty.log
+@@ -1,2 +1,2 @@
+ .............                                                            [100%]
+-13 passed, 317 deselected in 124.91s (0:02:04)
++13 passed, 321 deselected in 125.21s (0:02:05)
+diff --git a/validation/reports/seven-layer-runner.log b/validation/reports/seven-layer-runner.log
+index 7d9a48f521eb3547f8dd396f82812b4a2afc6ec7..43b774335a2822d6c4e59f25fc44c9608fad894b 100644
+--- a/validation/reports/seven-layer-runner.log
++++ b/validation/reports/seven-layer-runner.log
+@@ -4,13 +4,13 @@ A pass denotes completion of the declared computational check only. Software exe
+ 
+ | Layer | Status | Pytest result |
+ |---|---|---|
+-| software | PASS | 127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18) |
+-| mathematical | PASS | 45 passed, 285 deselected in 9.33s |
+-| physiological | PASS | 64 passed, 266 deselected, 1 warning in 8.15s |
+-| disease_phenotype | FAIL | 29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06) |
+-| empirical | PASS | 10 passed, 320 deselected, 1 warning in 96.46s (0:01:36) |
+-| sensitivity_uncertainty | PASS | 13 passed, 317 deselected in 124.91s (0:02:04) |
+-| scientific_traceability | PASS | 40 passed, 290 deselected in 4.16s |
++| software | PASS | 131 passed, 1 skipped, 202 deselected in 193.81s (0:03:13) |
++| mathematical | PASS | 45 passed, 289 deselected in 9.79s |
++| physiological | PASS | 64 passed, 270 deselected, 1 warning in 8.23s |
++| disease_phenotype | FAIL | 29 passed, 299 deselected, 6 xfailed in 186.28s (0:03:06) |
++| empirical | PASS | 10 passed, 324 deselected, 1 warning in 96.97s (0:01:36) |
++| sensitivity_uncertainty | PASS | 13 passed, 321 deselected in 125.21s (0:02:05) |
++| scientific_traceability | PASS | 40 passed, 294 deselected in 3.67s |
+ 
+ Strict traceability: PASS — 0 errors, 0 warnings.
+ 
+diff --git a/validation/reports/software.log b/validation/reports/software.log
+index 400f12b4aa0cd5da481f77f9db18a901d4f944d2..a4284579ba0a08d0bddd92055ecc1855a9744623 100644
+--- a/validation/reports/software.log
++++ b/validation/reports/software.log
+@@ -1,3 +1,3 @@
+-........................................................................ [ 56%]
+-...............s........................................                 [100%]
+-127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18)
++........................................................................ [ 54%]
++...............s............................................             [100%]
++131 passed, 1 skipped, 202 deselected in 193.81s (0:03:13)
+diff --git a/validation/reports/validation-report.json b/validation/reports/validation-report.json
+index fb5f2a09e01f7e743d91842951572c7116656d3f..f2b18b67aa0d81bad85213f688cc13792847c191 100644
+--- a/validation/reports/validation-report.json
++++ b/validation/reports/validation-report.json
+@@ -1,7 +1,7 @@
+ {
+   "schema_version": "1.0",
+   "model_version": "0.3.0",
+-  "repository_commit": "a6d7619e277fc05081de3c852189b549d714b8b5",
++  "repository_commit": "942713ef720ad0e801e71bf9bc78405cd844a739",
+   "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
+   "python_version": "3.12.12",
+   "clinical_status": "Research software and scenario validation only; no clinical validity or diagnostic accuracy is established.",
+@@ -24,7 +24,7 @@
+       "status": "PASS",
+       "contains_strict_expected_failures": false,
+       "status_reason": null,
+-      "pytest_summary": "127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18)",
++      "pytest_summary": "131 passed, 1 skipped, 202 deselected in 193.81s (0:03:13)",
+       "log": "validation/reports/software.log"
+     },
+     {
+@@ -43,7 +43,7 @@
+       "status": "PASS",
+       "contains_strict_expected_failures": false,
+       "status_reason": null,
+-      "pytest_summary": "45 passed, 285 deselected in 9.33s",
++      "pytest_summary": "45 passed, 289 deselected in 9.79s",
+       "log": "validation/reports/mathematical.log"
+     },
+     {
+@@ -62,7 +62,7 @@
+       "status": "PASS",
+       "contains_strict_expected_failures": false,
+       "status_reason": null,
+-      "pytest_summary": "64 passed, 266 deselected, 1 warning in 8.15s",
++      "pytest_summary": "64 passed, 270 deselected, 1 warning in 8.23s",
+       "log": "validation/reports/physiological.log"
+     },
+     {
+@@ -81,7 +81,7 @@
+       "status": "FAIL",
+       "contains_strict_expected_failures": true,
+       "status_reason": "Strict expected failures preserve unresolved scientific criterion misses.",
+-      "pytest_summary": "29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06)",
++      "pytest_summary": "29 passed, 299 deselected, 6 xfailed in 186.28s (0:03:06)",
+       "log": "validation/reports/disease_phenotype.log"
+     },
+     {
+@@ -100,7 +100,7 @@
+       "status": "PASS",
+       "contains_strict_expected_failures": false,
+       "status_reason": null,
+-      "pytest_summary": "10 passed, 320 deselected, 1 warning in 96.46s (0:01:36)",
++      "pytest_summary": "10 passed, 324 deselected, 1 warning in 96.97s (0:01:36)",
+       "log": "validation/reports/empirical.log"
+     },
+     {
+@@ -119,7 +119,7 @@
+       "status": "PASS",
+       "contains_strict_expected_failures": false,
+       "status_reason": null,
+-      "pytest_summary": "13 passed, 317 deselected in 124.91s (0:02:04)",
++      "pytest_summary": "13 passed, 321 deselected in 125.21s (0:02:05)",
+       "log": "validation/reports/sensitivity_uncertainty.log"
+     },
+     {
+@@ -138,7 +138,7 @@
+       "status": "PASS",
+       "contains_strict_expected_failures": false,
+       "status_reason": null,
+-      "pytest_summary": "40 passed, 290 deselected in 4.16s",
++      "pytest_summary": "40 passed, 294 deselected in 3.67s",
+       "log": "validation/reports/scientific_traceability.log",
+       "audit": {
+         "errors": 0,
+diff --git a/validation/reports/validation-report.md b/validation/reports/validation-report.md
+index 7b5b2c3fec1ed3605a9288377a0a45694fc55b56..6657693d4a21fbbcf565824a869975a90e7a955d 100644
+--- a/validation/reports/validation-report.md
++++ b/validation/reports/validation-report.md
+@@ -4,13 +4,13 @@ A pass denotes completion of the declared computational check only. Software exe
+ 
+ | Layer | Status | Pytest result |
+ |---|---|---|
+-| software | PASS | 127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18) |
+-| mathematical | PASS | 45 passed, 285 deselected in 9.33s |
+-| physiological | PASS | 64 passed, 266 deselected, 1 warning in 8.15s |
+-| disease_phenotype | FAIL | 29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06) |
+-| empirical | PASS | 10 passed, 320 deselected, 1 warning in 96.46s (0:01:36) |
+-| sensitivity_uncertainty | PASS | 13 passed, 317 deselected in 124.91s (0:02:04) |
+-| scientific_traceability | PASS | 40 passed, 290 deselected in 4.16s |
++| software | PASS | 131 passed, 1 skipped, 202 deselected in 193.81s (0:03:13) |
++| mathematical | PASS | 45 passed, 289 deselected in 9.79s |
++| physiological | PASS | 64 passed, 270 deselected, 1 warning in 8.23s |
++| disease_phenotype | FAIL | 29 passed, 299 deselected, 6 xfailed in 186.28s (0:03:06) |
++| empirical | PASS | 10 passed, 324 deselected, 1 warning in 96.97s (0:01:36) |
++| sensitivity_uncertainty | PASS | 13 passed, 321 deselected in 125.21s (0:02:05) |
++| scientific_traceability | PASS | 40 passed, 294 deselected in 3.67s |
+ 
+ Strict traceability: PASS — 0 errors, 0 warnings.
+ 
+diff --git a/validation/reproducibility.json b/validation/reproducibility.json
+index c7be7bf14a246dbfd489aa7cad5b0b9564a58856..30bf34d583b2dbb357b15924b7af14e2ce48aabc 100644
+--- a/validation/reproducibility.json
++++ b/validation/reproducibility.json
+@@ -1,7 +1,7 @@
+ {
+   "schema_version": "1.0",
+   "execution_date": "2026-11-17",
+-  "repository_commit": "a6d7619e277fc05081de3c852189b549d714b8b5",
++  "repository_commit": "942713ef720ad0e801e71bf9bc78405cd844a739",
+   "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
+   "upstream_ocpe_modified": false,
+   "model_version": "0.3.0",
+@@ -32,7 +32,7 @@
+     "python -m pytest -q -m scientific_traceability"
+   ],
+   "results": {
+-    "full_suite": "323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s (0:05:44)",
++    "full_suite": "327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s (0:05:41)",
+     "test_execution_status": "PASS",
+     "overall_status": "FAIL",
+     "seven_layer_execution_status": "PASS",
+@@ -43,53 +43,53 @@
+         "execution_status": "PASS",
+         "status": "PASS",
+         "contains_strict_expected_failures": false,
+-        "pytest_summary": "127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18)"
++        "pytest_summary": "131 passed, 1 skipped, 202 deselected in 193.81s (0:03:13)"
+       },
+       {
+         "layer": "mathematical",
+         "execution_status": "PASS",
+         "status": "PASS",
+         "contains_strict_expected_failures": false,
+-        "pytest_summary": "45 passed, 285 deselected in 9.33s"
++        "pytest_summary": "45 passed, 289 deselected in 9.79s"
+       },
+       {
+         "layer": "physiological",
+         "execution_status": "PASS",
+         "status": "PASS",
+         "contains_strict_expected_failures": false,
+-        "pytest_summary": "64 passed, 266 deselected, 1 warning in 8.15s"
++        "pytest_summary": "64 passed, 270 deselected, 1 warning in 8.23s"
+       },
+       {
+         "layer": "disease_phenotype",
+         "execution_status": "PASS",
+         "status": "FAIL",
+         "contains_strict_expected_failures": true,
+-        "pytest_summary": "29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06)"
++        "pytest_summary": "29 passed, 299 deselected, 6 xfailed in 186.28s (0:03:06)"
+       },
+       {
+         "layer": "empirical",
+         "execution_status": "PASS",
+         "status": "PASS",
+         "contains_strict_expected_failures": false,
+-        "pytest_summary": "10 passed, 320 deselected, 1 warning in 96.46s (0:01:36)"
++        "pytest_summary": "10 passed, 324 deselected, 1 warning in 96.97s (0:01:36)"
+       },
+       {
+         "layer": "sensitivity_uncertainty",
+         "execution_status": "PASS",
+         "status": "PASS",
+         "contains_strict_expected_failures": false,
+-        "pytest_summary": "13 passed, 317 deselected in 124.91s (0:02:04)"
++        "pytest_summary": "13 passed, 321 deselected in 125.21s (0:02:05)"
+       },
+       {
+         "layer": "scientific_traceability",
+         "execution_status": "PASS",
+         "status": "PASS",
+         "contains_strict_expected_failures": false,
+-        "pytest_summary": "40 passed, 290 deselected in 4.16s"
++        "pytest_summary": "40 passed, 294 deselected in 3.67s"
+       }
+     ],
+     "validation_registry": "23 PASS, 6 FAIL, 0 PENDING",
+-    "record_integrity": "PASS; post-record scientific-traceability selection: 40 passed, 290 deselected in 3.83s",
++    "record_integrity": "PASS; post-record scientific-traceability selection: 40 passed, 294 deselected in 3.44s",
+     "source_configuration_diff_from_tested_commit": [],
+     "strict_traceability": "0 errors, 0 warnings, 0 infos",
+     "strict_ocpe": "0 errors, 0 warnings across disease-models@0.3.0",
+@@ -805,22 +805,22 @@
+     }
+   ],
+   "artifact_hashes": {
+-    "validation/validation_registry.yaml": "d897d1fc685e8ece6e01847fe3911b1a1a29b04081e1703c1c97f47ec8507f99",
++    "validation/validation_registry.yaml": "737e3475d31e242f190fa13bfbab47ec6e9fb824f36f9d66321066ce855f97a4",
+     "validation/reports/static-checks.log": "281743a6d8625954db05911451c8e6704878a9d995a6c7d725b2856b73168ada",
+     "validation/reports/examples.log": "c64e3b2364caa35645884ebbab2ba2aa2338f7d845ff39cade2ff9f47101adf3",
+     "validation/reports/sensitivity-analysis.log": "ccbcee257874a08e4927cd5f1b48234db4156b083b73fca4d2c99b3cbb2639d8",
+-    "validation/reports/full-suite.log": "8525d059196f8c5140aff26611c0dbdf80f8dc13c92c046e5d3251735d98c2a7",
+-    "validation/reports/seven-layer-runner.log": "edfa1133453e864def9d045bd27ef6df0563c30883095d8de28a74ec7ab34293",
+-    "validation/reports/validation-report.json": "682e8982dd7d4925ad0f4efacbc5da1c264fcf20049fde634230453f83e51187",
+-    "validation/reports/validation-report.md": "42db37c41e7381f3564b3ea8be2e2abece2c0951868a57c730273050b02858e5",
+-    "validation/reports/software.log": "0a6fc8dc4147f3b82f5f5b800a7e0a3b1fa4c5d3345cf2078e942d394413bf68",
+-    "validation/reports/mathematical.log": "ce6656e6d633825b84b305c60881d3ab5778cf83cb6392f9fa7395862dcdc190",
+-    "validation/reports/physiological.log": "dd3f99465d1eb2a9333314b2e24b567496dd9e8d4de421aeed70655bc1ec6810",
+-    "validation/reports/disease_phenotype.log": "33baa742eab1276bb81c5c54f79b12ffb5093148344c07c7177a7e45807b1011",
+-    "validation/reports/empirical.log": "7951fc4cfe7e4270f915af906dafdeb29fdd5abf97bd2cf9a3baf6cd8c7c0bb8",
+-    "validation/reports/sensitivity_uncertainty.log": "1d146de5e0788695c786a4e81df8387881ce30eff84b08933a0c29a1459286d6",
+-    "validation/reports/scientific_traceability.log": "9d6ac2f729b15c7fc77bf6d0d7662640f51a54d4e51fdc63b861f723d4f90734",
+-    "validation/reports/record-integrity.log": "507d9e90c88caa163dc6566f6215fb645c6d3db3d14ef8f3af68b7f5217f6943",
++    "validation/reports/full-suite.log": "90ea7d4868a795eeeb2b5d398dd71a7115e45a9847c3a0526e638eba915b420d",
++    "validation/reports/seven-layer-runner.log": "2e391acd61cf737591361e12f1013873e9cc3387b1ae18e881e8ec30798321c9",
++    "validation/reports/validation-report.json": "62ec9fb83b1a1bcf73e6fb843699f685d85b499054a6d4b77fdf738c2487838b",
++    "validation/reports/validation-report.md": "64ad999c0169828e9680e63ca2698a8de889c0e39eda7f060105df03a8b0c82f",
++    "validation/reports/software.log": "cf70f3160c5540774fac56ed6e9bead5c82514147a898aa6fb0a8fada3122d3b",
++    "validation/reports/mathematical.log": "28eb73c2accc3c9582dcc36137718123985e50461f5e33b44ee82e89739f9733",
++    "validation/reports/physiological.log": "8986712646b9cde2e8ef509c476367fed781a23fd5528f51b6e0910e44178d3c",
++    "validation/reports/disease_phenotype.log": "74e8cf09d573da590b59d4ed5e37d66c9cba21e333510ee3ef0622ac6e8da6de",
++    "validation/reports/empirical.log": "f253f1a05e4f1ed1b25350880ffab2a1533a3bc332dedaeea97f2c345ea1544f",
++    "validation/reports/sensitivity_uncertainty.log": "c0eaedcbbb446e95d6107fe4adfcd138432bd3d148766c975f09799736f17003",
++    "validation/reports/scientific_traceability.log": "0ccc269627984695da9b9378ed06498af5e442ff002e0e99c5c7335efec6f75a",
++    "validation/reports/record-integrity.log": "d0dcadd5d23096dabcc70c88ffbc0dd75bab40e6996fcc1e9338a16d60ffcd34",
+     "validation/traceability/audit/traceability_report.json": "0d9040a1ee40992aca40489ea803a9f603f8455f9b60960b28f4b2f380c83067",
+     "validation/traceability/audit/traceability_report.md": "d4fc8c4bb59e42868e91905cccb1faaa306c1b5e6cf73c79eaf2fac4ae290f47",
+     "validation/fixtures/regression_fixtures.json": "314f653d0af68586bd6b138f14f274534d429d447e64b325629663665db240ce",
+@@ -831,15 +831,15 @@
+     "validation/baseline/stage0/validation-report.original.json": "252fb1da115bb7592416fe9c66cb23e634b03785c12607437e3aed2dcdfc0809",
+     "docs/stage1/final-validation-report.md": "836d677792b370c78bbfefaadfc6002bea17d22207e93ce3698c73c147f516e6",
+     "docs/stage1/parameter-provenance-and-uncertainty.md": "81bd1e3ae88ae0f1f9e9e5da7e19914d36c65c736be2d31dae704213c0a6c523",
+-    "docs/stage1-1/architecture-design-record.md": "da796c6b45e74d3c4388a8163a0bccba7cbd360fba3b95be06ef722595ab4c23",
+-    "docs/stage1-1/scientific-decision-log.md": "a91eb505140a188de43a4d3534dcd1ef3308043de28cb3b31ca9c2fccce840c9",
+-    "docs/stage1-1/validation-matrix.md": "dd5f1ba686cbbbd2907c361b1abeb4167f688d7e817e226dd072967bc0f6687e",
+-    "docs/stage1-1/readiness-assessment.md": "114bfb5a516ce019291a36ab7cdb654d3e65748c9078b805f60205b6248db4dd",
+-    "docs/architecture.md": "c0ccf9bed18e45f1c41ebbb870176d9a3eb9fa9be8594b43999bf7195c893460",
+-    "docs/methodology.md": "5147356d64669cd930399decaae5138b6ea78a38443c36df735cb038bf9871e3",
+-    "docs/limitations.md": "c3385a81262de34bee531bc775849217646f27390e37ba098a5ce3be074b522c",
+-    "docs/technical-handoff.md": "49dcffe0b443b40877c3427aaa7bf1ef04f7c5a666e6ddd3fcaaa8919d16a977",
+-    "docs/roadmap.md": "b9bf7527edf02805f0b497f237a7b2e2a067fc7a6d3947e00f665e24b8db1780",
++    "docs/stage1-1/architecture-design-record.md": "6e9e5db03a33374f7579afa867a1065f18d9745af9c5fd15beb35548dc12b240",
++    "docs/stage1-1/scientific-decision-log.md": "e2b7f179e8838e5aac6ead176ca7829cdbebd3d782702443d8c36a69e1d51205",
++    "docs/stage1-1/validation-matrix.md": "7cfb77fd78536837739bb1870d03b73e2a7c5d39eff51647c52d6175b5f3b34b",
++    "docs/stage1-1/readiness-assessment.md": "6a1c579419bfd2fd0f14e0fab5cc3a2dfcbaba04a3cc83aea9864fc60a85d5d0",
++    "docs/architecture.md": "3d335680852bb1784aceb91f9a2f36a5cbff25aebd228458633a52698b022a86",
++    "docs/methodology.md": "f898cf62791d3f345107abb8a62dd2a54b6485f76228595738a4711f9da98534",
++    "docs/limitations.md": "4620b1369e4e0c6187533891a627015174aa32f3a0ccd628fa9aaa7ac8dccf83",
++    "docs/technical-handoff.md": "1a81d38b7f1803e16f4b8df6939366670a2ea4034735683bf0298c7f0d351661",
++    "docs/roadmap.md": "0ce839fd9119bb89158c9b360972baf8c79d36cb97c2bc0f780d035c52981e4a",
+     "validation/sensitivity/chronotropic_split.csv": "ea4d4a6e16be6f246d6914da1b317e714b8b428dbfba45831992271cd737e5d8",
+     "validation/sensitivity/chronotropic_split.json": "eccf64ac49ac279114b181ba402cdd4f2e3d1286591b909e44b0e76f7009b3bc",
+     "validation/sensitivity/figure.png": "24f915bde4bc762d48b05f299e009c8d9c08e34e1710d80534a4c172dd4226a1",
+@@ -863,5 +863,5 @@
+     "No independent clinical validation, wearable sensor/error model, Stage 2 dataset, Stage 3 predictor, or verified remote CI matrix result is provided."
+   ],
+   "commit_binding_policy": "repository_commit and last_validated_commit identify the final tested source/configuration commit. The subsequent release-record commit adds executed reports, regenerated curated outputs, this manifest, registry results, and handoff documentation; it is not represented as a source revision tested before it existed. Any later source or configuration change requires a new validation cycle.",
+-  "last_validated_commit": "a6d7619e277fc05081de3c852189b549d714b8b5"
++  "last_validated_commit": "942713ef720ad0e801e71bf9bc78405cd844a739"
+ }
+diff --git a/validation/validation_registry.yaml b/validation/validation_registry.yaml
+index a3173624ab2c21c7edda460cfee64b015f649510..6f33f775e4ff35a5febb63fd7c00127d124cb457 100644
+--- a/validation/validation_registry.yaml
++++ b/validation/validation_registry.yaml
+@@ -30,7 +30,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-SW-SERIALIZATION
+   name: Serialization and numerical failure behavior
+   layer: software
+@@ -53,7 +53,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-SW-OCPE
+   name: Strict OCPE package and observation interoperability
+   layer: software
+@@ -76,7 +76,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-MATH-CONSERVATION
+   name: Stressed-volume conservation
+   layer: mathematical
+@@ -124,7 +124,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-MATH-EQUILIBRIUM
+   name: All-phenotype supine fixed points and flow identities
+   layer: mathematical
+@@ -193,7 +193,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-MATH-CONVERGENCE
+   name: Solver convergence and bounded states
+   layer: mathematical
+@@ -252,7 +252,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-PHYS-BASELINE
+   name: Healthy resting operating point
+   layer: physiological
+@@ -315,7 +315,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-PHYS-SHARED
+   name: Regional muscle, autonomic and cerebral shared mechanisms
+   layer: physiological
+@@ -379,7 +379,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-PHYS-TILT
+   name: Orthostatic directionality and compensation
+   layer: physiological
+@@ -446,7 +446,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-PHYS-TILT-ANGLE
+   name: Explicit tilt-angle hydrostatic geometry
+   layer: physiological
+@@ -492,7 +492,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-PHYS-GRADED-TILT
+   name: Graded-tilt empirical plausibility comparison
+   layer: empirical
+@@ -534,7 +534,7 @@ validation_tests:
+     python_requirement: '>=3.11'
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-PHYS-RECOVERY
+   name: Post-tilt cerebral recovery
+   layer: physiological
+@@ -569,7 +569,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-PHYS-CBF-CO2
+   name: Bounded end-tidal-CO2 cerebral regulation
+   layer: physiological
+@@ -614,7 +614,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-POTS-NEUROPATHIC
+   name: Neuropathic POTS scenario
+   layer: disease_phenotype
+@@ -678,7 +678,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-POTS-HYPER
+   name: Hyperadrenergic POTS scenario
+   layer: disease_phenotype
+@@ -725,7 +725,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-POTS-HYPO
+   name: Hypovolemic POTS scenario
+   layer: disease_phenotype
+@@ -767,7 +767,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-POTS-MIXED
+   name: Explicit mixed POTS composition
+   layer: disease_phenotype
+@@ -826,7 +826,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-EDS-DIRECTION
+   name: Exploratory hEDS vascular-mechanics scenario
+   layer: disease_phenotype
+@@ -865,7 +865,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-ME-PEM
+   name: Delayed PEM onset and prolonged recovery
+   layer: disease_phenotype
+@@ -907,7 +907,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-ME-CPET
+   name: Reduced subsequent exertional capacity
+   layer: empirical
+@@ -954,7 +954,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-ME-CBF
+   name: ME/CFS cerebral-flow group-level comparison
+   layer: empirical
+@@ -992,7 +992,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-LC-AUTONOMIC
+   name: Long COVID autonomic subgroup
+   layer: disease_phenotype
+@@ -1051,7 +1051,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-LC-EXTRACTION
+   name: Long COVID exertional/extraction subgroup
+   layer: disease_phenotype
+@@ -1090,7 +1090,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-EMPIRICAL-ANCHORS
+   name: Empirical anchor coverage and provenance
+   layer: empirical
+@@ -1118,7 +1118,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-SENSITIVITY
+   name: Deterministic local sensitivity analysis
+   layer: sensitivity_uncertainty
+@@ -1208,7 +1208,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-UNCERTAINTY
+   name: Assumption uncertainty propagation
+   layer: sensitivity_uncertainty
+@@ -1271,7 +1271,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+   mechanisms:
+   - MEC-VASC-POOLING
+   - MEC-VASC-CONSTRICTION
+@@ -1300,7 +1300,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-REGRESSION
+   name: Approved scientific regression fixtures
+   layer: software
+@@ -1323,7 +1323,7 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ - id: VAL-SCOPE-FUTURE
+   name: Unimplemented mechanism scope guard
+   layer: scientific_traceability
+@@ -1353,11 +1353,11 @@ validation_tests:
+     executed_python: 3.12.12
+     solver: DOP853 where applicable
+     dependency_versions: validation/reproducibility.json
+-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+ execution_summary:
+-  repository_commit: a6d7619e277fc05081de3c852189b549d714b8b5
++  repository_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
+   ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+-  full_suite: 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s (0:05:44)
++  full_suite: 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s (0:05:41)
+   seven_layer_report: validation/reports/validation-report.json
+   seven_layer_status: FAIL (overall scientific verdict; every layer execution_status is PASS; disease_phenotype
+     remains FAIL because six strict expected failures preserve five unresolved sustained-HR criterion misses)

@@ -4,7 +4,7 @@
 - Target branch: `research/initial-disease-modeling-framework`
 - Model/package version: 0.3.0 (Stage 1.1; **release validation executed** at the tested commit below — overall seven-layer scientific status **FAIL** from six preserved strict phenotype xfails; the Stage 1 0.2.0 record remains as labeled history)
 - Model CURIE: `ocpe:disease-models/shared-physiology`
-- Validated source/configuration commit (0.3.0): `a6d7619e277fc05081de3c852189b549d714b8b5`, recorded in `validation/reports/validation-report.json` and `validation/reproducibility.json`; the Stage 1 (0.2.0) commit-bound record at `fb13cb21aa811da9babff6b271f006b8c79ec30f` is preserved in the Stage 1 documents and Git history
+- Validated source/configuration commit (0.3.0): `942713ef720ad0e801e71bf9bc78405cd844a739`, recorded in `validation/reports/validation-report.json` and `validation/reproducibility.json`; the Stage 1 (0.2.0) commit-bound record at `fb13cb21aa811da9babff6b271f006b8c79ec30f` is preserved in the Stage 1 documents and Git history
 - Pinned OCPE commit: `3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d`
 - Original baseline commit: `47923223d4cf2e8a9c6a1ae8cff485b9d4327dc9`
 
@@ -30,10 +30,10 @@ This is computational research software, not a clinically validated model, diagn
 > within the unchanged 15–35% band; cerebral pressure/CO2 isolation
 > experiments confirm pathway separability. **Release validation for 0.3.0
 > is executed** at frozen tested commit
-> `a6d7619e277fc05081de3c852189b549d714b8b5`: full suite 323 passed, 1
+> `942713ef720ad0e801e71bf9bc78405cd844a739`: full suite 327 passed, 1
 > skipped (upstream OCPE checkout unavailable; strict installed-engine OCPE
 > validation separately passes with 0 errors/0 warnings), 6 xfailed,
-> 2 warnings in 344.19s; all seven layer execution statuses PASS; the
+> 2 warnings in 341.60s; all seven layer execution statuses PASS; the
 > disease-phenotype layer's six strict expected failures keep its
 > scientific status and the overall seven-layer scientific status **FAIL**;
 > strict traceability passes 0/0/0 and strict OCPE package validation 0/0.
@@ -45,13 +45,15 @@ This is computational research software, not a clinically validated model, diagn
 
 ## A. Executive summary
 
-Stage 1 replaces the aggregated cardiovascular/autonomic foundation with a conservative four-compartment regional model, differentiated autonomic pathways, explicit rhythmic muscle-pump and sustained-contraction mechanics, and a cerebral-perfusion-pressure-based normalized flow index. The existing phenomenological exertion/PEM cascade is retained, with its contradictory scenario timing corrected and its recovery protocol extended.
+Stage 1.1 (0.3.0) retains Stage 1's differentiated autonomic pathways, explicit rhythmic muscle-pump and sustained-contraction mechanics, and phenomenological exertion/PEM cascade. Its current cardiovascular architecture conserves stressed volume across five regional compartments, including the residual other-systemic venous compartment. Explicit tilt geometry drives separate aortic, carotid, and brain-level pressures; the cerebral pathway separately represents pressure-mediated regulation and bounded regulation by declared end-tidal CO₂.
 
-All ten phenotype configurations begin at complete supine fixed points. Four-volume conservation holds analytically and in integrated tests. POTS and Long COVID autonomic scenarios are evaluated using sustained final-120-second-upright HR rise rather than peak-only responses. Original fixtures and negative results remain archived.
+All ten phenotype configurations begin at complete supine fixed points. Five-volume conservation holds analytically and in integrated tests. POTS and Long COVID autonomic scenarios are evaluated using sustained final-120-second-upright HR rise rather than peak-only responses. All four POTS configurations and the Long-COVID-autonomic configuration currently miss the unchanged ≥30 bpm criterion; these failures, the healthy CO/SV discrepancies, and the other unresolved scientific limitations are preserved below rather than tuned away.
 
-The Stage 1.1 (0.3.0) commit-bound validation position at tested source/configuration commit `a6d7619e277fc05081de3c852189b549d714b8b5` is:
+The superseded Stage 1 (0.2.0) architecture used four compartments and four-volume conservation. Its original fixtures, validation records, and negative results remain archived as explicitly labeled history.
 
-- **323 tests passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s** in the complete suite; the skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable in the test environment), and strict installed-engine OCPE validation separately passes with zero errors and zero warnings;
+The Stage 1.1 (0.3.0) commit-bound validation position at tested source/configuration commit `942713ef720ad0e801e71bf9bc78405cd844a739` is:
+
+- **323 tests passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s** in the complete suite; the skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable in the test environment), and strict installed-engine OCPE validation separately passes with zero errors and zero warnings;
 - all seven independently selected validation layers executed with per-layer execution status PASS; the disease-phenotype layer contains six strict expected failures, so its scientific status and the overall seven-layer scientific status are **FAIL** (`validation/reports/validation-report.json` / `.md`);
 - the two warnings are the preserved soft-anchor misses: healthy early-CO reduction 0.35% vs the 10–30% band (physiological layer) and healthy end-tilt CFI reduction 1.645% vs the 3–11% band (empirical layer);
 - strict traceability passed with zero errors, warnings, and infos on the synchronized 0.3.0 registries;
@@ -90,7 +92,7 @@ Detailed records are:
 - `docs/stage1/final-validation-report.md`
 - `docs/stage1-1/architecture-design-record.md` (Stage 1.1)
 - `docs/stage1-1/scientific-decision-log.md` (Stage 1.1)
-- `docs/stage1-1/validation-matrix.md` (Stage 1.1; executed at commit `a6d7619`, overall scientific status FAIL)
+- `docs/stage1-1/validation-matrix.md` (Stage 1.1; executed at commit `942713e`, overall scientific status FAIL)
 - `docs/stage1-1/readiness-assessment.md` (Stage 1.1)
 
 ## C. Implemented architecture
@@ -138,17 +140,17 @@ The simulation registry contains 19 protocols and 11 curated simulation records 
 
 ## E. Validation results
 
-**Stage 1.1 (0.3.0) executed record, bound to tested commit `a6d7619e277fc05081de3c852189b549d714b8b5`** (`validation/reports/validation-report.json` / `.md`; full suite 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s):
+**Stage 1.1 (0.3.0) executed record, bound to tested commit `942713ef720ad0e801e71bf9bc78405cd844a739`** (`validation/reports/validation-report.json` / `.md`; full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s):
 
 | Layer | Execution status | Scientific status | Result | Scope |
 |---|---|---|---|---|
-| Software | PASS | PASS | 127 passed, 1 skipped, 202 deselected in 198.15s | Configuration, serialization, failure handling, OCPE mapping, declarative/executable consistency, and regression (19 regression tests). The skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable); strict installed-engine OCPE validation passes separately with 0 errors/0 warnings |
-| Mathematical | PASS | PASS | 45 passed, 285 deselected in 9.33s | Five-volume conservation, ten fixed points, identities, bounds, and convergence |
-| Physiological | PASS | PASS | 64 passed, 266 deselected, 1 warning in 8.15s | Orthostasis, recovery, autonomic separation, muscle mechanics, CPP/CFI, and soft anchors; the warning is the preserved healthy early-CO miss (0.35% vs the 10–30% band) |
-| Disease phenotype | PASS | **FAIL** | 29 passed, 295 deselected, 6 xfailed in 186.51s | POTS, hEDS, ME/CFS, and Long COVID configurations; six strict expected failures preserve five unchanged ≥30 bpm sustained-HR criterion misses (all four POTS phenotypes and Long-COVID-autonomic); the graded-tilt empirical anchor miss is reported separately |
-| Empirical | PASS | PASS | 10 passed, 320 deselected, 1 warning in 96.46s | Heterogeneous group-level plausibility comparisons; the warning is the preserved healthy-CFI miss (1.645% vs the 3–11% band); the eight Zaidi CO/SV MISSes are recorded in the scientific comparison matrix |
-| Sensitivity/uncertainty | PASS | PASS | 13 passed, 317 deselected in 124.91s | Regional, muscle, autonomic, cerebral, CO2, grid, and split analyses (59 local, 27 grid, 3 split scenarios) |
-| Scientific traceability | PASS | PASS | 40 passed, 290 deselected in 4.16s | Registry integrity, scientific chains, scope guards, and bibliography synchronization; strict audit 0 errors/0 warnings/0 infos |
+| Software | PASS | PASS | 131 passed, 1 skipped, 202 deselected in 193.81s | Configuration, serialization, failure handling, OCPE mapping, declarative/executable consistency, and regression (19 regression tests). The skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable); strict installed-engine OCPE validation passes separately with 0 errors/0 warnings |
+| Mathematical | PASS | PASS | 45 passed, 289 deselected in 9.79s | Five-volume conservation, ten fixed points, identities, bounds, and convergence |
+| Physiological | PASS | PASS | 64 passed, 270 deselected, 1 warning in 8.23s | Orthostasis, recovery, autonomic separation, muscle mechanics, CPP/CFI, and soft anchors; the warning is the preserved healthy early-CO miss (0.35% vs the 10–30% band) |
+| Disease phenotype | PASS | **FAIL** | 29 passed, 299 deselected, 6 xfailed in 186.28s | POTS, hEDS, ME/CFS, and Long COVID configurations; six strict expected failures preserve five unchanged ≥30 bpm sustained-HR criterion misses (all four POTS phenotypes and Long-COVID-autonomic); the graded-tilt empirical anchor miss is reported separately |
+| Empirical | PASS | PASS | 10 passed, 324 deselected, 1 warning in 96.97s | Heterogeneous group-level plausibility comparisons; the warning is the preserved healthy-CFI miss (1.645% vs the 3–11% band); the eight Zaidi CO/SV MISSes are recorded in the scientific comparison matrix |
+| Sensitivity/uncertainty | PASS | PASS | 13 passed, 321 deselected in 125.21s | Regional, muscle, autonomic, cerebral, CO2, grid, and split analyses (59 local, 27 grid, 3 split scenarios) |
+| Scientific traceability | PASS | PASS | 40 passed, 294 deselected in 3.67s | Registry integrity, scientific chains, scope guards, and bibliography synchronization; strict audit 0 errors/0 warnings/0 infos |
 
 **Overall seven-layer scientific status: FAIL** — the six strict phenotype xfails are preserved scientific failures, not passes; per-layer execution PASS does not convert them.
 

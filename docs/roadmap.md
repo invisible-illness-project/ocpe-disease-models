@@ -28,10 +28,10 @@ clinically validated, and no planned work changes that.
   pressure/CO2 isolation experiments confirm pathway separability. Version
   synchronization is complete (`pyproject.toml`, `CITATION.cff`,
   `__init__.py` read 0.3.0). **Release validation is executed at frozen
-  tested commit `a6d7619e277fc05081de3c852189b549d714b8b5`**: full suite
-  323 passed, 1 skipped (upstream OCPE checkout unavailable; strict
+  tested commit `942713ef720ad0e801e71bf9bc78405cd844a739`**: full suite
+  327 passed, 1 skipped (upstream OCPE checkout unavailable; strict
   installed-engine OCPE validation separately passes 0 errors/0 warnings),
-  6 xfailed, 2 warnings in 344.19s; all seven layer execution statuses are
+  6 xfailed, 2 warnings in 341.60s; all seven layer execution statuses are
   PASS; the disease-phenotype layer carries six strict expected failures,
   so its scientific status and the **overall seven-layer scientific status
   are FAIL**. Strict traceability passes 0/0/0 and strict OCPE validation
@@ -69,7 +69,7 @@ clinically validated, and no planned work changes that.
 
 1. **Resolve the preserved 0.3.0 scientific failures.** The Stage 1.1
    release validation cycle itself is complete (executed at commit
-   `a6d7619e277fc05081de3c852189b549d714b8b5`; see
+   `942713ef720ad0e801e71bf9bc78405cd844a739`; see
    `docs/stage1-1/validation-matrix.md` and
    `docs/stage1-1/readiness-assessment.md`); what remains is the science.
    The executed negative results (eight Zaidi CO/SV MISSes, five

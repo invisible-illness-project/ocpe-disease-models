@@ -219,8 +219,13 @@ class ProtocolSegment:
             raise ValueError(
                 "transition_duration must be nonnegative and no longer than the segment"
             )
-        if self.end_tidal_co2_mmHg is not None and self.end_tidal_co2_mmHg <= 0:
-            raise ValueError("end_tidal_co2_mmHg must be positive when provided")
+        if self.end_tidal_co2_mmHg is not None and (
+            not math.isfinite(self.end_tidal_co2_mmHg)
+            or self.end_tidal_co2_mmHg <= 0
+        ):
+            raise ValueError(
+                "end_tidal_co2_mmHg must be finite and positive when provided"
+            )
         inputs = (
             self.exertion,
             self.rhythmic_muscle_activity,

@@ -222,7 +222,12 @@ def test_invalid_parameter_domains_raise_explicit_errors(override, match):
         [ProtocolSegment(start=0.0, end=10.0, tilt_angle_deg=-5.0)],
         [ProtocolSegment(start=0.0, end=10.0, transition_duration=-1.0)],
         [ProtocolSegment(start=0.0, end=10.0, transition_duration=20.0)],  # exceeds segment
-        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=0.0)],  # must be positive
+        # ETCO₂ must be finite and positive when declared.
+        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=0.0)],
+        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=-1.0)],
+        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=float("nan"))],
+        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=float("inf"))],
+        [ProtocolSegment(start=0.0, end=10.0, end_tidal_co2_mmHg=float("-inf"))],
     ],
 )
 def test_invalid_protocols_fail_explicitly(protocol):

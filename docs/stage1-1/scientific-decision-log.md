@@ -6,8 +6,8 @@ scenario comparison matrix has been executed for 0.3.0
 (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`), and the
 release validation cycle (test suite, traceability, OCPE package validation,
 fixtures, sensitivity, demonstrations) has been executed at frozen tested
-commit `a6d7619e277fc05081de3c852189b549d714b8b5` — full suite 323 passed,
-1 skipped, 6 xfailed, 2 warnings in 344.19s; all seven layer execution
+commit `942713ef720ad0e801e71bf9bc78405cd844a739` — full suite 327 passed,
+1 skipped, 6 xfailed, 2 warnings in 341.60s; all seven layer execution
 statuses PASS; overall seven-layer scientific status FAIL from the preserved
 strict phenotype xfails (see `validation-matrix.md`).
 
@@ -155,3 +155,23 @@ strict phenotype xfails (see `validation-matrix.md`).
 - **Decision.** Stage 1.1 adds no synthetic data generation, no TSFM or
   machine-learning component, and no Stage 2/Stage 3 capability.
 - **Status.** Standing; reaffirmed in `readiness-assessment.md`.
+
+## D1.1-10 — Independent-review corrections and scientific disposition
+
+- **Decision.** Require declared ETCO₂ values to be finite and positive, with
+  regression cases for NaN, positive and negative infinity, zero, and negative
+  values. Correct the technical handoff's opening summary so the current
+  five-compartment Stage 1.1 architecture is not described as the historical
+  four-compartment Stage 1 architecture.
+- **Rationale.** Non-finite ETCO₂ inputs can contaminate the cerebral CO₂
+  calculation and are not valid declared observations. Current architecture
+  and historical release records must remain unambiguous.
+- **Scientific disposition.** The independent review does not establish
+  scientific acceptance. The POTS sustained-HR failures, healthy CO/SV
+  discrepancies, uncertain baroreflex weighting and pressor response, and
+  pressure-versus-CO₂ cerebral-response balance remain unresolved. Focused
+  scientific remediation requires separately scoped Stage 1.2 work; Stage 2
+  remains held. No equation, parameter, calibration, validation threshold,
+  or scientific verdict is changed by these software/documentation fixes.
+- **Status.** Corrections implemented; scientific limitations and negative
+  results preserved without recalibration or threshold changes.

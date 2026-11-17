@@ -5,4 +5,4 @@ tests/empirical/test_group_anchors.py::test_mecfs_cerebral_flow_reduction_within
     result = testfunction(**testargs)
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-10 passed, 320 deselected, 1 warning in 96.46s (0:01:36)
+10 passed, 324 deselected, 1 warning in 96.97s (0:01:36)

@@ -1,8 +1,8 @@
 .............................................................x....x..... [ 21%]
 .xxx.............x...................................................... [ 43%]
-........................................................................ [ 65%]
-......................................s................................. [ 87%]
-..........................................                               [100%]
+........................................................................ [ 64%]
+......................................s................................. [ 86%]
+..............................................                           [100%]
 =============================== warnings summary ===============================
 tests/empirical/test_group_anchors.py::test_mecfs_cerebral_flow_reduction_within_anchor_band
   /home/kimi/.local/lib/python3.12/site-packages/_pytest/python.py:187: UserWarning: Healthy end-tilt cerebral-flow-index reduction 1.645% is outside the broad (3.0, 11.0)% soft plausibility band around the reported 7% control reduction; this control-side miss is retained as a structural limitation, not tuned away.
@@ -13,4 +13,4 @@ tests/physiological/test_orthostatic.py::test_early_co_and_caudal_pooling_soft_a
     warnings.warn(
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s (0:05:44)
+327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s (0:05:41)

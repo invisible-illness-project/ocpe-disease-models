@@ -30,7 +30,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-SW-SERIALIZATION
   name: Serialization and numerical failure behavior
   layer: software
@@ -53,7 +53,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-SW-OCPE
   name: Strict OCPE package and observation interoperability
   layer: software
@@ -76,7 +76,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-MATH-CONSERVATION
   name: Stressed-volume conservation
   layer: mathematical
@@ -124,7 +124,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-MATH-EQUILIBRIUM
   name: All-phenotype supine fixed points and flow identities
   layer: mathematical
@@ -193,7 +193,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-MATH-CONVERGENCE
   name: Solver convergence and bounded states
   layer: mathematical
@@ -252,7 +252,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-PHYS-BASELINE
   name: Healthy resting operating point
   layer: physiological
@@ -315,7 +315,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-PHYS-SHARED
   name: Regional muscle, autonomic and cerebral shared mechanisms
   layer: physiological
@@ -379,7 +379,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-PHYS-TILT
   name: Orthostatic directionality and compensation
   layer: physiological
@@ -446,7 +446,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-PHYS-TILT-ANGLE
   name: Explicit tilt-angle hydrostatic geometry
   layer: physiological
@@ -492,7 +492,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-PHYS-GRADED-TILT
   name: Graded-tilt empirical plausibility comparison
   layer: empirical
@@ -534,7 +534,7 @@ validation_tests:
     python_requirement: '>=3.11'
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-PHYS-RECOVERY
   name: Post-tilt cerebral recovery
   layer: physiological
@@ -569,7 +569,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-PHYS-CBF-CO2
   name: Bounded end-tidal-CO2 cerebral regulation
   layer: physiological
@@ -614,7 +614,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-POTS-NEUROPATHIC
   name: Neuropathic POTS scenario
   layer: disease_phenotype
@@ -678,7 +678,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-POTS-HYPER
   name: Hyperadrenergic POTS scenario
   layer: disease_phenotype
@@ -725,7 +725,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-POTS-HYPO
   name: Hypovolemic POTS scenario
   layer: disease_phenotype
@@ -767,7 +767,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-POTS-MIXED
   name: Explicit mixed POTS composition
   layer: disease_phenotype
@@ -826,7 +826,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-EDS-DIRECTION
   name: Exploratory hEDS vascular-mechanics scenario
   layer: disease_phenotype
@@ -865,7 +865,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-ME-PEM
   name: Delayed PEM onset and prolonged recovery
   layer: disease_phenotype
@@ -907,7 +907,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-ME-CPET
   name: Reduced subsequent exertional capacity
   layer: empirical
@@ -954,7 +954,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-ME-CBF
   name: ME/CFS cerebral-flow group-level comparison
   layer: empirical
@@ -992,7 +992,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-LC-AUTONOMIC
   name: Long COVID autonomic subgroup
   layer: disease_phenotype
@@ -1051,7 +1051,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-LC-EXTRACTION
   name: Long COVID exertional/extraction subgroup
   layer: disease_phenotype
@@ -1090,7 +1090,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-EMPIRICAL-ANCHORS
   name: Empirical anchor coverage and provenance
   layer: empirical
@@ -1118,7 +1118,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-SENSITIVITY
   name: Deterministic local sensitivity analysis
   layer: sensitivity_uncertainty
@@ -1208,7 +1208,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-UNCERTAINTY
   name: Assumption uncertainty propagation
   layer: sensitivity_uncertainty
@@ -1271,7 +1271,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
   mechanisms:
   - MEC-VASC-POOLING
   - MEC-VASC-CONSTRICTION
@@ -1300,7 +1300,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-REGRESSION
   name: Approved scientific regression fixtures
   layer: software
@@ -1323,7 +1323,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 - id: VAL-SCOPE-FUTURE
   name: Unimplemented mechanism scope guard
   layer: scientific_traceability
@@ -1353,11 +1353,11 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  last_validated_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
 execution_summary:
-  repository_commit: a6d7619e277fc05081de3c852189b549d714b8b5
+  repository_commit: 942713ef720ad0e801e71bf9bc78405cd844a739
   ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-  full_suite: 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s (0:05:44)
+  full_suite: 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s (0:05:41)
   seven_layer_report: validation/reports/validation-report.json
   seven_layer_status: FAIL (overall scientific verdict; every layer execution_status is PASS; disease_phenotype
     remains FAIL because six strict expected failures preserve five unresolved sustained-HR criterion misses)

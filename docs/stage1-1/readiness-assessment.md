@@ -5,13 +5,13 @@
 - Assessment basis: the 0.3.0 **scientific scenario comparison matrix has
   been executed** (`validation/stage1-1/scientific-comparison-matrix.md` /
   `.json`), and the **Stage 1.1 release validation cycle is complete** at
-  frozen tested source commit `a6d7619e277fc05081de3c852189b549d714b8b5`:
-  the full suite ran **323 passed, 1 skipped
+  frozen tested source commit `942713ef720ad0e801e71bf9bc78405cd844a739`:
+  the full suite ran **327 passed, 1 skipped
   (`tests/unit/test_ocpe_adapter.py:74`, upstream OCPE checkout unavailable;
   strict installed-engine OCPE validation separately passes with 0
-  errors/0 warnings), 6 xfailed, 2 warnings in 344.19s**; the seven-layer
+  errors/0 warnings), 6 xfailed, 2 warnings in 341.60s**; the seven-layer
   report is `validation/reports/validation-report.json` / `.md`
-  (`model_version: 0.3.0`, `repository_commit: a6d7619`); strict
+  (`model_version: 0.3.0`, `repository_commit: 942713e`); strict
   disease-models OCPE validation passes with 0 errors/0 warnings and the
   strict traceability audit passes with 0 errors/0 warnings/0 infos. All
   seven layer **execution** statuses are PASS; the disease-phenotype layer
@@ -31,7 +31,7 @@ predictor. **Stage 2 has not begun. Stage 3 is excluded.**
 | Is the 0.3.0 architecture recorded and reviewable? | Yes — `architecture-design-record.md`, `scientific-decision-log.md` |
 | Is the 0.3.0 implementation executable? | Yes — the deterministic scientific scenario matrix executed with recorded configuration SHA-256 and solver metadata per run |
 | Do 0.3.0 scientific scenario results exist? | **Yes** — graded-tilt, standing, cerebral CO2 isolation, empirical CO/SV comparisons, and phenotype sustained-HR outcomes; reported in `validation-matrix.md` §§4–6 including all negative outcomes |
-| Are 0.3.0 results validated in the release sense? | **Yes, executed — with an overall scientific FAIL.** The full suite (323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s), the seven-layer runner, the strict traceability audit (0/0/0), and strict OCPE package validation (0/0) all executed at tested commit `a6d7619`; per-layer execution status is PASS in all seven layers, while the disease-phenotype layer's six strict expected failures keep its scientific status and the overall seven-layer status FAIL. The Stage 1 287-test record remains bound to the 0.2.0 tested commit as history |
+| Are 0.3.0 results validated in the release sense? | **Yes, executed — with an overall scientific FAIL.** The full suite (327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s), the seven-layer runner, the strict traceability audit (0/0/0), and strict OCPE package validation (0/0) all executed at tested commit `942713e`; per-layer execution status is PASS in all seven layers, while the disease-phenotype layer's six strict expected failures keep its scientific status and the overall seven-layer status FAIL. The Stage 1 287-test record remains bound to the 0.2.0 tested commit as history |
 | Are Stage 1 misses resolved? | **No.** The healthy CO/SV miss persists (sustained CO −3.105% at 70 degrees; all eight Zaidi comparisons MISS); the healthy CFI miss persists but narrowed (1.645% vs the unchanged 3–11% band); **new negative result**: all four POTS phenotypes and Long-COVID-autonomic FAIL the unchanged ≥30 bpm sustained-HR criterion |
 | Is the repository ready for Stage 2 execution? | **No.** Stage 1 readiness for reviewed Stage 2 *planning* carried over; Stage 1.1 does not change any Stage 2 prerequisite |
 
@@ -39,17 +39,17 @@ predictor. **Stage 2 has not begun. Stage 3 is excluded.**
 
 | Component | State | Readiness |
 |---|---|---|
-| Five-volume conservation structure | Implemented in source | **Verified** — mathematical layer executed: 45 passed, 285 deselected in 9.33s (five-volume telescoping, fixed points of all ten configurations) |
+| Five-volume conservation structure | Implemented in source | **Verified** — mathematical layer executed: 45 passed, 289 deselected in 9.79s (five-volume telescoping, fixed points of all ten configurations) |
 | 25/25/50 baseline flow partition, 2550 mL total stressed volume | Implemented in defaults and three POTS phenotype YAMLs | Scenario matrix baselines consistent (healthy baseline CO 81.667 mL/s, MAP 100 mmHg); fixed-point verification executed in the mathematical layer |
 | Hydrostatic heights (0.7356 mmHg/cm × sin θ) | Implemented; legacy offsets migrated exactly | **Executed in scenario matrix**: graded HR rise 3.626/5.417/6.954/7.723 bpm and end-CFI reduction 0.819/1.192/1.497/1.645% across 30/45/60/70 degrees |
-| Explicit `tilt_angle_deg` + arcsin legacy migration + linear angle-only transitions | Implemented; mutual-exclusion and range validation present | **Executed** (`head-up-tilt` and `passive-tilt-70` yield equivalent reported metrics under their declared solver sample grids); software layer executed: 127 passed, 1 skipped |
+| Explicit `tilt_angle_deg` + arcsin legacy migration + linear angle-only transitions | Implemented; mutual-exclusion and range validation present | **Executed** (`head-up-tilt` and `passive-tilt-70` yield equivalent reported metrics under their declared solver sample grids); software layer executed: 131 passed, 1 skipped |
 | New protocols (passive-tilt-30/45/60/70, active-standing with sustained quiet standing, tilt-back recovery, five cerebral CO2 protocols) | YAMLs present; executed in the scenario matrix | **Registered and executed** — 19 protocols and 11 simulation records in the synchronized simulation registry; six demonstrations regenerated 16 persisted 0.3.0 runs; layer test coverage executed |
 | Dual aortic/carotid sensors, integrated weighted baroreflex (0.25/0.75, sum-to-1 enforced) | Implemented; brain pressure (27 cm) kept distinct | Executed in scenario matrix; **all POTS/Long-COVID-autonomic phenotypes FAIL the unchanged ≥30 bpm sustained-HR criterion** (17.428–19.659 bpm) — preserved negative result |
 | Segment ETCO2 input (reference 40 mmHg; exp(0.035 × clip(Δ, ±15))) | Implemented; no posture-inferred hypocapnia; ETCO2 ≠ PaCO2 by declaration | **Executed**: pressure-only pressure target 0.98355 / CO2 factor 1; CO2-only (ETCO2 30) pressure target 1 / CO2 factor 0.70469; combined CFI 0.69310; persistent-hypocapnia and persistent-pressure-reduction recovery experiments remain separated |
 | Fixed effective cerebral outflow pressure (5 mmHg; neither thoracic CVP nor resolved ICP) | Implemented | Executed; healthy end-CFI reduction 1.645% remains below the unchanged 3–11% disclosure band (Stage 1 miss persists, narrowed) |
 | Registry/declarative-package synchronization to 0.3.0 names and counts | **Complete** | Strict traceability audit passes 0 errors/0 warnings/0 infos on the synchronized registries (69 references/BibTeX entries, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records — 23 PASS / 6 FAIL / 0 PENDING, 19 protocols, 11 simulation records); strict disease-models OCPE validation passes 0 errors/0 warnings |
 | Package version strings | **Done** — `pyproject.toml`, `CITATION.cff`, and `src/ocpe_disease_models/__init__.py` read 0.3.0, matching run metadata `model_version: 0.3.0` | Complete |
-| Sensitivity export | Local CO2-reactivity and CO2-clip scenarios and a CO2-reactivity × cerebral-outflow grid added | **Complete** — 59 local, 27 grid, and 3 chronotropic-split scenarios regenerated; 13 sensitivity tests passed (317 deselected in 124.91s) |
+| Sensitivity export | Local CO2-reactivity and CO2-clip scenarios and a CO2-reactivity × cerebral-outflow grid added | **Complete** — 59 local, 27 grid, and 3 chronotropic-split scenarios regenerated; 13 sensitivity tests passed (321 deselected in 125.21s) |
 | Regression fixtures | Regenerated with a Stage 1.1 structural-change record and unchanged tolerances | **Complete** — 19 regression tests passed; negative POTS outcomes remain recorded as failures |
 
 ## 3. Carried-over readiness position (Stage 1, unchanged)
@@ -111,8 +111,8 @@ waveform, sensor, or cohort capability.
    operational, not executional.** The full test suite, strict
    traceability audit, strict OCPE package validation, regression-fixture
    regeneration, sensitivity export, demonstrations, and seven-layer
-   report have all been executed for 0.3.0 at tested commit `a6d7619`
-   (full suite 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s;
+   report have all been executed for 0.3.0 at tested commit `942713e`
+   (full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s;
    overall seven-layer scientific status **FAIL** from the preserved
    strict phenotype xfails). The executed negative results (8 Zaidi
    MISSes, 5 sustained-HR criterion FAILs, persistent healthy CO/SV and
@@ -122,7 +122,7 @@ waveform, sensor, or cohort capability.
 
 ## 5. Conditions to advance readiness
 
-Release-cycle conditions **met** at tested commit `a6d7619`:
+Release-cycle conditions **met** at tested commit `942713e`:
 
 1. Registries and the declarative OCPE package are synchronized to 0.3.0
    (parameters, equations, states, protocols, simulations) and the strict
@@ -134,7 +134,7 @@ Release-cycle conditions **met** at tested commit `a6d7619`:
 3. The sensitivity regeneration is complete and reviewed (59 local, 27
    grid, 3 chronotropic-split scenarios; 13 sensitivity tests passed).
 4. The full seven-layer validation suite executed on the recorded
-   source/configuration commit `a6d7619`, including the new protocol
+   source/configuration commit `942713e`, including the new protocol
    families, and carried the executed negative results (8 Zaidi MISSes, 5
    sustained-HR criterion FAILs, persistent healthy CO/SV and CFI misses)
    into the release report unchanged against their unchanged bands. All

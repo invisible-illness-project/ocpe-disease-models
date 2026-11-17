@@ -4,13 +4,13 @@ A pass denotes completion of the declared computational check only. Software exe
 
 | Layer | Status | Pytest result |
 |---|---|---|
-| software | PASS | 127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18) |
-| mathematical | PASS | 45 passed, 285 deselected in 9.33s |
-| physiological | PASS | 64 passed, 266 deselected, 1 warning in 8.15s |
-| disease_phenotype | FAIL | 29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06) |
-| empirical | PASS | 10 passed, 320 deselected, 1 warning in 96.46s (0:01:36) |
-| sensitivity_uncertainty | PASS | 13 passed, 317 deselected in 124.91s (0:02:04) |
-| scientific_traceability | PASS | 40 passed, 290 deselected in 4.16s |
+| software | PASS | 131 passed, 1 skipped, 202 deselected in 193.81s (0:03:13) |
+| mathematical | PASS | 45 passed, 289 deselected in 9.79s |
+| physiological | PASS | 64 passed, 270 deselected, 1 warning in 8.23s |
+| disease_phenotype | FAIL | 29 passed, 299 deselected, 6 xfailed in 186.28s (0:03:06) |
+| empirical | PASS | 10 passed, 324 deselected, 1 warning in 96.97s (0:01:36) |
+| sensitivity_uncertainty | PASS | 13 passed, 321 deselected in 125.21s (0:02:05) |
+| scientific_traceability | PASS | 40 passed, 294 deselected in 3.67s |
 
 Strict traceability: PASS — 0 errors, 0 warnings.
 

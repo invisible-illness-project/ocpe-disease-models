@@ -17,12 +17,12 @@ This matrix maps the seven-layer validation architecture onto the Stage 1.1
    runner, the strict scientific-traceability audit, strict OCPE package
    validation, regression-fixture regeneration, sensitivity exports, and
    demonstration regeneration have all been executed for 0.3.0 at frozen
-   tested source commit `a6d7619e277fc05081de3c852189b549d714b8b5`
+   tested source commit `942713ef720ad0e801e71bf9bc78405cd844a739`
    (`validation/reports/validation-report.json` / `.md`,
-   `model_version: 0.3.0`). Full suite: **323 passed, 1 skipped
+   `model_version: 0.3.0`). Full suite: **327 passed, 1 skipped
    (`tests/unit/test_ocpe_adapter.py:74`, upstream OCPE checkout
    unavailable; strict installed-engine OCPE validation separately passes
-   with 0 errors/0 warnings), 6 xfailed, 2 warnings in 344.19s**. Every
+   with 0 errors/0 warnings), 6 xfailed, 2 warnings in 341.60s**. Every
    layer's execution status is PASS; the disease-phenotype layer contains
    six strict expected failures, so its scientific status is FAIL and the
    **overall seven-layer scientific status is FAIL** — the strict xfails
@@ -36,13 +36,13 @@ This matrix maps the seven-layer validation architecture onto the Stage 1.1
 
 | Layer | Stage 1 (0.2.0, historical) | Stage 1.1 (0.3.0) status | Stage 1.1-specific requirements |
 |---|---|---|---|
-| Software | 122 passed | **Executed — 127 passed, 1 skipped (upstream OCPE checkout unavailable; strict installed-engine OCPE validation passes separately, 0 errors/0 warnings), 202 deselected in 198.15s; execution PASS** | Reject segments specifying both `upright` and `tilt_angle_deg`; reject angle outside [0, 90]; reject nonpositive declared ETCO2; reject baroreflex weights not summing to 1 (1e-6); unknown-parameter rejection still covers renamed keys |
-| Mathematical | 44 passed | **Executed — 45 passed, 285 deselected in 9.33s; execution PASS** | Exact **five-volume** telescoping (`dVa+dVc+dVs+dVl+dVo = 0`) and tight simulated drift across all protocol families including active standing, graded tilt, tilt-back, and sustained contraction; exact supine fixed point for **all** registered configurations under 0.3.0 parameters; CFI bounds including the CO2-term upper bound `exp(0.035 × 15)` |
-| Physiological | 29 passed, 1 warning | **Executed — 64 passed, 266 deselected, 1 preserved early-CO soft-anchor warning (0.35% vs the 10–30% band) in 8.15s; execution PASS** (scenario matrix executed separately, below) | Orthostatic directionality at each graded angle; monotonic posture dose–response across 30/45/60/70 degrees (directional, not fitted); isolated-pressure vs isolated-CO2 vs combined cerebral protocols separate the two effects; pressure recovery with persistent hypocapnia does not restore CFI |
-| Disease phenotype | 35 passed | **Executed — 29 passed, 295 deselected, 6 strict xfailed in 186.51s; execution PASS, scientific status FAIL for the unchanged sustained-HR criterion misses** | All ten configurations re-derived to exact supine fixed points after resistance re-partition and baroreflex split; POTS sustained-HR-rise scenario criterion re-evaluated with dual-sensor baroreflex |
-| Empirical (scientific scenario comparisons) | 9 passed, 1 warning | **Executed — 10 passed, 320 deselected, 1 preserved healthy-CFI warning (1.645% vs the 3–11% band) in 96.46s; execution PASS** — see sections 4–6; includes 8 Zaidi CO/SV MISSes and 5 sustained-HR criterion FAILs | Anchors in section 4 evaluated unchanged; Stage 1 misses (section 5) re-measured; negative results reported, not tuned |
-| Sensitivity/uncertainty | 13 passed | **Executed — 13 passed, 317 deselected in 124.91s; execution PASS; 59 local, 27 grid, 3 split scenarios regenerated** | Local CO2-reactivity and CO2-clip scenarios and a CO2-reactivity × cerebral-outflow-pressure grid are included; heights, sensor heights, and other-systemic resistances are also covered. These deterministic scenarios do not establish global identifiability |
-| Scientific traceability | 40 passed | **Executed — 40 passed, 290 deselected in 4.16s; execution PASS; strict audit 0 errors/0 warnings/0 infos on the synchronized 0.3.0 registries** | Equation, parameter, mechanism, protocol, simulation, and validation registries are synchronized to the 0.3.0 names/counts (69 references, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records, 19 protocols, 11 simulation records) |
+| Software | 122 passed | **Executed — 131 passed, 1 skipped (upstream OCPE checkout unavailable; strict installed-engine OCPE validation passes separately, 0 errors/0 warnings), 202 deselected in 193.81s; execution PASS** | Reject segments specifying both `upright` and `tilt_angle_deg`; reject angle outside [0, 90]; reject non-finite or nonpositive declared ETCO2; reject baroreflex weights not summing to 1 (1e-6); unknown-parameter rejection still covers renamed keys |
+| Mathematical | 44 passed | **Executed — 45 passed, 289 deselected in 9.79s; execution PASS** | Exact **five-volume** telescoping (`dVa+dVc+dVs+dVl+dVo = 0`) and tight simulated drift across all protocol families including active standing, graded tilt, tilt-back, and sustained contraction; exact supine fixed point for **all** registered configurations under 0.3.0 parameters; CFI bounds including the CO2-term upper bound `exp(0.035 × 15)` |
+| Physiological | 29 passed, 1 warning | **Executed — 64 passed, 270 deselected, 1 preserved early-CO soft-anchor warning (0.35% vs the 10–30% band) in 8.23s; execution PASS** (scenario matrix executed separately, below) | Orthostatic directionality at each graded angle; monotonic posture dose–response across 30/45/60/70 degrees (directional, not fitted); isolated-pressure vs isolated-CO2 vs combined cerebral protocols separate the two effects; pressure recovery with persistent hypocapnia does not restore CFI |
+| Disease phenotype | 35 passed | **Executed — 29 passed, 299 deselected, 6 strict xfailed in 186.28s; execution PASS, scientific status FAIL for the unchanged sustained-HR criterion misses** | All ten configurations re-derived to exact supine fixed points after resistance re-partition and baroreflex split; POTS sustained-HR-rise scenario criterion re-evaluated with dual-sensor baroreflex |
+| Empirical (scientific scenario comparisons) | 9 passed, 1 warning | **Executed — 10 passed, 324 deselected, 1 preserved healthy-CFI warning (1.645% vs the 3–11% band) in 96.97s; execution PASS** — see sections 4–6; includes 8 Zaidi CO/SV MISSes and 5 sustained-HR criterion FAILs | Anchors in section 4 evaluated unchanged; Stage 1 misses (section 5) re-measured; negative results reported, not tuned |
+| Sensitivity/uncertainty | 13 passed | **Executed — 13 passed, 321 deselected in 125.21s; execution PASS; 59 local, 27 grid, 3 split scenarios regenerated** | Local CO2-reactivity and CO2-clip scenarios and a CO2-reactivity × cerebral-outflow-pressure grid are included; heights, sensor heights, and other-systemic resistances are also covered. These deterministic scenarios do not establish global identifiability |
+| Scientific traceability | 40 passed | **Executed — 40 passed, 294 deselected in 3.67s; execution PASS; strict audit 0 errors/0 warnings/0 infos on the synchronized 0.3.0 registries** | Equation, parameter, mechanism, protocol, simulation, and validation registries are synchronized to the 0.3.0 names/counts (69 references, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records, 19 protocols, 11 simulation records) |
 
 ## 2. New invariants introduced by 0.3.0
 
@@ -162,8 +162,8 @@ fixtures were regenerated through the scientific change-management process
 (19 regression tests passed, 0.2.0 fixtures preserved in Git history and
 Stage 0 originals unchanged); (iv)
 the full seven-layer pytest suite ran on the recorded source/configuration
-commit `a6d7619e277fc05081de3c852189b549d714b8b5` (full suite 323 passed,
-1 skipped, 6 xfailed, 2 warnings in 344.19s; strict disease-models OCPE
+commit `942713ef720ad0e801e71bf9bc78405cd844a739` (full suite 327 passed,
+1 skipped, 6 xfailed, 2 warnings in 341.60s; strict disease-models OCPE
 validation 0 errors/0 warnings); and (v) the negative results in sections
 4–6 (8 Zaidi MISSes, 5 sustained-HR criterion FAILs, persistent healthy
 CO/SV and CFI misses) are carried into the release report unchanged. Every

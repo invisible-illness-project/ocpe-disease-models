@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "model_version": "0.3.0",
-  "repository_commit": "a6d7619e277fc05081de3c852189b549d714b8b5",
+  "repository_commit": "942713ef720ad0e801e71bf9bc78405cd844a739",
   "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
   "python_version": "3.12.12",
   "clinical_status": "Research software and scenario validation only; no clinical validity or diagnostic accuracy is established.",
@@ -24,7 +24,7 @@
       "status": "PASS",
       "contains_strict_expected_failures": false,
       "status_reason": null,
-      "pytest_summary": "127 passed, 1 skipped, 202 deselected in 198.15s (0:03:18)",
+      "pytest_summary": "131 passed, 1 skipped, 202 deselected in 193.81s (0:03:13)",
       "log": "validation/reports/software.log"
     },
     {
@@ -43,7 +43,7 @@
       "status": "PASS",
       "contains_strict_expected_failures": false,
       "status_reason": null,
-      "pytest_summary": "45 passed, 285 deselected in 9.33s",
+      "pytest_summary": "45 passed, 289 deselected in 9.79s",
       "log": "validation/reports/mathematical.log"
     },
     {
@@ -62,7 +62,7 @@
       "status": "PASS",
       "contains_strict_expected_failures": false,
       "status_reason": null,
-      "pytest_summary": "64 passed, 266 deselected, 1 warning in 8.15s",
+      "pytest_summary": "64 passed, 270 deselected, 1 warning in 8.23s",
       "log": "validation/reports/physiological.log"
     },
     {
@@ -81,7 +81,7 @@
       "status": "FAIL",
       "contains_strict_expected_failures": true,
       "status_reason": "Strict expected failures preserve unresolved scientific criterion misses.",
-      "pytest_summary": "29 passed, 295 deselected, 6 xfailed in 186.51s (0:03:06)",
+      "pytest_summary": "29 passed, 299 deselected, 6 xfailed in 186.28s (0:03:06)",
       "log": "validation/reports/disease_phenotype.log"
     },
     {
@@ -100,7 +100,7 @@
       "status": "PASS",
       "contains_strict_expected_failures": false,
       "status_reason": null,
-      "pytest_summary": "10 passed, 320 deselected, 1 warning in 96.46s (0:01:36)",
+      "pytest_summary": "10 passed, 324 deselected, 1 warning in 96.97s (0:01:36)",
       "log": "validation/reports/empirical.log"
     },
     {
@@ -119,7 +119,7 @@
       "status": "PASS",
       "contains_strict_expected_failures": false,
       "status_reason": null,
-      "pytest_summary": "13 passed, 317 deselected in 124.91s (0:02:04)",
+      "pytest_summary": "13 passed, 321 deselected in 125.21s (0:02:05)",
       "log": "validation/reports/sensitivity_uncertainty.log"
     },
     {
@@ -138,7 +138,7 @@
       "status": "PASS",
       "contains_strict_expected_failures": false,
       "status_reason": null,
-      "pytest_summary": "40 passed, 290 deselected in 4.16s",
+      "pytest_summary": "40 passed, 294 deselected in 3.67s",
       "log": "validation/reports/scientific_traceability.log",
       "audit": {
         "errors": 0,

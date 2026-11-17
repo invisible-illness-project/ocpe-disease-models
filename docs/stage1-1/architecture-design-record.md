@@ -2,7 +2,7 @@
 
 - Model CURIE: `ocpe:disease-models/shared-physiology`
 - Model version: **0.3.0** (Stage 1.1 revision of the Stage 1 model, version 0.2.0)
-- Status: **design record; implementation present in source; deterministic scientific scenario matrix executed** (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`); **release validation executed** at frozen tested source commit `a6d7619e277fc05081de3c852189b549d714b8b5` (full suite 323 passed, 1 skipped, 6 xfailed, 2 warnings in 344.19s; all seven layer execution statuses PASS; overall seven-layer scientific status **FAIL** from the six preserved strict phenotype xfails; strict traceability 0 errors/0 warnings/0 infos; strict OCPE package validation 0 errors/0 warnings)
+- Status: **design record; implementation present in source; deterministic scientific scenario matrix executed** (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`); **release validation executed** at frozen tested source commit `942713ef720ad0e801e71bf9bc78405cd844a739` (full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s; all seven layer execution statuses PASS; overall seven-layer scientific status **FAIL** from the six preserved strict phenotype xfails; strict traceability 0 errors/0 warnings/0 infos; strict OCPE package validation 0 errors/0 warnings)
 
 This document records the Stage 1.1 architecture. It does not replace the
 Stage 1 design gate (`docs/stage1/revised-physiological-architecture.md`) or
@@ -10,7 +10,7 @@ the audited Stage 0 baseline (`docs/stage1/baseline-scientific-report.md`),
 which remain unchanged history. Numerical results quoted from Stage 1 are
 bound to the 0.2.0 tested commit. Executed 0.3.0 scenario results—including
 the negative ones—are recorded in `validation-matrix.md` §§4–6; the executed
-0.3.0 release validation record (commit `a6d7619`, overall scientific status
+0.3.0 release validation record (commit `942713e`, overall scientific status
 FAIL from the preserved strict phenotype xfails) is summarized in
 `readiness-assessment.md` and `validation-matrix.md`.
 
