@@ -15,9 +15,9 @@
 | evidence | literature/evidence_registry.yaml | 41 | 0 |
 | mechanisms | literature/mechanism_registry.yaml | 24 | 0 |
 | equations | literature/equation_registry.yaml | 22 | 0 |
-| parameters | literature/parameter_registry.yaml | 68 | 0 |
+| parameters | literature/parameter_registry.yaml | 69 | 0 |
 | validation_tests | validation/validation_registry.yaml | 29 | 0 |
-| simulations | simulations/simulation_registry.yaml | 11 | 0 |
+| simulations | simulations/simulation_registry.yaml | 12 | 0 |
 
 ## Completeness
 
@@ -34,19 +34,19 @@
 | equations | equations_with_assumptions | 22 | 22 | 100.0% |
 | equations | equations_with_provenance | 22 | 22 | 100.0% |
 | equations | equations_fully_documented | 22 | 22 | 100.0% |
-| parameters | entries_with_id | 68 | 68 | 100.0% |
-| parameters | parameters_with_source | 68 | 68 | 100.0% |
-| parameters | parameters_with_estimation_method | 68 | 68 | 100.0% |
-| parameters | parameters_with_provenance | 68 | 68 | 100.0% |
-| parameters | parameters_fully_documented | 68 | 68 | 100.0% |
+| parameters | entries_with_id | 69 | 69 | 100.0% |
+| parameters | parameters_with_source | 69 | 69 | 100.0% |
+| parameters | parameters_with_estimation_method | 69 | 69 | 100.0% |
+| parameters | parameters_with_provenance | 69 | 69 | 100.0% |
+| parameters | parameters_fully_documented | 69 | 69 | 100.0% |
 | validation_tests | entries_with_id | 29 | 29 | 100.0% |
 | validation_tests | tests_with_expected_behavior | 29 | 29 | 100.0% |
 | validation_tests | tests_with_acceptance_criteria | 29 | 29 | 100.0% |
 | validation_tests | tests_with_justification | 29 | 29 | 100.0% |
 | validation_tests | tests_fully_specified | 29 | 29 | 100.0% |
-| simulations | entries_with_id | 11 | 11 | 100.0% |
-| simulations | simulations_with_config | 11 | 11 | 100.0% |
-| simulations | simulations_with_model_provenance | 11 | 11 | 100.0% |
+| simulations | entries_with_id | 12 | 12 | 100.0% |
+| simulations | simulations_with_config | 12 | 12 | 100.0% |
+| simulations | simulations_with_model_provenance | 12 | 12 | 100.0% |
 
 ## Findings
 

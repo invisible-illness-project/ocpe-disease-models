@@ -1,7 +1,7 @@
 {
   "metadata": {
     "model": "ocpe:disease-models/shared-physiology",
-    "model_version": "0.3.0",
+    "model_version": "0.4.0",
     "phenotype_id": "eds-heds-vascular",
     "provenance": {
       "phenotypes": [
@@ -22,7 +22,7 @@
         "This configuration does not generalize to vascular EDS or other EDS subtypes and makes no arterial-rupture representation."
       ]
     },
-    "configuration_sha256": "88c92d427a4a5c2f2a072d8ebd7f6f6600051c886a7101d6e1e7f861a434bda2",
+    "configuration_sha256": "61f4a2b958b2dc5c9de0c7bfc675e6141ae09cbb5811cbdd31ba8788ed137942",
     "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
     "python_version": "3.12.12",
     "numpy_version": "2.2.5",
@@ -41,9 +41,10 @@
   "parameters": {
     "arterial_compliance": 1.5,
     "central_venous_compliance": 140.0,
-    "splanchnic_venous_compliance": 70.0,
-    "lower_limb_venous_compliance": 58.333333333333336,
-    "other_systemic_venous_compliance": 50.0,
+    "splanchnic_venous_compliance": 90.0,
+    "lower_limb_venous_compliance": 70.0,
+    "other_systemic_venous_compliance": 20.0,
+    "dependent_venous_stiffening_mmHg_per_mL2": 0.0001,
     "splanchnic_arterial_resistance": 4.408163265306122,
     "lower_limb_arterial_resistance": 4.408163265306122,
     "other_systemic_arterial_resistance": 2.204081632653061,
@@ -52,10 +53,10 @@
     "other_systemic_venous_resistance": 0.12244897959183673,
     "splanchnic_resistance_sympathetic_gain": 0.7,
     "lower_limb_resistance_sympathetic_gain": 0.7,
-    "other_systemic_resistance_sympathetic_gain": 0.8,
-    "splanchnic_hydrostatic_height_cm": 6.117455138662316,
-    "lower_limb_hydrostatic_height_cm": 12.234910277324632,
-    "other_systemic_hydrostatic_height_cm": 11.0,
+    "other_systemic_resistance_sympathetic_gain": 0.45,
+    "splanchnic_hydrostatic_height_cm": 13.3,
+    "lower_limb_hydrostatic_height_cm": 26.6,
+    "other_systemic_hydrostatic_height_cm": 4.5,
     "arterial_volume_initial": 150.0,
     "central_venous_volume_initial": 700.0,
     "splanchnic_venous_pressure_initial": 10.0,
@@ -64,7 +65,7 @@
     "blood_volume_factor": 1.0,
     "stroke_volume_max": 100.0,
     "stroke_volume_half_volume": 300.0,
-    "contractility_sympathetic_gain": 0.25,
+    "contractility_sympathetic_gain": 0.1,
     "heart_rate_rest": 70.0,
     "heart_rate_cardiac_sympathetic_gain": 30.0,
     "heart_rate_vagal_gain": 30.0,
@@ -72,8 +73,8 @@
     "carotid_baroreflex_pressure_setpoint": 100.0,
     "aortic_baroreflex_pressure_scale": 2.0,
     "carotid_baroreflex_pressure_scale": 2.0,
-    "aortic_baroreflex_weight": 0.25,
-    "carotid_baroreflex_weight": 0.75,
+    "aortic_baroreflex_weight": 0.35,
+    "carotid_baroreflex_weight": 0.65,
     "aortic_baroreceptor_height_cm": 0.0,
     "carotid_baroreceptor_height_cm": 25.0,
     "cardiac_sympathetic_time_constant": 6.0,
@@ -89,7 +90,7 @@
     "brain_hydrostatic_height_cm": 27.0,
     "cerebral_outflow_pressure_mmHg": 5.0,
     "cerebral_reference_perfusion_pressure": 95.0,
-    "cerebral_autoregulation_residual_slope": 0.4,
+    "cerebral_autoregulation_residual_slope": 0.25,
     "cerebral_orthostatic_impairment": 0.0,
     "cerebral_decline_time_constant": 5.0,
     "cerebral_recovery_time_constant": 12.0,
@@ -152,13 +153,13 @@
     "phenotype_id": "eds-heds-vascular",
     "duration_s": 600.0,
     "samples": 301,
-    "heart_rate_final_bpm": 89.88342798901803,
-    "mean_arterial_pressure_final_mmHg": 109.76968253061602,
+    "heart_rate_final_bpm": 93.11757040413268,
+    "mean_arterial_pressure_final_mmHg": 107.14554366714918,
     "pem_peak": 0.0,
     "functional_capacity_final": 1.0,
     "heart_rate_baseline_bpm": 70.0,
-    "heart_rate_upright_peak_bpm": 90.64438251879649,
-    "orthostatic_heart_rate_rise_bpm": 20.64438251879649,
-    "orthostatic_heart_rate_sustained_rise_bpm": 19.88342798902916
+    "heart_rate_upright_peak_bpm": 94.05485235304278,
+    "orthostatic_heart_rate_rise_bpm": 24.054852353042776,
+    "orthostatic_heart_rate_sustained_rise_bpm": 23.117570404132692
   }
 }

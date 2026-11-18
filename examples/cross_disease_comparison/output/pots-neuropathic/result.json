@@ -1,7 +1,7 @@
 {
   "metadata": {
     "model": "ocpe:disease-models/shared-physiology",
-    "model_version": "0.3.0",
+    "model_version": "0.4.0",
     "phenotype_id": "pots-neuropathic",
     "provenance": {
       "phenotypes": [
@@ -21,10 +21,10 @@
       "limitations": [
         "Neuropathic impairment is represented by reduced sympathetic resistance modulation; gains are calibrated, not patient measurements.",
         "Phenotype labels overlap and are not mutually exclusive clinical diagnoses.",
-        "The 0.35 resistance gain is an intentional scenario calibration below the declared 0.4-1.2 local sensitivity range, with an explicit registry range exception; it does not widen or clinically validate that range."
+        "The 0.34 resistance gain is an intentional scenario calibration below the declared 0.4-1.2 local sensitivity range, with an explicit registry range exception; it does not widen or clinically validate that range."
       ]
     },
-    "configuration_sha256": "12955efc610abf2015b23da764e5a012bf9baecd3ba8a9b9654465e302c6bf3f",
+    "configuration_sha256": "9abcdf30a78516623df47868d0c7670d4965d0210f1477e9274e12f96b2373f5",
     "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
     "python_version": "3.12.12",
     "numpy_version": "2.2.5",
@@ -43,21 +43,22 @@
   "parameters": {
     "arterial_compliance": 1.5,
     "central_venous_compliance": 140.0,
-    "splanchnic_venous_compliance": 70.0,
-    "lower_limb_venous_compliance": 50.0,
-    "other_systemic_venous_compliance": 50.0,
+    "splanchnic_venous_compliance": 90.0,
+    "lower_limb_venous_compliance": 60.0,
+    "other_systemic_venous_compliance": 20.0,
+    "dependent_venous_stiffening_mmHg_per_mL2": 0.0001,
     "splanchnic_arterial_resistance": 4.408163265306122,
     "lower_limb_arterial_resistance": 4.408163265306122,
     "other_systemic_arterial_resistance": 2.204081632653061,
     "splanchnic_venous_resistance": 0.24489795918367346,
     "lower_limb_venous_resistance": 0.24489795918367346,
     "other_systemic_venous_resistance": 0.12244897959183673,
-    "splanchnic_resistance_sympathetic_gain": 0.35,
-    "lower_limb_resistance_sympathetic_gain": 0.35,
-    "other_systemic_resistance_sympathetic_gain": 0.8,
-    "splanchnic_hydrostatic_height_cm": 8.0,
-    "lower_limb_hydrostatic_height_cm": 16.0,
-    "other_systemic_hydrostatic_height_cm": 11.0,
+    "splanchnic_resistance_sympathetic_gain": 0.34,
+    "lower_limb_resistance_sympathetic_gain": 0.34,
+    "other_systemic_resistance_sympathetic_gain": 0.45,
+    "splanchnic_hydrostatic_height_cm": 13.3,
+    "lower_limb_hydrostatic_height_cm": 26.6,
+    "other_systemic_hydrostatic_height_cm": 4.5,
     "arterial_volume_initial": 150.0,
     "central_venous_volume_initial": 700.0,
     "splanchnic_venous_pressure_initial": 10.0,
@@ -66,7 +67,7 @@
     "blood_volume_factor": 1.0,
     "stroke_volume_max": 100.0,
     "stroke_volume_half_volume": 300.0,
-    "contractility_sympathetic_gain": 0.25,
+    "contractility_sympathetic_gain": 0.1,
     "heart_rate_rest": 70.0,
     "heart_rate_cardiac_sympathetic_gain": 40.0,
     "heart_rate_vagal_gain": 40.0,
@@ -74,8 +75,8 @@
     "carotid_baroreflex_pressure_setpoint": 100.0,
     "aortic_baroreflex_pressure_scale": 2.0,
     "carotid_baroreflex_pressure_scale": 2.0,
-    "aortic_baroreflex_weight": 0.25,
-    "carotid_baroreflex_weight": 0.75,
+    "aortic_baroreflex_weight": 0.35,
+    "carotid_baroreflex_weight": 0.65,
     "aortic_baroreceptor_height_cm": 0.0,
     "carotid_baroreceptor_height_cm": 25.0,
     "cardiac_sympathetic_time_constant": 6.0,
@@ -91,7 +92,7 @@
     "brain_hydrostatic_height_cm": 27.0,
     "cerebral_outflow_pressure_mmHg": 5.0,
     "cerebral_reference_perfusion_pressure": 95.0,
-    "cerebral_autoregulation_residual_slope": 0.4,
+    "cerebral_autoregulation_residual_slope": 0.25,
     "cerebral_orthostatic_impairment": 0.0,
     "cerebral_decline_time_constant": 5.0,
     "cerebral_recovery_time_constant": 12.0,
@@ -154,13 +155,13 @@
     "phenotype_id": "pots-neuropathic",
     "duration_s": 600.0,
     "samples": 301,
-    "heart_rate_final_bpm": 106.72440929498511,
-    "mean_arterial_pressure_final_mmHg": 106.65326711075018,
+    "heart_rate_final_bpm": 100.09275839826343,
+    "mean_arterial_pressure_final_mmHg": 107.31950870224061,
     "pem_peak": 0.0,
     "functional_capacity_final": 1.0,
     "heart_rate_baseline_bpm": 70.0,
-    "heart_rate_upright_peak_bpm": 107.13316939082556,
-    "orthostatic_heart_rate_rise_bpm": 37.13316939082556,
-    "orthostatic_heart_rate_sustained_rise_bpm": 36.724409294991375
+    "heart_rate_upright_peak_bpm": 100.91406398981388,
+    "orthostatic_heart_rate_rise_bpm": 30.914063989813883,
+    "orthostatic_heart_rate_sustained_rise_bpm": 30.09275839826337
   }
 }

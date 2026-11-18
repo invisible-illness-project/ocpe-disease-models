@@ -4,9 +4,7 @@ diseases: [hEDS]
 mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX]
 evidence_claims: [CLM-EDS-OI, CLM-EDS-VASCULAR]
 parameter_overrides:
-  splanchnic_hydrostatic_height_cm: 6.117455138662316
-  lower_limb_hydrostatic_height_cm: 12.234910277324632
-  lower_limb_venous_compliance: 58.333333333333336
+  lower_limb_venous_compliance: 70.0
   splanchnic_resistance_sympathetic_gain: 0.7
   lower_limb_resistance_sympathetic_gain: 0.7
   heart_rate_rest: 70.0

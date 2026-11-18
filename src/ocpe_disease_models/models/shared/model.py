@@ -74,21 +74,25 @@ class ModelParameters:
     # Regional vascular compliances (mL/mmHg) and resistances (mmHg s/mL).
     arterial_compliance: float = 1.5
     central_venous_compliance: float = 140.0
-    splanchnic_venous_compliance: float = 70.0
-    lower_limb_venous_compliance: float = 50.0
-    other_systemic_venous_compliance: float = 50.0
+    splanchnic_venous_compliance: float = 90.0
+    lower_limb_venous_compliance: float = 60.0
+    other_systemic_venous_compliance: float = 20.0
+    # Second-order elastance above each dependent bed's supine stressed volume.
+    # This represents limited venous distensibility without adding a state or
+    # changing the conserved-volume equations.
+    dependent_venous_stiffening_mmHg_per_mL2: float = 0.0001
     splanchnic_arterial_resistance: float = 4.408163265306122
     lower_limb_arterial_resistance: float = 4.408163265306122
     other_systemic_arterial_resistance: float = 2.204081632653061
     splanchnic_venous_resistance: float = 0.24489795918367346
     lower_limb_venous_resistance: float = 0.24489795918367346
     other_systemic_venous_resistance: float = 0.12244897959183673
-    splanchnic_resistance_sympathetic_gain: float = 0.8
-    lower_limb_resistance_sympathetic_gain: float = 0.8
-    other_systemic_resistance_sympathetic_gain: float = 0.8
-    splanchnic_hydrostatic_height_cm: float = 7.0
-    lower_limb_hydrostatic_height_cm: float = 14.0
-    other_systemic_hydrostatic_height_cm: float = 11.0
+    splanchnic_resistance_sympathetic_gain: float = 0.45
+    lower_limb_resistance_sympathetic_gain: float = 0.45
+    other_systemic_resistance_sympathetic_gain: float = 0.45
+    splanchnic_hydrostatic_height_cm: float = 13.3
+    lower_limb_hydrostatic_height_cm: float = 26.6
+    other_systemic_hydrostatic_height_cm: float = 4.5
 
     # Initial stressed volumes/pressures; all five volumes conserve their sum.
     arterial_volume_initial: float = 150.0
@@ -101,16 +105,16 @@ class ModelParameters:
     # Cardiac and differentiated baroreflex operating point.
     stroke_volume_max: float = 100.0
     stroke_volume_half_volume: float = 300.0
-    contractility_sympathetic_gain: float = 0.25
+    contractility_sympathetic_gain: float = 0.1
     heart_rate_rest: float = 70.0
-    heart_rate_cardiac_sympathetic_gain: float = 20.0
-    heart_rate_vagal_gain: float = 20.0
+    heart_rate_cardiac_sympathetic_gain: float = 13.6
+    heart_rate_vagal_gain: float = 13.6
     aortic_baroreflex_pressure_setpoint: float = 100.0
     carotid_baroreflex_pressure_setpoint: float = 100.0
     aortic_baroreflex_pressure_scale: float = 2.0
     carotid_baroreflex_pressure_scale: float = 2.0
-    aortic_baroreflex_weight: float = 0.25
-    carotid_baroreflex_weight: float = 0.75
+    aortic_baroreflex_weight: float = 0.35
+    carotid_baroreflex_weight: float = 0.65
     aortic_baroreceptor_height_cm: float = 0.0
     carotid_baroreceptor_height_cm: float = 25.0
     cardiac_sympathetic_time_constant: float = 6.0
@@ -130,7 +134,7 @@ class ModelParameters:
     brain_hydrostatic_height_cm: float = 27.0
     cerebral_outflow_pressure_mmHg: float = 5.0
     cerebral_reference_perfusion_pressure: float = 95.0
-    cerebral_autoregulation_residual_slope: float = 0.4
+    cerebral_autoregulation_residual_slope: float = 0.25
     cerebral_orthostatic_impairment: float = 0.0
     cerebral_decline_time_constant: float = 5.0
     cerebral_recovery_time_constant: float = 12.0
@@ -388,6 +392,7 @@ class ComputationalPatient:
             if getattr(p, name) <= 0:
                 raise ValueError(f"{name} must be positive")
         nonnegative_names = (
+            "dependent_venous_stiffening_mmHg_per_mL2",
             "splanchnic_resistance_sympathetic_gain",
             "lower_limb_resistance_sympathetic_gain",
             "other_systemic_resistance_sympathetic_gain",
@@ -532,8 +537,23 @@ class ComputationalPatient:
         sin_tilt = inputs.upright
         pa = va / p.arterial_compliance
         pc = vc / p.central_venous_compliance
-        ps = vs / p.splanchnic_venous_compliance
-        pl = vl / p.lower_limb_venous_compliance
+        splanchnic_supine_volume = (
+            p.splanchnic_venous_pressure_initial
+            * p.splanchnic_venous_compliance
+            * p.blood_volume_factor
+        )
+        lower_limb_supine_volume = (
+            p.lower_limb_venous_pressure_initial
+            * p.lower_limb_venous_compliance
+            * p.blood_volume_factor
+        )
+        stiffening = p.dependent_venous_stiffening_mmHg_per_mL2
+        ps = vs / p.splanchnic_venous_compliance + stiffening * max(
+            0.0, vs - splanchnic_supine_volume
+        ) ** 2
+        pl = vl / p.lower_limb_venous_compliance + stiffening * max(
+            0.0, vl - lower_limb_supine_volume
+        ) ** 2
         po = vo / p.other_systemic_venous_compliance
         capacity = max(0.05, p.baseline_metabolic_capacity * (1.0 - p.pem_capacity_penalty * pem))
         splanchnic_arterial_resistance = p.splanchnic_arterial_resistance * (
@@ -907,7 +927,7 @@ class ComputationalPatient:
         ).hexdigest()
         metadata = {
             "model": "ocpe:disease-models/shared-physiology",
-            "model_version": "0.3.0",
+            "model_version": "0.4.0",
             "phenotype_id": self.phenotype_id,
             "provenance": self.provenance,
             "configuration_sha256": config_hash,

@@ -28,7 +28,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.2.0
+    model_version: 0.4.0
     mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-CBF-AUTOREG]
     validation: [VAL-PHYS-BASELINE, VAL-MATH-CONSERVATION, VAL-MATH-CONVERGENCE]
     outputs: [examples/healthy_baseline/output/trace.npz, examples/healthy_baseline/output/result.json, examples/healthy_baseline/output/observations.json, examples/healthy_baseline/output/figure.png]
@@ -40,7 +40,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.2.0
+    model_version: 0.4.0
     mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-AUT-HYPERADRENERGIC, MEC-VOL-HYPOVOLEMIA]
     validation: [VAL-POTS-NEUROPATHIC, VAL-POTS-HYPER, VAL-POTS-HYPO, VAL-EMPIRICAL-ANCHORS]
     outputs: [examples/pots_orthostatic_response/output/, examples/pots_orthostatic_response/output/figure.png]
@@ -52,7 +52,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.2.0
+    model_version: 0.4.0
     mechanisms: [MEC-CV-VOLUME, MEC-VASC-POOLING, MEC-VASC-COMPLIANCE]
     validation: [VAL-EDS-DIRECTION, VAL-SENSITIVITY]
     outputs: [examples/eds_vascular_mechanics/output/, examples/eds_vascular_mechanics/output/figure.png]
@@ -64,7 +64,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.2.0
+    model_version: 0.4.0
     mechanisms: [MEC-RCV-PEM, MEC-MET-CAPACITY, MEC-MET-EXTRACTION]
     validation: [VAL-ME-PEM, VAL-ME-CPET]
     outputs: [examples/mecfs_post_exertional_recovery/output/, examples/mecfs_post_exertional_recovery/output/figure.png]
@@ -76,7 +76,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.2.0
+    model_version: 0.4.0
     mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-AUT-HYPERADRENERGIC, MEC-VASC-POOLING]
     validation: [VAL-LC-AUTONOMIC]
     outputs: [examples/long_covid_autonomic_phenotype/output/, examples/long_covid_autonomic_phenotype/output/figure.png]
@@ -88,31 +88,31 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.2.0
+    model_version: 0.4.0
     mechanisms: [MEC-CV-VOLUME, MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-VASC-COMPLIANCE, MEC-CBF-AUTOREG]
     validation: [VAL-PHYS-TILT, VAL-POTS-NEUROPATHIC, VAL-EDS-DIRECTION, VAL-LC-AUTONOMIC]
     outputs: [examples/cross_disease_comparison/output/, examples/cross_disease_comparison/output/figure.png]
     scientific_status: Scenario comparison across non-equivalent evidence levels; not a comparative effectiveness or disease-severity ranking.
   - id: SIM-SENSITIVITY
     name: Deterministic local sensitivity scenarios
-    config: POTS neuropathic and hEDS vascular YAML configurations + head-up-tilt protocol + declared one-at-a-time perturbations in src/ocpe_disease_models/validation/sensitivity.py
+    config: Healthy-reference, POTS-neuropathic and hEDS-vascular YAML configurations + orthostatic, cerebral-CO2, rhythmic-activity and sustained-contraction protocols + declared one-at-a-time perturbations in src/ocpe_disease_models/validation/sensitivity.py
     model:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.3.0
+    model_version: 0.4.0
     mechanisms: [MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-VOL-HYPOVOLEMIA, MEC-VASC-COMPLIANCE]
     validation: [VAL-SENSITIVITY]
     outputs: [validation/sensitivity/local_sensitivity.json, validation/sensitivity/local_sensitivity.csv, validation/sensitivity/figure.png]
-    scientific_status: Stage 1.2 deterministic scenarios with 61 local rows, including residual-systemic-height perturbations and configuration hashes; not synthetic patients or probability distributions.
+    scientific_status: Stage 1.3 deterministic scenarios with 96 local rows, including every changed healthy parameter, dependent-venous-elastance and residual-systemic-height perturbations, and configuration hashes; not synthetic patients or probability distributions.
   - id: SIM-UNCERTAINTY-GRID
     name: Deterministic assumption-uncertainty grids
-    config: hEDS vascular and ME/CFS PEM YAML configurations + declared two-parameter grids in src/ocpe_disease_models/validation/sensitivity.py
+    config: hEDS-vascular, ME/CFS-PEM and healthy-reference YAML configurations + declared two-parameter grids in src/ocpe_disease_models/validation/sensitivity.py
     model:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.3.0
+    model_version: 0.4.0
     mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-RCV-PEM, MEC-MET-CAPACITY]
     validation: [VAL-UNCERTAINTY]
     outputs: [validation/sensitivity/uncertainty_grid.json, validation/sensitivity/uncertainty_grid.csv, validation/sensitivity/sensitivity-report.md]
@@ -124,11 +124,11 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.3.0
+    model_version: 0.4.0
     mechanisms: [MEC-ORTHO-HYDROSTATIC, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX, MEC-CV-VOLUME]
     validation: [VAL-PHYS-TILT-ANGLE, VAL-PHYS-GRADED-TILT]
-    outputs: [validation/stage1-2/scientific-comparison-matrix.json, validation/stage1-2/scientific-comparison-matrix.md]
-    scientific_status: Stage 1.2 research scenario comparison; six of eight unchanged REF-ZAIDI-2000 healthy cardiac-output/stroke-volume comparisons PASS, while both 60-degree cardiac-output comparisons remain explicit MISS rows; not clinical validation.
+    outputs: [validation/stage1-3/scientific-comparison-matrix.json, validation/stage1-3/scientific-comparison-matrix.md]
+    scientific_status: Stage 1.3 research scenario comparison; all eight preserved REF-ZAIDI-2000 healthy cardiac-output/stroke-volume comparisons are within band. Four 60-degree rows are direct experimental-angle comparisons; four 70-degree rows are extrapolated model-specific criteria. Calibration overlap and the absence of independent external validation remain explicit.
   - id: SIM-ORTHO-ACTIVE-STANDING
     name: Active versus passive standing geometry comparison
     config: phenotypes/healthy/healthy-reference.yaml + simulations/orthostatic/active-standing.yaml + simulations/orthostatic/tilt-recovery.yaml
@@ -136,10 +136,10 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.3.0
+    model_version: 0.4.0
     mechanisms: [MEC-ORTHO-HYDROSTATIC, MEC-MUSCLE-PUMP, MEC-SUSTAINED-CONTRACTION, MEC-AUT-BAROREFLEX]
     validation: [VAL-PHYS-TILT-ANGLE, VAL-PHYS-TILT, VAL-PHYS-RECOVERY]
-    outputs: [validation/stage1-2/scientific-comparison-matrix.json, validation/stage1-2/scientific-comparison-matrix.md]
+    outputs: [validation/stage1-3/scientific-comparison-matrix.json, validation/stage1-3/scientific-comparison-matrix.md]
     scientific_status: Research scenario comparison; not clinical validation.
   - id: SIM-CBF-CO2
     name: Cerebral pressure/CO2 isolation and recovery protocols
@@ -148,8 +148,20 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.3.0
+    model_version: 0.4.0
     mechanisms: [MEC-CBF-CO2, MEC-CBF-AUTOREG, MEC-CV-VOLUME]
     validation: [VAL-PHYS-CBF-CO2]
-    outputs: [validation/stage1-2/scientific-comparison-matrix.json, validation/stage1-2/scientific-comparison-matrix.md]
+    outputs: [validation/stage1-3/scientific-comparison-matrix.json, validation/stage1-3/scientific-comparison-matrix.md]
     scientific_status: Research scenario comparison of the bounded end-tidal-CO2 factor (isolated 30 mmHg hypocapnia factor 0.7047; pressure/CO2 dissociation preserved); not clinical validation.
+  - id: SIM-STAGE1-3-MECHANISMS
+    name: Stage 1.3 baseline reproduction and isolated-mechanism comparison
+    config: Fresh detached-worktree execution at Stage 1.1 f85360d and Stage 1.2 e48110e; current healthy and phenotype configurations + declared parameter substitutions in scripts/run_stage1_3_validation.py
+    model:
+      id: ocpe:disease-models/shared-physiology
+      implementation: src/ocpe_disease_models/models/shared/model.py
+      ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
+    model_version: 0.4.0
+    mechanisms: [MEC-CV-VOLUME, MEC-ORTHO-HYDROSTATIC, MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-AUT-BAROREFLEX, MEC-CBF-AUTOREG]
+    validation: [VAL-MATH-CONSERVATION, VAL-PHYS-GRADED-TILT, VAL-SENSITIVITY, VAL-REGRESSION]
+    outputs: [validation/stage1-3/baseline-reproduction.json, validation/stage1-3/scientific-comparison-matrix.json, validation/stage1-3/scientific-comparison-matrix.md]
+    scientific_status: Exhaustive numerical comparison of 957 historical numeric fields plus ten fresh isolated/combined mechanism experiments. Deterministic model scenarios only; neither reproduction nor within-band calibrated comparisons establish independent experimental or clinical validation.

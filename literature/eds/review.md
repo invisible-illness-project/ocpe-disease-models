@@ -87,17 +87,16 @@ arterial-rupture representation and is labeled hEDS-specific
 attributed to hEDS specifically.
 
 **Modeling assumption.** The `eds-heds-vascular` phenotype sets
-PAR-LOWER-LIMB-VENOUS-COMPLIANCE = 58.3333 mL/mmHg (healthy 50.0), migrated
-from the legacy aggregated 140 mL/mmHg scenario by 140 × 50/120. This remains
-an assumed sensitivity value, not a measurement. Companion settings are
-PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET = 4.5 mmHg,
-PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET = 9.0 mmHg, both
+PAR-LOWER-LIMB-VENOUS-COMPLIANCE = 70.0 mL/mmHg (healthy 60.0). This Stage 1.3
+value replaces the legacy migration-derived number and remains an assumed
+sensitivity value, not a measurement. Both hEDS configurations use the common
+healthy anatomical hydrostatic heights without disease-specific overrides; both
 PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN and
 PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN = 0.7, PAR-HEART-RATE-REST = 70.0
 bpm, and PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN
 = 30.0 bpm each. VAL-EDS-DIRECTION checks only that the assumed compliance
 increase alters pooling and compensation in the expected direction while all
-four stressed volumes are conserved; it tests the consequences of a
+five stressed volumes are conserved; it tests the consequences of a
 hypothesis, not its truth.
 
 ## 4. Contradictory baroreflex findings

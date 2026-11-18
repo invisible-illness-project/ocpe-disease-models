@@ -1,5 +1,16 @@
 # Changelog — ocpe:disease-models
 
+## 0.4.0
+
+- Added the Stage 1.3 one-sided quadratic elastance term for pooled splanchnic
+  and lower-limb stressed volumes above their scaled supine references; zero
+  recovers the Stage 1.2 linear constitutive law.
+- Synchronized the redistributed dependent/residual venous compliances, common
+  anatomical hydrostatic heights, cardiac and vascular compensation gains,
+  baroreflex weights, cerebral autoregulation slope, and initial volumes.
+- Preserved the twelve-state layout and exact five-volume conservation; all
+  numerical values remain exploratory research assumptions.
+
 ## 0.3.0
 
 - Added the Stage 1.1 twelve-state declaration with a fifth conserved

@@ -14,7 +14,7 @@ separate dynamics except through declared mechanisms.
 
 ```
 SHARED SUBSTRATE (M3)
-  MEC-CV-VOLUME      EQ-CV-001..005   four conservative stressed-volume compartments,
+  MEC-CV-VOLUME      EQ-CV-001..005   five conservative stressed-volume compartments,
                                       regional pressure-gradient flows, SV, CO
   MEC-AUT-BAROREFLEX EQ-AUT-001..003  head-level-pressure sigmoid; vagal, cardiac-
                                       sympathetic and vascular-sympathetic states
@@ -30,7 +30,7 @@ DISEASE OVERLAYS
              MEC-VOL-HYPOVOLEMIA (initial-volume factor)        M3
              MEC-RAAS                                           M1  [exploratory, no impl]
   hEDS       MEC-VASC-COMPLIANCE (assumed lower-limb venous
-             compliance 58.3333 versus healthy 50.0 mL/mmHg)     M2  [exploratory]
+             compliance 70.0 versus healthy 60.0 mL/mmHg)            M2  [exploratory]
              MEC-CONNECTIVE                                     M1  [exploratory, no impl]
              MEC-GI-DYSMOTILITY, MEC-PAIN-AUT                   M0  [exploratory, no impl]
   ME/CFS     MEC-RCV-PEM (EQ-RCV-001..004)                      M3
@@ -48,12 +48,13 @@ DISEASE OVERLAYS
 
 | Parameter | Healthy | POTS overrides | hEDS overrides | ME/CFS | Long COVID |
 |---|---|---|---|---|---|
-| PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET | 4.0 mmHg | 5.0 (all four POTS configs) | 4.5 | 4.5 | 5.5 (autonomic) |
-| PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET | 8.0 mmHg | 10.0 (all four POTS configs) | 9.0 | 9.0 | 11.0 (autonomic) |
-| PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN and PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN | 0.8 each | 0.35 / 1.0 / 0.9 / 0.55 each by subtype | 0.7 each | — | — |
-| PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN | 20.0 bpm each | 40 / 70 / 60 / 50 bpm each by subtype | 30 each | 25 each | 50 each (autonomic) |
+| PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT | 13.3 cm | common (no override) | common | common | common |
+| PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT | 26.6 cm | common (no override) | common | common | common |
+| PAR-OTHER-SYSTEMIC-HYDROSTATIC-HEIGHT | 4.5 cm | common (no override) | common | common | common |
+| PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN and PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN | 0.45 each | 0.34 / 1.0 / 0.9 / 0.55 each by subtype | 0.7 each | — | — |
+| PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN | 13.6 bpm each | 40 / 70 / 60 / 50 bpm each by subtype | 30 each | 25 each | 50 each (autonomic) |
 | PAR-BLOOD-VOLUME-FACTOR | 1.0 | 0.92 hypo / 0.96 mixed | — | — | — |
-| PAR-LOWER-LIMB-VENOUS-COMPLIANCE | 50.0 mL/mmHg | — | 58.3333 (assumed) | — | — |
+| PAR-LOWER-LIMB-VENOUS-COMPLIANCE | 60.0 mL/mmHg | — | 70.0 (assumed) | — | — |
 | PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT | 0.0 | — | 0.23 (comorbid only) | 0.23 | 0.08 (autonomic) |
 | PAR-CEREBRAL-RECOVERY-TIME-CONSTANT | 12.0 s | — | 240.0 s (comorbid) | 240.0 s | — |
 | PAR-BASELINE-METABOLIC-CAPACITY | 1.0 | — | 0.85 (comorbid) | 0.85 | 0.85 / 0.8 |
@@ -66,9 +67,9 @@ Every non-healthy entry is **[assumption]** within a declared sensitivity
 range unless explicitly marked as a range exception; measured anchors exist
 only for direction, timing windows, and selected group-level magnitudes (e.g.,
 0.49 extraction from REF-SINGH-2022; 0.74 from the REF-JOSEPH-2021 subgroup;
-26% CBF reduction from REF-VANCAMPEN-2020). The healthy early-CO reduction
-(approximately 5.64%) and healthy end-tilt CFI reduction (approximately 0.003%)
-miss their broad soft anchors and remain explicit warnings. The ME/CFS PEM
+26% CBF reduction from REF-VANCAMPEN-2020). Stage 1.3 healthy early-CO and
+end-tilt CFI responses are reported as calibration-era scenario comparisons;
+they are not independent validation or patient estimates. The ME/CFS PEM
 scenario first crosses 0.05 at approximately 5.7 hours after the day-1 bout
 ends, earlier than the 12–48-hour daily-activity onset window but within
 reported post-CPET onset within 24 hours; its approximately 39.2-hour post-bout

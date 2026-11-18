@@ -36,7 +36,7 @@ UPSTREAM_COMMIT = "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d"
 
 # Identity of the external OCPE domain package shipped by this repository.
 PACKAGE_ID = "disease-models"
-PACKAGE_VERSION = "0.3.0"
+PACKAGE_VERSION = "0.4.0"
 
 # The declarative shared five-compartment cardiovascular/autonomic ODE model.
 MODEL_CURIE = "ocpe:disease-models/shared-physiology"

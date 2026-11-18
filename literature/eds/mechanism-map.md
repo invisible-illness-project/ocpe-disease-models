@@ -9,8 +9,8 @@ cited reference; **[assumption]** calibrated/chosen value or structure;
 
 | Mechanism | Maturity / status | Content | Claims | Parameters |
 |---|---|---|---|---|
-| MEC-VASC-COMPLIANCE | **M2, implemented, exploratory** | Increased lower-limb venous compliance tests whether regional vascular mechanics amplify orthostatic pooling | CLM-EDS-VASCULAR (E1), CLM-EDS-OI (E2) | PAR-LOWER-LIMB-VENOUS-COMPLIANCE = 58.3333 mL/mmHg **[assumption]** (healthy 50.0), migrated from the legacy aggregated value by 140 × 50/120 |
-| MEC-VASC-POOLING | M3, implemented (shared) | Regional splanchnic and lower-limb venous-return opposition, EQ-ORT-001 | CLM-POTS-POOLING (E3), CLM-CV-HEMODYNAMICS (E3), CLM-ORTHO-SPLANCHNIC (E3) | PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET = 4.5 and PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET = 9.0 mmHg in hEDS configs **[assumption]** |
+| MEC-VASC-COMPLIANCE | **M2, implemented, exploratory** | Increased lower-limb venous compliance tests whether regional vascular mechanics amplify orthostatic pooling | CLM-EDS-VASCULAR (E1), CLM-EDS-OI (E2) | PAR-LOWER-LIMB-VENOUS-COMPLIANCE = 70.0 mL/mmHg **[assumption]** (healthy 60.0), an exploratory Stage 1.3 scenario value with 60/70/80 mL/mmHg sensitivity coverage |
+| MEC-VASC-POOLING | M3, implemented (shared) | Regional splanchnic and lower-limb venous-return opposition, EQ-ORT-001 | CLM-POTS-POOLING (E3), CLM-CV-HEMODYNAMICS (E3), CLM-ORTHO-SPLANCHNIC (E3) | Common healthy splanchnic/lower-limb/other-systemic hydrostatic heights 13.3/26.6/4.5 cm; no hEDS-specific anatomical override |
 | MEC-AUT-BAROREFLEX | M3, implemented (shared) | Head-level-pressure sigmoidal target; separate vagal, cardiac-sympathetic, and vascular-sympathetic lags; chronotropic response (EQ-AUT-001/002/003) | CLM-POTS-BAROREFLEX (E3), CLM-AUT-VAGAL-FAST (E3), CLM-AUT-SYMPATHETIC-PATHWAYS (E3) | no hEDS-specific setpoint/scale override; only calibrated chronotropic and regional resistance gains |
 | MEC-CONNECTIVE | **M1, proposed — unimplemented** | **[exploratory]** connective-tissue → vascular-mechanics link; documented here per the registry | CLM-EDS-OI, CLM-EDS-VASCULAR | none |
 | MEC-GI-DYSMOTILITY | **M0, hypothesis — unimplemented** | **[exploratory]** GI dysmotility / postprandial pooling; no defensible equation | CLM-EDS-OI | none |
@@ -22,7 +22,7 @@ cited reference; **[assumption]** calibrated/chosen value or structure;
 [exploratory] connective-tissue difference (MEC-CONNECTIVE, no equation)
         │  — indirect motivation only; never an implemented arrow —
         ▼
-[assumption] PAR-LOWER-LIMB-VENOUS-COMPLIANCE 50.0 → 58.3333  (MEC-VASC-COMPLIANCE)
+[assumption] PAR-LOWER-LIMB-VENOUS-COMPLIANCE 60.0 → 70.0  (MEC-VASC-COMPLIANCE)
         │  EQ-CV-001: lower lower-limb venous pressure per unit stressed volume
         ▼
 upright input u → EQ-ORT-001 regional venous-return opposition (MEC-VASC-POOLING)
@@ -45,7 +45,7 @@ limitation fields.
 
 | Configuration | Maturity | Key overrides (all **[assumption]**) | Validation |
 |---|---|---|---|
-| `eds-heds-vascular` | M2 | lower-limb venous compliance 58.3333 mL/mmHg; splanchnic/lower-limb gravity offsets 4.5/9.0 mmHg; both regional resistance gains 0.7; HR rest 70.0 bpm; cardiac-sympathetic/vagal chronotropic gains 30.0/30.0 bpm | VAL-EDS-DIRECTION, VAL-SENSITIVITY |
+| `eds-heds-vascular` | M2 | lower-limb venous compliance 70.0 mL/mmHg; common anatomical heights; both regional resistance gains 0.7; HR rest 70.0 bpm; cardiac-sympathetic/vagal chronotropic gains 30.0/30.0 bpm | VAL-EDS-DIRECTION, VAL-SENSITIVITY |
 | `eds-heds-mecfs-comorbid` | M2, exploratory_comorbidity | vascular overrides plus cerebral impairment 0.23, cerebral recovery τ 240.0 s, baseline capacity 0.85, extraction 0.74, delayed-stress τ 72000.0 s, PEM threshold 0.001, PEM gain 20.0 (PEM side anchored in ME/CFS claims CLM-ME-PEM-KINETICS / CLM-ME-CPET) | configuration-level checks via VAL-SW-CONFIG; PEM dynamics via VAL-ME-PEM / VAL-ME-CPET |
 
 Both configurations are hEDS-specific and carry the limitation that they do
@@ -72,10 +72,10 @@ arterial-rupture representation.
 
 1. **No arterial-to-venous extrapolation.** Arterial PWV/stiffness
    (REF-MILLER-2020, REF-CHENG-2017) never enters the model as venous
-   compliance; the 58.3333 mL/mmHg lower-limb value is an assumption tested by
-   sensitivity analysis, not a measurement. It was migrated from the legacy
-   aggregated 140 mL/mmHg scenario by 140 × 50/120 and is not a newly measured
-   hEDS coefficient.
+   compliance; the 70.0 mL/mmHg lower-limb value is an assumption tested by
+   sensitivity analysis, not a measurement. Stage 1.3 replaced the legacy
+   migration-derived value while retaining explicit exploratory status; it is
+   not a newly measured hEDS coefficient.
 2. **No cross-subtype generalization.** Labels JHS, EDS-HT/EDS-III and hEDS
    are retained per cohort; configurations are hEDS-specific; nothing is
    asserted about vascular EDS.

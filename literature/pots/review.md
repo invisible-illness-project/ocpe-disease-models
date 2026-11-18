@@ -58,10 +58,10 @@ or resistance parameters.
 neuropathy as reduced vascular-sympathetic modulation of regional arterial
 resistances (MEC-VASC-CONSTRICTION, EQ-VASC-001), with both
 PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN and
-PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN = 0.35 (healthy 0.8). It combines
-this with regional orthostatic pooling (MEC-VASC-POOLING, EQ-ORT-001;
-PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET = 5.0 mmHg and
-PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET = 10.0 mmHg) and calibrated chronotropic
+PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN = 0.34 (healthy 0.45). It combines
+this with explicit-angle regional orthostatic pooling (MEC-VASC-POOLING,
+EQ-ORT-001/002) and the shared healthy anatomical heights rather than
+phenotype-specific hydrostatic overrides, plus calibrated chronotropic
 settings (PAR-HEART-RATE-REST = 70.0 bpm;
 PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN = 40.0
 bpm each). All gains are calibrated demonstration values, not patient
@@ -170,20 +170,22 @@ distinct cerebral-flow output rather than inference from blood pressure alone.
 
 **Modeling assumption.** MEC-CBF-AUTOREG provides a normalized cerebral-flow
 index driven by cerebral perfusion pressure—head-level arterial pressure minus
-central venous back pressure—through a bounded autoregulation curve (EQ-CBF-001;
+a fixed effective cerebral outflow pressure—through a bounded autoregulation curve (EQ-CBF-001;
 PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE = 95.0 mmHg and
-PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE = 0.2) and asymmetric
+PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE = 0.25) and asymmetric
 decline/recovery kinetics (EQ-CBF-002, PAR-CEREBRAL-DECLINE-TIME-CONSTANT = 5.0
 s, PAR-CEREBRAL-RECOVERY-TIME-CONSTANT = 12.0 s healthy). The index is
 normalized; Doppler velocity is not necessarily volumetric CBF, and the model
-has no CO2, intracranial-pressure, or vascular-territory structure (per
-REF-DELPOZZI-2014 and MEC-CBF-AUTOREG limitation fields). No POTS-specific
+has no resolved intracranial-pressure or vascular-territory structure. Its
+independent bounded CO2 factor is a scenario input, not a model of ventilatory
+control or posture-inferred hypocapnia (per MEC-CBF-AUTOREG and MEC-CBF-CO2
+limitation fields). No POTS-specific
 impairment value is assigned in the registry; the
 PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT phenotype values (0.23, 0.08) belong to the
 ME/CFS, comorbid and Long COVID configurations and are discussed in those
-reviews. The healthy pressure-driven response nearly abolishes the reported
-control-side end-tilt reduction (approximately 0.003% versus 7%), which remains
-an explicit warning rather than a successful control validation.
+reviews. The Stage 1.3 healthy pressure-driven end-tilt reduction is 4.961%,
+within the broad 3–11% disclosure band around the reported 7% control finding.
+This is calibration-era scenario agreement, not independent control validation.
 
 ## 9. What this model does not claim
 

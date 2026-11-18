@@ -133,7 +133,7 @@ def test_required_metadata_and_arrays_present(tmp_path):
         len(payload["state_names"]),
         trace["time"].shape[0],
     )
-    assert payload["metadata"]["model_version"] == "0.3.0"
+    assert payload["metadata"]["model_version"] == "0.4.0"
     assert len(payload["state_names"]) == 12
     for name in trace.files:
         assert np.all(np.isfinite(trace[name])), f"non-finite values in {name}"

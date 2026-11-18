@@ -1,7 +1,7 @@
 {
   "metadata": {
     "model": "ocpe:disease-models/shared-physiology",
-    "model_version": "0.3.0",
+    "model_version": "0.4.0",
     "phenotype_id": "pots-hypovolemic",
     "provenance": {
       "phenotypes": [
@@ -24,7 +24,7 @@
         "The 6.0 mmHg baroreflex pressure scale is an intentional scenario calibration above the declared 1.5-3.0 mmHg local sensitivity range, with an explicit registry range exception; independent calibration remains required."
       ]
     },
-    "configuration_sha256": "15bd4876b70b6832e56f55a094f67d7c15b5baa3d570d579f47c2d76ead7bbe0",
+    "configuration_sha256": "38f22a88280b8d58de81d0382916926869323260f2a4b9f7aee60380f4b0a375",
     "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
     "python_version": "3.12.12",
     "numpy_version": "2.2.5",
@@ -43,9 +43,10 @@
   "parameters": {
     "arterial_compliance": 1.5,
     "central_venous_compliance": 140.0,
-    "splanchnic_venous_compliance": 70.0,
-    "lower_limb_venous_compliance": 50.0,
-    "other_systemic_venous_compliance": 50.0,
+    "splanchnic_venous_compliance": 90.0,
+    "lower_limb_venous_compliance": 60.0,
+    "other_systemic_venous_compliance": 20.0,
+    "dependent_venous_stiffening_mmHg_per_mL2": 0.0001,
     "splanchnic_arterial_resistance": 4.16130612244898,
     "lower_limb_arterial_resistance": 4.16130612244898,
     "other_systemic_arterial_resistance": 2.08065306122449,
@@ -54,10 +55,10 @@
     "other_systemic_venous_resistance": 0.11559183673469388,
     "splanchnic_resistance_sympathetic_gain": 0.9,
     "lower_limb_resistance_sympathetic_gain": 0.9,
-    "other_systemic_resistance_sympathetic_gain": 0.8,
-    "splanchnic_hydrostatic_height_cm": 8.0,
-    "lower_limb_hydrostatic_height_cm": 16.0,
-    "other_systemic_hydrostatic_height_cm": 11.0,
+    "other_systemic_resistance_sympathetic_gain": 0.45,
+    "splanchnic_hydrostatic_height_cm": 13.3,
+    "lower_limb_hydrostatic_height_cm": 26.6,
+    "other_systemic_hydrostatic_height_cm": 4.5,
     "arterial_volume_initial": 150.0,
     "central_venous_volume_initial": 700.0,
     "splanchnic_venous_pressure_initial": 10.0,
@@ -66,7 +67,7 @@
     "blood_volume_factor": 0.92,
     "stroke_volume_max": 100.0,
     "stroke_volume_half_volume": 300.0,
-    "contractility_sympathetic_gain": 0.25,
+    "contractility_sympathetic_gain": 0.1,
     "heart_rate_rest": 70.0,
     "heart_rate_cardiac_sympathetic_gain": 60.0,
     "heart_rate_vagal_gain": 60.0,
@@ -74,8 +75,8 @@
     "carotid_baroreflex_pressure_setpoint": 92.0,
     "aortic_baroreflex_pressure_scale": 6.0,
     "carotid_baroreflex_pressure_scale": 6.0,
-    "aortic_baroreflex_weight": 0.25,
-    "carotid_baroreflex_weight": 0.75,
+    "aortic_baroreflex_weight": 0.35,
+    "carotid_baroreflex_weight": 0.65,
     "aortic_baroreceptor_height_cm": 0.0,
     "carotid_baroreceptor_height_cm": 25.0,
     "cardiac_sympathetic_time_constant": 6.0,
@@ -91,7 +92,7 @@
     "brain_hydrostatic_height_cm": 27.0,
     "cerebral_outflow_pressure_mmHg": 5.0,
     "cerebral_reference_perfusion_pressure": 95.0,
-    "cerebral_autoregulation_residual_slope": 0.4,
+    "cerebral_autoregulation_residual_slope": 0.25,
     "cerebral_orthostatic_impairment": 0.0,
     "cerebral_decline_time_constant": 5.0,
     "cerebral_recovery_time_constant": 12.0,
@@ -154,13 +155,13 @@
     "phenotype_id": "pots-hypovolemic",
     "duration_s": 600.0,
     "samples": 301,
-    "heart_rate_final_bpm": 111.7932275043255,
-    "mean_arterial_pressure_final_mmHg": 94.6338108656161,
+    "heart_rate_final_bpm": 103.6898393228079,
+    "mean_arterial_pressure_final_mmHg": 95.61240848538291,
     "pem_peak": 0.0,
     "functional_capacity_final": 1.0,
     "heart_rate_baseline_bpm": 70.0,
-    "heart_rate_upright_peak_bpm": 113.29742258193875,
-    "orthostatic_heart_rate_rise_bpm": 43.29742258193875,
-    "orthostatic_heart_rate_sustained_rise_bpm": 41.79322750432746
+    "heart_rate_upright_peak_bpm": 104.75505579569163,
+    "orthostatic_heart_rate_rise_bpm": 34.75505579569163,
+    "orthostatic_heart_rate_sustained_rise_bpm": 33.689839322807856
   }
 }

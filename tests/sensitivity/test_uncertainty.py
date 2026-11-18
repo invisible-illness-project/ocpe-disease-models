@@ -34,10 +34,15 @@ pytestmark = pytest.mark.sensitivity_uncertainty
 
 SCENARIO_LABEL = "deterministic_scenario_not_a_patient"
 
-# Heights corresponding to the former 8-10 mmHg upright gravity-offset range
-# (mmHg = 0.7356 * height_cm at 90 degrees).
+# One-mmHg upright hydrostatic perturbations around the Stage 1.3 reference.
+# Gain endpoints deliberately span reduced compensation (0.35) through the Stage 1.2
+# nominal (0.8). This legacy-spanning ranking grid is asymmetric around the Stage 1.3
+# nominal (0.45); it is not a centered statistical uncertainty interval.
 TILT_GRID = {
-    "lower_limb_hydrostatic_height_cm": (8.0 / 0.7356, 10.0 / 0.7356),
+    "lower_limb_hydrostatic_height_cm": (
+        26.6 - 1.0 / 0.7356,
+        26.6 + 1.0 / 0.7356,
+    ),
     "lower_limb_resistance_sympathetic_gain": (0.35, 0.8),
 }
 PEM_GRID_VALUES = (0.0, 12.0, 16.0, 20.0)  # includes the explicit no-PEM bound

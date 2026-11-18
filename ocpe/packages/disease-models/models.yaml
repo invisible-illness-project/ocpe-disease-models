@@ -39,7 +39,7 @@ entities:
       hydrostatics / single-sensor baroreflex forms were superseded. Time is
       seconds, volumes mL, pressures mmHg, flows mL/s, heights cm, tilt angles
       degrees. Initial state: volumes from the initial-volume/pressure
-      parameters scaled by f_bv (residual bed nominal 500 mL), autonomic
+      parameters scaled by f_bv (dependent-bed supine volumes 900/600 mL; residual bed nominal 200 mL), autonomic
       states 0.5, load/stress/PEM states 0, and CFI at its pressure-derived
       target. Clip bounds 30-220 /min (heart rate), +/-40 (weighted baroreflex
       error), +/-15 mmHg (end-tidal-CO2 deviation), 0.05 (metabolic capacity
@@ -80,7 +80,7 @@ entities:
         label: Splanchnic venous stressed volume
         unit: mL
         represents: ocpe:disease-models/splanchnic-venous-blood-volume
-        nominal_value: 700.0
+        nominal_value: 900.0
         value_range: {min: 0.0}
         x-executable-state: splanchnic_venous_volume
       - symbol: V_lv
@@ -88,14 +88,14 @@ entities:
         label: Lower-limb venous stressed volume
         unit: mL
         represents: ocpe:disease-models/lower-limb-venous-blood-volume
-        nominal_value: 500.0
+        nominal_value: 600.0
         value_range: {min: 0.0}
         x-executable-state: lower_limb_venous_volume
       - symbol: V_ov
         role: state
         label: Other-systemic (residual) venous stressed volume
         unit: mL
-        nominal_value: 500.0
+        nominal_value: 200.0
         value_range: {min: 0.0}
         x-executable-state: other_systemic_venous_volume
       - symbol: S_c
@@ -152,23 +152,31 @@ entities:
         role: parameter
         label: Splanchnic venous compliance
         unit: mL/mm[Hg]
-        nominal_value: 70.0
+        nominal_value: 90.0
         value_range: {min: 0.0}
         x-executable-parameter: splanchnic_venous_compliance
       - symbol: C_lv
         role: parameter
         label: Lower-limb venous compliance
         unit: mL/mm[Hg]
-        nominal_value: 50.0
+        nominal_value: 60.0
         value_range: {min: 0.0}
         x-executable-parameter: lower_limb_venous_compliance
       - symbol: C_ov
         role: parameter
         label: Other-systemic (residual) venous compliance
         unit: mL/mm[Hg]
-        nominal_value: 50.0
+        nominal_value: 20.0
         value_range: {min: 0.0}
         x-executable-parameter: other_systemic_venous_compliance
+      - symbol: K_d
+        role: parameter
+        label: Dependent venous second-order stiffening coefficient scaled by the 1 mL reference volume
+        description: Numerically equal to the executable mmHg/mL^2 coefficient multiplied by 1 mL. The core OCPE unit registry has no pressure-per-volume-squared dimension, so the declaration uses K_d in mmHg/mL and divides the squared excess volume by 1 mL in the constitutive equations.
+        unit: mm[Hg]/mL
+        nominal_value: 0.0001
+        value_range: {min: 0.0}
+        x-executable-parameter: dependent_venous_stiffening_mmHg_per_mL2
       - symbol: R_sa0
         role: parameter
         label: Splanchnic arterial resistance (reference)
@@ -215,42 +223,42 @@ entities:
         role: parameter
         label: Splanchnic resistance vascular-sympathetic gain
         unit: "1"
-        nominal_value: 0.8
+        nominal_value: 0.45
         value_range: {min: 0.0, max: 2.0}
         x-executable-parameter: splanchnic_resistance_sympathetic_gain
       - symbol: g_lr
         role: parameter
         label: Lower-limb resistance vascular-sympathetic gain
         unit: "1"
-        nominal_value: 0.8
+        nominal_value: 0.45
         value_range: {min: 0.0, max: 2.0}
         x-executable-parameter: lower_limb_resistance_sympathetic_gain
       - symbol: g_or
         role: parameter
         label: Other-systemic resistance vascular-sympathetic gain
         unit: "1"
-        nominal_value: 0.8
+        nominal_value: 0.45
         value_range: {min: 0.0, max: 2.0}
         x-executable-parameter: other_systemic_resistance_sympathetic_gain
       - symbol: h_gs
         role: parameter
         label: Splanchnic hydrostatic height (lumped heart-to-bed)
         unit: cm
-        nominal_value: 7.0
+        nominal_value: 13.3
         value_range: {min: 0.0}
         x-executable-parameter: splanchnic_hydrostatic_height_cm
       - symbol: h_gl
         role: parameter
         label: Lower-limb hydrostatic height (lumped heart-to-bed)
         unit: cm
-        nominal_value: 14.0
+        nominal_value: 26.6
         value_range: {min: 0.0}
         x-executable-parameter: lower_limb_hydrostatic_height_cm
       - symbol: h_go
         role: parameter
         label: Other-systemic hydrostatic height (lumped heart-to-bed)
         unit: cm
-        nominal_value: 11.0
+        nominal_value: 4.5
         value_range: {min: 0.0}
         x-executable-parameter: other_systemic_hydrostatic_height_cm
       # -------------------------------------------------- initial conditions
@@ -315,7 +323,7 @@ entities:
         role: parameter
         label: Contractility cardiac-sympathetic gain
         unit: "1"
-        nominal_value: 0.25
+        nominal_value: 0.1
         value_range: {min: 0.0}
         x-executable-parameter: contractility_sympathetic_gain
       - symbol: HR_0
@@ -329,14 +337,14 @@ entities:
         role: parameter
         label: Heart-rate cardiac-sympathetic gain
         unit: "/min"
-        nominal_value: 20.0
+        nominal_value: 13.6
         value_range: {min: 0.0}
         x-executable-parameter: heart_rate_cardiac_sympathetic_gain
       - symbol: g_hrv
         role: parameter
         label: Heart-rate vagal gain
         unit: "/min"
-        nominal_value: 20.0
+        nominal_value: 13.6
         value_range: {min: 0.0}
         x-executable-parameter: heart_rate_vagal_gain
       - symbol: P_set_ao
@@ -371,14 +379,14 @@ entities:
         role: parameter
         label: Aortic baroreflex integration weight
         unit: "1"
-        nominal_value: 0.25
+        nominal_value: 0.35
         value_range: {min: 0.0, max: 1.0}
         x-executable-parameter: aortic_baroreflex_weight
       - symbol: w_ca
         role: parameter
         label: Carotid baroreflex integration weight
         unit: "1"
-        nominal_value: 0.75
+        nominal_value: 0.65
         value_range: {min: 0.0, max: 1.0}
         x-executable-parameter: carotid_baroreflex_weight
       - symbol: h_ao
@@ -492,7 +500,7 @@ entities:
         role: parameter
         label: Cerebral autoregulation residual slope
         unit: "1"
-        nominal_value: 0.4
+        nominal_value: 0.25
         value_range: {min: 0.0, max: 1.0}
         x-executable-parameter: cerebral_autoregulation_residual_slope
       - symbol: k_oi
@@ -922,16 +930,16 @@ entities:
       - id: eq_splanchnic_venous_pressure
         form: algebraic
         label: Splanchnic venous pressure
-        expression_latex: "P_{sv} = \\frac{V_{sv}}{C_{sv}}"
+        expression_latex: "P_{sv} = \\frac{V_{sv}}{C_{sv}} + K_d\\,\\frac{\\max(0, V_{sv} - P_{sv0} C_{sv} f_{bv})^2}{1\\,\\mathrm{mL}}"
         inputs: [V_sv]
-        parameters: [C_sv]
+        parameters: [C_sv, K_d, P_sv0, f_bv]
         outputs: [P_sv]
       - id: eq_lower_limb_venous_pressure
         form: algebraic
         label: Lower-limb venous pressure
-        expression_latex: "P_{lv} = \\frac{V_{lv}}{C_{lv}}"
+        expression_latex: "P_{lv} = \\frac{V_{lv}}{C_{lv}} + K_d\\,\\frac{\\max(0, V_{lv} - P_{lv0} C_{lv} f_{bv})^2}{1\\,\\mathrm{mL}}"
         inputs: [V_lv]
-        parameters: [C_lv]
+        parameters: [C_lv, K_d, P_lv0, f_bv]
         outputs: [P_lv]
       - id: eq_other_systemic_venous_pressure
         form: algebraic
@@ -1286,7 +1294,7 @@ entities:
       notes: >
         Authored for OCPE specification 0.1 at pinned upstream commit
         3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d. Declarations aligned with the
-        executable reference implementation (model_version 0.3.0) in
+        executable reference implementation (model_version 0.4.0) in
         src/ocpe_disease_models/models/shared/model.py via the per-symbol
         x-executable-state, x-executable-parameter, x-executable-input and
         x-executable-output bindings.

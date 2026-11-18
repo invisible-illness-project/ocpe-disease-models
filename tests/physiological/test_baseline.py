@@ -53,14 +53,15 @@ def test_exact_healthy_flow_partition_and_stressed_volume(healthy_baseline_resul
         assert float(outputs[f"{bed}_venous_return"][0]) == pytest.approx(
             float(outputs[f"{bed}_arterial_flow"][0]), rel=1e-10
         )
-    # Exact stressed-volume partition: 150/700/700/500/500 mL.
+    # Exact Stage 1.3 stressed-volume partition: 150/700/900/600/200 mL.
+    # Total stressed volume remains 2550 mL; only regional allocation changes.
     states = healthy_baseline_result.states
     expected_volumes = {
         "arterial_volume": 150.0,
         "central_venous_volume": 700.0,
-        "splanchnic_venous_volume": 700.0,
-        "lower_limb_venous_volume": 500.0,
-        "other_systemic_venous_volume": 500.0,
+        "splanchnic_venous_volume": 900.0,
+        "lower_limb_venous_volume": 600.0,
+        "other_systemic_venous_volume": 200.0,
     }
     for name, expected in expected_volumes.items():
         idx = STATE_NAMES.index(name)

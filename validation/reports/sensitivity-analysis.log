@@ -1,5 +1,5 @@
 {
-  "local_scenarios": 61,
+  "local_scenarios": 96,
   "grid_scenarios": 27,
   "chronotropic_split_scenarios": 3,
   "output_directory": "validation/sensitivity"

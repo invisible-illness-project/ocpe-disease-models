@@ -23,7 +23,7 @@ levels:
 
 ```
 upright input u ──► EQ-ORT-001 regional venous-return opposition (MEC-VASC-POOLING)
-        splanchnic/lower-limb gravity offsets = 5.5/11.0 mmHg       [assumption]
+        common healthy anatomical hydrostatic heights; no LC override [assumption]
         ▼
 head-level pressure error ──► EQ-AUT-001/002 sigmoid + differentiated lags
                                                         (MEC-AUT-BAROREFLEX)

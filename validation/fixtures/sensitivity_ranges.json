@@ -1,9 +1,9 @@
 {
-  "schema_version": "1.2",
-  "label": "Deterministic central differences for the Stage 1.2 shared physiology; research scenarios, not clinical targets.",
+  "schema_version": "1.3",
+  "label": "Deterministic central differences for the Stage 1.3 shared physiology; research scenarios, not clinical targets.",
   "scientific_status": "research demonstration; not clinically validated",
-  "model_version": "0.3.0",
-  "change_rationale": "Regenerated after Stage 1.2 dependent-venous-loading and cerebral-pressure-response calibration. The residual systemic height is now included explicitly. Values are deterministic sensitivity scenarios, not independently fitted patient parameters.",
+  "model_version": "0.4.0",
+  "change_rationale": "Regenerated after independent Stage 1.2 reproduction and Stage 1.3 compliance redistribution, common-anatomy geometry, compensation-gain changes, and one-sided dependent-venous elastance. The new coefficient and all changed healthy mechanisms are also covered by the exported local analysis. Values are deterministic sensitivity scenarios, not independently fitted patient parameters.",
   "method": {
     "kind": "deterministic one-at-a-time central finite differences",
     "no_stochastic_cohort": true,
@@ -18,44 +18,45 @@
     "One parameter is perturbed at a time; interactions are explored separately in deterministic grids.",
     "The hEDS lower-limb compliance increase is a modeling hypothesis, not a measured value.",
     "Derivative magnitudes are local and operating-point dependent; blood-volume perturbations intentionally leave the calibrated supine operating point.",
-    "Hydrostatic-height derivatives are per cm; the central-difference step is 1/0.7356 cm, equivalent to 1 mmHg at 90 degrees."
+    "Hydrostatic-height derivatives are per cm; the central-difference step is 1/0.7356 cm, equivalent to 1 mmHg at 90 degrees.",
+    "The stiffening derivative uses a 0.000025 mmHg/mL^2 step and quantifies local response to an assumed constitutive form; it does not identify a tissue property."
   ],
   "parameters": {
     "lower_limb_hydrostatic_height_cm": {
       "mechanism": "MEC-VASC-POOLING",
-      "nominal": 14.0,
+      "nominal": 26.6,
       "step": 1.3594344752582925,
       "sampled_values": [
-        12.640565524741707,
-        14.0,
-        15.359434475258293
+        25.240565524741708,
+        26.6,
+        27.959434475258295
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.7130268385311767,
-      "d_mean_arterial_pressure_final_mmHg": -0.3613113791246663
+      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.08596757337609978,
+      "d_mean_arterial_pressure_final_mmHg": -0.5707914661182066
     },
     "other_systemic_hydrostatic_height_cm": {
       "mechanism": "MEC-VASC-POOLING",
-      "nominal": 11.0,
+      "nominal": 4.5,
       "step": 1.3594344752582925,
       "sampled_values": [
-        9.640565524741707,
-        11.0,
-        12.359434475258293
+        3.1405655247417075,
+        4.5,
+        5.8594344752582925
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.6816391465258826,
-      "d_mean_arterial_pressure_final_mmHg": -0.34510862107614043
+      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.12408509059347927,
+      "d_mean_arterial_pressure_final_mmHg": -0.826361964646891
     },
     "splanchnic_resistance_sympathetic_gain": {
       "mechanism": "MEC-VASC-CONSTRICTION",
-      "nominal": 0.8,
+      "nominal": 0.45,
       "step": 0.1,
       "sampled_values": [
-        0.7000000000000001,
-        0.8,
-        0.9
+        0.35,
+        0.45,
+        0.55
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": -3.1940070224855788,
-      "d_mean_arterial_pressure_final_mmHg": 1.595388882732891
+      "d_orthostatic_heart_rate_sustained_rise_bpm": -1.0037546073169779,
+      "d_mean_arterial_pressure_final_mmHg": 6.763360038877764
     },
     "blood_volume_factor": {
       "mechanism": "MEC-VOL-HYPOVOLEMIA",
@@ -66,31 +67,43 @@
         1.0,
         1.02
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": -44.501405408433925,
-      "d_mean_arterial_pressure_final_mmHg": 29.166583559320713
+      "d_orthostatic_heart_rate_sustained_rise_bpm": -1.4213877437825317,
+      "d_mean_arterial_pressure_final_mmHg": 104.48346346372617
     },
     "lower_limb_venous_compliance": {
       "mechanism": "MEC-VASC-COMPLIANCE",
-      "nominal": 50.0,
-      "step": 5.0,
+      "nominal": 60.0,
+      "step": 6.0,
       "sampled_values": [
-        45.0,
-        50.0,
-        55.0
+        54.0,
+        60.0,
+        66.0
       ],
-      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.117684514958259,
-      "d_mean_arterial_pressure_final_mmHg": -0.058800190482163825,
+      "d_orthostatic_heart_rate_sustained_rise_bpm": 0.012485908616047444,
+      "d_mean_arterial_pressure_final_mmHg": -0.08176065539578066,
       "heds_assumption": {
-        "healthy_value": 50.0,
-        "assumed_heds_value": 58.333333333333336,
+        "healthy_value": 60.0,
+        "assumed_heds_value": 70.0,
         "sampled_values": [
-          50.0,
-          58.333333333333336
+          60.0,
+          70.0
         ],
-        "orthostatic_heart_rate_sustained_rise_bpm_at_50": 15.467102279605612,
-        "orthostatic_heart_rate_sustained_rise_bpm_at_58_333": 16.43223381321934,
-        "note": "The hEDS value is the migrated 140*(50/120) hypothesis, not a measured coefficient."
+        "orthostatic_heart_rate_sustained_rise_bpm_at_60": 13.298059442173937,
+        "orthostatic_heart_rate_sustained_rise_bpm_at_70": 13.39117007737822,
+        "note": "The hEDS 70 mL/mmHg value is an exploratory group-scenario assumption, not a measured coefficient; this comparison changes only compliance from the healthy computational background."
       }
+    },
+    "dependent_venous_stiffening_mmHg_per_mL2": {
+      "mechanism": "MEC-VASC-POOLING",
+      "nominal": 0.0001,
+      "step": 2.5e-05,
+      "sampled_values": [
+        7.500000000000001e-05,
+        0.0001,
+        0.000125
+      ],
+      "d_orthostatic_heart_rate_sustained_rise_bpm": -19297.157634536572,
+      "d_mean_arterial_pressure_final_mmHg": 141910.4092818773
     }
   }
 }

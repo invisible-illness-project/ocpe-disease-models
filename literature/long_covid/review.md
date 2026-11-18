@@ -40,8 +40,8 @@ Methods and patient selection are heterogeneous; there is no universal gain.
 **Modeling assumption.** `long-covid-autonomic` (M3,
 `phenomenological_composition`) reuses the shared autonomic and venous
 mechanisms (MEC-AUT-BAROREFLEX, MEC-VASC-POOLING, MEC-RCV-PEM) with calibrated
-overrides: PAR-SPLANCHNIC-GRAVITY-PRESSURE-OFFSET = 5.5 mmHg,
-PAR-LOWER-LIMB-GRAVITY-PRESSURE-OFFSET = 11.0 mmHg, PAR-HEART-RATE-REST = 70.0
+overrides: common healthy anatomical hydrostatic heights with no phenotype-
+specific override, PAR-HEART-RATE-REST = 70.0
 bpm, PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN and PAR-HEART-RATE-VAGAL-GAIN =
 50.0 bpm each, PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT = 0.08,
 PAR-BASELINE-METABOLIC-CAPACITY = 0.85, PAR-PEM-TRIGGER-THRESHOLD = 0.001, and

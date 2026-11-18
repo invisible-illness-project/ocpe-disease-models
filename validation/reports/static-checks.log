@@ -1,11 +1,11 @@
-$ python3 -m ruff check .
+$ python -m ruff check .
 All checks passed!
 $ git diff --check
-$ python3 scripts/audit_traceability.py --root . --strict --deterministic --out-dir validation/traceability/audit
+$ python scripts/audit_traceability.py --root . --strict --deterministic --out-dir validation/traceability/audit
 traceability audit: PASS (0 errors, 0 warnings, 0 infos)
   JSON report:     validation/traceability/audit/traceability_report.json
   Markdown report: validation/traceability/audit/traceability_report.md
-$ python3 -m ocpe validate ocpe/packages/disease-models --strict
+$ python -m ocpe validate ocpe/packages/disease-models --strict
 
-OK: 0 error(s), 0 warning(s) across disease-models@0.3.0
+OK: 0 error(s), 0 warning(s) across disease-models@0.4.0
 Note: structural validation only; it does not establish scientific validity.

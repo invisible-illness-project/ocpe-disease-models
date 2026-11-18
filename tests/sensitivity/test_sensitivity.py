@@ -22,6 +22,7 @@ PARAMETERS = (
     "splanchnic_resistance_sympathetic_gain",
     "blood_volume_factor",
     "lower_limb_venous_compliance",
+    "dependent_venous_stiffening_mmHg_per_mL2",
 )
 _RUN_CACHE: dict[tuple, tuple[float, float]] = {}
 
@@ -77,6 +78,7 @@ def test_derivative_directions_match_mechanism_interpretation(fixture):
     assert derivatives["lower_limb_hydrostatic_height_cm"][0] > 0.0
     assert derivatives["other_systemic_hydrostatic_height_cm"][0] > 0.0
     assert derivatives["lower_limb_venous_compliance"][0] > 0.0
+    assert derivatives["dependent_venous_stiffening_mmHg_per_mL2"][0] < 0.0
     assert derivatives["splanchnic_resistance_sympathetic_gain"][0] < 0.0
     assert derivatives["blood_volume_factor"][0] < 0.0
 
@@ -93,15 +95,15 @@ def test_fixture_exports_ranges_and_assumptions(fixture):
 
 def test_heds_sensitivity_includes_increased_and_healthy_compliance(fixture):
     heds = fixture["parameters"]["lower_limb_venous_compliance"]["heds_assumption"]
-    assert heds["healthy_value"] == 50.0
-    assert heds["assumed_heds_value"] == pytest.approx(58.333333333333336)
-    rise_healthy, _ = _metrics_for({"lower_limb_venous_compliance": 50.0})
-    rise_heds, _ = _metrics_for({"lower_limb_venous_compliance": 58.333333333333336})
+    assert heds["healthy_value"] == 60.0
+    assert heds["assumed_heds_value"] == pytest.approx(70.0)
+    rise_healthy, _ = _metrics_for({"lower_limb_venous_compliance": 60.0})
+    rise_heds, _ = _metrics_for({"lower_limb_venous_compliance": 70.0})
     assert rise_healthy == pytest.approx(
-        heds["orthostatic_heart_rate_sustained_rise_bpm_at_50"], rel=DERIVATIVE_RTOL
+        heds["orthostatic_heart_rate_sustained_rise_bpm_at_60"], rel=DERIVATIVE_RTOL
     )
     assert rise_heds == pytest.approx(
-        heds["orthostatic_heart_rate_sustained_rise_bpm_at_58_333"], rel=DERIVATIVE_RTOL
+        heds["orthostatic_heart_rate_sustained_rise_bpm_at_70"], rel=DERIVATIVE_RTOL
     )
     assert rise_heds > rise_healthy
 
@@ -117,6 +119,12 @@ def test_local_analysis_covers_declared_shared_assumptions():
         ("head-up-tilt", "splanchnic_hydrostatic_height_cm"),
         ("head-up-tilt", "lower_limb_hydrostatic_height_cm"),
         ("head-up-tilt", "other_systemic_hydrostatic_height_cm"),
+        ("head-up-tilt", "dependent_venous_stiffening_mmHg_per_mL2"),
+        ("head-up-tilt", "aortic_baroreflex_weight"),
+        ("head-up-tilt", "carotid_baroreflex_weight"),
+        ("head-up-tilt", "heart_rate_cardiac_sympathetic_gain"),
+        ("head-up-tilt", "heart_rate_vagal_gain"),
+        ("head-up-tilt", "contractility_sympathetic_gain"),
         ("co2-reduction", "cerebral_co2_reactivity_per_mmHg"),
         ("co2-reduction", "cerebral_co2_extrapolation_limit_mmHg"),
         ("head-up-tilt", "cardiac_sympathetic_time_constant"),

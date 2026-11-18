@@ -53,8 +53,9 @@ def test_sustained_contraction_impedes_passive_lower_limb_return():
     patient = ComputationalPatient()
     state = patient.initial_state()
     # Use a positive passive upright gradient so resistance, not the flow floor,
-    # determines the comparison.
-    state[LOWER_LIMB] += 300.0
+    # determines the comparison. The increment exceeds the Stage 1.3 dependent
+    # hydrostatic column plus the nonlinear venous-pressure contribution.
+    state[LOWER_LIMB] += 500.0
     relaxed = patient._derived(0.0, state, _protocol(upright=1.0))
     contracted = patient._derived(
         0.0, state, _protocol(upright=1.0, sustained_muscle_contraction=1.0)

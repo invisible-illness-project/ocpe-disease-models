@@ -4,8 +4,6 @@ diseases: [POTS]
 mechanisms: [MEC-VOL-HYPOVOLEMIA, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX]
 evidence_claims: [CLM-POTS-PHENOTYPES, CLM-POTS-HYPOVOLEMIA, CLM-POTS-CRITERIA]
 parameter_overrides:
-  splanchnic_hydrostatic_height_cm: 8.0
-  lower_limb_hydrostatic_height_cm: 16.0
   blood_volume_factor: 0.92
   aortic_baroreflex_pressure_setpoint: 92.0
   carotid_baroreflex_pressure_setpoint: 92.0

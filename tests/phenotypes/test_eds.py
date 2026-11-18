@@ -75,5 +75,5 @@ def test_sensitivity_includes_healthy_compliance_value():
     compliance = fixture["parameters"]["lower_limb_venous_compliance"]
     values = {float(v) for v in compliance["sampled_values"]}
     values |= {float(v) for v in compliance["heds_assumption"]["sampled_values"]}
-    assert 50.0 in values, "healthy compliance value missing from sensitivity"
-    assert 58.333333333333336 in values, "assumed hEDS compliance missing from sensitivity"
+    assert 60.0 in values, "healthy compliance value missing from sensitivity"
+    assert 70.0 in values, "assumed hEDS compliance missing from sensitivity"

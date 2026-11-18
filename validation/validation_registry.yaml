@@ -1,20 +1,20 @@
 schema_version: '1.0'
 validation_policy:
   independence: Each layer is reported separately; a pass in one layer cannot substitute for another.
-  clinical_status: No layer establishes clinical validity, diagnostic accuracy, treatment efficacy, or patient-specific
-    calibration.
-  empirical_comparisons: Group-level literature anchors are heterogeneous plausibility checks, not fitted individual
-    data or prospective external validation.
-  required_test_behavior: Missing required tests, registry entries, references, or outputs are failures and must
-    not be hidden by skips.
+  clinical_status: No layer establishes clinical validity, diagnostic accuracy, treatment efficacy, or
+    patient-specific calibration.
+  empirical_comparisons: Group-level literature anchors are heterogeneous plausibility checks, not fitted
+    individual data or prospective external validation.
+  required_test_behavior: Missing required tests, registry entries, references, or outputs are failures
+    and must not be hidden by skips.
 validation_tests:
 - id: VAL-SW-CONFIG
   name: Configuration and phenotype composition
   layer: software
-  expected_behavior: YAML configurations load deterministically; unknown parameters, invalid protocols, and conflicting
-    comorbidity overrides fail explicitly.
-  acceptance_criteria: All healthy and disease configurations round-trip without silent changes; conflicting parameter
-    values raise ValueError; mixed non-conflicting mechanisms compose deterministically.
+  expected_behavior: YAML configurations load deterministically; unknown parameters, invalid protocols,
+    and conflicting comorbidity overrides fail explicitly.
+  acceptance_criteria: All healthy and disease configurations round-trip without silent changes; conflicting
+    parameter values raise ValueError; mixed non-conflicting mechanisms compose deterministically.
   justification: Prevents silent parameter override ordering and unrecorded configuration drift.
   test_path: tests/unit/test_configuration.py
   evidence_claims: []
@@ -30,14 +30,14 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-SW-SERIALIZATION
   name: Serialization and numerical failure behavior
   layer: software
-  expected_behavior: Small traces and metadata serialize reproducibly; non-finite or failed solver output cannot
-    be reported as success.
-  acceptance_criteria: Saved parameters/protocol/configuration hash match the in-memory run; required metadata and
-    arrays are present; invalid parameter domains raise explicit errors.
+  expected_behavior: Small traces and metadata serialize reproducibly; non-finite or failed solver output
+    cannot be reported as success.
+  acceptance_criteria: Saved parameters/protocol/configuration hash match the in-memory run; required
+    metadata and arrays are present; invalid parameter domains raise explicit errors.
   justification: Execution integrity is necessary but is not physiological or clinical validation.
   test_path: tests/unit/test_serialization.py
   evidence_claims: []
@@ -53,14 +53,14 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-SW-OCPE
   name: Strict OCPE package and observation interoperability
   layer: software
-  expected_behavior: The disease package passes strict OCPE validation and simulated observations preserve declared
-    units and evidence references.
-  acceptance_criteria: Zero strict OCPE errors and warnings; mapped observations validate; cardiac output is mapped
-    from cardiac_output_l_min in L/min.
+  expected_behavior: The disease package passes strict OCPE validation and simulated observations preserve
+    declared units and evidence references.
+  acceptance_criteria: Zero strict OCPE errors and warnings; mapped observations validate; cardiac output
+    is mapped from cardiac_output_l_min in L/min.
   justification: Tests semantic interoperability and unit safety rather than numerical correctness.
   test_path: tests/unit/test_ocpe_adapter.py; tests/unit/test_observation_mapping.py
   evidence_claims: []
@@ -76,7 +76,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-MATH-CONSERVATION
   name: Stressed-volume conservation
   layer: mathematical
@@ -84,10 +84,11 @@ validation_tests:
   - MEC-CV-VOLUME
   expected_behavior: The sum of arterial, central-venous, splanchnic-venous, lower-limb-venous and residual
     other-systemic stressed volumes remains invariant, including rhythmic walking and sustained contraction.
-  acceptance_criteria: Maximum absolute five-volume drift is below 1e-6 mL over baseline, orthostatic, walking and
-    sustained-contraction runs; all five instantaneous RHS volume derivatives telescope within floating-point tolerance.
-  justification: The compartment equations imply exact conservation; drift would reveal an implementation or solver
-    error.
+  acceptance_criteria: Maximum absolute five-volume drift is below 1e-6 mL over baseline, orthostatic,
+    walking and sustained-contraction runs; all five instantaneous RHS volume derivatives telescope within
+    floating-point tolerance.
+  justification: The compartment equations imply exact conservation; drift would reveal an implementation
+    or solver error.
   test_path: tests/mathematical/test_conservation.py
   evidence_claims:
   - CLM-CV-HEMODYNAMICS
@@ -114,6 +115,7 @@ validation_tests:
   - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
   - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
   - PAR-OTHER-SYSTEMIC-VENOUS-PRESSURE-INITIAL
+  - PAR-DEPENDENT-VENOUS-STIFFENING
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
@@ -124,7 +126,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-MATH-EQUILIBRIUM
   name: All-phenotype supine fixed points and flow identities
   layer: mathematical
@@ -132,12 +134,12 @@ validation_tests:
   - MEC-CV-VOLUME
   - MEC-AUT-BAROREFLEX
   - MEC-CBF-AUTOREG
-  expected_behavior: "Every configured phenotype begins at a complete supine fixed point, including autonomic and\
-    \ cerebral states; CO=HR\xD7SV/60 and regional systemic/venous flows match at equilibrium."
-  acceptance_criteria: Maximum absolute initial RHS component is below 1e-9 for all ten configurations; CO identity
-    matches within 1e-12 relative tolerance and total/regional flow equalities within 1e-10.
-  justification: Prevents volume-only calibration from hiding autonomic, cerebral or regional-flow drift at the
-    declared resting operating point.
+  expected_behavior: Every configured phenotype begins at a complete supine fixed point, including autonomic
+    and cerebral states; CO=HR×SV/60 and regional systemic/venous flows match at equilibrium.
+  acceptance_criteria: Maximum absolute initial RHS component is below 1e-9 for all ten configurations;
+    CO identity matches within 1e-12 relative tolerance and total/regional flow equalities within 1e-10.
+  justification: Prevents volume-only calibration from hiding autonomic, cerebral or regional-flow drift
+    at the declared resting operating point.
   test_path: tests/mathematical/test_equilibrium.py
   evidence_claims:
   - CLM-CV-HEMODYNAMICS
@@ -183,6 +185,7 @@ validation_tests:
   - PAR-CEREBRAL-OUTFLOW-PRESSURE
   - PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE
   - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
+  - PAR-DEPENDENT-VENOUS-STIFFENING
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
@@ -193,17 +196,19 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-MATH-CONVERGENCE
   name: Solver convergence and bounded states
   layer: mathematical
   mechanisms:
   - MEC-CV-VOLUME
   - MEC-AUT-BAROREFLEX
-  expected_behavior: Solutions converge under tighter tolerances and remain finite in all demonstrated protocols.
-  acceptance_criteria: Tightening rtol/atol and max_step changes key summary metrics by less than 0.1 bpm, 0.1 mmHg,
-    or 0.001 normalized units; all states and outputs are finite.
-  justification: Detects numerical artifacts without claiming that numerical convergence establishes model truth.
+  expected_behavior: Solutions converge under tighter tolerances and remain finite in all demonstrated
+    protocols.
+  acceptance_criteria: Tightening rtol/atol and max_step changes key summary metrics by less than 0.1
+    bpm, 0.1 mmHg, or 0.001 normalized units; all states and outputs are finite.
+  justification: Detects numerical artifacts without claiming that numerical convergence establishes model
+    truth.
   test_path: tests/mathematical/test_convergence.py
   evidence_claims:
   - CLM-CV-HEMODYNAMICS
@@ -242,6 +247,7 @@ validation_tests:
   - PAR-HEART-RATE-REST
   - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
   - PAR-HEART-RATE-VAGAL-GAIN
+  - PAR-DEPENDENT-VENOUS-STIFFENING
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
@@ -252,17 +258,19 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-PHYS-BASELINE
   name: Healthy resting operating point
   layer: physiological
   mechanisms:
   - MEC-CV-VOLUME
   - MEC-AUT-BAROREFLEX
-  expected_behavior: The healthy reference has a stable plausible resting HR, pressure, cardiac output, and no PEM.
-  acceptance_criteria: "Mean supine HR 55\u201385 bpm; MAP 80\u2013105 mmHg; cardiac output 4\u20138 L/min; PEM\
-    \ severity zero; late-rest HR drift below 0.1 bpm."
-  justification: Broad operating-point checks catch non-physiological configurations but are not population validation.
+  expected_behavior: The healthy reference has a stable plausible resting HR, pressure, cardiac output,
+    and no PEM.
+  acceptance_criteria: Mean supine HR 55–85 bpm; MAP 80–105 mmHg; cardiac output 4–8 L/min; PEM severity
+    zero; late-rest HR drift below 0.1 bpm.
+  justification: Broad operating-point checks catch non-physiological configurations but are not population
+    validation.
   test_path: tests/physiological/test_baseline.py
   evidence_claims:
   - CLM-CV-HEMODYNAMICS
@@ -305,6 +313,7 @@ validation_tests:
   - PAR-OTHER-SYSTEMIC-ARTERIAL-RESISTANCE
   - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
   - PAR-OTHER-SYSTEMIC-VENOUS-PRESSURE-INITIAL
+  - PAR-DEPENDENT-VENOUS-STIFFENING
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
@@ -315,7 +324,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-PHYS-SHARED
   name: Regional muscle, autonomic and cerebral shared mechanisms
   layer: physiological
@@ -324,15 +333,15 @@ validation_tests:
   - MEC-SUSTAINED-CONTRACTION
   - MEC-AUT-BAROREFLEX
   - MEC-CBF-AUTOREG
-  expected_behavior: Rhythmic activity transfers rather than creates volume; sustained contraction impedes passive
-    lower-limb venous return; cardiac-sympathetic, vascular-sympathetic and vagal effectors remain independent;
-    CFI follows head-level CPP and declared bounds.
+  expected_behavior: Rhythmic activity transfers rather than creates volume; sustained contraction impedes
+    passive lower-limb venous return; cardiac-sympathetic, vascular-sympathetic and vagal effectors remain
+    independent; CFI follows head-level CPP and declared bounds.
   acceptance_criteria: Pump-induced central and lower-limb RHS changes are equal and opposite; walking/rhythmic/sustained
-    protocols conserve volume; vascular-sympathetic activation changes resistance without directly changing HR;
-    vagal lag is faster than cardiac-sympathetic lag; f(0)=0, f(CPP_ref)=1 and CFI stays within [0,1.25] for all
-    phenotypes; invalid domains and non-finite states fail explicitly.
-  justification: Separates mechanism-level physiological checks from disease-threshold calibration and prevents
-    a beneficial-pump assumption from being applied to sustained contraction.
+    protocols conserve volume; vascular-sympathetic activation changes resistance without directly changing
+    HR; vagal lag is faster than cardiac-sympathetic lag; f(0)=0, f(CPP_ref)=1 and CFI stays within [0,1.25]
+    for all phenotypes; invalid domains and non-finite states fail explicitly.
+  justification: Separates mechanism-level physiological checks from disease-threshold calibration and
+    prevents a beneficial-pump assumption from being applied to sustained contraction.
   test_path: tests/physiological/test_shared_mechanisms.py
   evidence_claims:
   - CLM-MUSCLE-PUMP
@@ -379,7 +388,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-PHYS-TILT
   name: Orthostatic directionality and compensation
   layer: physiological
@@ -387,13 +396,14 @@ validation_tests:
   - MEC-VASC-POOLING
   - MEC-AUT-BAROREFLEX
   - MEC-VASC-CONSTRICTION
-  expected_behavior: Upright posture reduces venous return initially and evokes compensatory sympathetic and HR
-    responses without destroying pressure homeostasis.
-  acceptance_criteria: "Healthy upright HR increases 3\u201320 bpm using both peak and final-120-s-upright sustained\
-    \ windows; upright MAP remains above 70 mmHg; sympathetic state increases; venous return initially falls; volume\
-    \ remains conserved. Early CO reduction and caudal pooling are reported against explicit soft anchors; values\
-    \ outside those bands produce warnings rather than being hidden."
-  justification: Qualitative physiology and broad healthy ranges are independent of the POTS threshold checks.
+  expected_behavior: Upright posture reduces venous return initially and evokes compensatory sympathetic
+    and HR responses without destroying pressure homeostasis.
+  acceptance_criteria: Healthy upright HR increases 3–20 bpm using both peak and final-120-s-upright sustained
+    windows; upright MAP remains above 70 mmHg; sympathetic state increases; venous return initially falls;
+    volume remains conserved. Early CO reduction and caudal pooling are reported against explicit soft
+    anchors; values outside those bands produce warnings rather than being hidden.
+  justification: Qualitative physiology and broad healthy ranges are independent of the POTS threshold
+    checks.
   test_path: tests/physiological/test_orthostatic.py
   evidence_claims:
   - CLM-POTS-POOLING
@@ -436,6 +446,7 @@ validation_tests:
   - PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN
   - PAR-SPLANCHNIC-ARTERIAL-RESISTANCE
   - PAR-LOWER-LIMB-ARTERIAL-RESISTANCE
+  - PAR-DEPENDENT-VENOUS-STIFFENING
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
@@ -446,7 +457,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-PHYS-TILT-ANGLE
   name: Explicit tilt-angle hydrostatic geometry
   layer: physiological
@@ -454,10 +465,10 @@ validation_tests:
   - MEC-ORTHO-HYDROSTATIC
   - MEC-VASC-POOLING
   - MEC-AUT-BAROREFLEX
-  expected_behavior: An explicit tilt angle in [0, 90] degrees drives every hydrostatic correction as lumped
-    height times sin(angle) times 0.7356 mmHg/cm; the legacy normalized upright input migrates as
-    angle = arcsin(upright); during a transition only the angle is linearly interpolated while all other
-    inputs stay piecewise constant; aortic, carotid and brain heights act at separate sites.
+  expected_behavior: An explicit tilt angle in [0, 90] degrees drives every hydrostatic correction as
+    lumped height times sin(angle) times 0.7356 mmHg/cm; the legacy normalized upright input migrates
+    as angle = arcsin(upright); during a transition only the angle is linearly interpolated while all
+    other inputs stay piecewise constant; aortic, carotid and brain heights act at separate sites.
   acceptance_criteria: All hydrostatic corrections are exactly zero at 0 degrees and scale with sin(angle);
     the aortic/carotid baroreflex weights sum to 1 within 1e-6; legacy upright 0/1 reproduces 0/90 degrees;
     invalid angles fail explicitly; five-volume conservation holds at every angle.
@@ -486,13 +497,14 @@ validation_tests:
     report: validation/reports/physiological.log
     scope: Declared hydrostatic geometry, legacy-angle migration, angle-only transition, separate sensing-site,
       and five-volume conservation checks passed at the tested source commit; deterministic scenario outcomes
-      remain separately reported in validation/stage1-2/scientific-comparison-matrix.json; not clinical validation
+      remain separately reported in validation/stage1-3/scientific-comparison-matrix.json; not clinical
+      validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-PHYS-GRADED-TILT
   name: Graded-tilt empirical plausibility comparison
   layer: empirical
@@ -501,13 +513,15 @@ validation_tests:
   - MEC-VASC-POOLING
   expected_behavior: Graded passive head-up tilt produces angle-dependent cardiac-output and stroke-volume
     reductions comparable in direction to the published healthy group ranges.
-  acceptance_criteria: Healthy 60-70 degree cardiac-output and stroke-volume changes are compared against
-    the published group ranges (-20 to -17 percent cardiac output, -34 to -28 percent stroke volume at 2-5
-    minutes); out-of-band results are reported as misses and preserved. Calibration changes require reviewed
-    provenance and regression records and must never widen the published range.
-  justification: Provides a protocol-specific group-level plausibility comparison, not a fitted target or
-    external validation.
-  test_path: tests/physiological/test_tilt_protocols.py; tests/physiological/test_stage1_2_orthostatic_fidelity.py
+  acceptance_criteria: Healthy 60-degree cardiac-output and stroke-volume changes at two and five minutes
+    are direct experimental-angle group-level comparisons against the preserved published ranges (-20
+    to -17 percent cardiac output, -34 to -28 percent stroke volume). Reusing those ranges at 70 degrees
+    is an explicitly extrapolated model-specific acceptance criterion, not direct experimental replication.
+    Out-of-band results remain misses; calibration never widens a range.
+  justification: Separates direct 60-degree experimental-angle plausibility from 70-degree extrapolation.
+    Within-band deterministic results have calibration overlap and are not patient fitting, prospective
+    external validation, or clinical validation.
+  test_path: tests/physiological/test_tilt_protocols.py; tests/physiological/test_stage1_3_orthostatic_fidelity.py
   evidence_claims:
   - CLM-ORTHO-GRADED-TILT
   - CLM-ORTHO-HYDROSTATIC
@@ -516,6 +530,7 @@ validation_tests:
   - EQ-ORT-002
   - EQ-CV-002
   - EQ-CV-003
+  - EQ-CV-001
   parameter_ids:
   - PAR-SPLANCHNIC-HYDROSTATIC-HEIGHT
   - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
@@ -523,29 +538,43 @@ validation_tests:
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-OTHER-SYSTEMIC-VENOUS-RESISTANCE
+  - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
+  - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
+  - PAR-DEPENDENT-VENOUS-STIFFENING
+  - PAR-SPLANCHNIC-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-LOWER-LIMB-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-OTHER-SYSTEMIC-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-CONTRACTILITY-SYMPATHETIC-GAIN
+  - PAR-HEART-RATE-CARDIAC-SYMPATHETIC-GAIN
+  - PAR-HEART-RATE-VAGAL-GAIN
+  - PAR-AORTIC-BAROREFLEX-WEIGHT
+  - PAR-CAROTID-BAROREFLEX-WEIGHT
+  - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   validation_result:
-    status: FAIL
+    status: PASS
     execution_date: '2026-11-18'
-    report: validation/stage1-2/scientific-comparison-matrix.json
-    scope: 'Stage 1.2 comparison against unchanged REF-ZAIDI-2000 anchors: six of eight healthy comparisons
-      PASS. The two retained MISS rows are 60-degree cardiac-output reductions of 15.801 and 15.800 percent
-      at two and five minutes versus the published 17-20 percent reduction band. Both 60-degree stroke-volume
-      comparisons and all four 70-degree comparisons pass. FAIL denotes incomplete empirical agreement despite
-      passing activated regression assertions; not clinical validation.'
+    report: validation/stage1-3/scientific-comparison-matrix.json
+    scope: 'Stage 1.3 fresh comparison: all eight preserved healthy CO/SV rows are within band. Four 60-degree
+      rows are direct experimental-angle comparisons; four 70-degree rows are extrapolated model-specific
+      criteria. The direct 60-degree CO reductions are 17.081 percent at two and five minutes and SV reductions
+      are 29.677 percent. This PASS denotes calibrated group-level scenario agreement, not independent
+      external or clinical validation.'
   execution_environment:
     python_requirement: '>=3.11'
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-PHYS-RECOVERY
   name: Post-tilt cerebral recovery
   layer: physiological
   mechanisms:
   - MEC-CBF-AUTOREG
-  expected_behavior: Return to supine restores the head-level cerebral perfusion-pressure target and recovery follows
-    the configured lag; summary sustained HR uses the upright rather than post-tilt window.
-  acceptance_criteria: Healthy cerebral index returns within 0.01 of baseline by 120 s; ME/CFS recovery is slower
-    than decline and remains finite; CFI remains within [0, 1.25]; sustained HR summary uses the final 120 s upright.
+  expected_behavior: Return to supine restores the head-level cerebral perfusion-pressure target and recovery
+    follows the configured lag; summary sustained HR uses the upright rather than post-tilt window.
+  acceptance_criteria: Healthy cerebral index returns within 0.01 of baseline by 120 s; ME/CFS recovery
+    is slower than decline and remains finite; CFI remains within [0, 1.25]; sustained HR summary uses
+    the final 120 s upright.
   justification: Separately tests recovery dynamics rather than only end-tilt responses.
   test_path: tests/physiological/test_recovery.py
   evidence_claims:
@@ -571,21 +600,21 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-PHYS-CBF-CO2
   name: Bounded end-tidal-CO2 cerebral regulation
   layer: physiological
   mechanisms:
   - MEC-CBF-CO2
   - MEC-CBF-AUTOREG
-  expected_behavior: A declared per-segment end-tidal-CO2 input modulates the cerebral-flow target through a
-    bounded exponential factor (0.035/mmHg about the 40 mmHg reference, clipped at +/-15 mmHg); pressure and
-    CO2 effects compose multiplicatively; segments omitting ETCO2 stay at the reference; tilt alone never
-    changes ETCO2 (no posture-inferred hypocapnia).
+  expected_behavior: A declared per-segment end-tidal-CO2 input modulates the cerebral-flow target through
+    a bounded exponential factor (0.035/mmHg about the 40 mmHg reference, clipped at +/-15 mmHg); pressure
+    and CO2 effects compose multiplicatively; segments omitting ETCO2 stay at the reference; tilt alone
+    never changes ETCO2 (no posture-inferred hypocapnia).
   acceptance_criteria: Isolated hypocapnia (30 mmHg) yields factor exp(-0.35) ~ 0.7047; isolated pressure
-    reduction keeps the CO2 factor exactly 1.0; combined reductions dissociate the two contributions; recovery
-    protocols expose the declared persistent-hypocapnia behavior; extreme inputs hit the clip without
-    non-finite outputs; five-volume drift stays at solver tolerance.
+    reduction keeps the CO2 factor exactly 1.0; combined reductions dissociate the two contributions;
+    recovery protocols expose the declared persistent-hypocapnia behavior; extreme inputs hit the clip
+    without non-finite outputs; five-volume drift stays at solver tolerance.
   justification: Binds the Stage 1.1 implementation of the formerly declared CO2 omission to explicit
     scenario checks rather than hiding it in an autoregulation gain.
   test_path: tests/physiological/test_cerebral_regulation.py
@@ -607,16 +636,16 @@ validation_tests:
     status: PASS
     execution_date: '2026-11-18'
     report: validation/reports/physiological.log
-    scope: Declared bounded CO2 factor, pressure/CO2 dissociation, reference-input default, clipping, recovery,
-      CFI-bound, and five-volume conservation checks passed at the tested source commit; the five cerebral
-      isolation protocols remain separately reported in validation/stage1-2/scientific-comparison-matrix.json;
+    scope: Declared bounded CO2 factor, pressure/CO2 dissociation, reference-input default, clipping,
+      recovery, CFI-bound, and five-volume conservation checks passed at the tested source commit; the
+      five cerebral isolation protocols remain separately reported in validation/stage1-3/scientific-comparison-matrix.json;
       not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-POTS-NEUROPATHIC
   name: Neuropathic POTS scenario
   layer: disease_phenotype
@@ -624,12 +653,12 @@ validation_tests:
   - MEC-VASC-POOLING
   - MEC-VASC-CONSTRICTION
   - MEC-AUT-BAROREFLEX
-  expected_behavior: Reduced vascular compensation produces an adult POTS-like orthostatic HR rise with preserved
-    MAP.
-  acceptance_criteria: Final-120-s-upright sustained orthostatic HR rise is at least
-    30 bpm and exceeds healthy; final MAP is at least 70 mmHg; total stressed volume is conserved.
-  justification: Tests internal coherence of a literature-motivated subgroup mechanism against a consensus scenario
-    threshold, not diagnostic accuracy.
+  expected_behavior: Reduced vascular compensation produces an adult POTS-like orthostatic HR rise with
+    preserved MAP.
+  acceptance_criteria: Final-120-s-upright sustained orthostatic HR rise is at least 30 bpm and exceeds
+    healthy; final MAP is at least 70 mmHg; total stressed volume is conserved.
+  justification: Tests internal coherence of a literature-motivated subgroup mechanism against a consensus
+    scenario threshold, not diagnostic accuracy.
   test_path: tests/phenotypes/test_pots.py
   evidence_claims:
   - CLM-POTS-POOLING
@@ -671,16 +700,17 @@ validation_tests:
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
-    report: validation/stage1-2/scientific-comparison-matrix.json
-    scope: 'Stage 1.2 sustained orthostatic HR rise is 36.724 bpm with minimum upright MAP 100.0 mmHg
-      and conserved five-volume state. This passes the unchanged >=30 bpm scenario criterion after correcting
-      dependent-bed geometry, without chronotropic-gain recalibration; not clinical validation or diagnostic accuracy.'
+    report: validation/stage1-3/scientific-comparison-matrix.json
+    scope: Stage 1.3 sustained orthostatic HR rise is 30.093 bpm with upright-end MAP 107.320 mmHg and
+      conserved five-volume state. This passes the unchanged >=30 bpm scenario criterion by only 0.093 bpm
+      under common anatomical geometry; the 0.34 vascular gains are calibrated scenario assumptions, not
+      patient measurements, clinical validation, or diagnostic accuracy.
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-POTS-HYPER
   name: Hyperadrenergic POTS scenario
   layer: disease_phenotype
@@ -688,9 +718,10 @@ validation_tests:
   - MEC-AUT-HYPERADRENERGIC
   - MEC-VASC-POOLING
   expected_behavior: Increased chronotropic feedback gain produces sustained orthostatic tachycardia.
-  acceptance_criteria: Final-120-s-upright sustained orthostatic HR rise is at least
-    30 bpm and exceeds healthy; final MAP is at least 70 mmHg; the rise is not obtained by disabling volume conservation.
-  justification: Demonstrates a calibrated hyperadrenergic configuration without inferring catecholamine concentrations.
+  acceptance_criteria: Final-120-s-upright sustained orthostatic HR rise is at least 30 bpm and exceeds
+    healthy; final MAP is at least 70 mmHg; the rise is not obtained by disabling volume conservation.
+  justification: Demonstrates a calibrated hyperadrenergic configuration without inferring catecholamine
+    concentrations.
   test_path: tests/phenotypes/test_pots.py
   evidence_claims:
   - CLM-POTS-HYPERADRENERGIC
@@ -717,16 +748,16 @@ validation_tests:
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
-    report: validation/stage1-2/scientific-comparison-matrix.json
-    scope: 'Stage 1.2 sustained orthostatic HR rise is 43.175 bpm with minimum upright MAP 100.0 mmHg.
-      The unchanged >=30 bpm scenario criterion passes without chronotropic-gain recalibration. No independent
-      catecholamine state is established; not clinical validation or diagnostic accuracy.'
+    report: validation/stage1-3/scientific-comparison-matrix.json
+    scope: Stage 1.3 sustained orthostatic HR rise is 33.430 bpm with upright-end MAP 109.673 mmHg.
+      The unchanged >=30 bpm scenario criterion passes under common anatomical geometry. No independent
+      catecholamine state is established; not clinical validation or diagnostic accuracy.
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-POTS-HYPO
   name: Hypovolemic POTS scenario
   layer: disease_phenotype
@@ -734,10 +765,10 @@ validation_tests:
   - MEC-VOL-HYPOVOLEMIA
   - MEC-VASC-POOLING
   expected_behavior: Reduced initial stressed volume lowers reserve and produces orthostatic tachycardia.
-  acceptance_criteria: Initial total stressed volume equals 0.92 times healthy within solver tolerance; orthostatic
-    Final-120-s-upright sustained HR rise is at least 30 bpm; final MAP is at least 70 mmHg.
-  justification: Checks the configured mechanism and scenario response; the 0.92 factor is not equated with the
-    measured plasma-volume deficit.
+  acceptance_criteria: Initial total stressed volume equals 0.92 times healthy within solver tolerance;
+    orthostatic Final-120-s-upright sustained HR rise is at least 30 bpm; final MAP is at least 70 mmHg.
+  justification: Checks the configured mechanism and scenario response; the 0.92 factor is not equated
+    with the measured plasma-volume deficit.
   test_path: tests/phenotypes/test_pots.py
   evidence_claims:
   - CLM-POTS-HYPOVOLEMIA
@@ -755,19 +786,20 @@ validation_tests:
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
   - PAR-SPLANCHNIC-VENOUS-COMPLIANCE
   - PAR-LOWER-LIMB-VENOUS-COMPLIANCE
+  - PAR-DEPENDENT-VENOUS-STIFFENING
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
-    report: validation/stage1-2/scientific-comparison-matrix.json
-    scope: 'Stage 1.2 sustained orthostatic HR rise is 41.793 bpm with minimum upright MAP 92.0 mmHg
-      and the declared 0.92 volume factor. The unchanged >=30 bpm scenario criterion passes without
-      chronotropic-gain recalibration; not clinical validation or diagnostic accuracy.'
+    report: validation/stage1-3/scientific-comparison-matrix.json
+    scope: Stage 1.3 sustained orthostatic HR rise is 33.690 bpm with upright-end MAP 95.612 mmHg and
+      the declared 0.92 volume factor. The unchanged >=30 bpm scenario criterion passes under common
+      anatomical geometry; not clinical validation or diagnostic accuracy.
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-POTS-MIXED
   name: Explicit mixed POTS composition
   layer: disease_phenotype
@@ -776,10 +808,10 @@ validation_tests:
   - MEC-VASC-POOLING
   - MEC-VASC-CONSTRICTION
   - MEC-AUT-HYPERADRENERGIC
-  expected_behavior: A declared mixed configuration combines mechanisms without silent conflicts and can produce
-    a larger compensatory response.
-  acceptance_criteria: Mixed configuration has explicit mechanism provenance; Final-120-s-upright sustained HR rise
-    is at least 30 bpm; conflicting ad hoc composition raises ValueError.
+  expected_behavior: A declared mixed configuration combines mechanisms without silent conflicts and can
+    produce a larger compensatory response.
+  acceptance_criteria: Mixed configuration has explicit mechanism provenance; Final-120-s-upright sustained
+    HR rise is at least 30 bpm; conflicting ad hoc composition raises ValueError.
   justification: POTS mechanisms overlap, so mixture behavior must be explicit and auditable.
   test_path: tests/phenotypes/test_pots.py; tests/unit/test_configuration.py
   evidence_claims:
@@ -813,19 +845,20 @@ validation_tests:
   - PAR-HEART-RATE-VAGAL-GAIN
   - PAR-AORTIC-BAROREFLEX-PRESSURE-SCALE
   - PAR-CAROTID-BAROREFLEX-PRESSURE-SCALE
+  - PAR-DEPENDENT-VENOUS-STIFFENING
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
-    report: validation/stage1-2/scientific-comparison-matrix.json
-    scope: 'Stage 1.2 sustained orthostatic HR rise is 41.686 bpm with minimum upright MAP 96.0 mmHg
-      and explicit non-conflicting mechanism composition. The unchanged >=30 bpm scenario criterion passes
-      without chronotropic-gain recalibration; not clinical validation or diagnostic accuracy.'
+    report: validation/stage1-3/scientific-comparison-matrix.json
+    scope: Stage 1.3 sustained orthostatic HR rise is 33.396 bpm with upright-end MAP 102.391 mmHg and
+      explicit non-conflicting mechanism composition. The unchanged >=30 bpm scenario criterion passes
+      under common anatomical geometry; not clinical validation or diagnostic accuracy.
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-EDS-DIRECTION
   name: Exploratory hEDS vascular-mechanics scenario
   layer: disease_phenotype
@@ -834,8 +867,8 @@ validation_tests:
   - MEC-VASC-POOLING
   expected_behavior: An assumed lower-limb venous-compliance increase alters orthostatic pooling and compensation
     while preserving five-volume conservation.
-  acceptance_criteria: The scenario is labeled exploratory and hEDS-specific; HR rise exceeds healthy; results remain
-    finite and MAP stays above 70 mmHg; sensitivity includes the healthy compliance value.
+  acceptance_criteria: The scenario is labeled exploratory and hEDS-specific; HR rise exceeds healthy;
+    results remain finite and MAP stays above 70 mmHg; sensitivity includes the healthy compliance value.
   justification: Tests the consequences of a hypothesis, not the truth or magnitude of venous hypercompliance.
   test_path: tests/phenotypes/test_eds.py
   evidence_claims:
@@ -854,6 +887,7 @@ validation_tests:
   - PAR-LOWER-LIMB-HYDROSTATIC-HEIGHT
   - PAR-SPLANCHNIC-VENOUS-RESISTANCE
   - PAR-LOWER-LIMB-VENOUS-RESISTANCE
+  - PAR-DEPENDENT-VENOUS-STIFFENING
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
@@ -864,21 +898,21 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-ME-PEM
   name: Delayed PEM onset and prolonged recovery
   layer: disease_phenotype
   mechanisms:
   - MEC-RCV-PEM
-  expected_behavior: Exertion is followed by delayed, non-immediate PEM and gradual recovery; healthy reference
-    does not develop PEM under the same seven-day protocol.
-  acceptance_criteria: PEM is below 0.01 during exertion and the first hour; subsequent peak exceeds 0.05; peak
-    occurs after exertion; healthy PEM remains zero; recovery half-time exceeds ten times the immediate-load half-time
-    within the seven-day protocol.
-  justification: Directly tests the defining temporal distinction between PEM and immediate exertional fatigue. The
-    approximately 5.7-hour post-bout first crossing of 0.05 is earlier than the 12-48-hour daily-activity onset window but
-    remains within reported post-CPET onset within 24 hours; it is disclosed as a scenario-timing limitation, not a universal
-    onset estimate.
+  expected_behavior: Exertion is followed by delayed, non-immediate PEM and gradual recovery; healthy
+    reference does not develop PEM under the same seven-day protocol.
+  acceptance_criteria: PEM is below 0.01 during exertion and the first hour; subsequent peak exceeds 0.05;
+    peak occurs after exertion; healthy PEM remains zero; recovery half-time exceeds ten times the immediate-load
+    half-time within the seven-day protocol.
+  justification: Directly tests the defining temporal distinction between PEM and immediate exertional
+    fatigue. The approximately 5.7-hour post-bout first crossing of 0.05 is earlier than the 12-48-hour
+    daily-activity onset window but remains within reported post-CPET onset within 24 hours; it is disclosed
+    as a scenario-timing limitation, not a universal onset estimate.
   test_path: tests/phenotypes/test_mecfs.py
   evidence_claims:
   - CLM-ME-PEM-KINETICS
@@ -906,19 +940,19 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-ME-CPET
   name: Reduced subsequent exertional capacity
   layer: empirical
   mechanisms:
   - MEC-RCV-PEM
   - MEC-MET-CAPACITY
-  expected_behavior: A single-exertion scenario reduces subsequent normalized functional capacity by a magnitude
-    broadly comparable with heterogeneous repeated-CPET observations.
-  acceptance_criteria: "Subsequent capacity reduction is greater than zero and within a predeclared broad 2\u2013\
-    20% scenario band; output is labeled a normalized construct rather than measured VO2."
-  justification: Uses 5.3% and 13.8% VO2peak findings as heterogeneous group-level anchors, with extra width for
-    construct mismatch; not external validation.
+  expected_behavior: A single-exertion scenario reduces subsequent normalized functional capacity by a
+    magnitude broadly comparable with heterogeneous repeated-CPET observations.
+  acceptance_criteria: Subsequent capacity reduction is greater than zero and within a predeclared broad
+    2–20% scenario band; output is labeled a normalized construct rather than measured VO2.
+  justification: Uses 5.3% and 13.8% VO2peak findings as heterogeneous group-level anchors, with extra
+    width for construct mismatch; not external validation.
   test_path: tests/empirical/test_group_anchors.py
   evidence_claims:
   - CLM-ME-PEM-KINETICS
@@ -953,20 +987,21 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-ME-CBF
   name: ME/CFS cerebral-flow group-level comparison
   layer: empirical
   mechanisms:
   - MEC-CBF-AUTOREG
-  expected_behavior: The ME/CFS tilt scenario produces a larger cerebral-flow-index reduction than healthy and delayed
-    post-tilt recovery.
-  acceptance_criteria: "End-tilt index reduction is within a broad 15\u201335% scenario band around the reported\
-    \ 26% group mean; healthy reduction is smaller; recovery behavior is reported separately. A healthy reduction outside\
-    \ the broad 3\u201311% soft disclosure band around the reported 7% control mean must emit an explicit warning rather\
-    \ than fail or be silently tuned."
-  justification: Provides an empirical plausibility comparison while retaining Doppler and construct limitations. The
-    healthy control-side miss is a disclosed structural limitation, not a hard fitted target or independent validation.
+  expected_behavior: The ME/CFS tilt scenario produces a larger cerebral-flow-index reduction than healthy
+    and delayed post-tilt recovery.
+  acceptance_criteria: End-tilt index reduction is within a broad 15–35% scenario band around the reported
+    26% group mean; healthy reduction is smaller; recovery behavior is reported separately. A healthy
+    reduction outside the broad 3–11% soft disclosure band around the reported 7% control mean must emit
+    an explicit warning rather than fail or be silently tuned.
+  justification: Provides an empirical plausibility comparison while retaining Doppler and construct limitations.
+    The healthy control-side miss is a disclosed structural limitation, not a hard fitted target or independent
+    validation.
   test_path: tests/empirical/test_group_anchors.py; tests/physiological/test_recovery.py
   evidence_claims:
   - CLM-ME-CBF
@@ -991,7 +1026,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-LC-AUTONOMIC
   name: Long COVID autonomic subgroup
   layer: disease_phenotype
@@ -999,10 +1034,10 @@ validation_tests:
   - MEC-AUT-BAROREFLEX
   - MEC-AUT-HYPERADRENERGIC
   - MEC-VASC-POOLING
-  expected_behavior: One explicitly defined Long COVID subgroup can produce POTS-like autonomic responses without
-    representing all Long COVID.
-  acceptance_criteria: Autonomic subgroup Final-120-s-upright sustained HR rise is at least 30 bpm and MAP remains
-    at least 70 mmHg; exertional and autonomic configurations remain distinct in the registry.
+  expected_behavior: One explicitly defined Long COVID subgroup can produce POTS-like autonomic responses
+    without representing all Long COVID.
+  acceptance_criteria: Autonomic subgroup Final-120-s-upright sustained HR rise is at least 30 bpm and
+    MAP remains at least 70 mmHg; exertional and autonomic configurations remain distinct in the registry.
   justification: Preserves physiological heterogeneity and avoids a universal Long COVID parameter set.
   test_path: tests/phenotypes/test_long_covid.py
   evidence_claims:
@@ -1040,27 +1075,28 @@ validation_tests:
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
-    report: validation/stage1-2/scientific-comparison-matrix.json
-    scope: 'Stage 1.2 sustained orthostatic HR rise is 32.575 bpm with minimum upright MAP 100.0 mmHg.
-      The autonomic subgroup passes the unchanged >=30 bpm scenario criterion without gain recalibration;
-      the exertional subgroup remains distinct at 15.467 bpm. Not clinical validation or diagnostic accuracy.'
+    report: validation/stage1-3/scientific-comparison-matrix.json
+    scope: Stage 1.3 autonomic-subgroup sustained orthostatic HR rise is 32.368 bpm with upright-end MAP
+      108.150 mmHg. The unchanged >=30 bpm scenario criterion passes under common anatomical geometry;
+      the exertional subgroup remains distinct at 13.298 bpm. Not clinical validation or diagnostic accuracy.
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-LC-EXTRACTION
   name: Long COVID exertional/extraction subgroup
   layer: disease_phenotype
   mechanisms:
   - MEC-MET-EXTRACTION
   - MEC-MET-CAPACITY
-  expected_behavior: Reduced extraction lowers functional capacity independently of an autonomic HR-rise requirement.
-  acceptance_criteria: Extraction fraction is 0.49 versus 0.78 healthy; functional capacity is lower at matched
-    PEM severity; no POTS-like HR criterion is imposed on this subgroup.
-  justification: Matches the direction reported in selected invasive-CPET subgroups without asserting prevalence
-    or a universal mechanism.
+  expected_behavior: Reduced extraction lowers functional capacity independently of an autonomic HR-rise
+    requirement.
+  acceptance_criteria: Extraction fraction is 0.49 versus 0.78 healthy; functional capacity is lower at
+    matched PEM severity; no POTS-like HR criterion is imposed on this subgroup.
+  justification: Matches the direction reported in selected invasive-CPET subgroups without asserting
+    prevalence or a universal mechanism.
   test_path: tests/phenotypes/test_long_covid.py
   evidence_claims:
   - CLM-LC-EXTRACTION
@@ -1088,14 +1124,14 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-EMPIRICAL-ANCHORS
   name: Empirical anchor coverage and provenance
   layer: empirical
-  expected_behavior: Every quantitative empirical comparison is tied to a cited group-level finding and reports
-    construct/population limitations.
-  acceptance_criteria: POTS criteria, PEM timing, repeated-CPET, cerebral-flow, and extraction comparisons resolve
-    to evidence claims; no patient-level fit or diagnostic accuracy is claimed.
+  expected_behavior: Every quantitative empirical comparison is tied to a cited group-level finding and
+    reports construct/population limitations.
+  acceptance_criteria: POTS criteria, PEM timing, repeated-CPET, cerebral-flow, and extraction comparisons
+    resolve to evidence claims; no patient-level fit or diagnostic accuracy is claimed.
   justification: Prevents unlabeled curve matching and unsupported empirical claims.
   test_path: tests/empirical/test_group_anchors.py; tests/unit/test_traceability_audit.py
   evidence_claims:
@@ -1116,7 +1152,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-SENSITIVITY
   name: Deterministic local sensitivity analysis
   layer: sensitivity_uncertainty
@@ -1130,13 +1166,14 @@ validation_tests:
   - MEC-SUSTAINED-CONTRACTION
   - MEC-CBF-AUTOREG
   expected_behavior: Regional compliance, resistance, hydrostatic-height, autonomic-lag, cerebral-autoregulation,
-    cerebral CO2-reactivity/clip and protocol-specific muscle parameters change traceably under declared deterministic
-    perturbations; chronotropic splitting is evaluated at fixed total gain.
-  acceptance_criteria: Selected derivatives are finite and bit-identical on repeated execution; all declared shared
-    assumptions are covered, including residual-systemic hydrostatic height; hEDS sensitivity includes healthy and
-    increased lower-limb compliance; cardiac-sympathetic fractions 0, 0.5 and 1 preserve total gain and produce
-    distinct configuration hashes; no stochastic cohort is generated.
-  justification: Identifies influential assumptions and distinguishes robust directions from calibrated magnitudes.
+    cerebral CO2-reactivity/clip and protocol-specific muscle parameters change traceably under declared
+    deterministic perturbations; chronotropic splitting is evaluated at fixed total gain.
+  acceptance_criteria: Selected derivatives are finite and bit-identical on repeated execution; all declared
+    shared assumptions are covered, including residual-systemic hydrostatic height; hEDS sensitivity includes
+    healthy and increased lower-limb compliance; cardiac-sympathetic fractions 0, 0.5 and 1 preserve total
+    gain and produce distinct configuration hashes; no stochastic cohort is generated.
+  justification: Identifies influential assumptions and distinguishes robust directions from calibrated
+    magnitudes.
   test_path: tests/sensitivity/test_sensitivity.py
   evidence_claims:
   - CLM-POTS-POOLING
@@ -1197,27 +1234,35 @@ validation_tests:
   - PAR-END-TIDAL-CO2-REFERENCE
   - PAR-CEREBRAL-CO2-REACTIVITY
   - PAR-CEREBRAL-CO2-EXTRAPOLATION-LIMIT
+  - PAR-DEPENDENT-VENOUS-STIFFENING
+  - PAR-OTHER-SYSTEMIC-VENOUS-COMPLIANCE
+  - PAR-OTHER-SYSTEMIC-RESISTANCE-SYMPATHETIC-GAIN
+  - PAR-CONTRACTILITY-SYMPATHETIC-GAIN
+  - PAR-AORTIC-BAROREFLEX-WEIGHT
+  - PAR-CAROTID-BAROREFLEX-WEIGHT
+  - PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE
   validation_result:
     status: PASS
     execution_date: '2026-11-18'
     report: validation/sensitivity/sensitivity-report.md
-    scope: Stage 1.2 export contains 61 local scenarios, including residual-systemic-height low/high perturbations,
-      27 deterministic grid scenarios and three fixed-total chronotropic-split scenarios; not population uncertainty
-      or clinical validation
+    scope: Stage 1.3 export contains 96 local scenarios covering every changed healthy parameter, paired
+      baroreflex-weight perturbations and dependent-venous elastance, plus 27 deterministic grid scenarios
+      and three fixed-total chronotropic-split scenarios; structural sensitivity only, not patient/population
+      identifiability, population uncertainty, or clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-UNCERTAINTY
   name: Assumption uncertainty propagation
   layer: sensitivity_uncertainty
   expected_behavior: A small deterministic parameter grid (including the cerebral CO2-reactivity/outflow-pressure
     grid) reports output ranges and scenario ranking stability without implying population probabilities.
-  acceptance_criteria: Minimum/maximum peak and sustained HR rise, MAP, PEM peak and capacity outputs are reported
-    with configuration hashes; the no-PEM zero-gain bound is retained; every sampled point is explicitly a deterministic
-    scenario, not a patient.
+  acceptance_criteria: Minimum/maximum peak and sustained HR rise, MAP, PEM peak and capacity outputs
+    are reported with configuration hashes; the no-PEM zero-gain bound is retained; every sampled point
+    is explicitly a deterministic scenario, not a patient.
   justification: Communicates structural and parameter uncertainty without synthetic patient-cohort generation.
   test_path: tests/sensitivity/test_uncertainty.py
   evidence_claims:
@@ -1273,7 +1318,7 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
   mechanisms:
   - MEC-VASC-POOLING
   - MEC-VASC-CONSTRICTION
@@ -1284,10 +1329,10 @@ validation_tests:
   layer: scientific_traceability
   expected_behavior: Literature-to-output chains resolve without duplicate IDs, broken references, undocumented
     equations/parameters, or untested implemented mechanisms.
-  acceptance_criteria: Strict schema and cross-registry audit has zero errors and zero warnings; all seven registries
-    are present; all simulations have configuration and model provenance.
-  justification: Makes unsupported or orphaned scientific claims visible and prevents incomplete chains from passing
-    silently.
+  acceptance_criteria: Strict schema and cross-registry audit has zero errors and zero warnings; all seven
+    registries are present; all simulations have configuration and model provenance.
+  justification: Makes unsupported or orphaned scientific claims visible and prevents incomplete chains
+    from passing silently.
   test_path: tests/unit/test_traceability_audit.py
   evidence_claims: []
   equation_ids: []
@@ -1302,14 +1347,14 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-REGRESSION
   name: Approved scientific regression fixtures
   layer: software
-  expected_behavior: Key metrics remain stable unless a reviewed scientific change explicitly updates fixtures and
-    provenance.
-  acceptance_criteria: Stored summary metrics match within declared numerical tolerances; fixture changes require
-    a change record explaining mechanism, evidence, and expected direction.
+  expected_behavior: Key metrics remain stable unless a reviewed scientific change explicitly updates
+    fixtures and provenance.
+  acceptance_criteria: Stored summary metrics match within declared numerical tolerances; fixture changes
+    require a change record explaining mechanism, evidence, and expected direction.
   justification: Detects unintended numerical and scientific drift without freezing legitimate model revisions.
   test_path: tests/regression/test_regression_fixtures.py
   evidence_claims: []
@@ -1319,13 +1364,15 @@ validation_tests:
     status: PASS
     execution_date: '2026-11-18'
     report: validation/reports/validation-report.json
-    scope: Declared computational/scientific check passed at the tested source commit; not clinical validation
+    scope: All 16 persisted regression runs match freshly regenerated Stage 1.3 fixtures within unchanged
+      tolerance classes; the fixture change record documents mechanisms, evidence, and expected directions;
+      not clinical validation
   execution_environment:
     python_requirement: '>=3.11'
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 - id: VAL-SCOPE-FUTURE
   name: Unimplemented mechanism scope guard
   layer: scientific_traceability
@@ -1333,10 +1380,10 @@ validation_tests:
   - MEC-GI-DYSMOTILITY
   - MEC-PAIN-AUT
   - MEC-RESP-LC
-  expected_behavior: Specified future mechanisms remain explicitly non-executable and cannot be silently presented
-    as validated implementations.
-  acceptance_criteria: Each mechanism has proposed/hypothesis status, M0/M1 maturity, an explicit limitation, no
-    numerical parameter link, and a review-path provenance record.
+  expected_behavior: Specified future mechanisms remain explicitly non-executable and cannot be silently
+    presented as validated implementations.
+  acceptance_criteria: Each mechanism has proposed/hypothesis status, M0/M1 maturity, an explicit limitation,
+    no numerical parameter link, and a review-path provenance record.
   justification: Prevents scope drift from literature hypotheses into unsupported executable claims.
   test_path: tests/unit/test_traceability_audit.py
   evidence_claims:
@@ -1355,20 +1402,21 @@ validation_tests:
     executed_python: 3.12.12
     solver: DOP853 where applicable
     dependency_versions: validation/reproducibility.json
-  last_validated_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  last_validated_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
 execution_summary:
-  repository_commit: e0c7362f6d0390b64d141e44cdc0c6b3000511e1
+  repository_commit: 557cd6b88b52a065de7db72eea385d2409bcb9a8
   ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-  full_suite: 343 passed, 1 skipped, 0 xfailed in 351.62s (2026-11-18)
+  full_suite: 354 passed, 1 skipped, 0 xfailed in 339.71s (2026-11-18)
   seven_layer_report: validation/reports/validation-report.json
   seven_layer_status: PASS (declared executable layers; no strict scientific expected failures)
-  validation_records: 28 PASS, 1 FAIL, 0 PENDING (the graded-tilt record remains FAIL because two 60-degree
-    cardiac-output comparisons miss the unchanged published band; the other six Zaidi comparisons pass)
-  scientific_readiness: PARTIAL (the executable layers pass, but two empirical misses and healthy MAP over-defence
-    remain disclosed in validation/stage1-2/scientific-comparison-matrix.json)
+  validation_records: 29 PASS, 0 FAIL, 0 PENDING (all eight preserved CO/SV comparisons are within band;
+    four 60-degree rows are direct-angle comparisons and four 70-degree rows are extrapolated criteria)
+  scientific_readiness: PARTIAL (narrow 60-degree CO and neuropathic-POTS HR margins, nonlinear-form and
+    parameter identifiability uncertainty, calibration overlap, and healthy MAP over-defence remain disclosed
+    in validation/stage1-3/scientific-comparison-matrix.json and docs/stage1-3/readiness-assessment.md)
   traceability_report: validation/traceability/audit/traceability_report.json
-  strict_ocpe: 0 errors, 0 warnings (disease-models@0.3.0; declarative/executable consistency checks passed
+  strict_ocpe: 0 errors, 0 warnings (disease-models@0.4.0; declarative/executable consistency checks passed
     2026-11-18; one optional upstream-checkout adapter test skipped)
   lint: PASS (Ruff)
-  clinical_status: No clinical validity, diagnostic accuracy, treatment efficacy, or patient-specific calibration
-    established
+  clinical_status: No clinical validity, diagnostic accuracy, treatment efficacy, or patient-specific
+    calibration established

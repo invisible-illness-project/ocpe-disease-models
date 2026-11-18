@@ -46,7 +46,7 @@
     "parameters": {
       "path": "literature/parameter_registry.yaml",
       "found": true,
-      "entries": 68,
+      "entries": 69,
       "id_prefix": "PAR-",
       "load_errors": []
     },
@@ -60,7 +60,7 @@
     "simulations": {
       "path": "simulations/simulation_registry.yaml",
       "found": true,
-      "entries": 11,
+      "entries": 12,
       "id_prefix": "SIM-",
       "load_errors": []
     }
@@ -131,28 +131,28 @@
     },
     "parameters": {
       "entries_with_id": {
-        "passed": 68,
-        "total": 68,
+        "passed": 69,
+        "total": 69,
         "rate": 1.0
       },
       "parameters_with_source": {
-        "passed": 68,
-        "total": 68,
+        "passed": 69,
+        "total": 69,
         "rate": 1.0
       },
       "parameters_with_estimation_method": {
-        "passed": 68,
-        "total": 68,
+        "passed": 69,
+        "total": 69,
         "rate": 1.0
       },
       "parameters_with_provenance": {
-        "passed": 68,
-        "total": 68,
+        "passed": 69,
+        "total": 69,
         "rate": 1.0
       },
       "parameters_fully_documented": {
-        "passed": 68,
-        "total": 68,
+        "passed": 69,
+        "total": 69,
         "rate": 1.0
       }
     },
@@ -185,18 +185,18 @@
     },
     "simulations": {
       "entries_with_id": {
-        "passed": 11,
-        "total": 11,
+        "passed": 12,
+        "total": 12,
         "rate": 1.0
       },
       "simulations_with_config": {
-        "passed": 11,
-        "total": 11,
+        "passed": 12,
+        "total": 12,
         "rate": 1.0
       },
       "simulations_with_model_provenance": {
-        "passed": 11,
-        "total": 11,
+        "passed": 12,
+        "total": 12,
         "rate": 1.0
       }
     }

@@ -81,15 +81,15 @@ EQ-CBF-002  asymmetric kinetics: τ_decline = 5 s; τ_recovery = 240 s in mecfs-
 Guardrail encoded in CLM-ME-CBF: cerebral flow is **not** inferred from MAP
 alone; CPP includes the heart-to-head correction and venous back pressure, and
 the impairment term and recovery lag are explicit phenomenological elements.
-The index is normalized and is not a Doppler reconstruction. Healthy end-tilt
-CFI reduction is approximately 0.003% versus the reported 7% control finding,
-so the control-side response remains a disclosed soft-anchor miss rather than
-a successful validation.
+The index is normalized and is not a Doppler reconstruction. Stage 1.3 healthy
+end-tilt CFI reduction is 4.961%, within the broad 3–11% disclosure band around
+the reported 7% control finding; this is calibrated scenario agreement, not
+independent control validation.
 
 ## Configuration and validation
 
 `phenotypes/mecfs/mecfs-pem.yaml` (M3, `phenomenological_dynamic_model`):
-splanchnic/lower-limb gravity offsets 4.5/9.0 mmHg; HR rest 70.0 bpm;
+common healthy anatomical hydrostatic heights; HR rest 70.0 bpm;
 cardiac-sympathetic/vagal chronotropic gains 25.0/25.0 bpm; cerebral impairment
 0.23; cerebral recovery τ 240.0 s; baseline capacity 0.85; extraction 0.74;
 delayed-stress τ 72000.0 s (explicit range exception); PEM onset/recovery τ

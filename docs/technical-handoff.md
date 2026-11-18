@@ -1,65 +1,60 @@
-# Stage 1/1.1/1.2 technical handoff and Stage 2 readiness
+# Stage 1.3 technical handoff and downstream readiness
 
-- Current remediation record date: 2026-11-18
+- Current record date: 2026-11-18
 - Target branch: `research/initial-disease-modeling-framework`
-- Model/package version: 0.3.0 (Stage 1.1 architecture with Stage 1.2 scientific remediation; overall scientific readiness **PARTIAL**)
+- Model/package version: **0.4.0**
+- Overall scientific readiness: **PARTIAL — exploratory deterministic research scenarios only**
 - Model CURIE: `ocpe:disease-models/shared-physiology`
-- Tested Stage 1.2 source/documentation commit: `e0c7362f6d0390b64d141e44cdc0c6b3000511e1`, recorded in `validation/reports/validation-report.json` and `validation/reproducibility.json`; the subsequent release-record commit adds generated records without claiming to have been tested before it existed
-- Stage 1.2 exact base: `f85360d8337144e118eb0d2aef317fd1b949b3dd`
+- Stage 1.2 baseline source: `e48110e`
+- Stage 1.1 historical comparator: `f85360d8337144e118eb0d2aef317fd1b949b3dd`
 - Pinned OCPE commit: `3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d`
-- Original baseline commit: `47923223d4cf2e8a9c6a1ae8cff485b9d4327dc9`
+- Current execution metadata: `validation/reports/validation-report.json` and `validation/reproducibility.json`
 
-This is computational research software, not a clinically validated model, diagnostic device, treatment system, synthetic wearable dataset, or flare predictor. **Stage 2 has not begun.**
-
-> **Current Stage 1.2 status.** The implementation retains Stage 1.1's twelve states, five conserved stressed-volume compartments, residual other-systemic path, separate aortic/carotid sensors, integrated weighted baroreflex, explicit angle geometry, three autonomic effector states, and independent cerebral pressure/declared-CO2 pathways. Stage 1.2 changed only effective regional heights and the cerebral autoregulation residual slope in the shared model; POTS chronotropic gains and all scientific criteria are unchanged. Current evidence is in `docs/stage1-2/` and `validation/stage1-2/`. Healthy early CO reduction is 14.570%, sustained HR rise 15.467 bpm, pooling 302.962 mL, and CFI reduction 4.407%. All four POTS configurations and Long-COVID-autonomic pass the sustained ≥30 bpm scenario criterion with MAP floors above 70 mmHg. Six of eight Zaidi comparisons pass; the two remaining 60° CO misses are explicit. ME/CFS CFI reduction is 24.652%, within 15–35%. Full-suite execution is 343 passed and 1 skipped; strict traceability and strict OCPE validation each report zero errors/warnings. These results do not establish clinical validity. Stage 1.1 and Stage 1 records remain preserved history.
+This is computational research software, not a clinically validated model, diagnostic device, treatment system, synthetic wearable dataset, or flare predictor. **Stage 2 dataset generation and Stage 3 prediction have not begun.**
 
 ## A. Executive summary
 
-Stage 1.2 remediated the Stage 1.1 zero-height residual-bed preload bypass and its downstream suppression of orthostatic CO/SV loss, POTS chronotropy, and cerebral-flow reduction. All ten phenotype configurations still begin at complete supine fixed points. Five-volume conservation holds analytically and in integrated tests. POTS and Long COVID autonomic scenarios are evaluated using sustained final-120-second-upright HR rise rather than peak-only responses.
+Stage 1.3 addresses the Stage 1.2 residual-bed, dependent-pooling, pressure-defense, and 60° CO limitations while removing unsupported phenotype-specific anatomy. It does so through an explicit constitutive revision rather than by widening criteria or adding states.
 
-The current commit-bound execution position is:
+Before modification, fresh detached-worktree executions reproduced every reported Stage 1.2 numerical result: 957 numeric fields and 277 non-numeric identifiers/statuses matched, with maximum absolute numeric difference 7.25 × 10⁻¹⁵. The audit-named `6034d11…` and `2d1283f` Git objects are unavailable and are disclosed rather than silently replaced in provenance.
 
-- **343 tests passed, 1 skipped in 351.62s** in the complete suite; the skip is the environment-dependent upstream-OCPE-checkout adapter test, while strict installed-engine OCPE validation separately passes with zero errors and zero warnings;
-- all seven independently selected validation layers execute successfully, with current machine-readable results in `validation/reports/validation-report.json` / `.md`;
-- all four POTS configurations and Long-COVID-autonomic pass directly, with no scientific expected failures;
-- healthy early CO and CFI now lie within their preserved broad bands;
-- strict traceability passes with zero errors, warnings, and infos;
-- 61 local-sensitivity executions, 27 deterministic grid scenarios, and three fixed-total chronotropic-split scenarios completed;
-- 19 regression tests passed against fixtures regenerated with a Stage 1.2 scientific change record; and
-- six demonstrations regenerated 16 persisted 0.3.0 runs.
+Stage 1.3 healthy 70° outcomes are:
 
-The two residual 60° CO misses remain `VAL-PHYS-GRADED-TILT` scientific failures even though executable tests pass. Healthy end-tilt MAP is 108.846 mmHg versus 100 mmHg supine, pooling clears its lower band edge by only 2.962 mL, and ME/CFS/hEDS/Long-COVID-autonomic retain un-recalibrated Stage 1.1 caudal-geometry overrides. These are material limitations, not concealed calibration successes. Earlier Stage 1.1 and Stage 1 results remain commit-bound history in their respective documents and Git records.
+- sustained HR rise 13.298 bpm;
+- end heart-level MAP 102.253 mmHg from 100 mmHg supine;
+- caudal pooling 469.395 mL;
+- residual-systemic volume change −17.931 mL;
+- central-venous volume change −454.845 mL; and
+- end-CFI reduction 4.961%.
 
-## B. Scientific findings and interpretation
+All four direct 60° CO/SV group comparisons are within their preserved bands. All four 70° rows are also within the reused bands, but they are explicitly **extrapolated model-specific criteria**, not direct 70° experimental replication. All four POTS and Long-COVID-autonomic sustained-HR scenario criteria pass; ME/CFS CFI remains within its unchanged 15–35% band.
 
-The focused review supports separate splanchnic and lower-limb pooling paths, pressure-gradient-driven venous return, rhythmic muscle-pump transfer, sustained-contraction impediment, faster vagal than sympathetic cardiac control, distinguishable cardiac and vascular sympathetic pathways, head-level cerebral perfusion pressure, and dynamic cerebral autoregulation. It also preserves constraining findings: tilt and LBNP are not interchangeable, muscle pump is not the sole mechanism of exercise CO augmentation, and regional impedance/TCD surrogates are not absolute volume or flow measurements.
+These are calibrated scenario outcomes. They do not establish independent external validation, scientific readiness, or clinical validity.
 
-The model does not infer CO₂-mediated cerebral vasomotor effects from posture: only a declared ETCO₂ input activates the bounded CO₂ pathway, without an end-tidal-to-arterial correction. It also does not resolve renal/endocrine volume regulation, patient-specific regional compliances, or unique autonomic gains. Disease configurations remain calibrated computational scenarios. POTS threshold agreement has calibration overlap and is not independent validation. The hEDS venous-compliance value remains exploratory and M2. PEM remains a normalized phenomenological construct rather than a molecular or symptom-score model. Its first 0.05 crossing at approximately 5.7 hours after the day-1 bout ends is earlier than the 12–48-hour daily-activity onset window, although within reported post-CPET onset within 24 hours; the approximately 39.2-hour post-bout peak is a separate, compatible timing result.
+## B. Stage 1.3 report set
 
-Detailed records are:
+Current reports are under `docs/stage1-3/`:
 
-- `docs/stage1/baseline-scientific-report.md`
-- `docs/stage1/literature-and-evidence-matrix.md`
-- `docs/stage1/revised-physiological-architecture.md`
-- `docs/stage1/parameter-provenance-and-uncertainty.md`
-- `docs/stage1/final-validation-report.md`
-- `docs/stage1-1/architecture-design-record.md` (Stage 1.1)
-- `docs/stage1-1/scientific-decision-log.md` (Stage 1.1)
-- `docs/stage1-1/validation-matrix.md` (Stage 1.1; executed at commit `942713e`, overall scientific status FAIL)
-- `docs/stage1-1/readiness-assessment.md` (Stage 1.1)
-- `docs/stage1-2/scientific-decision-log.md` (current remediation)
-- `docs/stage1-2/readiness-assessment.md` (current partial readiness)
-- `validation/stage1-2/scientific-comparison-matrix.md` / `.json` (executed before/after evidence)
+- `baseline-reproduction.md` — exhaustive Stage 1.2/Stage 1.1 numerical reproduction and audit discrepancies;
+- `parameter-and-dependency-inventory.md` — all changed executable and phenotype parameters, units, and dependencies;
+- `corrected-causal-dependency-graph.md` — feedback structure and corrected common-anatomy/elastance relationships;
+- `sensitivity-and-identifiability.md` — 96 local, 27 grid, and 3 chronotropic-split analyses;
+- `evidence-to-parameter-traceability.md` — evidence classes and assumption status for every changed parameter;
+- `implementation-and-validation.md` — isolated/combined experiments, phenotype outcomes, and execution entry points;
+- `scientific-decision-log.md` — accepted/rejected decisions and downstream effects; and
+- `readiness-assessment.md` — current readiness boundaries and remaining limitations.
+
+Machine-readable evidence is under `validation/stage1-3/`, `validation/sensitivity/`, `validation/reports/`, and `validation/traceability/audit/`. Historical `docs/stage1-2/`, `validation/stage1-2/`, `docs/stage1-1/`, and `validation/stage1-1/` records remain unchanged.
 
 ## C. Implemented architecture
 
-The current implementation (model version 0.3.0) has 12 states:
+The current implementation retains 12 states:
 
 1. arterial stressed volume;
 2. central-venous stressed volume/preload proxy;
 3. splanchnic-venous stressed volume;
 4. lower-limb-venous stressed volume;
-5. other-systemic (residual) venous stressed volume;
+5. other-systemic venous stressed volume;
 6. cardiac-sympathetic state;
 7. vascular-sympathetic state;
 8. vagal state;
@@ -72,123 +67,103 @@ The five volume derivatives telescope exactly:
 
 `dVa/dt + dVc/dt + dVs/dt + dVl/dt + dVo/dt = 0`.
 
-The healthy baseline partitions systemic flow 25% splanchnic / 25% lower-limb / 50% other-systemic at a 2550 mL total stressed volume, implemented by doubling the splanchnic/lower-limb resistances and assigning their former values to the other-systemic path (defaults and the three POTS YAMLs with explicit resistance overrides). Rhythmic activity transfers lower-limb venous volume to the central compartment without creating blood. Sustained contraction independently increases lower-limb venous resistance. Cardiac sympathetic activity controls contractility and chronotropy, vascular sympathetic activity controls regional arterial resistances, and vagal activity contributes separately to HR.
+Healthy supine stressed volume remains 2550 mL. Its five-compartment allocation is 150/700/900/600/200 mL. Compliance redistribution preserves the combined peripheral allocation at 1700 mL while changing its internal distribution.
 
-Posture is an explicit `tilt_angle_deg` (legacy `upright` migrates via `arcsin`; transitions are linear in angle only), and hydrostatic terms are heights in cm converted at 0.7356 mmHg/cm and scaled by sin(angle). The baroreflex integrates a weighted error (default 0.25/0.75) from separate aortic (0 cm) and carotid (25 cm) sensors with independent setpoints/scales; brain-level pressure (27 cm) is a distinct parameter used only by the cerebral path. Cerebral perfusion pressure subtracts a fixed effective outflow pressure of 5 mmHg—neither thoracic CVP nor a resolved ICP—and the cerebral target is further modulated by a declared segment ETCO2 via exp(0.035 × clip(ETCO2 − 40, ±15)). The bounded pressure-autoregulation curve and the preload/contractility stroke-volume equations are retained from Stage 1.
+For splanchnic and lower-limb beds, Stage 1.3 uses:
 
-There are no disease-specific conditional branches in the shared equations. Phenotype YAML files supply registered parameters; protocol YAML files independently declare posture, `exertion`, `rhythmic_muscle_activity`, `sustained_muscle_contraction`, and `end_tidal_co2_mmHg`.
+`P_i = V_i/C_i + k_d × max(0, V_i − P_i0 × C_i × blood_volume_factor)^2`.
 
-OCPE supplies semantics, identifiers, units, specifications, evidence integrity, strict package validation, and observation exchange. SciPy DOP853 supplies numerical integration in this repository. No solver was added to upstream OCPE.
+The one-sided term is zero at the supine reference and does not alter any volume derivative. `k_d=0` recovers Stage 1.2. Its quadratic form and 0.0001 mmHg/mL² value are high-uncertainty modeling assumptions, not measured tissue properties.
 
-## D. Entry points and reproducible outputs
+The pinned OCPE unit registry lacks pressure-per-volume-squared. The declarative package therefore uses `K_d` in mmHg/mL and an explicit 1 mL reference-volume divisor; this is dimensionally equivalent to the executable law and does not introduce a second parameter.
+
+Posture remains explicit `tilt_angle_deg`, with hydrostatic corrections `0.7356 × height_cm × sin(angle)`. Healthy/common dependent heights are 13.3/26.6/4.5 cm. Eight disease configurations no longer override splanchnic/lower-limb anatomy. Aortic, carotid, and brain sites remain separate.
+
+Aortic/carotid weights are 0.35/0.65 and sum to one. Cardiac sympathetic activity controls HR/contractility, vascular sympathetic activity controls regional resistances, and vagal activity separately controls HR. The fixed effective cerebral outflow pressure remains 5 mmHg. Declared ETCO₂ modulates CFI independently; tilt never infers hypocapnia.
+
+There are no disease-specific conditional branches in shared equations. Disease YAML files supply registered parameters; protocol YAML files independently declare posture, exertion, muscle inputs, and ETCO₂.
+
+## D. Scientific decision and downstream effects
+
+Each mechanism was executed independently before combination. Geometry alone caused excessive output loss under Stage 1.2 compensation; dependent elastance alone reduced pooling and CO loss; vascular and cardiac changes had distinct, non-additive effects. Full results are in `validation/stage1-3/scientific-comparison-matrix.md`.
+
+The audit linear proposal was rejected: its fresh combined run produced end MAP 52.838 mmHg and 60° CO/SV reductions of 52.679/60.377%. The final nonlinear combination is a separate executed row and remains within the preserved comparisons.
+
+Neuropathic-POTS peripheral gains are 0.34 versus healthy 0.45; the range exception is disclosed. Both hEDS configurations use exploratory lower-limb compliance 70 mL/mmHg versus healthy 60. Neither is a measured disease coefficient.
+
+The new structure improves selected numerical outputs but adds structural uncertainty. It also changes every affected phenotype output through shared anatomy and constitutive pathways. Consequently, downstream users must not mix Stage 1.2 traces with Stage 1.3 traces or interpret cross-version differences as biological discoveries.
+
+## E. Entry points and reproducible outputs
 
 Primary entry points:
 
-- `scripts/simulate.py` for one configured run;
-- `scripts/run_examples.py` for all six demonstrations;
-- `scripts/run_sensitivity.py` for local, grid, and chronotropic-split analyses;
-- `scripts/run_validation.py` for independent seven-layer reporting; and
-- `scripts/audit_traceability.py --root . --strict` for registry/provenance auditing.
+- `scripts/simulate.py` — one configured run;
+- `scripts/run_examples.py` — six demonstration groups/16 persisted runs;
+- `scripts/run_sensitivity.py` — local, grid, and chronotropic-split analyses;
+- `scripts/run_stage1_3_validation.py` — isolated/combined mechanism and current scientific matrix;
+- `scripts/run_validation.py --no-analysis` — independent seven-layer reporting without recomputing sensitivity;
+- `scripts/audit_traceability.py --root . --strict --deterministic` — registry/provenance audit; and
+- `python -m ocpe validate ocpe/packages/disease-models --strict` — declarative package validation.
 
-Each persisted run records the exact resolved parameters, protocol, configuration SHA-256, model and OCPE versions, Python/NumPy/SciPy versions, and solver method, sampling interval, maximum step, relative/absolute tolerances, and seed. NPZ traces contain the 12 states and derived outputs; JSON results contain metadata and summaries; OCPE observations contain sparse mapped values, not waveforms.
+Each persisted run records resolved parameters, protocol, configuration SHA-256, model/OCPE versions, dependency versions, and DOP853 settings. NPZ traces contain the 12 states and derived outputs; JSON results contain metadata/summaries; OCPE observations contain sparse mapped values, not waveforms.
 
-The simulation registry contains 19 protocols and 11 curated simulation records at 0.3.0 (the Stage 1 record held nine protocols and eight simulation records). Six demonstrations regenerate 16 result/observation/trace sets and their figures. These are small validation artifacts, not patient cohorts or machine-learning datasets.
+The simulation registry contains 19 protocols and 12 current simulation records. Generated outputs are small validation artifacts, not patient cohorts or machine-learning datasets.
 
-## E. Validation results
+## F. Validation and interpretation
 
-**Current Stage 1.2 executed record, bound to tested source/documentation commit `e0c7362f6d0390b64d141e44cdc0c6b3000511e1`:** full suite 343 passed, 1 skipped in 351.62s; exact seven-layer selections, elapsed times, commands, and per-layer statuses are in `validation/reports/validation-report.json` / `.md` and `validation/reproducibility.json`. The disease-phenotype criteria now pass directly. The graded-tilt registry record remains **FAIL** because two 60° CO comparisons miss; overall scientific readiness is **PARTIAL**. Layer execution PASS does not erase empirical MISS rows.
+Current complete test and seven-layer results are recorded in `validation/reports/validation-report.json` / `.md` and `validation/reproducibility.json`. The focused Stage 1.3 fidelity/regression selection passed 38 tests; the sensitivity layer passed 15 tests. Strict traceability reports zero errors, warnings, and infos; strict OCPE reports zero errors and warnings for `disease-models@0.4.0`.
 
-The Stage 1.1 executed record at `942713ef720ad0e801e71bf9bc78405cd844a739` (327 passed, 1 skipped, 6 xfailed; overall scientific status FAIL) is preserved in `docs/stage1-1/` and `validation/stage1-1/`, not represented as current.
+The 29 current validation-registry records are PASS. This does not erase the separate readiness assessment: PASS means the declared computational or model-specific check passed. It does not prove equation structure, mechanism truth, generalization, or clinical validity.
 
-**The table below is the executed Stage 1 (0.2.0) record, bound to its tested commit, preserved as history.**
+The regression fixture contains 16 runs and a Stage 1.3 change record explaining mechanisms, evidence, expected directions, and the rejected linear proposal. Tolerances and scientific criteria were not changed.
 
-| Layer | Result | Scope |
-|---|---:|---|
-| Software | 122 passed | Configuration, serialization, failure handling, OCPE mapping, declarative/executable consistency, and regression |
-| Mathematical | 44 passed | Four-volume conservation, ten fixed points, identities, bounds, and convergence |
-| Physiological | 29 passed, 1 warning | Orthostasis, recovery, autonomic separation, muscle mechanics, CPP/CFI, and soft anchors |
-| Disease phenotype | 35 passed | POTS, hEDS, ME/CFS, and Long COVID configurations |
-| Empirical | 9 passed, 1 warning | Heterogeneous group-level plausibility comparisons and healthy cerebral-control miss |
-| Sensitivity/uncertainty | 13 passed | Regional, muscle, autonomic, cerebral, grid, and split analyses |
-| Scientific traceability | 40 passed | Registry integrity, scientific chains, scope guards, and bibliography synchronization |
+## G. Sensitivity and identifiability
 
-Layer counts include dual-marked tests and therefore exceed the unique full-suite total when summed. Empty required selections fail by design. Exact elapsed times and commands are in `validation/reports/`.
+Fresh exports contain:
 
-The Stage 1 regression fixture contains 16 runs and a scientific change record; the current fixture regeneration carries a Stage 1.2 scientific change record and passes 19 regression tests. Historical fixtures and validation snapshots remain preserved. No criterion was weakened to hide orthostatic CO/SV/CFI results, restore healthy CO in hypovolemia, or substitute peak-only POTS responses. The ME/CFS 15–35% scenario band is unchanged.
+- 96 local rows, including every changed healthy parameter and paired baroreflex-weight perturbations;
+- 27 deterministic assumption-grid rows; and
+- 3 fixed-total chronotropic-split rows.
 
-## F. Scientific confidence and maturity
+Sustained HR/MAP do not identify the cardiac-sympathetic/vagal split. Baroreflex weights are coupled; compliance and elastance have interacting/opposing effects; geometry and blood volume are not separately identified by current outputs. Local sensitivity and deterministic grids are not global uncertainty, patient identification, or population inference.
 
-Confidence is strongest in software integrity, exact conservation, fixed-point accounting, deterministic reproducibility, and explicit provenance. It is weaker in absolute parameter identification, structural uncertainty, disease heterogeneity, and generalization beyond demonstrated scenarios.
+Important margins remain narrow: direct 60° CO agreement is about 0.081 percentage points above the lower band edge, and neuropathic-POTS sustained HR exceeds its criterion by about 0.093 bpm.
 
-Evidence grades E0–E5 and maturity M0–M4 remain independent. Execution alone does not establish clinical maturity. No integrated disease model is assigned M4 from these results. Group-level empirical anchors overlap with calibration and are not prospective external validation. The residual 60° CO misses, MAP over-defence, narrow pooling margin, calibration overlap, retained non-POTS geometry, early PEM threshold-crossing caveat, reduced-order preload proxy, clipped flows, linear compliances, absent end-tidal-to-arterial CO₂ correction, and absent renal/endocrine volume-regulation mechanisms remain material limitations.
+## H. Scientific confidence and readiness
 
-## G. Stage 2 technical handoff and readiness
+Confidence is strongest in software integrity, exact conservation, fixed-point accounting, deterministic reproducibility, and explicit provenance. It is weaker in constitutive structure, absolute parameter values, disease heterogeneity, and generalization.
 
-### Available computational contract
+Current appropriate use is limited to exploratory deterministic research scenarios, mechanism hypothesis comparison, and planning independent evaluation. Current inappropriate uses include diagnosis, treatment, severity ranking, patient-specific inference, population estimation, and unrestricted synthetic-data ground truth.
 
-A separately approved Stage 2 project may use the shared simulator as a deterministic source of latent beat-averaged states and derived outputs. The usable contract is:
+Material limitations include:
 
-- inputs: phenotype IDs, explicit protocol segments, resolved `ModelParameters`, and solver settings;
-- outputs: time in seconds, 12 states, regional pressures/flows, HR, SV, CO, CPP/CFI, capacity/extraction, and PEM constructs;
-- persistence: compressed NPZ plus JSON parameters/metadata/summaries and optional sparse OCPE observations;
-- traceability: configuration hash, model version, OCPE commit, solver settings, and registry-linked parameters/validations.
+- unvalidated quadratic elastance and calibration overlap;
+- residual healthy MAP rise and absent cardiopulmonary baroreflex pathway;
+- simplified autonomic/catecholamine physiology;
+- unmeasured hEDS and neuropathic parameters;
+- fixed effective cerebral outflow pressure and bounded declared ETCO₂;
+- phenomenological PEM and its prior onset-window caveat;
+- local rather than global/patient identifiability analysis; and
+- no independent prospective or held-out cohort validation.
 
-Stage 2 must not treat deterministic sensitivity rows as patients, assign them prevalence or probabilities, or interpret normalized states as measured clinical scores. Shared-equation changes require a new Stage 1-style scientific review and validation cycle rather than being embedded in a sensor generator.
+## I. Stage 2 and Stage 3 boundary
 
-### Missing prerequisites
+A separately approved Stage 2 project could use the simulator as a deterministic source of latent beat-averaged states, subject to the limitations above. No ECG, PPG, HRV, respiratory, temperature, electrodermal, or accelerometry waveform is generated. There is no sensor error/artifact model, cohort design, governance process, reference measurement, or wearable agreement analysis.
 
-No raw ECG, PPG, HRV, respiratory, temperature, electrodermal, or accelerometry waveform is generated. There is no sampling/aliasing model, motion artifact, sensor bias/drift/dropout model, device-specific error model, reference measurement, cohort design, governance process, or wearable agreement analysis.
+Accordingly, the repository is **ready for reviewed Stage 2 planning, not automatic Stage 2 execution or clinically meaningful synthetic wearable data**. Any downstream plan must preserve calibration overlap, the unvalidated elastance structure, narrow acceptance margins, and PEM caveats; deterministic scenarios must not become diagnostic ground-truth labels.
 
-| Capability | Readiness at Stage 1 handoff |
-|---|---|
-| Deterministic latent physiological scenarios | Available for research use, with declared structural/calibration limitations |
-| OCPE semantic mapping | Available for sparse declared observations; strict validation passes |
-| Waveform and beat-level observation models | Missing |
-| Sensor/device error and artifact models | Missing |
-| Synthetic cohort design and governance | Missing |
-| Wearable agreement validation (ICC/CCC/Bland–Altman or equivalent) | Missing |
-| Clinically meaningful synthetic wearable dataset | **Not ready** |
+Stage 3 flare prediction remains excluded. File-format compatibility is not readiness for prediction.
 
-Before Stage 2 implementation, a separate protocol must define intended use, channels, sampling and time synchronization, observation mappings, sensor/reference error structure, cohort and phenotype sampling assumptions, governance, held-out evaluation, and agreement criteria. It must explicitly address the residual 60° CO misses, healthy MAP over-defence, narrow pooling margin, and PEM onset-window caveat, and avoid converting calibrated scenario thresholds into ground-truth diagnostic labels.
-
-Accordingly, the repository is **ready for reviewed Stage 2 planning, not automatic Stage 2 execution**. No Stage 2 dataset or sensor model is included here.
-
-## H. Stage 3 compatibility
-
-Stage 3 flare prediction is also excluded. No forecasting model, symptom label, TSFM, machine-learning cohort, patient-facing prediction, or treatment recommendation is supplied. Longitudinal protocols may provide research inputs only after outcomes, labels, missingness, governance, validation splits, calibration, and clinical utility are independently specified. File-format compatibility is not readiness for flare prediction.
-
-## I. Baseline and migration record
-
-The unmodified Stage 0 behavior is documented in `docs/stage1/baseline-scientific-report.md`. Archived materials under `validation/baseline/stage0/` include the original regression fixture, original validation snapshot, environment, and fresh baseline test log. Historical failed physiological regimes and legacy negative findings remain historical evidence; they are not rewritten as current successes or deleted.
-
-At the Stage 1 (0.2.0) record, the declarative OCPE package describes the same 11 states, 52 parameters, four protocol inputs, equations, units, and outputs as the executable implementation. Synchronization of the declarative package and registries to the current 0.3.0 revision (12 states, five volumes, remediated hydrostatic heights, and current protocols) is **complete**: the strict traceability audit passes with zero errors, warnings, and infos, and strict OCPE package validation passes with zero errors and zero warnings; see `docs/stage1-2/readiness-assessment.md`. The legacy short identifier `three-compartment-cardiovascular` is retained only as an alias; the canonical CURIE is `ocpe:disease-models/shared-physiology`.
-
-## J. Traceability
+## J. Traceability and operations
 
 The implemented chain is:
 
 `reference → evidence claim → mechanism → equation → parameter → implementation → validation test → simulation output`.
 
-The 0.3.0 registries contain 69 references, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records (28 PASS, 1 FAIL, 0 PENDING — the sole FAIL is the graded-tilt record because two 60° CO comparisons remain outside their unchanged band), 19 protocols, and 11 simulation records; the Stage 1 (0.2.0) registries contained 64 references, 37 evidence claims, 23 mechanisms, 20 equations, 52 parameters, 26 validation records, nine protocols, and eight simulation records (preserved history). Stage 1.1's 23 PASS / 6 FAIL registry state also remains historical evidence. The BibTeX export contains all 69 references and has a synchronization test. Canonical reports are `validation/traceability/audit/traceability_report.json` and `.md`. Record integrity does not establish mechanism truth or clinical validity.
+Current audited registries contain 69 references, 41 evidence claims, 24 mechanisms, 22 equations, 69 parameters, 29 validation records, 19 protocols, and 12 simulation records. Record integrity does not establish mechanism truth.
 
-## K. Validation-system assessment
+Scientific changes follow `docs/scientific-change-management.md`. Equation, parameter, evidence, phenotype, fixture, and maturity changes require linked provenance and review. Rollback should use reviewed Git reverts. Any later source/configuration change requires a fresh validation cycle.
 
-The validation system is suitable for a small, auditable research framework because it separates software, mathematics, physiology, disease scenarios, empirical plausibility, sensitivity, and provenance. It preserves negative results, rejects empty required selections, and records exact configurations and source revisions.
+The reproducibility record distinguishes the tested source/configuration commit from any subsequent validation-record commit that adds generated reports and outputs. It never claims that a later commit was tested before it existed.
 
-Its principal weaknesses remain scientific: assumed/calibrated parameters, calibration overlap, limited structural and global uncertainty analysis, heterogeneous group-level anchors, omitted physiology, source-checkout packaging requirements, and local rather than verified remote CI results. A green suite supports reproducible computational scrutiny, not diagnosis, prognosis, treatment selection, severity ranking, or patient-specific inference.
-
-## L. Operational and security handoff
-
-Scientific changes follow `docs/scientific-change-management.md`. Equation, parameter, evidence, phenotype, fixture, and maturity changes require linked provenance and appropriate review. Rollback should use reviewed Git reverts rather than destructive history changes. Any later source/configuration change requires a new validation cycle.
-
-`validation/reproducibility.json` distinguishes the tested source/configuration commit from the subsequent validation-record commit that adds executed reports, regenerated outputs, registry results, and this handoff. It does not claim that a later commit was tested before it existed.
-
-Security notes:
-
-- upstream OCPE remains at its pinned commit and is not modified by this remediation;
-- no PAT, token, credential, private key, or temporary secret may be committed or included in artifacts;
-- CI uses read-only contents permission, disables persisted checkout credentials, and requires no secrets;
-- publication uses the explicitly authorized secure repository operation; and
-- the temporary PAT supplied for repository operations should be revoked or rotated after use.
-
-Stage 2 sensor modeling and Stage 3 prediction require separate approval and scientific/engineering work. Neither is started by this handoff.
+Upstream OCPE remains pinned and unmodified. No credential, token, private key, or temporary secret belongs in the repository, reports, or patch. CI uses read-only contents permission and requires no secrets. Local results do not substitute for successful remote Python 3.11/3.12 matrix runs.

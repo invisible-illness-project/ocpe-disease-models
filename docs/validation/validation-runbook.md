@@ -46,7 +46,7 @@ pytest -q -m phenotype
 pytest -q -m empirical
 ```
 
-Every command must collect tests. Pytest exit code 5 (`no tests ran`) is a validation failure. Investigate failed numerical tolerances or scenario criteria; do not weaken a criterion after seeing an inconvenient result without a documented scientific review. Stage 1.1's five POTS/Long-COVID-autonomic strict expected failures are preserved only in its historical commit and reports. Stage 1.2 removes them after direct passes; `tests/physiological/test_stage1_2_orthostatic_fidelity.py` now guards the remediated healthy behavior. Separately, the Stage 1.2 matrix retains two 60° CO `MISS` rows that are not converted into expected failures.
+Every command must collect tests. Pytest exit code 5 (`no tests ran`) is a validation failure. Investigate failed numerical tolerances or scenario criteria; do not weaken a criterion after seeing an inconvenient result without a documented scientific review. Stage 1.1's five POTS/Long-COVID-autonomic strict expected failures are preserved only in its historical commit and reports. Stage 1.2 removed them after direct passes; current Stage 1.3 behavior is guarded by `tests/physiological/test_stage1_3_orthostatic_fidelity.py`. All eight preserved CO/SV comparisons are within band: four 60° rows are direct experimental-angle comparisons, while four 70° rows are extrapolated model-specific criteria. Neither category is independent clinical validation.
 
 ## 4. Demonstrations and observation exchange
 
@@ -67,7 +67,7 @@ python scripts/run_sensitivity.py
 pytest -q -m sensitivity_uncertainty
 ```
 
-Review `validation/sensitivity/sensitivity-report.md` and full JSON/CSV rows. Stage 1.2 exports 61 local scenarios, 27 deterministic grid scenarios, and three chronotropic-split scenarios; the two additional local rows are the low/high residual-systemic-height perturbations. CO2-reactivity/clipping and CO2-reactivity × cerebral-outflow coverage remain included. Inspect any MAP-below-70-mmHg hEDS grid cases and retain historical failures separately. Do not delete failed combinations or describe a grid as a patient distribution. There is no stochastic sampling; seed metadata does not substitute for probabilistic analysis.
+Review `validation/sensitivity/sensitivity-report.md` and full JSON/CSV rows. Stage 1.3 exports 96 local scenarios, 27 deterministic grid scenarios, and three chronotropic-split scenarios, including every changed healthy parameter, dependent elastance, and paired baroreflex-weight perturbations. CO2-reactivity/clipping and CO2-reactivity × cerebral-outflow coverage remain included. No current hEDS grid case ends below 70 mmHg MAP; historical failures remain separate. The separate healthy tilt-ranking check deliberately spans gain 0.35 through the Stage 1.2 nominal 0.8 and is asymmetric around the Stage 1.3 nominal 0.45; it is not a centered statistical interval. Do not delete failed combinations or describe a grid as a patient distribution. There is no stochastic sampling; seed metadata does not substitute for probabilistic analysis.
 
 ## 6. Full seven-layer report
 
@@ -75,7 +75,13 @@ Review `validation/sensitivity/sensitivity-report.md` and full JSON/CSV rows. St
 python scripts/run_validation.py
 ```
 
-`python scripts/run_stage1_1_validation.py` is reserved for historical reproduction in a Stage 1.1 checkout. Do not run it as a Stage 1.2 writer or overwrite `validation/stage1-1/`; current before/after evidence is under `validation/stage1-2/`.
+Generate current Stage 1.3 mechanism-isolation, orthostatic, empirical-comparison, and cerebral evidence with:
+
+```bash
+python scripts/run_stage1_3_validation.py
+```
+
+`python scripts/run_stage1_1_validation.py` is reserved for historical reproduction in a Stage 1.1 checkout. Do not use it as a current writer or overwrite `validation/stage1-1/`; current before/after evidence is under `validation/stage1-3/`, with exhaustive Stage 1.2 reproduction in `validation/stage1-3/baseline-reproduction.json`.
 
 To rerun without recomputing sensitivity artifacts:
 
@@ -83,7 +89,7 @@ To rerun without recomputing sensitivity artifacts:
 python scripts/run_validation.py --no-analysis
 ```
 
-A nonzero command exit remains expected whenever unresolved strict scientific expected failures are present. Stage 1.2 has none, but a zero exit still does not override narrative empirical misses; inspect the separate per-layer execution and scientific statuses and the Stage 1.2 comparison matrix.
+A nonzero command exit remains expected whenever unresolved strict scientific expected failures are present. Stage 1.3 has none, but a zero exit still does not establish independent physiological or clinical validity; inspect the separate per-layer execution and scientific statuses and the Stage 1.3 comparison matrix.
 
 For one layer, use a repeated explicit selector, for example:
 
@@ -91,7 +97,7 @@ For one layer, use a repeated explicit selector, for example:
 python scripts/run_validation.py --layer mathematical --layer scientific_traceability
 ```
 
-Read `validation/stage1-2/scientific-comparison-matrix.md`, `validation/reports/validation-report.md`, JSON, and individual logs. `PASS` applies only to the declared computational checks with no strict expected failure. The seven-layer runner deliberately marks a layer `FAIL` when pytest reports an xfail, even if its process exits zero. Stage 1.2's two residual 60° CO misses are instead reported explicitly in the scientific matrix and readiness assessment because they are not failed executable assertions. A partial-layer run is not a full release validation. Stage 1.1 reports under `validation/stage1-1/` remain historical and must not be presented as current results.
+Read `validation/stage1-3/scientific-comparison-matrix.md`, `docs/stage1-3/readiness-assessment.md`, `validation/reports/validation-report.md`, JSON, and individual logs. `PASS` applies only to the declared computational checks with no strict expected failure. The seven-layer runner deliberately marks a layer `FAIL` when pytest reports an xfail, even if its process exits zero. Stage 1.3's within-band comparisons remain calibrated scenario agreements with narrow disclosed margins; they do not resolve structural uncertainty or establish clinical readiness. A partial-layer run is not a full release validation. Stage 1.2 and Stage 1.1 reports under their respective historical directories must not be presented as current results.
 
 ## 7. Regression updates
 

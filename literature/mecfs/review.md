@@ -98,18 +98,18 @@ recovery-phase control group.
 
 **Modeling assumption.** MEC-CBF-AUTOREG supplies a normalized cerebral-flow
 index driven by cerebral perfusion pressure—head-level arterial pressure minus
-central venous back pressure—through a bounded autoregulation curve
+a fixed effective cerebral outflow pressure—through a bounded autoregulation curve
 (PAR-CEREBRAL-REFERENCE-PERFUSION-PRESSURE = 95.0 mmHg and
-PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE = 0.2), with an orthostatic
+PAR-CEREBRAL-AUTOREGULATION-RESIDUAL-SLOPE = 0.25), with an orthostatic
 impairment term (EQ-CBF-001; PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT = 0.23 in
 `mecfs-pem`, calibrated to the group mean within the 0.0–0.3 sensitivity range)
 and asymmetric decline/recovery (EQ-CBF-002;
 PAR-CEREBRAL-RECOVERY-TIME-CONSTANT raised to 240.0 s from the healthy 12.0 s).
 VAL-ME-CBF uses a broad 15–35% scenario band around the 26% group mean and
-requires a smaller healthy reduction. The healthy reduction is approximately
-0.003%, outside the broad 3–11% disclosure band around the reported 7% control
-finding; this emits an explicit warning and is not counted as successful
-control reproduction.
+requires a smaller healthy reduction. The Stage 1.3 healthy reduction is
+4.961%, inside the broad 3–11% disclosure band around the reported 7% control
+finding. This remains calibration-era agreement and is not independent control
+reproduction.
 
 **Limitations (as recorded).** The evidence is single-center extracranial
 Doppler — a surrogate; the model's index is not a Doppler reconstruction and

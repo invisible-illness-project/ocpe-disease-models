@@ -4,8 +4,6 @@ diseases: [POTS]
 mechanisms: [MEC-VOL-HYPOVOLEMIA, MEC-VASC-CONSTRICTION, MEC-AUT-HYPERADRENERGIC, MEC-VASC-POOLING]
 evidence_claims: [CLM-POTS-PHENOTYPES, CLM-POTS-HYPOVOLEMIA, CLM-POTS-HYPERADRENERGIC, CLM-POTS-CRITERIA]
 parameter_overrides:
-  splanchnic_hydrostatic_height_cm: 8.0
-  lower_limb_hydrostatic_height_cm: 16.0
   blood_volume_factor: 0.96
   aortic_baroreflex_pressure_setpoint: 96.0
   carotid_baroreflex_pressure_setpoint: 96.0

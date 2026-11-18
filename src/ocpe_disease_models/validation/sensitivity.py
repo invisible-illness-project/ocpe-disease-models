@@ -83,6 +83,7 @@ def local_sensitivity(root: Path | None = None) -> list[dict[str, Any]]:
                 "splanchnic_venous_compliance": (-0.10, 0.10),
                 "lower_limb_venous_compliance": (-0.10, 0.10),
                 "other_systemic_venous_compliance": (-0.10, 0.10),
+                "dependent_venous_stiffening_mmHg_per_mL2": (-0.25, 0.25),
                 "splanchnic_venous_resistance": (-0.10, 0.10),
                 "lower_limb_venous_resistance": (-0.10, 0.10),
                 "other_systemic_venous_resistance": (-0.10, 0.10),
@@ -100,6 +101,28 @@ def local_sensitivity(root: Path | None = None) -> list[dict[str, Any]]:
                 "vagal_time_constant": (-0.25, 0.25),
                 "cerebral_autoregulation_residual_slope": (-0.25, 0.25),
                 "cerebral_outflow_pressure_mmHg": (-0.25, 0.25),
+            },
+        ),
+        (
+            "healthy-reference",
+            "head-up-tilt",
+            {
+                "splanchnic_venous_compliance": (-0.10, 0.10),
+                "lower_limb_venous_compliance": (-0.10, 0.10),
+                "other_systemic_venous_compliance": (-0.10, 0.10),
+                "dependent_venous_stiffening_mmHg_per_mL2": (-0.25, 0.25),
+                "splanchnic_resistance_sympathetic_gain": (-0.10, 0.10),
+                "lower_limb_resistance_sympathetic_gain": (-0.10, 0.10),
+                "other_systemic_resistance_sympathetic_gain": (-0.10, 0.10),
+                "splanchnic_hydrostatic_height_cm": (-0.10, 0.10),
+                "lower_limb_hydrostatic_height_cm": (-0.10, 0.10),
+                "other_systemic_hydrostatic_height_cm": (-0.10, 0.10),
+                "aortic_baroreflex_weight": (-0.10, 0.10),
+                "carotid_baroreflex_weight": (-0.10, 0.10),
+                "heart_rate_cardiac_sympathetic_gain": (-0.25, 0.25),
+                "heart_rate_vagal_gain": (-0.25, 0.25),
+                "contractility_sympathetic_gain": (-0.25, 0.25),
+                "cerebral_autoregulation_residual_slope": (-0.25, 0.25),
             },
         ),
         (
@@ -140,7 +163,14 @@ def local_sensitivity(root: Path | None = None) -> list[dict[str, Any]]:
             perturbed: dict[str, dict[str, Any]] = {}
             for label, fraction in zip(("low", "high"), fractions, strict=True):
                 value = nominal * (1.0 + fraction)
-                row, _ = _run(phenotype_id, protocol_id, {parameter: value}, root)
+                overrides = {parameter: value}
+                # The two baroreflex weights are a bounded pair, not
+                # independently variable parameters.
+                if parameter == "aortic_baroreflex_weight":
+                    overrides["carotid_baroreflex_weight"] = 1.0 - value
+                elif parameter == "carotid_baroreflex_weight":
+                    overrides["aortic_baroreflex_weight"] = 1.0 - value
+                row, _ = _run(phenotype_id, protocol_id, overrides, root)
                 row.update(
                     {
                         "analysis": "local_sensitivity",
@@ -177,9 +207,13 @@ def uncertainty_grid(root: Path | None = None) -> list[dict[str, Any]]:
             "eds-heds-vascular",
             "head-up-tilt",
             "lower_limb_venous_compliance",
-            (50.0, 58.333333333333336, 66.66666666666667),
+            (60.0, 70.0, 80.0),
             "lower_limb_hydrostatic_height_cm",
-            (7.0 / 0.7356, 9.0 / 0.7356, 11.0 / 0.7356),
+            (
+                26.6 - 1.0 / 0.7356,
+                26.6,
+                26.6 + 1.0 / 0.7356,
+            ),
         ),
         (
             "mecfs-pem",

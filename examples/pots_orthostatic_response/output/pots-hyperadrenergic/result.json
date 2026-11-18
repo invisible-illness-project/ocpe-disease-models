@@ -1,7 +1,7 @@
 {
   "metadata": {
     "model": "ocpe:disease-models/shared-physiology",
-    "model_version": "0.3.0",
+    "model_version": "0.4.0",
     "phenotype_id": "pots-hyperadrenergic",
     "provenance": {
       "phenotypes": [
@@ -21,7 +21,7 @@
         "Chronotropic gain is calibrated to demonstrate a hyperadrenergic response; plasma catecholamine dynamics are not modeled."
       ]
     },
-    "configuration_sha256": "722ba315990f57b14349c08b47f084312918143354ee5ae5c67ccb211c1cc61d",
+    "configuration_sha256": "28cee316899b469e8a8e691703dc08af8bc80a2dcc7de0250bc632e8c7c07955",
     "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
     "python_version": "3.12.12",
     "numpy_version": "2.2.5",
@@ -40,9 +40,10 @@
   "parameters": {
     "arterial_compliance": 1.5,
     "central_venous_compliance": 140.0,
-    "splanchnic_venous_compliance": 70.0,
-    "lower_limb_venous_compliance": 50.0,
-    "other_systemic_venous_compliance": 50.0,
+    "splanchnic_venous_compliance": 90.0,
+    "lower_limb_venous_compliance": 60.0,
+    "other_systemic_venous_compliance": 20.0,
+    "dependent_venous_stiffening_mmHg_per_mL2": 0.0001,
     "splanchnic_arterial_resistance": 4.315684315684315,
     "lower_limb_arterial_resistance": 4.315684315684315,
     "other_systemic_arterial_resistance": 2.1578421578421576,
@@ -51,10 +52,10 @@
     "other_systemic_venous_resistance": 0.11988011988011989,
     "splanchnic_resistance_sympathetic_gain": 1.0,
     "lower_limb_resistance_sympathetic_gain": 1.0,
-    "other_systemic_resistance_sympathetic_gain": 0.8,
-    "splanchnic_hydrostatic_height_cm": 8.0,
-    "lower_limb_hydrostatic_height_cm": 16.0,
-    "other_systemic_hydrostatic_height_cm": 11.0,
+    "other_systemic_resistance_sympathetic_gain": 0.45,
+    "splanchnic_hydrostatic_height_cm": 13.3,
+    "lower_limb_hydrostatic_height_cm": 26.6,
+    "other_systemic_hydrostatic_height_cm": 4.5,
     "arterial_volume_initial": 150.0,
     "central_venous_volume_initial": 700.0,
     "splanchnic_venous_pressure_initial": 10.0,
@@ -63,7 +64,7 @@
     "blood_volume_factor": 1.0,
     "stroke_volume_max": 100.0,
     "stroke_volume_half_volume": 300.0,
-    "contractility_sympathetic_gain": 0.25,
+    "contractility_sympathetic_gain": 0.1,
     "heart_rate_rest": 71.5,
     "heart_rate_cardiac_sympathetic_gain": 70.0,
     "heart_rate_vagal_gain": 70.0,
@@ -71,8 +72,8 @@
     "carotid_baroreflex_pressure_setpoint": 100.0,
     "aortic_baroreflex_pressure_scale": 1.5,
     "carotid_baroreflex_pressure_scale": 1.5,
-    "aortic_baroreflex_weight": 0.25,
-    "carotid_baroreflex_weight": 0.75,
+    "aortic_baroreflex_weight": 0.35,
+    "carotid_baroreflex_weight": 0.65,
     "aortic_baroreceptor_height_cm": 0.0,
     "carotid_baroreceptor_height_cm": 25.0,
     "cardiac_sympathetic_time_constant": 6.0,
@@ -88,7 +89,7 @@
     "brain_hydrostatic_height_cm": 27.0,
     "cerebral_outflow_pressure_mmHg": 5.0,
     "cerebral_reference_perfusion_pressure": 95.0,
-    "cerebral_autoregulation_residual_slope": 0.4,
+    "cerebral_autoregulation_residual_slope": 0.25,
     "cerebral_orthostatic_impairment": 0.0,
     "cerebral_decline_time_constant": 5.0,
     "cerebral_recovery_time_constant": 12.0,
@@ -151,13 +152,13 @@
     "phenotype_id": "pots-hyperadrenergic",
     "duration_s": 600.0,
     "samples": 301,
-    "heart_rate_final_bpm": 114.67497131898078,
-    "mean_arterial_pressure_final_mmHg": 110.80131094889883,
+    "heart_rate_final_bpm": 104.93024379277165,
+    "mean_arterial_pressure_final_mmHg": 109.673101972369,
     "pem_peak": 0.0,
     "functional_capacity_final": 1.0,
     "heart_rate_baseline_bpm": 71.5,
-    "heart_rate_upright_peak_bpm": 117.19761443622693,
-    "orthostatic_heart_rate_rise_bpm": 45.69761443622693,
-    "orthostatic_heart_rate_sustained_rise_bpm": 43.17497131898692
+    "heart_rate_upright_peak_bpm": 106.31853262063044,
+    "orthostatic_heart_rate_rise_bpm": 34.818532620630435,
+    "orthostatic_heart_rate_sustained_rise_bpm": 33.4302437927722
   }
 }
