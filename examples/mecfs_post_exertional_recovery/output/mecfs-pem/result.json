@@ -24,7 +24,7 @@
         "PEM state transitions reproduce reported temporal features but do not assert a molecular cause."
       ]
     },
-    "configuration_sha256": "2127fb99ad6b8ec1b273e7629d1f061feaf14419fe7bfd77b0d56f77cfeb8fc9",
+    "configuration_sha256": "4cfd072b49918e7a4f44d31e5ab4878e1db54ce830a3c9b0f776cf863b143a14",
     "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
     "python_version": "3.12.12",
     "numpy_version": "2.2.5",
@@ -57,7 +57,7 @@
     "other_systemic_resistance_sympathetic_gain": 0.8,
     "splanchnic_hydrostatic_height_cm": 6.117455138662316,
     "lower_limb_hydrostatic_height_cm": 12.234910277324632,
-    "other_systemic_hydrostatic_height_cm": 0.0,
+    "other_systemic_hydrostatic_height_cm": 11.0,
     "arterial_volume_initial": 150.0,
     "central_venous_volume_initial": 700.0,
     "splanchnic_venous_pressure_initial": 10.0,
@@ -91,7 +91,7 @@
     "brain_hydrostatic_height_cm": 27.0,
     "cerebral_outflow_pressure_mmHg": 5.0,
     "cerebral_reference_perfusion_pressure": 95.0,
-    "cerebral_autoregulation_residual_slope": 0.2,
+    "cerebral_autoregulation_residual_slope": 0.4,
     "cerebral_orthostatic_impairment": 0.23,
     "cerebral_decline_time_constant": 5.0,
     "cerebral_recovery_time_constant": 240.0,
@@ -190,9 +190,9 @@
     "phenotype_id": "mecfs-pem",
     "duration_s": 604800.0,
     "samples": 1009,
-    "heart_rate_final_bpm": 70.0000010121417,
-    "mean_arterial_pressure_final_mmHg": 99.99999926832811,
-    "pem_peak": 0.1752343429345128,
-    "functional_capacity_final": 0.7980790360366129
+    "heart_rate_final_bpm": 69.99999963434338,
+    "mean_arterial_pressure_final_mmHg": 100.00000024382206,
+    "pem_peak": 0.1752343413033255,
+    "functional_capacity_final": 0.7980790361314518
   }
 }

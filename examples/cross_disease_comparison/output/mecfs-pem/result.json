@@ -24,7 +24,7 @@
         "PEM state transitions reproduce reported temporal features but do not assert a molecular cause."
       ]
     },
-    "configuration_sha256": "715b2f680e2004cdab74c07e875a44dc6a66b7baa33c0b3a731aaf1a4fd71784",
+    "configuration_sha256": "619a29dffdfa9e4e91c321b742b63f3682c42270a875b3760b6143a745b75a7e",
     "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
     "python_version": "3.12.12",
     "numpy_version": "2.2.5",
@@ -57,7 +57,7 @@
     "other_systemic_resistance_sympathetic_gain": 0.8,
     "splanchnic_hydrostatic_height_cm": 6.117455138662316,
     "lower_limb_hydrostatic_height_cm": 12.234910277324632,
-    "other_systemic_hydrostatic_height_cm": 0.0,
+    "other_systemic_hydrostatic_height_cm": 11.0,
     "arterial_volume_initial": 150.0,
     "central_venous_volume_initial": 700.0,
     "splanchnic_venous_pressure_initial": 10.0,
@@ -91,7 +91,7 @@
     "brain_hydrostatic_height_cm": 27.0,
     "cerebral_outflow_pressure_mmHg": 5.0,
     "cerebral_reference_perfusion_pressure": 95.0,
-    "cerebral_autoregulation_residual_slope": 0.2,
+    "cerebral_autoregulation_residual_slope": 0.4,
     "cerebral_orthostatic_impairment": 0.23,
     "cerebral_decline_time_constant": 5.0,
     "cerebral_recovery_time_constant": 240.0,
@@ -154,13 +154,13 @@
     "phenotype_id": "mecfs-pem",
     "duration_s": 600.0,
     "samples": 301,
-    "heart_rate_final_bpm": 79.96405751869422,
-    "mean_arterial_pressure_final_mmHg": 111.27295626118138,
+    "heart_rate_final_bpm": 85.86969109507118,
+    "mean_arterial_pressure_final_mmHg": 109.96313204973825,
     "pem_peak": 0.0,
     "functional_capacity_final": 0.8064102564102564,
     "heart_rate_baseline_bpm": 70.0,
-    "heart_rate_upright_peak_bpm": 79.99117904107246,
-    "orthostatic_heart_rate_rise_bpm": 9.991179041072456,
-    "orthostatic_heart_rate_sustained_rise_bpm": 9.96405751869466
+    "heart_rate_upright_peak_bpm": 86.70315827635898,
+    "orthostatic_heart_rate_rise_bpm": 16.703158276358977,
+    "orthostatic_heart_rate_sustained_rise_bpm": 15.869691095073804
   }
 }

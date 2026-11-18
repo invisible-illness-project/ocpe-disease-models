@@ -30,42 +30,6 @@ MAP_FLOOR_MMHG = 70.0
 POTS_PHENOTYPES = ("pots-neuropathic", "pots-hyperadrenergic", "pots-hypovolemic")
 
 
-def _stage11_hr_xfail(measured_sustained_bpm: float):
-    """Documented Stage 1.1 expected failure of the unchanged >=30 bpm criterion.
-
-    The Stage 1.1 model resolves posture as a 70 degree tilt with dual
-    aortic/carotid baroreflex weighting; with the current phenotype parameter
-    sets the sustained orthostatic HR rise measures ``measured_sustained_bpm``
-    bpm, below the 30 bpm scenario threshold. The threshold is intentionally
-    NOT weakened and no pass-driven gain recalibration was performed: a
-    structural/evidence-based review of the phenotype parameters is pending,
-    and the failure is recorded as FAIL in the generated scientific
-    matrix/readiness report.
-    """
-    return pytest.mark.xfail(
-        reason=(
-            "Stage 1.1 expected failure: sustained orthostatic HR rise measures "
-            f"{measured_sustained_bpm:.2f} bpm with the dual-baroreflex 70-degree-tilt "
-            "model and current phenotype parameter sets, below the unchanged "
-            ">=30 bpm criterion (CLM-POTS-CRITERIA). No pass-driven recalibration "
-            "was performed; structural/evidence-based review of the phenotype "
-            "parameters is pending. Strict xfail keeps the criterion intact and "
-            "makes any future recovery loud."
-        ),
-        strict=True,
-    )
-
-
-# Measured Stage 1.1 sustained HR rises (bpm), recorded for the readiness report.
-STAGE11_MEASURED_SUSTAINED_RISE = {
-    "pots-neuropathic": 17.43,
-    "pots-hyperadrenergic": 19.66,
-    "pots-hypovolemic": 19.40,
-    "pots-mixed": 19.22,
-    "long-covid-autonomic": 18.93,
-}
-
-
 @pytest.fixture(scope="module")
 def pots_results(run_cached, healthy_tilt_result):
     return {
@@ -73,17 +37,7 @@ def pots_results(run_cached, healthy_tilt_result):
     }, orthostatic_metrics(healthy_tilt_result)
 
 
-@pytest.mark.parametrize(
-    "phenotype_id",
-    [
-        pytest.param(
-            pid,
-            marks=_stage11_hr_xfail(STAGE11_MEASURED_SUSTAINED_RISE[pid]),
-            id=pid,
-        )
-        for pid in POTS_PHENOTYPES
-    ],
-)
+@pytest.mark.parametrize("phenotype_id", POTS_PHENOTYPES)
 def test_orthostatic_hr_rise_at_least_30_bpm(phenotype_id, pots_results):
     """VAL-POTS-*: orthostatic HR rise >= 30 bpm (adult scenario threshold)."""
     results, _ = pots_results
@@ -146,11 +100,10 @@ def test_mixed_configuration_has_explicit_mechanism_provenance():
     assert phenotype.classification == "phenomenological_composition"
 
 
-@_stage11_hr_xfail(STAGE11_MEASURED_SUSTAINED_RISE["pots-mixed"])
 def test_mixed_hr_rise_at_least_30_bpm(run_cached, healthy_tilt_result):
     mixed = orthostatic_metrics(run_cached("pots-mixed", "head-up-tilt"))
     healthy = orthostatic_metrics(healthy_tilt_result)
-    # Non-criteria assertions run first so they still execute under the xfail.
+    # The mixed scenario must also preserve pressure and exceed the healthy response.
     assert mixed["hr_rise"] > healthy["hr_rise"]
     assert mixed["map_final"] >= MAP_FLOOR_MMHG
     assert mixed["hr_rise_sustained"] >= POTS_RISE_CRITERION_BPM, (

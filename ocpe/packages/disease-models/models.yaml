@@ -236,21 +236,21 @@ entities:
         role: parameter
         label: Splanchnic hydrostatic height (lumped heart-to-bed)
         unit: cm
-        nominal_value: 5.43773790103317
+        nominal_value: 7.0
         value_range: {min: 0.0}
         x-executable-parameter: splanchnic_hydrostatic_height_cm
       - symbol: h_gl
         role: parameter
         label: Lower-limb hydrostatic height (lumped heart-to-bed)
         unit: cm
-        nominal_value: 10.87547580206634
+        nominal_value: 14.0
         value_range: {min: 0.0}
         x-executable-parameter: lower_limb_hydrostatic_height_cm
       - symbol: h_go
         role: parameter
         label: Other-systemic hydrostatic height (lumped heart-to-bed)
         unit: cm
-        nominal_value: 0.0
+        nominal_value: 11.0
         value_range: {min: 0.0}
         x-executable-parameter: other_systemic_hydrostatic_height_cm
       # -------------------------------------------------- initial conditions
@@ -492,7 +492,7 @@ entities:
         role: parameter
         label: Cerebral autoregulation residual slope
         unit: "1"
-        nominal_value: 0.2
+        nominal_value: 0.4
         value_range: {min: 0.0, max: 1.0}
         x-executable-parameter: cerebral_autoregulation_residual_slope
       - symbol: k_oi

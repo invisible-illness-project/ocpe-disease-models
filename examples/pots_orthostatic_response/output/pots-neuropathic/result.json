@@ -24,7 +24,7 @@
         "The 0.35 resistance gain is an intentional scenario calibration below the declared 0.4-1.2 local sensitivity range, with an explicit registry range exception; it does not widen or clinically validate that range."
       ]
     },
-    "configuration_sha256": "e51faea45294e43ac60cc542136213f169b8777bb7f77cee913806180773ef30",
+    "configuration_sha256": "12955efc610abf2015b23da764e5a012bf9baecd3ba8a9b9654465e302c6bf3f",
     "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
     "python_version": "3.12.12",
     "numpy_version": "2.2.5",
@@ -55,9 +55,9 @@
     "splanchnic_resistance_sympathetic_gain": 0.35,
     "lower_limb_resistance_sympathetic_gain": 0.35,
     "other_systemic_resistance_sympathetic_gain": 0.8,
-    "splanchnic_hydrostatic_height_cm": 6.797172376291463,
-    "lower_limb_hydrostatic_height_cm": 13.594344752582925,
-    "other_systemic_hydrostatic_height_cm": 0.0,
+    "splanchnic_hydrostatic_height_cm": 8.0,
+    "lower_limb_hydrostatic_height_cm": 16.0,
+    "other_systemic_hydrostatic_height_cm": 11.0,
     "arterial_volume_initial": 150.0,
     "central_venous_volume_initial": 700.0,
     "splanchnic_venous_pressure_initial": 10.0,
@@ -91,7 +91,7 @@
     "brain_hydrostatic_height_cm": 27.0,
     "cerebral_outflow_pressure_mmHg": 5.0,
     "cerebral_reference_perfusion_pressure": 95.0,
-    "cerebral_autoregulation_residual_slope": 0.2,
+    "cerebral_autoregulation_residual_slope": 0.4,
     "cerebral_orthostatic_impairment": 0.0,
     "cerebral_decline_time_constant": 5.0,
     "cerebral_recovery_time_constant": 12.0,
@@ -154,13 +154,13 @@
     "phenotype_id": "pots-neuropathic",
     "duration_s": 600.0,
     "samples": 301,
-    "heart_rate_final_bpm": 87.42812143838977,
-    "mean_arterial_pressure_final_mmHg": 111.0930519045171,
+    "heart_rate_final_bpm": 106.72440929498511,
+    "mean_arterial_pressure_final_mmHg": 106.65326711075018,
     "pem_peak": 0.0,
     "functional_capacity_final": 1.0,
     "heart_rate_baseline_bpm": 70.0,
-    "heart_rate_upright_peak_bpm": 87.43270706442695,
-    "orthostatic_heart_rate_rise_bpm": 17.43270706442695,
-    "orthostatic_heart_rate_sustained_rise_bpm": 17.42812143839049
+    "heart_rate_upright_peak_bpm": 107.13316939082556,
+    "orthostatic_heart_rate_rise_bpm": 37.13316939082556,
+    "orthostatic_heart_rate_sustained_rise_bpm": 36.724409294991375
   }
 }

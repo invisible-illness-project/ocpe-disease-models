@@ -1,81 +1,34 @@
-# Stage 1/1.1 technical handoff and Stage 2 readiness
+# Stage 1/1.1/1.2 technical handoff and Stage 2 readiness
 
-- Release record date: 2026-11-17
+- Current remediation record date: 2026-11-18
 - Target branch: `research/initial-disease-modeling-framework`
-- Model/package version: 0.3.0 (Stage 1.1; **release validation executed** at the tested commit below — overall seven-layer scientific status **FAIL** from six preserved strict phenotype xfails; the Stage 1 0.2.0 record remains as labeled history)
+- Model/package version: 0.3.0 (Stage 1.1 architecture with Stage 1.2 scientific remediation; overall scientific readiness **PARTIAL**)
 - Model CURIE: `ocpe:disease-models/shared-physiology`
-- Validated source/configuration commit (0.3.0): `942713ef720ad0e801e71bf9bc78405cd844a739`, recorded in `validation/reports/validation-report.json` and `validation/reproducibility.json`; the Stage 1 (0.2.0) commit-bound record at `fb13cb21aa811da9babff6b271f006b8c79ec30f` is preserved in the Stage 1 documents and Git history
+- Tested Stage 1.2 source/documentation commit: `e0c7362f6d0390b64d141e44cdc0c6b3000511e1`, recorded in `validation/reports/validation-report.json` and `validation/reproducibility.json`; the subsequent release-record commit adds generated records without claiming to have been tested before it existed
+- Stage 1.2 exact base: `f85360d8337144e118eb0d2aef317fd1b949b3dd`
 - Pinned OCPE commit: `3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d`
 - Original baseline commit: `47923223d4cf2e8a9c6a1ae8cff485b9d4327dc9`
 
 This is computational research software, not a clinically validated model, diagnostic device, treatment system, synthetic wearable dataset, or flare predictor. **Stage 2 has not begun.**
 
-> **Stage 1.1 status banner.** The implementation has advanced to model
-> version 0.3.0: twelve states, five conserved stressed-volume compartments
-> (adding one residual other-systemic venous path; 25/25/50 baseline flow
-> partition; 2550 mL healthy total stressed volume), separate aortic and
-> carotid baroreceptor sensors with an integrated weighted baroreflex,
-> explicit `tilt_angle_deg` posture geometry with linear angle-only
-> transitions, a declared per-segment end-tidal CO2 input (reference
-> 40 mmHg, no posture-inferred hypocapnia, ETCO2 not exact PaCO2), and a
-> fixed 5 mmHg effective cerebral outflow pressure (neither thoracic CVP
-> nor resolved ICP). Stage 1.1 documentation lives in `docs/stage1-1/`.
-> **The deterministic 0.3.0 scientific scenario comparison matrix has been
-> executed** (`validation/stage1-1/scientific-comparison-matrix.md` /
-> `.json`): healthy 70-degree sustained CO −3.105%, SV −12.733%, HR rise
-> +7.723 bpm, end-CFI reduction 1.645%; all eight Zaidi 60/70-degree 2/5-min
-> CO/SV comparisons MISS their preserved ranges; all four POTS phenotypes
-> and Long-COVID-autonomic FAIL the unchanged ≥30 bpm sustained-HR
-> criterion (17.428–19.659 bpm); ME/CFS CFI reduction 22.913% remains
-> within the unchanged 15–35% band; cerebral pressure/CO2 isolation
-> experiments confirm pathway separability. **Release validation for 0.3.0
-> is executed** at frozen tested commit
-> `942713ef720ad0e801e71bf9bc78405cd844a739`: full suite 327 passed, 1
-> skipped (upstream OCPE checkout unavailable; strict installed-engine OCPE
-> validation separately passes with 0 errors/0 warnings), 6 xfailed,
-> 2 warnings in 341.60s; all seven layer execution statuses PASS; the
-> disease-phenotype layer's six strict expected failures keep its
-> scientific status and the overall seven-layer scientific status **FAIL**;
-> strict traceability passes 0/0/0 and strict OCPE package validation 0/0.
-> Sections A and E retain the Stage 1 (0.2.0) executed record as labeled
-> history alongside the 0.3.0 record. Version synchronization is complete
-> (`pyproject.toml`, `CITATION.cff`, `__init__.py` read 0.3.0). All Stage 1
-> misses are preserved and all 0.3.0 negative results are reported, not
-> tuned.
+> **Current Stage 1.2 status.** The implementation retains Stage 1.1's twelve states, five conserved stressed-volume compartments, residual other-systemic path, separate aortic/carotid sensors, integrated weighted baroreflex, explicit angle geometry, three autonomic effector states, and independent cerebral pressure/declared-CO2 pathways. Stage 1.2 changed only effective regional heights and the cerebral autoregulation residual slope in the shared model; POTS chronotropic gains and all scientific criteria are unchanged. Current evidence is in `docs/stage1-2/` and `validation/stage1-2/`. Healthy early CO reduction is 14.570%, sustained HR rise 15.467 bpm, pooling 302.962 mL, and CFI reduction 4.407%. All four POTS configurations and Long-COVID-autonomic pass the sustained ≥30 bpm scenario criterion with MAP floors above 70 mmHg. Six of eight Zaidi comparisons pass; the two remaining 60° CO misses are explicit. ME/CFS CFI reduction is 24.652%, within 15–35%. Full-suite execution is 343 passed and 1 skipped; strict traceability and strict OCPE validation each report zero errors/warnings. These results do not establish clinical validity. Stage 1.1 and Stage 1 records remain preserved history.
 
 ## A. Executive summary
 
-Stage 1.1 (0.3.0) retains Stage 1's differentiated autonomic pathways, explicit rhythmic muscle-pump and sustained-contraction mechanics, and phenomenological exertion/PEM cascade. Its current cardiovascular architecture conserves stressed volume across five regional compartments, including the residual other-systemic venous compartment. Explicit tilt geometry drives separate aortic, carotid, and brain-level pressures; the cerebral pathway separately represents pressure-mediated regulation and bounded regulation by declared end-tidal CO₂.
+Stage 1.2 remediated the Stage 1.1 zero-height residual-bed preload bypass and its downstream suppression of orthostatic CO/SV loss, POTS chronotropy, and cerebral-flow reduction. All ten phenotype configurations still begin at complete supine fixed points. Five-volume conservation holds analytically and in integrated tests. POTS and Long COVID autonomic scenarios are evaluated using sustained final-120-second-upright HR rise rather than peak-only responses.
 
-All ten phenotype configurations begin at complete supine fixed points. Five-volume conservation holds analytically and in integrated tests. POTS and Long COVID autonomic scenarios are evaluated using sustained final-120-second-upright HR rise rather than peak-only responses. All four POTS configurations and the Long-COVID-autonomic configuration currently miss the unchanged ≥30 bpm criterion; these failures, the healthy CO/SV discrepancies, and the other unresolved scientific limitations are preserved below rather than tuned away.
+The current commit-bound execution position is:
 
-The superseded Stage 1 (0.2.0) architecture used four compartments and four-volume conservation. Its original fixtures, validation records, and negative results remain archived as explicitly labeled history.
-
-The Stage 1.1 (0.3.0) commit-bound validation position at tested source/configuration commit `942713ef720ad0e801e71bf9bc78405cd844a739` is:
-
-- **323 tests passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s** in the complete suite; the skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable in the test environment), and strict installed-engine OCPE validation separately passes with zero errors and zero warnings;
-- all seven independently selected validation layers executed with per-layer execution status PASS; the disease-phenotype layer contains six strict expected failures, so its scientific status and the overall seven-layer scientific status are **FAIL** (`validation/reports/validation-report.json` / `.md`);
-- the two warnings are the preserved soft-anchor misses: healthy early-CO reduction 0.35% vs the 10–30% band (physiological layer) and healthy end-tilt CFI reduction 1.645% vs the 3–11% band (empirical layer);
-- strict traceability passed with zero errors, warnings, and infos on the synchronized 0.3.0 registries;
-- strict OCPE package validation passed with zero errors and warnings;
-- 59 local-sensitivity executions, 27 deterministic grid scenarios, and three fixed-total chronotropic-split scenarios completed;
-- 19 regression tests passed against fixtures regenerated with a Stage 1.1 scientific change record; and
+- **343 tests passed, 1 skipped in 351.62s** in the complete suite; the skip is the environment-dependent upstream-OCPE-checkout adapter test, while strict installed-engine OCPE validation separately passes with zero errors and zero warnings;
+- all seven independently selected validation layers execute successfully, with current machine-readable results in `validation/reports/validation-report.json` / `.md`;
+- all four POTS configurations and Long-COVID-autonomic pass directly, with no scientific expected failures;
+- healthy early CO and CFI now lie within their preserved broad bands;
+- strict traceability passes with zero errors, warnings, and infos;
+- 61 local-sensitivity executions, 27 deterministic grid scenarios, and three fixed-total chronotropic-split scenarios completed;
+- 19 regression tests passed against fixtures regenerated with a Stage 1.2 scientific change record; and
 - six demonstrations regenerated 16 persisted 0.3.0 runs.
 
-The Stage 1 (0.2.0) commit-bound validation position below is preserved as history; it was recorded at source/configuration commit `fb13cb21aa811da9babff6b271f006b8c79ec30f`:
-
-- **287 unique tests passed** in the complete suite, with two intended soft-anchor warnings (`287 passed, 2 warnings in 250.94s (0:04:10)`) (Stage 1 historical record);
-- all seven independently selected validation layers passed (Stage 1 historical record);
-- all 26 validation-registry records are PASS and bound to that tested source commit (Stage 1 historical record);
-- strict traceability passed with zero errors, warnings, and infos;
-- strict OCPE package validation passed with zero errors and warnings;
-- Ruff passed;
-- 42 local-sensitivity executions, 18 deterministic grid scenarios, and three fixed-total chronotropic-split scenarios completed (Stage 1 historical record); and
-- six demonstrations regenerated 16 persisted current-model runs (Stage 1 historical record).
-
-The subsequent validation-record commit adds these executed records and does not claim to have been tested before it existed.
-
-Two healthy empirical soft-anchor misses remain. In the Stage 1 (0.2.0) historical record, early CO reduction was approximately 5.64%, below the broad 10–30% plausibility band, and end-tilt cerebral-flow-index reduction was approximately 0.003%, below the broad 3–11% band around the reported 7% control finding, while heart-level MAP rose approximately 17.4 mmHg to 117.4 mmHg. At 0.3.0 both misses persist, re-measured: the early-CO warning is 0.35% against the unchanged 10–30% band (with sustained CO −3.105% and all eight Zaidi CO/SV comparisons MISS), the end-tilt CFI warning is 1.645% against the unchanged 3–11% band, and the healthy 70-degree upright-end MAP of ~111.332 mmHg remains a disclosed fidelity limitation rather than a validated healthy MAP response. All are reported as warnings and unresolved structural limitations, not concealed by calibration.
+The two residual 60° CO misses remain `VAL-PHYS-GRADED-TILT` scientific failures even though executable tests pass. Healthy end-tilt MAP is 108.846 mmHg versus 100 mmHg supine, pooling clears its lower band edge by only 2.962 mL, and ME/CFS/hEDS/Long-COVID-autonomic retain un-recalibrated Stage 1.1 caudal-geometry overrides. These are material limitations, not concealed calibration successes. Earlier Stage 1.1 and Stage 1 results remain commit-bound history in their respective documents and Git records.
 
 ## B. Scientific findings and interpretation
 
@@ -94,6 +47,9 @@ Detailed records are:
 - `docs/stage1-1/scientific-decision-log.md` (Stage 1.1)
 - `docs/stage1-1/validation-matrix.md` (Stage 1.1; executed at commit `942713e`, overall scientific status FAIL)
 - `docs/stage1-1/readiness-assessment.md` (Stage 1.1)
+- `docs/stage1-2/scientific-decision-log.md` (current remediation)
+- `docs/stage1-2/readiness-assessment.md` (current partial readiness)
+- `validation/stage1-2/scientific-comparison-matrix.md` / `.json` (executed before/after evidence)
 
 ## C. Implemented architecture
 
@@ -140,19 +96,9 @@ The simulation registry contains 19 protocols and 11 curated simulation records 
 
 ## E. Validation results
 
-**Stage 1.1 (0.3.0) executed record, bound to tested commit `942713ef720ad0e801e71bf9bc78405cd844a739`** (`validation/reports/validation-report.json` / `.md`; full suite 327 passed, 1 skipped, 6 xfailed, 2 warnings in 341.60s):
+**Current Stage 1.2 executed record, bound to tested source/documentation commit `e0c7362f6d0390b64d141e44cdc0c6b3000511e1`:** full suite 343 passed, 1 skipped in 351.62s; exact seven-layer selections, elapsed times, commands, and per-layer statuses are in `validation/reports/validation-report.json` / `.md` and `validation/reproducibility.json`. The disease-phenotype criteria now pass directly. The graded-tilt registry record remains **FAIL** because two 60° CO comparisons miss; overall scientific readiness is **PARTIAL**. Layer execution PASS does not erase empirical MISS rows.
 
-| Layer | Execution status | Scientific status | Result | Scope |
-|---|---|---|---|---|
-| Software | PASS | PASS | 131 passed, 1 skipped, 202 deselected in 193.81s | Configuration, serialization, failure handling, OCPE mapping, declarative/executable consistency, and regression (19 regression tests). The skip is `tests/unit/test_ocpe_adapter.py:74` (upstream OCPE checkout unavailable); strict installed-engine OCPE validation passes separately with 0 errors/0 warnings |
-| Mathematical | PASS | PASS | 45 passed, 289 deselected in 9.79s | Five-volume conservation, ten fixed points, identities, bounds, and convergence |
-| Physiological | PASS | PASS | 64 passed, 270 deselected, 1 warning in 8.23s | Orthostasis, recovery, autonomic separation, muscle mechanics, CPP/CFI, and soft anchors; the warning is the preserved healthy early-CO miss (0.35% vs the 10–30% band) |
-| Disease phenotype | PASS | **FAIL** | 29 passed, 299 deselected, 6 xfailed in 186.28s | POTS, hEDS, ME/CFS, and Long COVID configurations; six strict expected failures preserve five unchanged ≥30 bpm sustained-HR criterion misses (all four POTS phenotypes and Long-COVID-autonomic); the graded-tilt empirical anchor miss is reported separately |
-| Empirical | PASS | PASS | 10 passed, 324 deselected, 1 warning in 96.97s | Heterogeneous group-level plausibility comparisons; the warning is the preserved healthy-CFI miss (1.645% vs the 3–11% band); the eight Zaidi CO/SV MISSes are recorded in the scientific comparison matrix |
-| Sensitivity/uncertainty | PASS | PASS | 13 passed, 321 deselected in 125.21s | Regional, muscle, autonomic, cerebral, CO2, grid, and split analyses (59 local, 27 grid, 3 split scenarios) |
-| Scientific traceability | PASS | PASS | 40 passed, 294 deselected in 3.67s | Registry integrity, scientific chains, scope guards, and bibliography synchronization; strict audit 0 errors/0 warnings/0 infos |
-
-**Overall seven-layer scientific status: FAIL** — the six strict phenotype xfails are preserved scientific failures, not passes; per-layer execution PASS does not convert them.
+The Stage 1.1 executed record at `942713ef720ad0e801e71bf9bc78405cd844a739` (327 passed, 1 skipped, 6 xfailed; overall scientific status FAIL) is preserved in `docs/stage1-1/` and `validation/stage1-1/`, not represented as current.
 
 **The table below is the executed Stage 1 (0.2.0) record, bound to its tested commit, preserved as history.**
 
@@ -168,13 +114,13 @@ The simulation registry contains 19 protocols and 11 curated simulation records 
 
 Layer counts include dual-marked tests and therefore exceed the unique full-suite total when summed. Empty required selections fail by design. Exact elapsed times and commands are in `validation/reports/`.
 
-The Stage 1 regression fixture contains 16 runs and a scientific change record; the Stage 1.1 fixture regeneration (19 regression tests passed at 0.3.0) carries its own Stage 1.1 scientific change record. The original fixture and original validation snapshot under `validation/baseline/stage0/` are byte-identical to their baseline versions. No test criterion was weakened to hide the early-CO or healthy-CFI results, restore healthy CO in hypovolemia, or substitute peak-only POTS responses. The healthy-CFI control miss has its own warning; the ME/CFS 15–35% scenario band is unchanged.
+The Stage 1 regression fixture contains 16 runs and a scientific change record; the current fixture regeneration carries a Stage 1.2 scientific change record and passes 19 regression tests. Historical fixtures and validation snapshots remain preserved. No criterion was weakened to hide orthostatic CO/SV/CFI results, restore healthy CO in hypovolemia, or substitute peak-only POTS responses. The ME/CFS 15–35% scenario band is unchanged.
 
 ## F. Scientific confidence and maturity
 
 Confidence is strongest in software integrity, exact conservation, fixed-point accounting, deterministic reproducibility, and explicit provenance. It is weaker in absolute parameter identification, structural uncertainty, disease heterogeneity, and generalization beyond demonstrated scenarios.
 
-Evidence grades E0–E5 and maturity M0–M4 remain independent. Execution alone does not establish clinical maturity. No integrated disease model is assigned M4 from these results. Group-level empirical anchors overlap with calibration and are not prospective external validation. The early-CO and healthy-CFI misses, early PEM threshold-crossing caveat, reduced-order preload proxy, clipped flows, linear compliances, absent end-tidal-to-arterial CO₂ correction, and absent renal/endocrine volume-regulation mechanisms remain material limitations.
+Evidence grades E0–E5 and maturity M0–M4 remain independent. Execution alone does not establish clinical maturity. No integrated disease model is assigned M4 from these results. Group-level empirical anchors overlap with calibration and are not prospective external validation. The residual 60° CO misses, MAP over-defence, narrow pooling margin, calibration overlap, retained non-POTS geometry, early PEM threshold-crossing caveat, reduced-order preload proxy, clipped flows, linear compliances, absent end-tidal-to-arterial CO₂ correction, and absent renal/endocrine volume-regulation mechanisms remain material limitations.
 
 ## G. Stage 2 technical handoff and readiness
 
@@ -203,7 +149,7 @@ No raw ECG, PPG, HRV, respiratory, temperature, electrodermal, or accelerometry 
 | Wearable agreement validation (ICC/CCC/Bland–Altman or equivalent) | Missing |
 | Clinically meaningful synthetic wearable dataset | **Not ready** |
 
-Before Stage 2 implementation, a separate protocol must define intended use, channels, sampling and time synchronization, observation mappings, sensor/reference error structure, cohort and phenotype sampling assumptions, governance, held-out evaluation, and agreement criteria. It must explicitly address the unresolved healthy early-CO and healthy-CFI misses and the PEM onset-window caveat, and avoid converting calibrated scenario thresholds into ground-truth diagnostic labels.
+Before Stage 2 implementation, a separate protocol must define intended use, channels, sampling and time synchronization, observation mappings, sensor/reference error structure, cohort and phenotype sampling assumptions, governance, held-out evaluation, and agreement criteria. It must explicitly address the residual 60° CO misses, healthy MAP over-defence, narrow pooling margin, and PEM onset-window caveat, and avoid converting calibrated scenario thresholds into ground-truth diagnostic labels.
 
 Accordingly, the repository is **ready for reviewed Stage 2 planning, not automatic Stage 2 execution**. No Stage 2 dataset or sensor model is included here.
 
@@ -215,7 +161,7 @@ Stage 3 flare prediction is also excluded. No forecasting model, symptom label, 
 
 The unmodified Stage 0 behavior is documented in `docs/stage1/baseline-scientific-report.md`. Archived materials under `validation/baseline/stage0/` include the original regression fixture, original validation snapshot, environment, and fresh baseline test log. Historical failed physiological regimes and legacy negative findings remain historical evidence; they are not rewritten as current successes or deleted.
 
-At the Stage 1 (0.2.0) record, the declarative OCPE package describes the same 11 states, 52 parameters, four protocol inputs, equations, units, and outputs as the executable implementation. Synchronization of the declarative package and registries to the 0.3.0 revision (12 states, five volumes, the renamed/added parameters, and the new protocols) is **complete**: the strict traceability audit passes with zero errors, warnings, and infos, and strict OCPE package validation passes with zero errors and zero warnings; see `docs/stage1-1/readiness-assessment.md`. The legacy short identifier `three-compartment-cardiovascular` is retained only as an alias; the canonical CURIE is `ocpe:disease-models/shared-physiology`.
+At the Stage 1 (0.2.0) record, the declarative OCPE package describes the same 11 states, 52 parameters, four protocol inputs, equations, units, and outputs as the executable implementation. Synchronization of the declarative package and registries to the current 0.3.0 revision (12 states, five volumes, remediated hydrostatic heights, and current protocols) is **complete**: the strict traceability audit passes with zero errors, warnings, and infos, and strict OCPE package validation passes with zero errors and zero warnings; see `docs/stage1-2/readiness-assessment.md`. The legacy short identifier `three-compartment-cardiovascular` is retained only as an alias; the canonical CURIE is `ocpe:disease-models/shared-physiology`.
 
 ## J. Traceability
 
@@ -223,7 +169,7 @@ The implemented chain is:
 
 `reference → evidence claim → mechanism → equation → parameter → implementation → validation test → simulation output`.
 
-The 0.3.0 registries contain 69 references, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records (23 PASS, 6 FAIL, 0 PENDING — the FAILs are the five sustained-HR criterion records and the graded-tilt anchor record, preserved negative results), 19 protocols, and 11 simulation records; the Stage 1 (0.2.0) registries contained 64 references, 37 evidence claims, 23 mechanisms, 20 equations, 52 parameters, 26 validation records, nine protocols, and eight simulation records (preserved history). The BibTeX export contains all 69 references and has a synchronization test. Canonical reports are `validation/traceability/audit/traceability_report.json` and `.md`. Record integrity does not establish mechanism truth or clinical validity.
+The 0.3.0 registries contain 69 references, 41 evidence claims, 24 mechanisms, 22 equations, 68 parameters, 29 validation records (28 PASS, 1 FAIL, 0 PENDING — the sole FAIL is the graded-tilt record because two 60° CO comparisons remain outside their unchanged band), 19 protocols, and 11 simulation records; the Stage 1 (0.2.0) registries contained 64 references, 37 evidence claims, 23 mechanisms, 20 equations, 52 parameters, 26 validation records, nine protocols, and eight simulation records (preserved history). Stage 1.1's 23 PASS / 6 FAIL registry state also remains historical evidence. The BibTeX export contains all 69 references and has a synchronization test. Canonical reports are `validation/traceability/audit/traceability_report.json` and `.md`. Record integrity does not establish mechanism truth or clinical validity.
 
 ## K. Validation-system assessment
 

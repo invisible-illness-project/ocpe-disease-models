@@ -28,28 +28,7 @@ pytestmark = pytest.mark.phenotype
 POTS_RISE_CRITERION_BPM = 30.0
 MAP_FLOOR_MMHG = 70.0
 
-# Documented Stage 1.1 expected failure (see tests/phenotypes/test_pots.py):
-# with the dual-baroreflex 70-degree-tilt model and current phenotype parameter
-# sets, long-covid-autonomic sustains an 18.93 bpm HR rise, below the unchanged
-# >=30 bpm criterion. No pass-driven recalibration was performed; a
-# structural/evidence-based review of the phenotype parameters is pending.
-# Strict xfail keeps the criterion intact and the failure loud.
-_STAGE11_AUTONOMIC_XFAIL = pytest.mark.xfail(
-    reason=(
-        "Stage 1.1 expected failure: long-covid-autonomic sustained orthostatic "
-        "HR rise measures 18.93 bpm with the dual-baroreflex 70-degree-tilt model "
-        "and current phenotype parameter sets, below the unchanged >=30 bpm "
-        "criterion (CLM-POTS-CRITERIA). No pass-driven recalibration was "
-        "performed; structural/evidence-based review of the phenotype parameters "
-        "is pending. Strict xfail keeps the criterion intact and makes any "
-        "future recovery loud."
-    ),
-    strict=True,
-)
-
-
 # --------------------------------------------------------- VAL-LC-AUTONOMIC
-@_STAGE11_AUTONOMIC_XFAIL
 def test_autonomic_subgroup_hr_rise_at_least_30_bpm(run_cached):
     metrics = orthostatic_metrics(run_cached("long-covid-autonomic", "head-up-tilt"))
     assert metrics["hr_rise_sustained"] >= POTS_RISE_CRITERION_BPM, (
@@ -110,7 +89,6 @@ def test_functional_capacity_lower_at_matched_pem_severity():
     assert co_e == pytest.approx(co_h, rel=0.05)
 
 
-@_STAGE11_AUTONOMIC_XFAIL
 def test_no_pots_like_hr_criterion_on_exertional_subgroup(run_cached, healthy_tilt_result):
     """The exertional subgroup is not required to produce POTS-like HR rises;
     verify it is physiologically distinct from the autonomic subgroup."""
@@ -119,7 +97,7 @@ def test_no_pots_like_hr_criterion_on_exertional_subgroup(run_cached, healthy_ti
     )
     autonomic = orthostatic_metrics(run_cached("long-covid-autonomic", "head-up-tilt"))
     healthy = orthostatic_metrics(healthy_tilt_result)
-    # Subgroup-distinction assertions run before the pending >=30 bpm criterion.
+    # The autonomic subgroup must remain distinct from the exertional subgroup.
     assert exertional["hr_rise"] < POTS_RISE_CRITERION_BPM
     assert exertional["hr_rise"] == pytest.approx(healthy["hr_rise"], abs=1.0)
     assert autonomic["hr_rise_sustained"] >= POTS_RISE_CRITERION_BPM

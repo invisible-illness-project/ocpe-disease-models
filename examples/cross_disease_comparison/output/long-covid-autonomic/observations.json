@@ -4,7 +4,7 @@
   "observations": {
     "heart_rate": {
       "quantity": "ocpe:disease-models/heart-rate",
-      "value": 88.93067444480633,
+      "value": 102.57537156197382,
       "unit": "/min",
       "value_kind": "simulated",
       "model": "ocpe:disease-models/shared-physiology",
@@ -29,7 +29,7 @@
     },
     "mean_arterial_pressure": {
       "quantity": "ocpe:disease-models/mean-arterial-pressure",
-      "value": 111.3669499413163,
+      "value": 109.84905679611434,
       "unit": "mm[Hg]",
       "value_kind": "simulated",
       "model": "ocpe:disease-models/shared-physiology",
@@ -54,7 +54,7 @@
     },
     "stroke_volume": {
       "quantity": "ocpe:disease-models/stroke-volume",
-      "value": 53.39091578012299,
+      "value": 40.68198668125407,
       "unit": "mL",
       "value_kind": "simulated",
       "model": "ocpe:disease-models/shared-physiology",
@@ -79,7 +79,7 @@
     },
     "cardiac_output_l_min": {
       "quantity": "ocpe:disease-models/cardiac-output",
-      "value": 4.7480901495521906,
+      "value": 4.172969899708907,
       "unit": "L/min",
       "value_kind": "simulated",
       "model": "ocpe:disease-models/shared-physiology",
@@ -104,7 +104,7 @@
     },
     "cerebral_flow_index": {
       "quantity": "ocpe:disease-models/cerebral-flow-index",
-      "value": 0.9096883313703298,
+      "value": 0.888478063657186,
       "unit": "1",
       "value_kind": "simulated",
       "model": "ocpe:disease-models/shared-physiology",

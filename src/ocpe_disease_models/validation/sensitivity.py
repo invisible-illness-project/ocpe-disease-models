@@ -91,6 +91,7 @@ def local_sensitivity(root: Path | None = None) -> list[dict[str, Any]]:
                 "other_systemic_resistance_sympathetic_gain": (-0.10, 0.10),
                 "splanchnic_hydrostatic_height_cm": (-0.10, 0.10),
                 "lower_limb_hydrostatic_height_cm": (-0.10, 0.10),
+                "other_systemic_hydrostatic_height_cm": (-0.10, 0.10),
                 "carotid_baroreceptor_height_cm": (-0.10, 0.10),
                 "brain_hydrostatic_height_cm": (-0.10, 0.10),
                 "blood_volume_factor": (-0.10, 0.10),

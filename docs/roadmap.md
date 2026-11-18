@@ -7,35 +7,7 @@ clinically validated, and no planned work changes that.
 
 ## Current state (snapshot)
 
-- **Stage 1.1 (model version 0.3.0) release validation is executed.** The shared model now
-  has twelve states and five conserved stressed-volume compartments (adding
-  a residual other-systemic venous path with a 25/25/50 baseline flow
-  partition and 2550 mL healthy total stressed volume), separate
-  aortic/carotid baroreceptor sensors with an integrated weighted
-  baroreflex, explicit `tilt_angle_deg` posture geometry, a declared
-  segment ETCO2 input, and a fixed 5 mmHg effective cerebral outflow
-  pressure. New protocol YAMLs cover graded passive tilt (30/45/60/70),
-  active standing with sustained quiet standing, tilt-back recovery, and
-  cerebral CO2 isolation. Design, decisions, validation matrix, and
-  readiness are documented in `docs/stage1-1/`. **The deterministic 0.3.0
-  scientific scenario comparison matrix has been executed**
-  (`validation/stage1-1/scientific-comparison-matrix.md` / `.json`):
-  healthy 70-degree sustained CO −3.105%, SV −12.733%, HR rise +7.723 bpm,
-  end-CFI reduction 1.645%; all eight Zaidi CO/SV comparisons MISS their
-  preserved ranges; all four POTS phenotypes and Long-COVID-autonomic FAIL
-  the unchanged ≥30 bpm sustained-HR criterion; ME/CFS CFI reduction
-  22.913% remains within the unchanged 15–35% band; the cerebral
-  pressure/CO2 isolation experiments confirm pathway separability. Version
-  synchronization is complete (`pyproject.toml`, `CITATION.cff`,
-  `__init__.py` read 0.3.0). **Release validation is executed at frozen
-  tested commit `942713ef720ad0e801e71bf9bc78405cd844a739`**: full suite
-  327 passed, 1 skipped (upstream OCPE checkout unavailable; strict
-  installed-engine OCPE validation separately passes 0 errors/0 warnings),
-  6 xfailed, 2 warnings in 341.60s; all seven layer execution statuses are
-  PASS; the disease-phenotype layer carries six strict expected failures,
-  so its scientific status and the **overall seven-layer scientific status
-  are FAIL**. Strict traceability passes 0/0/0 and strict OCPE validation
-  0/0 on the synchronized 0.3.0 registries.
+- **Stage 1.2 scientific remediation is executed on the Stage 1.1 (model version 0.3.0) architecture.** The twelve states, five conserved stressed-volume compartments, separate aortic/carotid sensors, three autonomic effector states, explicit tilt geometry, and independent cerebral pressure/CO2 pathways are preserved. Nonzero effective dependent heights now apply to every peripheral venous bed, including the residual compartment. Healthy sustained HR rise is 15.467 bpm, early CO reduction 14.570%, caudal pooling 302.962 mL, and end-CFI reduction 4.407%; all four POTS configurations and Long-COVID-autonomic pass the unchanged sustained ≥30 bpm scenario criterion with MAP floors above 70 mmHg. Six of eight Zaidi comparisons pass; both 60° CO comparisons remain misses at 15.801% and 15.800% versus 17–20%. ME/CFS CFI reduction is 24.652%, within 15–35%. Current evidence is in `validation/stage1-2/` and `docs/stage1-2/`. Full-suite execution is **343 passed, 1 skipped**, with strict traceability 0/0/0 and strict OCPE validation 0/0. Overall scientific readiness is **PARTIAL**, not clinical readiness. Stage 1.1's eight Zaidi misses and five sustained-HR failures remain preserved as exact historical evidence, not current claims.
 - The Stage 1 (0.2.0) record below is preserved history, superseded by the
   0.3.0 record above:
   all seven validation layers passed with executable tests and independent
@@ -54,7 +26,7 @@ clinically validated, and no planned work changes that.
   0.3.0 runs. The Stage 1 four-compartment
   eleven-state revision (`docs/stage1/revised-physiological-architecture.md`)
   is historical model version 0.2.0. Deterministic sensitivity exports
-  cover **59 local, 27 grid, and 3 chronotropic-split scenarios** at 0.3.0
+  cover **61 local, 27 grid, and 3 chronotropic-split scenarios** at 0.3.0
   (the Stage 1 record of 42 local, 18 grid, 3 split is preserved history); no
   scenario in the current hEDS grid ends below the 70 mmHg MAP screening
   threshold, while the pre-revision below-70-mmHg failures remain preserved
@@ -67,17 +39,7 @@ clinically validated, and no planned work changes that.
 
 ## Near-term
 
-1. **Resolve the preserved 0.3.0 scientific failures.** The Stage 1.1
-   release validation cycle itself is complete (executed at commit
-   `942713ef720ad0e801e71bf9bc78405cd844a739`; see
-   `docs/stage1-1/validation-matrix.md` and
-   `docs/stage1-1/readiness-assessment.md`); what remains is the science.
-   The executed negative results (eight Zaidi CO/SV MISSes, five
-   sustained-HR criterion FAILs, persistent healthy CO/SV and CFI misses,
-   and the disclosed ~111.332 mmHg healthy 70-degree upright-end MAP
-   fidelity limitation) are carried forward unchanged. Resolving the POTS
-   sustained-HR criterion failure requires reviewed scientific work, not
-   threshold widening or gain tuning.
+1. **Resolve the remaining Stage 1.2 empirical limitations.** The two 60° CO misses, healthy end-tilt MAP over-defence (108.846 mmHg versus 100 mmHg supine), narrow caudal-pooling margin, and un-recalibrated non-POTS geometry overrides require reviewed scientific work. Do not widen bands, add expected failures, or tune chronotropic gains to conceal them. Stage 1.1's more extensive failures remain preserved history rather than open current results.
 2. **Obtain independent empirical benchmarks** with no calibration overlap,
    explicit construct mapping, and prospective acceptance metrics before any
    integrated disease model is assigned M4.
@@ -97,10 +59,10 @@ clinically validated, and no planned work changes that.
    commit-specific records; never silence an empty or failed layer.
 7. **Deepen structural validation** of PEM kinetics, orthostatic recovery,
    comorbidity composition, and cross-disease heterogeneity before expanding
-   the parameter space. This includes the retained healthy early-CO miss, the
-   near-zero healthy end-tilt CFI response despite the approximately 7% control
-   finding, and the approximately 5.7-hour post-bout PEM threshold crossing
-   relative to the 12–48-hour daily-activity onset window.
+   the parameter space. This includes the residual 60° CO misses, healthy
+   pressure over-defence, narrow pooling margin, and approximately 5.7-hour
+   post-bout PEM threshold crossing relative to the 12–48-hour daily-activity
+   onset window.
 
 ## Explicitly out of current scope
 
@@ -139,20 +101,9 @@ resolution.
   current revised grid has no such failures. The assumed lower-limb
   venous-compliance mechanism is nevertheless hypothesis-sensitive and
   remains M2.
-- **Healthy orthostatic response.** The Stage 1 (0.2.0) record—early CO
-  reduction ~5.64% against a broad 10–30% soft anchor and end-tilt CFI
-  reduction ~0.003% against the reported 7% control finding and broad 3–11%
-  disclosure band—remains preserved. The executed 0.3.0 scenario matrix
-  re-measured both: sustained CO −3.105% with all eight Zaidi CO/SV
-  comparisons MISS, and end-tilt CFI reduction 1.645%, still below the
-  unchanged 3–11% band. Both misses are unresolved structural limitations;
-  the ME/CFS scenario-band assertion was not weakened to accommodate them
-  (0.3.0 ME/CFS reduction 22.913%, within the unchanged 15–35% band).
-- **POTS sustained-HR criterion (new 0.3.0 negative result).** All four
-  POTS phenotypes and Long-COVID-autonomic FAIL the unchanged ≥30 bpm
-  sustained-rise criterion (17.428–19.659 bpm) that the 0.2.0 calibrated
-  scenarios met; preserved as a negative result pending reviewed scientific
-  resolution.
+- **Healthy orthostatic response.** Stage 1.2 brings early CO, sustained HR, pooling, and CFI within their preserved broad bands, but the result is calibration agreement rather than independent validation. The 60° CO reductions remain below 17–20%, healthy end-tilt MAP remains 8.846 mmHg above supine, and pooling is only 2.962 mL above the lower band edge. Stage 1.1 and Stage 1 healthy misses remain unchanged historical evidence.
+- **POTS and Long-COVID-autonomic scenario interpretation.** All four POTS configurations and Long-COVID-autonomic now pass the unchanged sustained ≥30 bpm criterion without gain changes. This does not establish patient-level identification, symptom persistence, medication response, or mechanistic subtype validation. Hyperadrenergic POTS still lacks an independent catecholamine/non-baroreflex state. Stage 1.1's five criterion failures remain historical negative results.
+- **Retained non-POTS geometry.** ME/CFS, hEDS, and Long-COVID-autonomic keep Stage 1.1 fixed-offset-derived splanchnic/lower-limb heights and were not recalibrated against the new healthy/POTS values. Their ratios to healthy are inherited scenario assumptions, not anatomical or severity claims.
 - **Empirical anchor curation.** Which additional published group-level values
   enter `validation/fixtures/`, and under what licenses/permissions, is
   undecided. Existing anchors are literature-derived plausibility checks, not

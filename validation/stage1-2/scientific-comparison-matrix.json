@@ -1,0 +1,1867 @@
+{
+  "schema_version": "1.0",
+  "stage": "1.2",
+  "execution_date": "2026-11-18",
+  "base_commit": "f85360d8337144e118eb0d2aef317fd1b949b3dd",
+  "remediated_source_commit": "6034d11d4737bca5d3b6d853900a69690ab90907",
+  "model_version": "0.3.0",
+  "clinical_status": "Deterministic research scenarios only; no clinical validity, diagnostic accuracy, treatment efficacy, or patient-specific calibration is established.",
+  "baseline_method": "The Stage 1.1 records were executed in a detached worktree at the exact base commit. Stage 1.2 records were executed independently at the remediation commit; no historical report was used as numerical input.",
+  "parameter_changes": {
+    "healthy-reference": {
+      "splanchnic_hydrostatic_height_cm": [
+        5.43773790103317,
+        7.0
+      ],
+      "lower_limb_hydrostatic_height_cm": [
+        10.87547580206634,
+        14.0
+      ],
+      "other_systemic_hydrostatic_height_cm": [
+        0.0,
+        11.0
+      ],
+      "cerebral_autoregulation_residual_slope": [
+        0.2,
+        0.4
+      ]
+    },
+    "all_four_pots_phenotypes": {
+      "splanchnic_hydrostatic_height_cm": [
+        6.797172376291463,
+        8.0
+      ],
+      "lower_limb_hydrostatic_height_cm": [
+        13.594344752582925,
+        16.0
+      ]
+    }
+  },
+  "unchanged_architecture": [
+    "five-volume conservation",
+    "twelve-state layout",
+    "explicit tilt-angle hydrostatics",
+    "separate aortic and carotid sensors",
+    "three autonomic effector states",
+    "independent cerebral pressure and CO2 pathways",
+    "residual systemic compartment"
+  ],
+  "healthy_summary": {
+    "stage1_1": {
+      "sustained_heart_rate_rise_bpm": 7.722920700873132,
+      "early_min_cardiac_output_reduction_pct": 0.34550598997202314,
+      "caudal_pooling_mL": 365.6794312093584,
+      "residual_systemic_volume_change_mL": -101.65560862691314,
+      "central_venous_volume_change_mL": -281.02131184826504,
+      "end_mean_arterial_pressure_mmHg": 111.33165951054735,
+      "end_cerebral_flow_reduction_pct": 1.6450995376266597
+    },
+    "stage1_2": {
+      "sustained_heart_rate_rise_bpm": 15.467102279605612,
+      "early_min_cardiac_output_reduction_pct": 14.569981670782798,
+      "caudal_pooling_mL": 302.96214317717465,
+      "residual_systemic_volume_change_mL": 162.1522714120929,
+      "central_venous_volume_change_mL": -478.38374781120706,
+      "end_mean_arterial_pressure_mmHg": 108.8462221479583,
+      "end_cerebral_flow_reduction_pct": 4.406794410484471
+    },
+    "acceptance_bands": {
+      "sustained_hr_rise_bpm": [
+        3,
+        20
+      ],
+      "early_co_reduction_pct": [
+        10,
+        30
+      ],
+      "caudal_pooling_mL": [
+        300,
+        900
+      ],
+      "end_cfi_reduction_pct": [
+        3,
+        11
+      ]
+    }
+  },
+  "pots_and_long_covid_autonomic_checks": [
+    {
+      "phenotype_id": "pots-neuropathic",
+      "stage1_1_sustained_hr_rise_bpm": 17.42812143839049,
+      "stage1_2_sustained_hr_rise_bpm": 36.724409294991375,
+      "threshold_bpm": 30.0,
+      "status": "PASS",
+      "stage1_2_minimum_upright_map_mmHg": 99.99999752976267,
+      "map_floor_status": "PASS",
+      "maximum_five_volume_drift_mL": 2.7284841053187847e-12
+    },
+    {
+      "phenotype_id": "pots-hyperadrenergic",
+      "stage1_1_sustained_hr_rise_bpm": 19.65945245782548,
+      "stage1_2_sustained_hr_rise_bpm": 43.17497131898692,
+      "threshold_bpm": 30.0,
+      "status": "PASS",
+      "stage1_2_minimum_upright_map_mmHg": 99.99999833497044,
+      "map_floor_status": "PASS",
+      "maximum_five_volume_drift_mL": 1.3642420526593924e-12
+    },
+    {
+      "phenotype_id": "pots-hypovolemic",
+      "stage1_1_sustained_hr_rise_bpm": 19.39894026699878,
+      "stage1_2_sustained_hr_rise_bpm": 41.79322750432746,
+      "threshold_bpm": 30.0,
+      "status": "PASS",
+      "stage1_2_minimum_upright_map_mmHg": 92.00000010391801,
+      "map_floor_status": "PASS",
+      "maximum_five_volume_drift_mL": 1.3642420526593924e-12
+    },
+    {
+      "phenotype_id": "pots-mixed",
+      "stage1_1_sustained_hr_rise_bpm": 19.21581003939147,
+      "stage1_2_sustained_hr_rise_bpm": 41.68635496317691,
+      "threshold_bpm": 30.0,
+      "status": "PASS",
+      "stage1_2_minimum_upright_map_mmHg": 95.99999894058796,
+      "map_floor_status": "PASS",
+      "maximum_five_volume_drift_mL": 4.547473508864641e-12
+    },
+    {
+      "phenotype_id": "long-covid-autonomic",
+      "stage1_1_sustained_hr_rise_bpm": 18.930674444805533,
+      "stage1_2_sustained_hr_rise_bpm": 32.57537156198046,
+      "threshold_bpm": 30.0,
+      "status": "PASS",
+      "stage1_2_minimum_upright_map_mmHg": 100.00000000477735,
+      "map_floor_status": "PASS",
+      "maximum_five_volume_drift_mL": 3.183231456205249e-12
+    }
+  ],
+  "zaidi_comparisons": [
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-60",
+      "offset_s": 120.0,
+      "metric": "cardiac_output",
+      "published_reduction_band_pct": [
+        17.0,
+        20.0
+      ],
+      "stage1_1_reduction_pct": 2.5706045879509265,
+      "stage1_2_reduction_pct": 15.800914851547915,
+      "status": "MISS"
+    },
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-60",
+      "offset_s": 120.0,
+      "metric": "stroke_volume",
+      "published_reduction_band_pct": [
+        28.0,
+        34.0
+      ],
+      "stage1_1_reduction_pct": 11.374777997678375,
+      "stage1_2_reduction_pct": 29.214899577573252,
+      "status": "PASS"
+    },
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-60",
+      "offset_s": 300.0,
+      "metric": "cardiac_output",
+      "published_reduction_band_pct": [
+        17.0,
+        20.0
+      ],
+      "stage1_1_reduction_pct": 2.5704943592448464,
+      "stage1_2_reduction_pct": 15.799697068999322,
+      "status": "MISS"
+    },
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-60",
+      "offset_s": 300.0,
+      "metric": "stroke_volume",
+      "published_reduction_band_pct": [
+        28.0,
+        34.0
+      ],
+      "stage1_1_reduction_pct": 11.374590363788833,
+      "stage1_2_reduction_pct": 29.213515782614135,
+      "status": "PASS"
+    },
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-70",
+      "offset_s": 120.0,
+      "metric": "cardiac_output",
+      "published_reduction_band_pct": [
+        17.0,
+        20.0
+      ],
+      "stage1_1_reduction_pct": 3.1051300699692015,
+      "stage1_2_reduction_pct": 18.73162761642107,
+      "status": "PASS"
+    },
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-70",
+      "offset_s": 120.0,
+      "metric": "stroke_volume",
+      "published_reduction_band_pct": [
+        28.0,
+        34.0
+      ],
+      "stage1_1_reduction_pct": 12.733162351041765,
+      "stage1_2_reduction_pct": 33.43927342160484,
+      "status": "PASS"
+    },
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-70",
+      "offset_s": 300.0,
+      "metric": "cardiac_output",
+      "published_reduction_band_pct": [
+        17.0,
+        20.0
+      ],
+      "stage1_1_reduction_pct": 3.104996778398954,
+      "stage1_2_reduction_pct": 18.730214640174502,
+      "status": "PASS"
+    },
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-70",
+      "offset_s": 300.0,
+      "metric": "stroke_volume",
+      "published_reduction_band_pct": [
+        28.0,
+        34.0
+      ],
+      "stage1_1_reduction_pct": 12.732947188151929,
+      "stage1_2_reduction_pct": 33.43772254641137,
+      "status": "PASS"
+    }
+  ],
+  "remaining_misses": [
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-60",
+      "offset_s": 120.0,
+      "metric": "cardiac_output",
+      "published_reduction_band_pct": [
+        17.0,
+        20.0
+      ],
+      "stage1_1_reduction_pct": 2.5706045879509265,
+      "stage1_2_reduction_pct": 15.800914851547915,
+      "status": "MISS"
+    },
+    {
+      "reference_id": "REF-ZAIDI-2000",
+      "protocol_id": "passive-tilt-60",
+      "offset_s": 300.0,
+      "metric": "cardiac_output",
+      "published_reduction_band_pct": [
+        17.0,
+        20.0
+      ],
+      "stage1_1_reduction_pct": 2.5704943592448464,
+      "stage1_2_reduction_pct": 15.799697068999322,
+      "status": "MISS"
+    }
+  ],
+  "limitations": [
+    "Both 60-degree cardiac-output reductions remain below the preserved 17-20% group band at two and five minutes.",
+    "Healthy heart-level MAP remains above its supine value at end tilt; the integrated reflex and reduced-order compensatory structure still over-defend pressure.",
+    "Hyperadrenergic POTS still lacks an independent non-baroreflex sympathetic/catecholamine state.",
+    "The residual-systemic height and other revised heights are effective calibration parameters, not measured anatomical lengths.",
+    "The cerebral residual slope 0.4 is a calibration choice inside its existing supported range, not an independently identified human autoregulation coefficient.",
+    "Deterministic sensitivity grids are not synthetic patients, population distributions, or probabilistic uncertainty estimates."
+  ],
+  "records": {
+    "stage1_1": [
+      {
+        "phenotype_id": "healthy-reference",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "2eef21d43c778c191137ffbd3b5ffd2ff5d7e12dac7d8f7b7fdd2a8715ab669e",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 7.722920700873132,
+        "early_min_cardiac_output_reduction_pct": 0.34550598997202314,
+        "end_stroke_volume_reduction_pct": 12.732947187212714,
+        "end_cardiac_output_reduction_pct": 3.1049967776122886,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 111.33165951054735,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999811882434,
+        "end_cerebral_flow_reduction_pct": 1.6450995376266597,
+        "caudal_pooling_mL": 365.6794312093584,
+        "central_venous_volume_change_mL": -281.02131184826504,
+        "residual_systemic_volume_change_mL": -101.65560862691314,
+        "maximum_five_volume_drift_mL": 2.7284841053187847e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1051300699646953
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 12.73316235108983
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1049967783988857
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 12.73294718815188
+          }
+        ]
+      },
+      {
+        "phenotype_id": "healthy-reference",
+        "protocol_id": "tilt-recovery",
+        "configuration_sha256": "d2038c1e58a854149823f616ac27b93271ae1aff119c0be38cda62448aa7225e",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 7.722920693770973,
+        "early_min_cardiac_output_reduction_pct": 0.34550598997202314,
+        "end_stroke_volume_reduction_pct": 12.732947204518013,
+        "end_cardiac_output_reduction_pct": 3.1049973369239847,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 111.33165952508341,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999811882434,
+        "end_cerebral_flow_reduction_pct": 1.6450995369469479,
+        "caudal_pooling_mL": 365.6794312007163,
+        "central_venous_volume_change_mL": -281.02131184142394,
+        "residual_systemic_volume_change_mL": -101.65560862725664,
+        "maximum_five_volume_drift_mL": 2.7284841053187847e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1051300699646953
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 12.73316235108983
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1049967783988857
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 12.73294718815188
+          }
+        ]
+      },
+      {
+        "phenotype_id": "healthy-reference",
+        "protocol_id": "passive-tilt-60",
+        "configuration_sha256": "c87191b57d8cd14e6606f1aee65b16ca6c213149eba804c139f928efcf2e2a74",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 6.953837763140072,
+        "early_min_cardiac_output_reduction_pct": -5.9568323802857165e-06,
+        "end_stroke_volume_reduction_pct": 11.374590362940529,
+        "end_cardiac_output_reduction_pct": 2.570494358541705,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 110.49339201919688,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999921313719,
+        "end_cerebral_flow_reduction_pct": 1.4965027816600585,
+        "caudal_pooling_mL": 337.6415215847038,
+        "central_venous_volume_change_mL": -260.10265566136326,
+        "residual_systemic_volume_change_mL": -93.2789539521329,
+        "maximum_five_volume_drift_mL": 3.637978807091713e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 2.5706045879509265
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 11.374777997678375
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 2.5704943592448464
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 11.374590363788833
+          }
+        ]
+      },
+      {
+        "phenotype_id": "healthy-reference",
+        "protocol_id": "passive-tilt-70",
+        "configuration_sha256": "18809e06b6613164f6b62dd5d7b88762b04b83a8a458d6d6a8851dc80fc3747d",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 7.722920700873104,
+        "early_min_cardiac_output_reduction_pct": 0.34551043057804254,
+        "end_stroke_volume_reduction_pct": 12.732947187212682,
+        "end_cardiac_output_reduction_pct": 3.1049967776122878,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 111.33165951054734,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999968140482,
+        "end_cerebral_flow_reduction_pct": 1.645099537626682,
+        "caudal_pooling_mL": 365.6794312093575,
+        "central_venous_volume_change_mL": -281.02131184826413,
+        "residual_systemic_volume_change_mL": -101.65560862691257,
+        "maximum_five_volume_drift_mL": 2.7284841053187847e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1051300699692015
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 12.733162351041765
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.104996778398954
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 12.732947188151929
+          }
+        ]
+      },
+      {
+        "phenotype_id": "pots-neuropathic",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "e51faea45294e43ac60cc542136213f169b8777bb7f77cee913806180773ef30",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 17.42812143839049,
+        "early_min_cardiac_output_reduction_pct": -5.819973949303171e-06,
+        "end_stroke_volume_reduction_pct": 20.725293499442643,
+        "end_cardiac_output_reduction_pct": 0.9880190439509142,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 111.09305190451617,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.9999996090048,
+        "end_cerebral_flow_reduction_pct": 1.702283785139691,
+        "caudal_pooling_mL": 485.5340608888679,
+        "central_venous_volume_change_mL": -366.73958912333853,
+        "residual_systemic_volume_change_mL": -135.43404962230358,
+        "maximum_five_volume_drift_mL": 1.8189894035458565e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 0.9878863586336524
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 20.725342712398977
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 0.9880190444956366
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 20.725293500225998
+          }
+        ]
+      },
+      {
+        "phenotype_id": "pots-hyperadrenergic",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "339e1b0ce697b20aefa44dac50297dc13403d44ec6edae258bd613d6647148b3",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 71.5,
+        "sustained_heart_rate_rise_bpm": 19.65945245782548,
+        "early_min_cardiac_output_reduction_pct": -0.00013740596846441582,
+        "end_stroke_volume_reduction_pct": 21.683423662407467,
+        "end_cardiac_output_reduction_pct": 0.1497032544592002,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 112.09489882422473,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00002942609387,
+        "end_cerebral_flow_reduction_pct": 1.463816599876866,
+        "caudal_pooling_mL": 462.56017694246964,
+        "central_venous_volume_change_mL": -362.21371121459913,
+        "residual_systemic_volume_change_mL": -118.48881396421513,
+        "maximum_five_volume_drift_mL": 1.3642420526593924e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 0.1498712202790073
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 21.68383126326528
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 0.14970325518365568
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 21.68342366341932
+          }
+        ]
+      },
+      {
+        "phenotype_id": "pots-hypovolemic",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "503092300bf61844811d0cfb4aac3f4aca6b032393b3a303f71db17fe9916204",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 19.39894026699878,
+        "early_min_cardiac_output_reduction_pct": 3.2594795892548115e-05,
+        "end_stroke_volume_reduction_pct": 24.42729772501884,
+        "end_cardiac_output_reduction_pct": 3.4840071929043246,
+        "baseline_mean_arterial_pressure_mmHg": 92.0,
+        "end_mean_arterial_pressure_mmHg": 100.93656535217565,
+        "minimum_upright_mean_arterial_pressure_mmHg": 91.99999956654902,
+        "end_cerebral_flow_reduction_pct": 2.628427800796106,
+        "caudal_pooling_mL": 458.9669476722056,
+        "central_venous_volume_change_mL": -349.31311706369127,
+        "residual_systemic_volume_change_mL": -123.05867863677935,
+        "maximum_five_volume_drift_mL": 1.8189894035458565e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.4841821370589705
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 24.427665327633722
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.4840071933250596
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 24.427297725564053
+          }
+        ]
+      },
+      {
+        "phenotype_id": "pots-mixed",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "c1f99f25fe2ea248357c6694a866d807f22dcf3ffa59b8793307da34a172a5be",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.00000000000023,
+        "sustained_heart_rate_rise_bpm": 19.21581003939147,
+        "early_min_cardiac_output_reduction_pct": -1.3966254645515684e-05,
+        "end_stroke_volume_reduction_pct": 22.805774422110545,
+        "end_cardiac_output_reduction_pct": 1.6150662100731632,
+        "baseline_mean_arterial_pressure_mmHg": 95.99999999999949,
+        "end_mean_arterial_pressure_mmHg": 106.53002629193792,
+        "minimum_upright_mean_arterial_pressure_mmHg": 96.0000007688041,
+        "end_cerebral_flow_reduction_pct": 1.9909911962442315,
+        "caudal_pooling_mL": 474.15806904195443,
+        "central_venous_volume_change_mL": -360.72127056625305,
+        "residual_systemic_volume_change_mL": -129.23183791360862,
+        "maximum_five_volume_drift_mL": 1.8189894035458565e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 1.6151025569303652
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 22.80601986554529
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 1.615066210598848
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 22.805774422835213
+          }
+        ]
+      },
+      {
+        "phenotype_id": "long-covid-autonomic",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "07613c31996b43ed15598d5ad40c2b5431dbed4085a12faef79b25f31ea5907e",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 18.930674444805533,
+        "early_min_cardiac_output_reduction_pct": -8.968779569358402e-07,
+        "end_stroke_volume_reduction_pct": 23.727263171252872,
+        "end_cardiac_output_reduction_pct": 3.1002010295471205,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 111.36694994131255,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00000000191534,
+        "end_cerebral_flow_reduction_pct": 9.031166862966977,
+        "caudal_pooling_mL": 508.38653346132776,
+        "central_venous_volume_change_mL": -388.02633625044854,
+        "residual_systemic_volume_change_mL": -137.41062212285476,
+        "maximum_five_volume_drift_mL": 2.7284841053187847e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1004123314186978
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 23.72773581747546
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1002010308391657
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 23.72726317298079
+          }
+        ]
+      },
+      {
+        "phenotype_id": "long-covid-exertional",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "a32752944d93db8d3e8e346586ce254f0ebc3a94b759f4991df6078f561c2d28",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 7.722920700873132,
+        "early_min_cardiac_output_reduction_pct": 0.34550598997202314,
+        "end_stroke_volume_reduction_pct": 12.732947187212714,
+        "end_cardiac_output_reduction_pct": 3.1049967776122886,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 111.33165951054735,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999811882434,
+        "end_cerebral_flow_reduction_pct": 1.6450995376266597,
+        "caudal_pooling_mL": 365.6794312093584,
+        "central_venous_volume_change_mL": -281.02131184826504,
+        "residual_systemic_volume_change_mL": -101.65560862691314,
+        "maximum_five_volume_drift_mL": 2.7284841053187847e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1051300699646953
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 12.73316235108983
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.1049967783988857
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 12.73294718815188
+          }
+        ]
+      },
+      {
+        "phenotype_id": "eds-heds-vascular",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "7ba1612282a0e560f7682c405255d62673a1cb3437f757cbb8032d9695c52e55",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 12.447860414913436,
+        "early_min_cardiac_output_reduction_pct": 1.4591071295417723e-06,
+        "end_stroke_volume_reduction_pct": 17.887794782110344,
+        "end_cardiac_output_reduction_pct": 3.2860623690720505,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 111.19450916648924,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00000005272396,
+        "end_cerebral_flow_reduction_pct": 1.6779387621306707,
+        "caudal_pooling_mL": 445.69589581860464,
+        "central_venous_volume_change_mL": -338.56083560228075,
+        "residual_systemic_volume_change_mL": -123.92682396605608,
+        "maximum_five_volume_drift_mL": 2.2737367544323206e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.28641716394224
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 17.888439804862465
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.2860623733603815
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 17.887794787695587
+          }
+        ]
+      },
+      {
+        "phenotype_id": "mecfs-pem",
+        "protocol_id": "tilt-recovery",
+        "configuration_sha256": "ef3c3c607806613aee622daa300c99d5b899875a67ee04e9ed1ac986ef7d7ed4",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 9.964057526485647,
+        "early_min_cardiac_output_reduction_pct": 0.4790873754782344,
+        "end_stroke_volume_reduction_pct": 15.662968472951622,
+        "end_cardiac_output_reduction_pct": 3.658124570486006,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 111.27295626184491,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00000000511021,
+        "end_cerebral_flow_reduction_pct": 22.91349671795603,
+        "caudal_pooling_mL": 411.84923186441097,
+        "central_venous_volume_change_mL": -314.53150444154574,
+        "residual_systemic_volume_change_mL": -114.22716181473442,
+        "maximum_five_volume_drift_mL": 1.8189894035458565e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.658288423839431
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 15.66324818447432
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 3.6581251380341393
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 15.662968468870762
+          }
+        ]
+      }
+    ],
+    "stage1_2": [
+      {
+        "phenotype_id": "healthy-reference",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "6dc649333785544a63cc2761a9c7675e23b18705a786bae9f656007fff66807e",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 15.467102279605612,
+        "early_min_cardiac_output_reduction_pct": 14.569981670782798,
+        "end_stroke_volume_reduction_pct": 33.43772254153532,
+        "end_cardiac_output_reduction_pct": 18.730214635629856,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 108.8462221479583,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00000000102882,
+        "end_cerebral_flow_reduction_pct": 4.406794410484471,
+        "caudal_pooling_mL": 302.96214317717465,
+        "central_venous_volume_change_mL": -478.38374781120706,
+        "residual_systemic_volume_change_mL": 162.1522714120929,
+        "maximum_five_volume_drift_mL": 3.637978807091713e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 18.731627616396224
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 33.43927342157803
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 18.730214640174978
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 33.43772254641154
+          }
+        ]
+      },
+      {
+        "phenotype_id": "healthy-reference",
+        "protocol_id": "tilt-recovery",
+        "configuration_sha256": "2ca6ced23ca3e76f8886a35f6b9eaaee7de73944a7e7db0427bbe4aa01b6fa8c",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 15.467102278197444,
+        "early_min_cardiac_output_reduction_pct": 14.569981670782798,
+        "end_stroke_volume_reduction_pct": 33.437722431426025,
+        "end_cardiac_output_reduction_pct": 18.730214582870808,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 108.8462221479959,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00000000102882,
+        "end_cerebral_flow_reduction_pct": 4.40679440977515,
+        "caudal_pooling_mL": 302.962143171629,
+        "central_venous_volume_change_mL": -478.3837477998646,
+        "residual_systemic_volume_change_mL": 162.15227140629054,
+        "maximum_five_volume_drift_mL": 5.002220859751105e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 18.731627616396224
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 33.43927342157803
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 18.730214640174978
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 33.43772254641154
+          }
+        ]
+      },
+      {
+        "phenotype_id": "healthy-reference",
+        "protocol_id": "passive-tilt-60",
+        "configuration_sha256": "f6fc119d9705892742435590c0b1d0c84638a99c84815dfd4a56563042bb8324",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 13.264782398037497,
+        "early_min_cardiac_output_reduction_pct": 11.429510707092753,
+        "end_stroke_volume_reduction_pct": 29.21351577824538,
+        "end_cardiac_output_reduction_pct": 15.799697065052015,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 108.75035711522295,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999906519207,
+        "end_cerebral_flow_reduction_pct": 3.758453742172696,
+        "caudal_pooling_mL": 282.88357599532526,
+        "central_venous_volume_change_mL": -446.93268081526196,
+        "residual_systemic_volume_change_mL": 150.92356914710354,
+        "maximum_five_volume_drift_mL": 1.3642420526593924e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 15.800914851547915
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 29.214899577573252
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 15.799697068999322
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 29.213515782614135
+          }
+        ]
+      },
+      {
+        "phenotype_id": "healthy-reference",
+        "protocol_id": "passive-tilt-70",
+        "configuration_sha256": "a4e6b0b7ad7428b0a8227ec5d97e68868f7873b057501ad686250452e159df40",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 15.467102279605427,
+        "early_min_cardiac_output_reduction_pct": 14.569967909441255,
+        "end_stroke_volume_reduction_pct": 33.437722541535166,
+        "end_cardiac_output_reduction_pct": 18.730214635629785,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 108.84622214795833,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999942829247,
+        "end_cerebral_flow_reduction_pct": 4.40679441048445,
+        "caudal_pooling_mL": 302.9621431771732,
+        "central_venous_volume_change_mL": -478.383747811204,
+        "residual_systemic_volume_change_mL": 162.15227141209607,
+        "maximum_five_volume_drift_mL": 2.2737367544323206e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 18.73162761642107
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 33.43927342160484
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 18.730214640174502
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 33.43772254641137
+          }
+        ]
+      },
+      {
+        "phenotype_id": "pots-neuropathic",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "12955efc610abf2015b23da764e5a012bf9baecd3ba8a9b9654465e302c6bf3f",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 36.724409294991375,
+        "early_min_cardiac_output_reduction_pct": 12.006478704278008,
+        "end_stroke_volume_reduction_pct": 45.77903587442948,
+        "end_cardiac_output_reduction_pct": 17.33285188991294,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 106.65326711075018,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999752976267,
+        "end_cerebral_flow_reduction_pct": 5.471977023988616,
+        "caudal_pooling_mL": 408.4386464628702,
+        "central_venous_volume_change_mL": -545.1286899085109,
+        "residual_systemic_volume_change_mL": 126.71014277952224,
+        "maximum_five_volume_drift_mL": 2.7284841053187847e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 17.33412706297726
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 45.7805210418014
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 17.33285189464251
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 45.77903587930391
+          }
+        ]
+      },
+      {
+        "phenotype_id": "pots-hyperadrenergic",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "722ba315990f57b14349c08b47f084312918143354ee5ae5c67ccb211c1cc61d",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 71.5,
+        "sustained_heart_rate_rise_bpm": 43.17497131898692,
+        "early_min_cardiac_output_reduction_pct": 9.192424945353084,
+        "end_stroke_volume_reduction_pct": 47.10159352587952,
+        "end_cardiac_output_reduction_pct": 15.159115451195067,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 110.80131094889883,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999833497044,
+        "end_cerebral_flow_reduction_pct": 3.483329267544033,
+        "caudal_pooling_mL": 372.5909737960561,
+        "central_venous_volume_change_mL": -542.8336316375446,
+        "residual_systemic_volume_change_mL": 154.04069141813955,
+        "maximum_five_volume_drift_mL": 1.3642420526593924e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 15.160646938616145
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 47.10327941628729
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 15.15911545466702
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 47.101593529563104
+          }
+        ]
+      },
+      {
+        "phenotype_id": "pots-hypovolemic",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "15bd4876b70b6832e56f55a094f67d7c15b5baa3d570d579f47c2d76ead7bbe0",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 41.79322750432746,
+        "early_min_cardiac_output_reduction_pct": 18.506681690919386,
+        "end_stroke_volume_reduction_pct": 52.00552045258785,
+        "end_cardiac_output_reduction_pct": 23.350603271492236,
+        "baseline_mean_arterial_pressure_mmHg": 92.0,
+        "end_mean_arterial_pressure_mmHg": 94.63381086561607,
+        "minimum_upright_mean_arterial_pressure_mmHg": 92.00000010391801,
+        "end_cerebral_flow_reduction_pct": 8.688565190675742,
+        "caudal_pooling_mL": 365.10861753413053,
+        "central_venous_volume_change_mL": -514.6956020252771,
+        "residual_systemic_volume_change_mL": 145.63626819272406,
+        "maximum_five_volume_drift_mL": 1.3642420526593924e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 23.35199543472112
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 52.00691988383874
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 23.350603273447636
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 52.00552045445955
+          }
+        ]
+      },
+      {
+        "phenotype_id": "pots-mixed",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "391b73c81c714ef6ca9364295c727b9e9ad8e194d40bcc34966aac9b124d68df",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.00000000000023,
+        "sustained_heart_rate_rise_bpm": 41.68635496317691,
+        "early_min_cardiac_output_reduction_pct": 14.232123070593229,
+        "end_stroke_volume_reduction_pct": 49.56675841249573,
+        "end_cardiac_output_reduction_pct": 19.53278683020785,
+        "baseline_mean_arterial_pressure_mmHg": 95.99999999999949,
+        "end_mean_arterial_pressure_mmHg": 101.75928420599168,
+        "minimum_upright_mean_arterial_pressure_mmHg": 95.99999894058796,
+        "end_cerebral_flow_reduction_pct": 6.350105116092639,
+        "caudal_pooling_mL": 388.9758262556132,
+        "central_venous_volume_change_mL": -533.5532547181836,
+        "residual_systemic_volume_change_mL": 135.93850215358606,
+        "maximum_five_volume_drift_mL": 4.547473508864641e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 19.53420531134801
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 49.56828643510321
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 19.532786833395733
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 49.566758415667216
+          }
+        ]
+      },
+      {
+        "phenotype_id": "long-covid-autonomic",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "b937699d2624f5fca95db0440b93caa915a1c186c97f9a64381b1802f9d07bed",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 32.57537156198046,
+        "early_min_cardiac_output_reduction_pct": 9.580101739332793,
+        "end_stroke_volume_reduction_pct": 41.88287616963705,
+        "end_cardiac_output_reduction_pct": 14.837348985532511,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 109.84905679611427,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00000000477735,
+        "end_cerebral_flow_reduction_pct": 11.152193634281382,
+        "caudal_pooling_mL": 346.45971957457846,
+        "central_venous_volume_change_mL": -519.088938695684,
+        "residual_systemic_volume_change_mL": 157.85563392693223,
+        "maximum_five_volume_drift_mL": 3.183231456205249e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 14.838868577067677
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 41.88464837521907
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 14.837348990272018
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 41.882876174924675
+          }
+        ]
+      },
+      {
+        "phenotype_id": "long-covid-exertional",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "7c5d07332313bab2551c08fc95e03d376c56db22641f1fc82686aa8ecdaaf8af",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 15.467102279605612,
+        "early_min_cardiac_output_reduction_pct": 14.569981670782798,
+        "end_stroke_volume_reduction_pct": 33.43772254153532,
+        "end_cardiac_output_reduction_pct": 18.730214635629856,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 108.8462221479583,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00000000102882,
+        "end_cerebral_flow_reduction_pct": 4.406794410484471,
+        "caudal_pooling_mL": 302.96214317717465,
+        "central_venous_volume_change_mL": -478.38374781120706,
+        "residual_systemic_volume_change_mL": 162.1522714120929,
+        "maximum_five_volume_drift_mL": 3.637978807091713e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 18.731627616396224
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 33.43927342157803
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 18.730214640174978
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 33.43772254641154
+          }
+        ]
+      },
+      {
+        "phenotype_id": "eds-heds-vascular",
+        "protocol_id": "head-up-tilt",
+        "configuration_sha256": "88c92d427a4a5c2f2a072d8ebd7f6f6600051c886a7101d6e1e7f861a434bda2",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 19.88342798902916,
+        "early_min_cardiac_output_reduction_pct": 9.451273772052726,
+        "end_stroke_volume_reduction_pct": 32.86478969416235,
+        "end_cardiac_output_reduction_pct": 13.795102270680854,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 109.76968253061601,
+        "minimum_upright_mean_arterial_pressure_mmHg": 99.99999990418625,
+        "end_cerebral_flow_reduction_pct": 3.9675967096584386,
+        "caudal_pooling_mL": 281.5535037553914,
+        "central_venous_volume_change_mL": -469.9727877621133,
+        "residual_systemic_volume_change_mL": 173.76476021080384,
+        "maximum_five_volume_drift_mL": 3.637978807091713e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 13.796335129632656
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 32.86630469863824
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 13.795102279240378
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 32.86478970421807
+          }
+        ]
+      },
+      {
+        "phenotype_id": "mecfs-pem",
+        "protocol_id": "tilt-recovery",
+        "configuration_sha256": "64f39a47f44791778ccdbb9313773ccaae727449c874274365ed665f26f19338",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 2.0,
+          "max_step": 2.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "baseline_window_s": [
+          100.0,
+          118.0
+        ],
+        "upright_window_s": [
+          120,
+          600
+        ],
+        "baseline_heart_rate_bpm": 70.0,
+        "sustained_heart_rate_rise_bpm": 15.869691090177142,
+        "early_min_cardiac_output_reduction_pct": 10.344840380289394,
+        "end_stroke_volume_reduction_pct": 29.994116916951178,
+        "end_cardiac_output_reduction_pct": 14.123092367591932,
+        "baseline_mean_arterial_pressure_mmHg": 100.0,
+        "end_mean_arterial_pressure_mmHg": 109.96313204912269,
+        "minimum_upright_mean_arterial_pressure_mmHg": 100.00000000000638,
+        "end_cerebral_flow_reduction_pct": 24.6519822544374,
+        "caudal_pooling_mL": 252.9578243250695,
+        "central_venous_volume_change_mL": -450.53361738749544,
+        "residual_systemic_volume_change_mL": 182.63109498790584,
+        "maximum_five_volume_drift_mL": 4.547473508864641e-12,
+        "points": [
+          {
+            "offset_s": 120.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 14.124279697692197
+          },
+          {
+            "offset_s": 120.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 29.99548540007862
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "cardiac_output",
+            "reduction_pct": 14.123092270622756
+          },
+          {
+            "offset_s": 300.0,
+            "metric": "stroke_volume",
+            "reduction_pct": 29.99411708259108
+          }
+        ]
+      }
+    ]
+  },
+  "cerebral_pressure_co2_experiments": {
+    "stage1_1": [
+      {
+        "protocol_id": "pressure-reduction",
+        "configuration_sha256": "2399d51f9d6bdaac9e85ef1b154d7a0e7cdefb55c29dd10d4dd48232252c208b",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 111.33165951054735,
+          "brain_arterial_pressure": 92.66823643059428,
+          "cerebral_perfusion_pressure": 87.66823643059428,
+          "end_tidal_co2_mmHg": 40.0,
+          "cerebral_pressure_target": 0.983549004623734,
+          "cerebral_co2_factor": 1.0,
+          "cerebral_flow_target": 0.983549004623734,
+          "cerebral_flow_index": 0.9835490046237334
+        },
+        "maximum_five_volume_drift_mL": 2.7284841053187847e-12
+      },
+      {
+        "protocol_id": "co2-reduction",
+        "configuration_sha256": "ba0cbe091f2a7527bcf6efc1d494c5c07290621985bd47ce8b60d37fc2aae710",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 100.0,
+          "brain_arterial_pressure": 100.0,
+          "cerebral_perfusion_pressure": 95.0,
+          "end_tidal_co2_mmHg": 30.0,
+          "cerebral_pressure_target": 1.0,
+          "cerebral_co2_factor": 0.7046880897187134,
+          "cerebral_flow_target": 0.7046880897187134,
+          "cerebral_flow_index": 0.7046880897187137
+        },
+        "maximum_five_volume_drift_mL": 0.0
+      },
+      {
+        "protocol_id": "combined-pressure-co2-reduction",
+        "configuration_sha256": "74e40ef8f2ea05a971f9982e960b66647536829254486427a21313442dbd9690",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 111.33165951054735,
+          "brain_arterial_pressure": 92.66823643059428,
+          "cerebral_perfusion_pressure": 87.66823643059428,
+          "end_tidal_co2_mmHg": 30.0,
+          "cerebral_pressure_target": 0.983549004623734,
+          "cerebral_co2_factor": 0.7046880897187134,
+          "cerebral_flow_target": 0.6930952692130411,
+          "cerebral_flow_index": 0.6930952692130405
+        },
+        "maximum_five_volume_drift_mL": 2.2737367544323206e-12
+      },
+      {
+        "protocol_id": "pressure-recovery-persistent-hypocapnia",
+        "configuration_sha256": "014ec461908ae7bbcbf12feff8dda49fdf3eb4f03b745efdae7bd145738f8de5",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 100.0,
+          "brain_arterial_pressure": 100.0,
+          "cerebral_perfusion_pressure": 95.0,
+          "end_tidal_co2_mmHg": 30.0,
+          "cerebral_pressure_target": 1.0,
+          "cerebral_co2_factor": 0.7046880897187134,
+          "cerebral_flow_target": 0.7046880897187134,
+          "cerebral_flow_index": 0.7046880897187129
+        },
+        "maximum_five_volume_drift_mL": 2.2737367544323206e-12
+      },
+      {
+        "protocol_id": "co2-recovery-persistent-pressure-reduction",
+        "configuration_sha256": "5a7be607d362e3b78a730c4bb7fd27e6f8febf35e4895d2fa08397471c32c048",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 111.33165951054735,
+          "brain_arterial_pressure": 92.66823643059428,
+          "cerebral_perfusion_pressure": 87.66823643059428,
+          "end_tidal_co2_mmHg": 40.0,
+          "cerebral_pressure_target": 0.983549004623734,
+          "cerebral_co2_factor": 1.0,
+          "cerebral_flow_target": 0.983549004623734,
+          "cerebral_flow_index": 0.9835490046237334
+        },
+        "maximum_five_volume_drift_mL": 2.2737367544323206e-12
+      }
+    ],
+    "stage1_2": [
+      {
+        "protocol_id": "pressure-reduction",
+        "configuration_sha256": "31c5e1aaf29f22ca2ff573a0fba266385d550f440d3223e08159cc1d13a58920",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 108.84622214795836,
+          "brain_arterial_pressure": 90.18279906800527,
+          "cerebral_perfusion_pressure": 85.18279906800527,
+          "end_tidal_co2_mmHg": 40.0,
+          "cerebral_pressure_target": 0.9559320558951558,
+          "cerebral_co2_factor": 1.0,
+          "cerebral_flow_target": 0.9559320558951558,
+          "cerebral_flow_index": 0.9559320558951554
+        },
+        "maximum_five_volume_drift_mL": 2.2737367544323206e-12
+      },
+      {
+        "protocol_id": "co2-reduction",
+        "configuration_sha256": "0343bf08dacea6b6f43111a2cf56732b013b2e12d4689c4840f9f828f3f95e72",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 100.0,
+          "brain_arterial_pressure": 100.0,
+          "cerebral_perfusion_pressure": 95.0,
+          "end_tidal_co2_mmHg": 30.0,
+          "cerebral_pressure_target": 1.0,
+          "cerebral_co2_factor": 0.7046880897187134,
+          "cerebral_flow_target": 0.7046880897187134,
+          "cerebral_flow_index": 0.7046880897187137
+        },
+        "maximum_five_volume_drift_mL": 0.0
+      },
+      {
+        "protocol_id": "combined-pressure-co2-reduction",
+        "configuration_sha256": "8638dbc535a1d5ef8a95ef180d6c843b8566731675a530b2231c3376302bbf8b",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 108.84622214795826,
+          "brain_arterial_pressure": 90.18279906800518,
+          "cerebral_perfusion_pressure": 85.18279906800518,
+          "end_tidal_co2_mmHg": 30.0,
+          "cerebral_pressure_target": 0.9559320558951554,
+          "cerebral_co2_factor": 0.7046880897187134,
+          "cerebral_flow_target": 0.6736339343696395,
+          "cerebral_flow_index": 0.673633934369639
+        },
+        "maximum_five_volume_drift_mL": 5.4569682106375694e-12
+      },
+      {
+        "protocol_id": "pressure-recovery-persistent-hypocapnia",
+        "configuration_sha256": "3f458fd19081e2241d1201a10ef4d4d66bc2e67749c6d04a9b9bf1c56a4dcaf6",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 100.0,
+          "brain_arterial_pressure": 100.0,
+          "cerebral_perfusion_pressure": 95.0,
+          "end_tidal_co2_mmHg": 30.0,
+          "cerebral_pressure_target": 1.0,
+          "cerebral_co2_factor": 0.7046880897187134,
+          "cerebral_flow_target": 0.7046880897187134,
+          "cerebral_flow_index": 0.7046880897187131
+        },
+        "maximum_five_volume_drift_mL": 8.185452315956354e-12
+      },
+      {
+        "protocol_id": "co2-recovery-persistent-pressure-reduction",
+        "configuration_sha256": "6b18b0589f625152a168032f39a3756667ee7b82d0a51df5cb9606a4bcd0d786",
+        "solver": {
+          "method": "DOP853",
+          "sample_interval": 1.0,
+          "max_step": 1.0,
+          "rtol": 1e-07,
+          "atol": 1e-08,
+          "seed": 0
+        },
+        "final": {
+          "mean_arterial_pressure": 108.84622214795827,
+          "brain_arterial_pressure": 90.18279906800518,
+          "cerebral_perfusion_pressure": 85.18279906800518,
+          "end_tidal_co2_mmHg": 40.0,
+          "cerebral_pressure_target": 0.9559320558951554,
+          "cerebral_co2_factor": 1.0,
+          "cerebral_flow_target": 0.9559320558951554,
+          "cerebral_flow_index": 0.9559320558951548
+        },
+        "maximum_five_volume_drift_mL": 5.4569682106375694e-12
+      }
+    ]
+  }
+}

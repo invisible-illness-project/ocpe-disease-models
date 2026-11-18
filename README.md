@@ -6,7 +6,7 @@ Literature-grounded, executable research models of POTS, hEDS-associated orthost
 
 ## What is implemented
 
-- A beat-averaged, volume-conserving cardiovascular and autonomic model (Stage 1.1, twelve states) with five conservative stressed-volume compartments (arterial, central venous, splanchnic venous, lower-limb venous, and one aggregated residual systemic venous bed), differentiated vagal, cardiac-sympathetic, and vascular-sympathetic effector states, an explicit rhythmic skeletal-muscle pump, an independent sustained-contraction venous impediment, preload-dependent stroke volume, separate aortic/carotid baroreceptor and brain-level pressures, explicit tilt-angle and end-tidal-CO2 protocol inputs, bounded CO2-dependent cerebral regulation, and a normalized cerebral-flow index (CFI).
+- A beat-averaged, volume-conserving cardiovascular and autonomic model (Stage 1.1 architecture with Stage 1.2 scientific remediation, twelve states) with five conservative stressed-volume compartments (arterial, central venous, splanchnic venous, lower-limb venous, and one aggregated residual systemic venous bed), differentiated vagal, cardiac-sympathetic, and vascular-sympathetic effector states, an explicit rhythmic skeletal-muscle pump, an independent sustained-contraction venous impediment, preload-dependent stroke volume, separate aortic/carotid baroreceptor and brain-level pressures, explicit tilt-angle and end-tidal-CO2 protocol inputs, bounded CO2-dependent cerebral regulation, and a normalized cerebral-flow index (CFI). Stage 1.2 assigns every peripheral venous bed an effective dependent height, removing the Stage 1.1 residual-bed preload bypass without changing the governing equations.
 - POTS neuropathic, hyperadrenergic, hypovolemic, and explicitly mixed configurations.
 - An exploratory hEDS lower-limb venous-compliance scenario (migrated from the original aggregated peripheral-compliance scenario); it does not generalize to other EDS subtypes or treat arterial elasticity as venous compliance.
 - A phenomenological ME/CFS exertion → delayed stress → PEM → reduced subsequent capacity cascade with asymmetric recovery.
@@ -46,14 +46,16 @@ python scripts/simulate.py simulate \
 
 ```bash
 pytest -q
-python scripts/audit_traceability.py --root . --strict
+python scripts/audit_traceability.py --root . --strict --deterministic \
+  --out-dir validation/traceability/audit
 ocpe validate ocpe/packages/disease-models --strict
 python scripts/run_sensitivity.py
-python scripts/run_stage1_1_validation.py
-python scripts/run_validation.py
+python scripts/run_validation.py --no-analysis
 ```
 
-The seven layers—software, mathematical, physiological, disease phenotype, empirical, sensitivity/uncertainty, and scientific traceability—are reported separately. Empty test selections, missing references, failed scenarios, and strict-audit warnings are not converted into passes. See `docs/validation/validation-runbook.md` and `validation/reports/validation-report.md` for the executed snapshot.
+The Stage 1.1 matrix writer is a historical reproduction command, not part of the current default validation sequence; it must not overwrite Stage 1.2 evidence.
+
+The seven layers—software, mathematical, physiological, disease phenotype, empirical, sensitivity/uncertainty, and scientific traceability—are reported separately. Empty test selections, missing references, failed scenarios, and strict-audit warnings are not converted into passes. See `docs/validation/validation-runbook.md`, `validation/reports/validation-report.md`, and `validation/stage1-2/scientific-comparison-matrix.md` for the executed snapshots. Stage 1.2 retains two explicit 60° cardiac-output comparison misses even though its activated regression tests pass.
 
 ## Scientific map
 
@@ -83,7 +85,9 @@ The Stage 1 design and review record lives under `docs/stage1/`:
 - `docs/stage1/literature-and-evidence-matrix.md` — evidence-to-mechanism decisions for the revision.
 - `docs/stage1/revised-physiological-architecture.md` — the reviewed four-compartment eleven-state Stage 1 architecture and calibration record, preserved as history.
 
-The current Stage 1.1 architecture, scientific decisions, validation matrix, and readiness assessment live under `docs/stage1-1/`; its generated time-resolved scientific comparison is under `validation/stage1-1/`.
+The Stage 1.1 architecture, scientific decisions, validation matrix, and readiness assessment are preserved under `docs/stage1-1/`; its generated time-resolved scientific comparison remains under `validation/stage1-1/`.
+
+The current Stage 1.2 root-cause analysis, calibration decisions, rejected alternatives, exact before/after metrics, and readiness assessment are under `docs/stage1-2/` and `validation/stage1-2/`. Six of eight preserved Zaidi comparisons now pass; the two 60° cardiac-output misses and persistent healthy MAP over-defence remain disclosed. All four POTS configurations and Long-COVID-autonomic pass their sustained-HR scenario criteria without chronotropic-gain changes.
 
 ## Scope
 

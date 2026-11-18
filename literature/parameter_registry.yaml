@@ -748,8 +748,8 @@ parameters:
   name: splanchnic hydrostatic height
   symbol: splanchnic_hydrostatic_height_cm
   model_field: splanchnic_hydrostatic_height_cm
-  healthy_reference_value: 5.43773790103317
-  value: 5.43773790103317
+  healthy_reference_value: 7.0
+  value: 7.0
   units: cm
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
@@ -757,9 +757,9 @@ parameters:
   - CLM-ORTHO-SPLANCHNIC
   - CLM-ORTHO-HYDROSTATIC
   - CLM-POTS-POOLING
-  estimation_method: Stage 1.1 migration of the Stage 1 fixed 4.0 mmHg splanchnic gravity offset (height =
-    offset / 0.7356 mmHg/cm) into a lumped heart-to-bed height scaled by sin(tilt angle); the height is lumped
-    regional geometry, not a measured hydrostatic column.
+  estimation_method: Stage 1.2 scenario calibration of the lumped heart-to-bed geometry, constrained by
+    preserved healthy early cardiac-output, late stroke-volume and caudal-pooling plausibility bands. The height
+    is scaled by sin(tilt angle); it is effective regional geometry, not a measured hydrostatic column.
   supported_range:
     min: 4.078303425774877
     max: 8.156606851549755
@@ -792,21 +792,24 @@ parameters:
       value: 6.117455138662316
       config: phenotypes/mecfs/mecfs-pem.yaml
     pots-hyperadrenergic:
-      value: 6.797172376291463
+      value: 8.0
       config: phenotypes/pots/pots-hyperadrenergic.yaml
     pots-hypovolemic:
-      value: 6.797172376291463
+      value: 8.0
       config: phenotypes/pots/pots-hypovolemic.yaml
     pots-mixed:
-      value: 6.797172376291463
+      value: 8.0
       config: phenotypes/pots/pots-mixed.yaml
     pots-neuropathic:
-      value: 6.797172376291463
+      value: 8.0
       config: phenotypes/pots/pots-neuropathic.yaml
   provenance: Introduced with ModelParameters.splanchnic_hydrostatic_height_cm in the Stage 1.1 (0.3.0)
-    revision, replacing the deleted fixed-offset ModelParameters.splanchnic_gravity_pressure_offset; phenotype
-    YAML overrides were migrated with full-precision division by 0.7356. Defaults and all YAML overrides are
-    audited against this record.
+    revision, replacing the deleted fixed-offset ModelParameters.splanchnic_gravity_pressure_offset. Stage 1.2
+    recalibrated the healthy default to 7 cm and POTS scenario overrides to 8 cm while retaining the equation,
+    units and full tilt-angle geometry. ME/CFS, hEDS and Long-COVID-autonomic retain their Stage 1.1
+    fixed-offset-derived overrides unchanged; they were not recalibrated against the new healthy/POTS heights.
+    Their ratios to healthy values are inherited migration scenarios, not anatomical or phenotype-severity claims.
+    Defaults and all YAML overrides are audited against this record.
   references:
   - REF-TANEJA-2007
   - REF-STEWART-2004
@@ -814,7 +817,7 @@ parameters:
   - REF-HARMS-2021
   description: Executable splanchnic hydrostatic height used by the shared reduced-order model; see linked
     equations and phenotype overrides.
-  nominal_value: 5.43773790103317
+  nominal_value: 7.0
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: calibrated_or_assumed_requires_validation
@@ -822,8 +825,8 @@ parameters:
   name: lower limb hydrostatic height
   symbol: lower_limb_hydrostatic_height_cm
   model_field: lower_limb_hydrostatic_height_cm
-  healthy_reference_value: 10.87547580206634
-  value: 10.87547580206634
+  healthy_reference_value: 14.0
+  value: 14.0
   units: cm
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
@@ -831,9 +834,9 @@ parameters:
   - CLM-ORTHO-LOWER-LIMB
   - CLM-ORTHO-HYDROSTATIC
   - CLM-POTS-POOLING
-  estimation_method: Stage 1.1 migration of the Stage 1 fixed 8.0 mmHg lower-limb gravity offset (height =
-    offset / 0.7356 mmHg/cm) into a lumped heart-to-bed height scaled by sin(tilt angle); the height is lumped
-    regional geometry, not a measured hydrostatic column.
+  estimation_method: Stage 1.2 scenario calibration of the lumped heart-to-bed geometry, constrained by
+    preserved healthy early cardiac-output, late stroke-volume and caudal-pooling plausibility bands. The height
+    is scaled by sin(tilt angle); it is effective regional geometry, not a measured hydrostatic column.
   supported_range:
     min: 8.156606851549755
     max: 16.31321370309951
@@ -866,21 +869,24 @@ parameters:
       value: 12.234910277324632
       config: phenotypes/mecfs/mecfs-pem.yaml
     pots-hyperadrenergic:
-      value: 13.594344752582925
+      value: 16.0
       config: phenotypes/pots/pots-hyperadrenergic.yaml
     pots-hypovolemic:
-      value: 13.594344752582925
+      value: 16.0
       config: phenotypes/pots/pots-hypovolemic.yaml
     pots-mixed:
-      value: 13.594344752582925
+      value: 16.0
       config: phenotypes/pots/pots-mixed.yaml
     pots-neuropathic:
-      value: 13.594344752582925
+      value: 16.0
       config: phenotypes/pots/pots-neuropathic.yaml
   provenance: Introduced with ModelParameters.lower_limb_hydrostatic_height_cm in the Stage 1.1 (0.3.0)
-    revision, replacing the deleted fixed-offset ModelParameters.lower_limb_gravity_pressure_offset; phenotype
-    YAML overrides were migrated with full-precision division by 0.7356. Defaults and all YAML overrides are
-    audited against this record.
+    revision, replacing the deleted fixed-offset ModelParameters.lower_limb_gravity_pressure_offset. Stage 1.2
+    recalibrated the healthy default to 14 cm and POTS scenario overrides to 16 cm while retaining the equation,
+    units and full tilt-angle geometry. ME/CFS, hEDS and Long-COVID-autonomic retain their Stage 1.1
+    fixed-offset-derived overrides unchanged; they were not recalibrated against the new healthy/POTS heights.
+    Their ratios to healthy values are inherited migration scenarios, not anatomical or phenotype-severity claims.
+    Defaults and all YAML overrides are audited against this record.
   references:
   - REF-SMITH-1994
   - REF-VANHEUSDEN-2006
@@ -888,7 +894,7 @@ parameters:
   - REF-HARMS-2021
   description: Executable lower limb hydrostatic height used by the shared reduced-order model; see linked
     equations and phenotype overrides.
-  nominal_value: 10.87547580206634
+  nominal_value: 14.0
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
   value_class: calibrated_or_assumed_requires_validation
@@ -896,20 +902,20 @@ parameters:
   name: other systemic hydrostatic height
   symbol: other_systemic_hydrostatic_height_cm
   model_field: other_systemic_hydrostatic_height_cm
-  healthy_reference_value: 0.0
-  value: 0.0
+  healthy_reference_value: 11.0
+  value: 11.0
   units: cm
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-ORTHO-HYDROSTATIC
   - CLM-CV-VENOUS-RETURN
-  estimation_method: Explicit computational operating-point choice (the residual other-systemic bed is lumped
-    at heart level, so its orthostatic hydrostatic correction is zero); not estimated from an individual
-    patient.
+  estimation_method: Stage 1.2 scenario calibration of an effective dependent height for the aggregated residual
+    systemic bed. The Stage 1.1 zero-height closure made this 50%-flow compartment a heart-level preload buffer;
+    the nonzero value restores participation in orthostatic pooling. It is lumped geometry, not a measured column.
   supported_range:
-    min: 0.0
-    max: 4.078303425774877
+    min: 5.0
+    max: 16.0
     status: computational sensitivity/scenario range; not a population reference interval
   uncertainty:
     qualitative: high for absolute patient-level value; direction and units are separately reviewed
@@ -925,17 +931,19 @@ parameters:
     - VAL-PHYS-TILT
   phenotype_values: {}
   provenance: Introduced with ModelParameters.other_systemic_hydrostatic_height_cm in the Stage 1.1 (0.3.0)
-    five-compartment revision; defaults and all YAML overrides are audited against this record.
+    five-compartment revision with a zero-height assumption. Stage 1.2 replaces that assumption with an 11 cm
+    effective dependent height after the zero-height bed was shown to buffer preload and blunt both healthy CO/SV
+    responses and POTS tachycardia. Defaults and all YAML overrides are audited against this record.
   references:
   - REF-HARMS-2021
   - REF-HELDT-2002
   - REF-PERSICHINI-2022
   description: Executable other-systemic hydrostatic height used by the shared reduced-order model; see
     linked equations and phenotype overrides.
-  nominal_value: 0.0
+  nominal_value: 11.0
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
-  value_class: assumed_computational_operating_point
+  value_class: calibrated_or_assumed_requires_validation
 - id: PAR-ARTERIAL-VOLUME-INITIAL
   name: arterial volume initial
   symbol: arterial_volume_initial
@@ -2473,14 +2481,16 @@ parameters:
   name: cerebral autoregulation residual slope
   symbol: cerebral_autoregulation_residual_slope
   model_field: cerebral_autoregulation_residual_slope
-  healthy_reference_value: 0.2
-  value: 0.2
+  healthy_reference_value: 0.4
+  value: 0.4
   units: dimensionless
   source: Healthy reference computational configuration; cited references provide structural, directional,
     or group-level context, not a direct measurement of this nominal value.
   evidence_claims:
   - CLM-CBF-AUTOREG-DYNAMIC
-  estimation_method: Explicit computational operating-point choice; not estimated from an individual patient.
+  estimation_method: Stage 1.2 scenario calibration within the preserved 0.1-0.4 sensitivity range, constrained
+    by the healthy 3-11% and ME/CFS 15-35% end-tilt cerebral-flow-index plausibility bands. It is not estimated
+    from an individual patient and does not identify a clinical autoregulation slope.
   supported_range:
     min: 0.1
     max: 0.4
@@ -2498,18 +2508,19 @@ parameters:
     - VAL-ME-CBF
   phenotype_values: {}
   provenance: Introduced with ModelParameters.cerebral_autoregulation_residual_slope in the Stage 1 revised
-    shared model (four conservative stressed-volume compartments, distinct autonomic states, muscle pump,
-    CPP/CFI proxy); defaults and all YAML overrides are audited against this record.
+    shared model. Stage 1.2 changes the nominal value from 0.2 to 0.4 after the lower value left the healthy
+    pressure-driven end-tilt response below its declared 3-11% plausibility band; the bounded equation, separate
+    CO2 pathway and all phenotype impairment factors are retained. Defaults and overrides are audited here.
   references:
   - REF-AASLID-1989
   - REF-CLAASSEN-2016
   - REF-WILLIE-2014
   description: Executable cerebral autoregulation residual slope used by the shared reduced-order model;
     see linked equations and phenotype overrides.
-  nominal_value: 0.2
+  nominal_value: 0.4
   population: No individual patient population; computational healthy reference with phenotype-specific
     scenario overrides. Cited study populations are recorded in the linked evidence and reference registries.
-  value_class: assumed_computational_operating_point
+  value_class: calibrated_or_assumed_requires_validation
 - id: PAR-CEREBRAL-ORTHOSTATIC-IMPAIRMENT
   name: cerebral orthostatic impairment
   symbol: cerebral_orthostatic_impairment

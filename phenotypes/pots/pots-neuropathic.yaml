@@ -4,8 +4,8 @@ diseases: [POTS]
 mechanisms: [MEC-VASC-POOLING, MEC-AUT-BAROREFLEX, MEC-VASC-CONSTRICTION]
 evidence_claims: [CLM-POTS-PHENOTYPES, CLM-POTS-POOLING, CLM-POTS-CRITERIA]
 parameter_overrides:
-  splanchnic_hydrostatic_height_cm: 6.797172376291463
-  lower_limb_hydrostatic_height_cm: 13.594344752582925
+  splanchnic_hydrostatic_height_cm: 8.0
+  lower_limb_hydrostatic_height_cm: 16.0
   splanchnic_resistance_sympathetic_gain: 0.35
   lower_limb_resistance_sympathetic_gain: 0.35
   heart_rate_rest: 70.0

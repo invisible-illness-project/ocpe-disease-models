@@ -23,7 +23,7 @@
         "Viral persistence, microclots and immune signaling are not causally encoded."
       ]
     },
-    "configuration_sha256": "07613c31996b43ed15598d5ad40c2b5431dbed4085a12faef79b25f31ea5907e",
+    "configuration_sha256": "b937699d2624f5fca95db0440b93caa915a1c186c97f9a64381b1802f9d07bed",
     "ocpe_commit": "3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d",
     "python_version": "3.12.12",
     "numpy_version": "2.2.5",
@@ -56,7 +56,7 @@
     "other_systemic_resistance_sympathetic_gain": 0.8,
     "splanchnic_hydrostatic_height_cm": 7.4768896139206085,
     "lower_limb_hydrostatic_height_cm": 14.953779227841217,
-    "other_systemic_hydrostatic_height_cm": 0.0,
+    "other_systemic_hydrostatic_height_cm": 11.0,
     "arterial_volume_initial": 150.0,
     "central_venous_volume_initial": 700.0,
     "splanchnic_venous_pressure_initial": 10.0,
@@ -90,7 +90,7 @@
     "brain_hydrostatic_height_cm": 27.0,
     "cerebral_outflow_pressure_mmHg": 5.0,
     "cerebral_reference_perfusion_pressure": 95.0,
-    "cerebral_autoregulation_residual_slope": 0.2,
+    "cerebral_autoregulation_residual_slope": 0.4,
     "cerebral_orthostatic_impairment": 0.08,
     "cerebral_decline_time_constant": 5.0,
     "cerebral_recovery_time_constant": 12.0,
@@ -153,13 +153,13 @@
     "phenotype_id": "long-covid-autonomic",
     "duration_s": 600.0,
     "samples": 301,
-    "heart_rate_final_bpm": 88.93067444480633,
-    "mean_arterial_pressure_final_mmHg": 111.3669499413163,
+    "heart_rate_final_bpm": 102.57537156197382,
+    "mean_arterial_pressure_final_mmHg": 109.84905679611434,
     "pem_peak": 0.0,
     "functional_capacity_final": 0.85,
     "heart_rate_baseline_bpm": 70.0,
-    "heart_rate_upright_peak_bpm": 88.9664792415974,
-    "orthostatic_heart_rate_rise_bpm": 18.966479241597398,
-    "orthostatic_heart_rate_sustained_rise_bpm": 18.930674444805533
+    "heart_rate_upright_peak_bpm": 104.0622030371206,
+    "orthostatic_heart_rate_rise_bpm": 34.0622030371206,
+    "orthostatic_heart_rate_sustained_rise_bpm": 32.57537156198046
   }
 }

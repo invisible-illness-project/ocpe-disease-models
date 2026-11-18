@@ -100,11 +100,11 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.2.0
+    model_version: 0.3.0
     mechanisms: [MEC-VASC-POOLING, MEC-VASC-CONSTRICTION, MEC-VOL-HYPOVOLEMIA, MEC-VASC-COMPLIANCE]
     validation: [VAL-SENSITIVITY]
     outputs: [validation/sensitivity/local_sensitivity.json, validation/sensitivity/local_sensitivity.csv, validation/sensitivity/figure.png]
-    scientific_status: Deterministic scenarios with configuration hashes; not synthetic patients or probability distributions.
+    scientific_status: Stage 1.2 deterministic scenarios with 61 local rows, including residual-systemic-height perturbations and configuration hashes; not synthetic patients or probability distributions.
   - id: SIM-UNCERTAINTY-GRID
     name: Deterministic assumption-uncertainty grids
     config: hEDS vascular and ME/CFS PEM YAML configurations + declared two-parameter grids in src/ocpe_disease_models/validation/sensitivity.py
@@ -112,7 +112,7 @@ simulations:
       id: ocpe:disease-models/shared-physiology
       implementation: src/ocpe_disease_models/models/shared/model.py
       ocpe_commit: 3f04b6f85566fbd4faa2fd8c0e8bdfe52750235d
-    model_version: 0.2.0
+    model_version: 0.3.0
     mechanisms: [MEC-VASC-COMPLIANCE, MEC-VASC-POOLING, MEC-RCV-PEM, MEC-MET-CAPACITY]
     validation: [VAL-UNCERTAINTY]
     outputs: [validation/sensitivity/uncertainty_grid.json, validation/sensitivity/uncertainty_grid.csv, validation/sensitivity/sensitivity-report.md]
@@ -127,8 +127,8 @@ simulations:
     model_version: 0.3.0
     mechanisms: [MEC-ORTHO-HYDROSTATIC, MEC-VASC-POOLING, MEC-AUT-BAROREFLEX, MEC-CV-VOLUME]
     validation: [VAL-PHYS-TILT-ANGLE, VAL-PHYS-GRADED-TILT]
-    outputs: [validation/stage1-1/scientific-comparison-matrix.json, validation/stage1-1/scientific-comparison-matrix.md]
-    scientific_status: Research scenario comparison; all eight REF-ZAIDI-2000 healthy cardiac-output/stroke-volume anchor comparisons MISS the preserved published ranges and are retained without recalibration; not clinical validation.
+    outputs: [validation/stage1-2/scientific-comparison-matrix.json, validation/stage1-2/scientific-comparison-matrix.md]
+    scientific_status: Stage 1.2 research scenario comparison; six of eight unchanged REF-ZAIDI-2000 healthy cardiac-output/stroke-volume comparisons PASS, while both 60-degree cardiac-output comparisons remain explicit MISS rows; not clinical validation.
   - id: SIM-ORTHO-ACTIVE-STANDING
     name: Active versus passive standing geometry comparison
     config: phenotypes/healthy/healthy-reference.yaml + simulations/orthostatic/active-standing.yaml + simulations/orthostatic/tilt-recovery.yaml
@@ -139,7 +139,7 @@ simulations:
     model_version: 0.3.0
     mechanisms: [MEC-ORTHO-HYDROSTATIC, MEC-MUSCLE-PUMP, MEC-SUSTAINED-CONTRACTION, MEC-AUT-BAROREFLEX]
     validation: [VAL-PHYS-TILT-ANGLE, VAL-PHYS-TILT, VAL-PHYS-RECOVERY]
-    outputs: [validation/stage1-1/scientific-comparison-matrix.json, validation/stage1-1/scientific-comparison-matrix.md]
+    outputs: [validation/stage1-2/scientific-comparison-matrix.json, validation/stage1-2/scientific-comparison-matrix.md]
     scientific_status: Research scenario comparison; not clinical validation.
   - id: SIM-CBF-CO2
     name: Cerebral pressure/CO2 isolation and recovery protocols
@@ -151,5 +151,5 @@ simulations:
     model_version: 0.3.0
     mechanisms: [MEC-CBF-CO2, MEC-CBF-AUTOREG, MEC-CV-VOLUME]
     validation: [VAL-PHYS-CBF-CO2]
-    outputs: [validation/stage1-1/scientific-comparison-matrix.json, validation/stage1-1/scientific-comparison-matrix.md]
+    outputs: [validation/stage1-2/scientific-comparison-matrix.json, validation/stage1-2/scientific-comparison-matrix.md]
     scientific_status: Research scenario comparison of the bounded end-tidal-CO2 factor (isolated 30 mmHg hypocapnia factor 0.7047; pressure/CO2 dissociation preserved); not clinical validation.

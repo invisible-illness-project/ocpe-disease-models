@@ -54,7 +54,7 @@ def test_sustained_contraction_impedes_passive_lower_limb_return():
     state = patient.initial_state()
     # Use a positive passive upright gradient so resistance, not the flow floor,
     # determines the comparison.
-    state[LOWER_LIMB] += 200.0
+    state[LOWER_LIMB] += 300.0
     relaxed = patient._derived(0.0, state, _protocol(upright=1.0))
     contracted = patient._derived(
         0.0, state, _protocol(upright=1.0, sustained_muscle_contraction=1.0)

@@ -46,7 +46,7 @@ pytest -q -m phenotype
 pytest -q -m empirical
 ```
 
-Every command must collect tests. Pytest exit code 5 (`no tests ran`) is a validation failure. Investigate failed numerical tolerances or scenario criteria; do not weaken a criterion after seeing an inconvenient result without a documented scientific review. Stage 1.1 retains narrow strict xfails for the five unchanged POTS/Long-COVID-autonomic sustained-HR criterion misses; these are executable expected failures and remain `FAIL` in the scientific matrix and release assessment.
+Every command must collect tests. Pytest exit code 5 (`no tests ran`) is a validation failure. Investigate failed numerical tolerances or scenario criteria; do not weaken a criterion after seeing an inconvenient result without a documented scientific review. Stage 1.1's five POTS/Long-COVID-autonomic strict expected failures are preserved only in its historical commit and reports. Stage 1.2 removes them after direct passes; `tests/physiological/test_stage1_2_orthostatic_fidelity.py` now guards the remediated healthy behavior. Separately, the Stage 1.2 matrix retains two 60° CO `MISS` rows that are not converted into expected failures.
 
 ## 4. Demonstrations and observation exchange
 
@@ -67,14 +67,15 @@ python scripts/run_sensitivity.py
 pytest -q -m sensitivity_uncertainty
 ```
 
-Review `validation/sensitivity/sensitivity-report.md` and full JSON/CSV rows. Stage 1.1 exports 59 local scenarios, 27 deterministic grid scenarios, and three chronotropic-split scenarios, including CO2-reactivity/clipping and CO2-reactivity × cerebral-outflow coverage. Inspect any MAP-below-70-mmHg hEDS grid cases and retain historical failures separately. Do not delete failed combinations or describe a grid as a patient distribution. There is no stochastic sampling; seed metadata does not substitute for probabilistic analysis.
+Review `validation/sensitivity/sensitivity-report.md` and full JSON/CSV rows. Stage 1.2 exports 61 local scenarios, 27 deterministic grid scenarios, and three chronotropic-split scenarios; the two additional local rows are the low/high residual-systemic-height perturbations. CO2-reactivity/clipping and CO2-reactivity × cerebral-outflow coverage remain included. Inspect any MAP-below-70-mmHg hEDS grid cases and retain historical failures separately. Do not delete failed combinations or describe a grid as a patient distribution. There is no stochastic sampling; seed metadata does not substitute for probabilistic analysis.
 
 ## 6. Full seven-layer report
 
 ```bash
-python scripts/run_stage1_1_validation.py
 python scripts/run_validation.py
 ```
+
+`python scripts/run_stage1_1_validation.py` is reserved for historical reproduction in a Stage 1.1 checkout. Do not run it as a Stage 1.2 writer or overwrite `validation/stage1-1/`; current before/after evidence is under `validation/stage1-2/`.
 
 To rerun without recomputing sensitivity artifacts:
 
@@ -82,7 +83,7 @@ To rerun without recomputing sensitivity artifacts:
 python scripts/run_validation.py --no-analysis
 ```
 
-A successful command exit is not expected while unresolved strict scientific xfails remain; inspect the separate per-layer execution and scientific statuses rather than discarding the report.
+A nonzero command exit remains expected whenever unresolved strict scientific expected failures are present. Stage 1.2 has none, but a zero exit still does not override narrative empirical misses; inspect the separate per-layer execution and scientific statuses and the Stage 1.2 comparison matrix.
 
 For one layer, use a repeated explicit selector, for example:
 
@@ -90,7 +91,7 @@ For one layer, use a repeated explicit selector, for example:
 python scripts/run_validation.py --layer mathematical --layer scientific_traceability
 ```
 
-Read `validation/stage1-1/scientific-comparison-matrix.md`, `validation/reports/validation-report.md`, JSON, and individual logs. `PASS` applies only to the declared computational checks with no strict expected failure. The seven-layer runner deliberately marks a layer `FAIL` when pytest reports an xfail, even if its process exits zero; this keeps the unchanged POTS/Long-COVID-autonomic criterion misses visible in the overall release verdict. A partial-layer run is not a full release validation.
+Read `validation/stage1-2/scientific-comparison-matrix.md`, `validation/reports/validation-report.md`, JSON, and individual logs. `PASS` applies only to the declared computational checks with no strict expected failure. The seven-layer runner deliberately marks a layer `FAIL` when pytest reports an xfail, even if its process exits zero. Stage 1.2's two residual 60° CO misses are instead reported explicitly in the scientific matrix and readiness assessment because they are not failed executable assertions. A partial-layer run is not a full release validation. Stage 1.1 reports under `validation/stage1-1/` remain historical and must not be presented as current results.
 
 ## 7. Regression updates
 

@@ -18,6 +18,7 @@ FIXTURE_PATH = Path(__file__).resolve().parents[2] / "validation" / "fixtures" /
 DERIVATIVE_RTOL = 1e-6
 PARAMETERS = (
     "lower_limb_hydrostatic_height_cm",
+    "other_systemic_hydrostatic_height_cm",
     "splanchnic_resistance_sympathetic_gain",
     "blood_volume_factor",
     "lower_limb_venous_compliance",
@@ -74,6 +75,7 @@ def test_derivative_directions_match_mechanism_interpretation(fixture):
         for name in PARAMETERS
     }
     assert derivatives["lower_limb_hydrostatic_height_cm"][0] > 0.0
+    assert derivatives["other_systemic_hydrostatic_height_cm"][0] > 0.0
     assert derivatives["lower_limb_venous_compliance"][0] > 0.0
     assert derivatives["splanchnic_resistance_sympathetic_gain"][0] < 0.0
     assert derivatives["blood_volume_factor"][0] < 0.0
@@ -114,6 +116,7 @@ def test_local_analysis_covers_declared_shared_assumptions():
         ("head-up-tilt", "lower_limb_resistance_sympathetic_gain"),
         ("head-up-tilt", "splanchnic_hydrostatic_height_cm"),
         ("head-up-tilt", "lower_limb_hydrostatic_height_cm"),
+        ("head-up-tilt", "other_systemic_hydrostatic_height_cm"),
         ("co2-reduction", "cerebral_co2_reactivity_per_mmHg"),
         ("co2-reduction", "cerebral_co2_extrapolation_limit_mmHg"),
         ("head-up-tilt", "cardiac_sympathetic_time_constant"),

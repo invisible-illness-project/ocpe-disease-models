@@ -86,9 +86,9 @@ class ModelParameters:
     splanchnic_resistance_sympathetic_gain: float = 0.8
     lower_limb_resistance_sympathetic_gain: float = 0.8
     other_systemic_resistance_sympathetic_gain: float = 0.8
-    splanchnic_hydrostatic_height_cm: float = 5.43773790103317
-    lower_limb_hydrostatic_height_cm: float = 10.87547580206634
-    other_systemic_hydrostatic_height_cm: float = 0.0
+    splanchnic_hydrostatic_height_cm: float = 7.0
+    lower_limb_hydrostatic_height_cm: float = 14.0
+    other_systemic_hydrostatic_height_cm: float = 11.0
 
     # Initial stressed volumes/pressures; all five volumes conserve their sum.
     arterial_volume_initial: float = 150.0
@@ -130,7 +130,7 @@ class ModelParameters:
     brain_hydrostatic_height_cm: float = 27.0
     cerebral_outflow_pressure_mmHg: float = 5.0
     cerebral_reference_perfusion_pressure: float = 95.0
-    cerebral_autoregulation_residual_slope: float = 0.2
+    cerebral_autoregulation_residual_slope: float = 0.4
     cerebral_orthostatic_impairment: float = 0.0
     cerebral_decline_time_constant: float = 5.0
     cerebral_recovery_time_constant: float = 12.0
